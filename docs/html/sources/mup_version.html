@@ -1,0 +1,86 @@
+<!-- 
+//
+//
+//  
+//   Example code
+//
+//
+//
+-->
+
+<h2><a id="idExample"></a>Example code</h2>
+
+<p>
+If you put all this together, you get the source code for a small application. The application defines a parser variables ("<code>a</code>") and adds 
+a user defined functions named "<code>MyFunc</code>". When using the parser make sure that you don't forget to catch the <code>Parser::exception_type</code> in your application. It contains detailed information helping you to find syntax errors in your formula.
+</p>
+
+<pre>
+<span class="code_pp">#include &lt;iostream&gt;</span>
+<span class="code_pp">#include "muParser.h"</span>
+
+<span class="code_cmt">// Function callback</span>
+<span class="code_kw">double</span> MySqr(<span class="code_kw">double</span> a_fVal) 
+{ 
+  <span class="code_kw">return</span> a_fVal*a_fVal; 
+}
+
+<span class="code_cmt">// main program</span>
+<span class="code_kw">int</span> main(<span class="code_kw">int</span> argc, <span class="code_kw">char</span>* argv[])
+{
+  <span class="code_kw">using namespace</span> mu;
+
+  <span class="code_kw">try</span>
+  {
+    <span class="code_kw">double</span> fVal = <span class="code_digit">1</span>;
+    <span class="code_kw_lib">Parser</span> p;
+    <span class="code_kw_lib">p.DefineVar</span>(<span class="code_str">"a"</span>, &amp;fVal); 
+    <span class="code_kw_lib">p.DefineFun</span>(<span class="code_str">"MySqr"</span>, MySqr); 
+    <span class="code_kw_lib">p.SetExpr</span>(<span class="code_str">"MySqr(a)*_pi+min(10,a)"</span>);
+
+    <span class="code_kw">for</span> (std::size_t a=<span class="code_digit">0</span>; a<100; ++a)
+    {
+      fVal = a;  <span class="code_cmt">// Change value of variable a</span>
+      std::cout &lt;&lt; <span class="code_kw_lib">p.Eval()</span> &lt;&lt; std::endl;
+    }
+  }
+  <span class="code_kw">catch</span> (<span class="code_kw_lib">Parser::exception_type</span> &amp;e)
+  {
+    std::cout &lt;&lt; <span class="code_kw_lib">e.GetMsg()</span> &lt;&lt; std::endl;
+  }
+  <span class="code_kw">return</span> <span class="code_digit">0</span>;
+}
+</pre>
+
+
+<!-- 
+//
+//
+//
+//  Benchmarks
+//
+//
+//
+-->
+
+<hr/>
+<h2><a id="idBench"></a>Benchmarks</h2>
+
+<p>
+Finally, I'd like to give you some benchmarks. The benchmarking was done on an Intel 
+Pentium P-4 with 2.6 GHz, with a version compiled by using MSVC++ 7.1 (Standard edition).
+The diagram shows number of <b>evaluations per seconds vs. expression length</b>. 
+I compared both the static lib and the dll version with two other parsers that are freely available 
+on the net, very fast and have a similar set of features. One of them is a commercial product.
+</p>
+
+<p>
+  <img src="images/bench2.jpg" alt="parser benchmarks" border="0" height="489" width="560"/>
+</p>
+
+<p>
+A higher curve means better performance. Expressions were created randomly. They used only <code>sin</code> and <code>cos</code> functions and contained 
+multiple variables and constants. In order to smoothen the curves each point represents the value of a
+running average over 10 sample expressions. 
+</p>
+

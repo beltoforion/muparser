@@ -1,0 +1,196 @@
+/* Style Sheet Definition */
+
+/* Syntax highlighting */
+.code_cmt             { color: #008000; font-style: italic; } /* comment lines */
+.code_kw              { color: Blue; }                        /* keyword */
+.code_kw_lib          { color: #117799; }
+.code_pp            	{ color: Navy; }                        /* Preprocessor directives */
+.code_str             { color: Magenta;}                      /* literal strings */
+.code_digit				    { color: Navy; }                        /* digits */
+.code_fail          	{ color: #ee0000; }
+.code_SummaryComment	{ color: #808080; }
+
+.code_literal			    { color: Navy; }
+.code_pagedirective		{ background-color:yellow; }
+.code_attribute       { color: red;	 }
+.code_tag			        { color: #800000; }
+.code_leadattribute		{ color: #800000; }
+
+body {
+    background-color: #ffffff;
+    margin-top:0px;
+    background-repeat:repeat-y;
+    margin-left:0px;
+    margin-top:0px;
+    margin-right:0px;
+    margin-bottom:0px;
+    overflow:auto;
+}
+
+div.header 
+{ 
+  position:absolute;
+  left:20%;
+  width:600px;
+  height:80px; 
+  z-index:2;
+  background-image:url("../images/caption.png"); 
+  background-repeat: no-repeat;
+  background-position: top center;
+  text-align: center;
+/*  font-family: "Times New Roman",vserif;*/
+  font-family:Helvetica,Arial,sans-serif;
+  font-size: 160%;
+}
+
+div.gradient
+{
+  background-image:url("../images/grad2.jpg"); 
+  z-index:1;
+  width:100%;
+  height:80px; 
+}
+
+div.sidebarlink 
+{
+  margin-top: -12px;
+  border: 1px solid #cfcfcf;
+  padding: 0.2em 0.1em 0.2em 0.2em;
+  background-color:#f4f4fF;
+  text-align: left;
+  line-height: 1.5em;
+  background-image:url("../images/back_idx.png"); 
+  background-repeat: no-repeat;
+  background-position: bottom right;
+}
+
+.tiny_text { font-size: 80%;   line-height: 0.8em;}
+
+/*.dark_text { color:#F4F4FF; }*/
+.dark_text { color:black; }
+
+/* Links */
+a         { text-decoration: none; }
+
+a:link    { color:#0000BB; }
+a:visited { /*font-weight:bold;*/ color:#000080; }
+a:hover   { color:#00BB00; }
+a:active  { color:#E00000; }
+a:focus   { color:#BBBBBB; }
+
+a.white:link   { color:#FFFFFF; }
+a.white:visited  { color:#FFFFFF; }
+a.white:active  { color:#000000; }
+a.white:focus   { color:#BBBBBB; }
+a.white:hover   { color:#FFFFFF; font-weight:bold;}
+
+/* Tables */
+table.main { background-color: #ffffff; }
+td.Menu       { background-color: #ffffff; color: #000000;}
+td.MenuActive { background-color: #000000; color: #ffffff;}
+td.main { color: #FFFFFF;}
+td.Info { background-color: #ffffff;}
+
+/* Für <h> tags im Navigationsbereich */
+.navi_heading { text-align:left; 
+                padding-left:50px; 
+                line-height:30px;
+                /*color: #000000;*/ }
+
+.navi_info { background-image:url("../images/info.png");
+             background-repeat: no-repeat;
+             background-position:10px 0px; }
+
+.navi_build { background-image:url("../images/build.png");
+              background-repeat: no-repeat;
+             background-position:10px 0px; }
+
+
+.navi_list { background-image:url("../images/list.png");
+             background-repeat: no-repeat;
+             background-position:10px 0px; }
+
+.navi_run { background-image:url("../images/run.png");
+            background-repeat: no-repeat;
+             background-position:10px 0px; }
+
+.navi_question { background-image:url("../images/question.png");
+                 background-repeat: no-repeat;
+             background-position:10px 0px; }
+
+.navi_blocks { background-image:url("../images/blocks.png");
+               background-repeat: no-repeat;
+               background-position:10px 0px; }
+
+/* Miscellaneous */
+body, P, H1, H2, H3, H4, H5, H6, LI, TD, TH, DD, DT
+{
+  font-family:Helvetica,Arial,sans-serif;
+  color: black;
+}
+
+h1
+{
+    font-size: 18pt;
+    border-bottom: 3px solid black;
+}
+
+h2
+{
+  font-size: 16pt;
+  font-weight: bold;
+  border-bottom: 1px solid #AAA;
+  color: #0099cc;
+}
+
+hr
+{
+  border-bottom: 1px solid #AAA;
+}
+
+h3
+{
+  font-family: Arial, sans-serif;
+  font-size: 14pt;
+  font-weight: bold;
+  color: #0099cc;
+}
+
+h4
+{
+  font-size: 12pt;
+  margin-bottom: 2px;
+}
+
+h5
+{
+  font-size: 12pt;
+  margin-bottom: 2px;
+  color: #0099cc;
+}
+
+H6
+{
+    color: #626262;
+    font-size: 65%;
+    font-weight: normal;
+}
+
+code
+{
+    color: #990000;
+    font-family: "Courier New", Courier, mono;
+}
+
+pre {
+    border: 1pt solid black;
+    background-color: #EFEFEF;
+    font: 12pt "Courier New", Courier, mono;
+    padding: 10pt;
+    width: 90%;
+}
+
+p 
+{
+  text-align: justify;
+}

@@ -1,0 +1,229 @@
+<!-- 
+//
+//
+//  
+//   Features
+//
+//
+//
+-->
+
+<br/>
+<h2><a name="idFeature">Features</a></h2>
+
+<p>
+The following is a list of the features currently supported by the parser library. 
+The primary objective is to keep it as extensible as possible whilst ensuring a maximum parsing speed. Extending the parser is mostly based on allowing a user to add custom callbacks which require only an absolute minimum of code. For instance you need exactly 2 lines of code to add a new function.
+But extending the parser may not be necessary at all since it comes with a powerful default 
+implementation. Here is the (incomplete) list of features:
+</p>
+
+
+<!-- 
+//
+//   Features / Overview
+//
+-->
+
+<h3><a name="idFeatureOverview">Overview</a></h3>
+
+
+<ul>
+  <li><b>Easy to use</b>
+    <ul>
+      <li>You need only a <a href="mup_version.html#idExample">few lines of code</a> to evaluate en expression</li>
+    </ul> 
+  </li>
+  <li><b>Optimized for speed</b>
+    <ul>
+      <li><a href="mup_version.html#idBench">High parsing performance</a></li>
+      <li>if-then-else operator with <a href="http://en.wikipedia.org/wiki/Lazy_evaluation">lazy evaluation</a></li>
+      <li>Compute multiple comma separated subexpressions in a single evaluation. (i.e. "sin(x), x+y, x*x")</li>
+    </ul> 
+  </li>
+
+  <li><b>User-defined operators</b>
+    <ul>
+      <li>binary operators</li>
+      <li>postfix operators</li>
+      <li>infix operators</li>
+    </ul>
+  </li>
+
+  <li><b>User-defined functions</b>
+    <ul>
+      <li>with a fixed number of up to five arguments</li>
+      <li>with variable number of arguments</li>
+      <li>with a single string argument (for database queries)</li>
+    </ul>
+  </li>
+
+  <li><b>User-defined constants.</b>
+    <ul>
+      <li>numeric constants</li>
+      <li>string constants</li>
+    </ul> 
+  </li>
+
+  <li><b>User-defined variables.</b>
+    <ul>
+        <li>unlimited in number</li>	
+        <li>definable at parser runtime by the parser</li>
+        <li>assigning variables in terms of other variables is possible</li>	
+    </ul>
+  </li>
+  
+  <li><b>Custom value recognition callbacks</b>
+    <ul>
+	<li>support for binary and hex values.</li>
+        <li>can be used to implement database queries</li>
+    </ul>
+  </li>
+
+  <li><b>Default implementaion with many features</b> 
+    <ul>
+      <li>25 <a href="#idDef1">predefined functions</a>.</li>
+      <li>14 <a href="#idDef2">predefined operators</a>.</li>
+      <li>Supports numerical differentiation with respect to a given variable.</li>
+      <li>Assignement operator is supported</li>
+    </ul>
+  </li>
+
+  <li><b>Portability</b>
+    <ul>
+       <li>Project / makefiles for MSVC, mingw, autoconf, bcc</li>
+       <li>ISO 14882 compliant code</li>
+       <li>DLL version usable from every language able to use function exported in C-style</li>
+    </ul> 
+  </li>
+
+  <li><b>Unit support</b>
+    <ul>
+      <li>Use postfix operators as unit multipliers <code>(3m -> 0.003)</code></li>
+    </ul>
+  </li>
+
+  <li><b>Localization</b>
+    <ul>
+      <li>Argument separator, decimal separator, thousands separator can be adjusted to your locale</code></li>
+    </ul>
+  </li>
+
+</ul>
+
+
+<!-- 
+//
+//
+//  
+//   Default implementation
+//
+//
+//
+-->
+
+<h3><a name="idDef1">The default implementation</a></h3>
+<p>
+This section gives an overview on the default features supported by the parser. The default
+implementation is defined in the class <code>mu::Parser</code> located in the file 
+<i>muParser.cpp</i>. The DLL-version uses this class internally.
+</p>
+
+<!-- 
+//
+//   Features / Built in functions
+//
+-->
+
+
+<h4><a name="idDef2">Built-in functions</a></h4>
+<p>
+The following table gives an overview of the functions supported by the
+default implementation. It lists the function names, the number of 
+arguments and a brief description.
+</p>
+
+<table border="1">
+<thead>
+<tr>
+  <td><b>Name</b></td>  <td><b>Argc.</b></td>  <td><b>Explanation</b></td>
+</tr>
+</thead>
+
+<tbody>
+<tr><td><code>sin</code></td>   <td align="center">1</td>     <td>sine function</td></tr>
+<tr><td><code>cos</code></td>   <td align="center">1</td>     <td>cosine function</td></tr>
+<tr><td><code>tan</code></td>   <td align="center">1</td>     <td>tangens function</td></tr>
+<tr><td><code>asin</code></td>  <td align="center">1</td>     <td>arcus sine function</td></tr>
+<tr><td><code>acos</code></td>  <td align="center">1</td>     <td>arcus cosine function</td></tr>
+<tr><td><code>atan</code></td>  <td align="center">1</td>     <td>arcus tangens function</td></tr>
+<tr><td><code>sinh</code></td>  <td align="center">1</td>     <td>hyperbolic sine function</td></tr>
+<tr><td><code>cosh</code></td>  <td align="center">1</td>     <td>hyperbolic cosine</td></tr>
+<tr><td><code>tanh</code></td>  <td align="center">1</td>     <td>hyperbolic tangens function</td></tr>
+<tr><td><code>asinh</code></td> <td align="center">1</td>     <td>hyperbolic arcus sine function</td></tr>
+<tr><td><code>acosh</code></td> <td align="center">1</td>     <td>hyperbolic arcus tangens function</td></tr>
+<tr><td><code>atanh</code></td> <td align="center">1</td>     <td>hyperbolic arcur tangens function</td></tr>
+<tr><td><code>log2</code></td>  <td align="center">1</td>     <td>logarithm to the base 2</td></tr>
+<tr><td><code>log10</code></td> <td align="center">1</td>     <td>logarithm to the base 10</td></tr>
+<tr><td><code>log</code></td>   <td align="center">1</td>     <td>logarithm to the base 10</td></tr>
+<tr><td><code>ln</code></td>    <td align="center">1</td>     <td>logarithm to base e (2.71828...)</td></tr>
+<tr><td><code>exp</code></td>   <td align="center">1</td>     <td>e raised to the power of x</td></tr>
+<tr><td><code>sqrt</code></td>  <td align="center">1</td>     <td>square root of a value</td></tr>
+<tr><td><code>sign</code></td>  <td align="center">1</td>     <td>sign function -1 if x&lt;0; 1 if x&gt;0</td></tr>
+<tr><td><code>rint</code></td>  <td align="center">1</td>     <td>round to nearest integer</td></tr>
+<tr><td><code>abs</code></td>   <td align="center">1</td>     <td>absolute value</td></tr>
+<tr><td><code>min</code></td>   <td align="center">var.</td>  <td>min of all arguments</td></tr>
+<tr><td><code>max</code></td>   <td align="center">var.</td>  <td>max of all arguments</td></tr>
+<tr><td><code>sum</code></td>   <td align="center">var.</td>  <td>sum of all arguments</td></tr>
+<tr><td><code>avg</code></td>   <td align="center">var.</td>  <td>mean value of all arguments</td></tr>
+</tbody>
+
+</table>
+
+
+<h4><a name="idDef3">Built-in binary operators</a></h4>
+<p>
+The following table lists the default binary operators supported by the parser.
+</p>
+
+<table border="1">
+	<thead>
+	  <tr><td><b>Operator</b></td>          <td><b>Meaning</b></td>             <td><b>Priority</b></td></tr>
+	</thead>
+
+	<tbody>
+	  <tr><td><code>=</code></td>           <td>assignement</td>                <td>-1</td></tr>
+	  <tr><td><code>&amp;&amp;</code></td>  <td>logical and</td>                <td> 1</td></tr>
+	  <tr><td><code>||</code></td>          <td>logical or</td>                 <td> 2</td></tr>
+	  <tr><td><code>&lt;=</code></td>       <td>less or equal</td>              <td> 4</td></tr>
+	  <tr><td><code>&gt;=</code></td>       <td>greater or equal</td>           <td> 4</td></tr>
+	  <tr><td><code>!=</code></td>          <td>not equal</td>                  <td> 4</td></tr>
+	  <tr><td><code>==</code></td>          <td>equal</td>                      <td> 4</td></tr>
+	  <tr><td><code>&gt;</code></td>        <td>greater than</td>               <td> 4</td></tr>
+	  <tr><td><code>&lt;</code></td>        <td>less than</td>                  <td> 4</td></tr>
+	  <tr><td><code>+</code></td>           <td>addition</td>                   <td> 5</td></tr>
+	  <tr><td><code>-</code></td>           <td>subtraction</td>                <td> 5</td></tr>
+	  <tr><td><code>*</code></td>           <td>multiplication</td>             <td> 6</td></tr>
+	  <tr><td><code>/</code></td>           <td>division</td>                   <td> 6</td></tr>
+	  <tr><td><code>^</code></td>           <td>raise x to the power of y</td>  <td> 7</td></tr>
+	</tbody>
+</table>
+<small>*The assignment operator is special since it changes one of its
+       arguments and can only by applied to variables.</small>
+
+<h4><a name="idDef4">Other operators</a></h4>
+<p>
+muParser has built in support for the if then else operator. It uses lazy evaluation in order
+to make sure only the necessary branch of the expression is evaluated.
+</p>
+
+<table border="1">
+	<thead>
+	  <tr><td><b>Operator</b></td>          <td><b>Meaning</b></td>             <td><b>Remarks</b></td></tr>
+	</thead>
+
+	<tbody>
+	  <tr><td><code>?:</code></td>          <td>if then else operator</td>      <td>C++ style syntax</td></tr>
+	</tbody>
+</table>
+
