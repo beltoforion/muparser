@@ -1,0 +1,394 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <link rel="stylesheet" type="text/css" href="style/formate.css"/>
+  <meta name="author" content="Ingo Berg"/>
+
+  <!-- $META -->
+  <meta name="keywords" content="muparser, build instructions, makefile, configuration, built, project file, install"/>
+  <meta name="description" content="muparser build instructions"/>
+  <title>muParser build instructions</title>
+
+  <script src="script/functions.js" language="javascript" type="text/javascript"></script>
+  <script type="text/javascript">
+  imgHome=new Image();
+  imgHome.src="images/home.png";
+  imgHomeDark=new Image();
+  imgHomeDark.src="images/home_dark.png";
+
+  imgApi=new Image();
+  imgApi.src="images/api.png"; 
+  imgApiDark=new Image();
+  imgApiDark.src="images/api_dark.png";
+
+  function ChangeButtonImage(num,obj)
+  {
+    window.document.images[num].src=obj.src;
+  }
+  </script>
+</head>
+
+<body>
+    <div class="gradient" id="top">
+      <div class="header">
+        muParser - a fast math parser library
+        <br/>
+        <div style="font-size:10pt;">Version 2.1.0</div>
+      </div>
+
+      <div style="position:absolute; width:250px; height:100px; top:20px; text-align:center">
+        <a href="http://sourceforge.net/projects/muparser">
+          <img src="http://sflogo.sourceforge.net/sflogo.php?group_id=137191&amp;type=15" 
+               width="150" 
+               height="40" 
+               border="0"
+               alt="Get muParser - A fast math parser library at SourceForge.net. Fast, secure and Free Open Source software downloads" />
+        </a>
+      </div>	
+
+      <div style="position:absolute; width:100px; right:110px; text-align:center; line-height: 1em;">
+        <a class="white" 
+           href="http://beltoforion.de"  
+           onmouseover="ChangeButtonImage(1,imgHome)" 
+           onmouseout="ChangeButtonImage(1,imgHomeDark)">
+          <img src="images/home_dark.png" border="0" height="40" alt="My home page"/>
+          <br/>
+          <span class="tiny_text dark_text">My home<br/>page</span>
+        </a>
+     </div>
+
+     <div  style="position:absolute; width:100px; right:10px; text-align:center; line-height: 1em;">
+       <a class="white" 
+          href="http://muparser.sourceforge.net/classdocu/index.html"
+          onmouseover="ChangeButtonImage(2,imgApi)" 
+          onmouseout="ChangeButtonImage(2,imgApiDark)">
+         <img src="images/api_dark.png" border="0" alt="class documentation" height="40"/>
+         <br/>
+         <span class="tiny_text dark_text">muParser<br/>API-doc</span>
+       </a>
+    </div>
+  </div> <!-- class="gradient" -->
+
+    <!-- Tabelle mit Hauptinhalt der Seite -->
+    <table id="MainTable" border="0" cellpadding="5" cellspacing="0" style="width:100%; height:100%;">
+      <tbody>
+        <tr>
+          <td style="vertical-align: top; text-align: center" width="230">
+            <h3 class="navi_heading navi_info">Introduction</h3>
+            <div class="sidebarlink">
+                <a href="index.html">About the parser</a><br/>
+                <a href="mup_intro.html#idRelNote">Release notes</a><br/>
+                <a href="http://sourceforge.net/news/?group_id=137191">News</a><br/>
+                <a href="mup_links.html">Software using muParser</a><br/>
+                <a href="mup_licence.html">Licence</a><br/>
+            </div>
+
+            <h3 class="navi_heading navi_blocks">Features</h3>
+            <div class="sidebarlink">
+              <a href="mup_features.html">Features</a><br/>
+              <a href="mup_features.html#idFeatureOverview">Overview</a><br/>
+              <a href="mup_features.html#idDef2">Built in functions</a><br/>
+              <a href="mup_features.html#idDef3">Built in binary operators</a><br/>
+              <a href="mup_features.html#idDef4">Other operators</a><br/>
+            </div>
+
+            <h3 class="navi_heading navi_build">Build instructions</h3>
+            <div class="sidebarlink">
+              <a href="mup_usage.html#idInstWin">Building on Win32</a><br/>
+              <a href="mup_usage.html#idInstLinux">Building on BSD/Linux</a><br/>
+              <a href="mup_usage.html#idInstMisc">Misc build instructions</a><br/>
+              <a href="mup_usage.html#idInstInc">Including the files</a><br/>
+              <a href="mup_usage.html#idCompilerSwitches">Compiler switches</a><br/>
+              <a href="mup_usage.html#idHelp">Where to ask for help</a><br/>
+            </div>
+
+            <h3 class="navi_heading navi_list">Math parser interface</h3>
+            <div class="sidebarlink">
+              <a href="mup_interface.html#idInit">Parser (de)initialization</a><br/>
+              <a href="mup_interface.html#idEval">Evaluating an expression</a><br/>
+              &nbsp;&nbsp;&nbsp;<a href="mup_interface.html#idEvalSimple">Single return value</a><br/>
+              &nbsp;&nbsp;&nbsp;<a href="mup_interface.html#idEvalMulti">Multiple return values</a><br/>
+              &nbsp;&nbsp;&nbsp;<a href="mup_interface.html#idEvalBulk">Bulk mode</a><br/>
+
+              <a href="mup_interface.html#idSetExpr">Setting the expression</a><br/>
+              <a href="mup_interface.html#idDefCharset">Defining identifier charsets</a><br/>
+              <a href="mup_interface.html#idDefVar">Defining parser variables</a><br/>
+              <a href="mup_interface.html#idDefVarEx">Explicit variable definition</a><br/>
+              <a href="mup_interface.html#idDefVarIm">Implicit variable definition</a><br/>
+              <a href="mup_interface.html#idDefConst">Defining constants</a><br/>
+
+              <a href="mup_interface_oprt.html#idAddFunOp">Adding functionand operators</a><br/>
+              &nbsp;&nbsp;&nbsp;<a href="mup_interface_oprt.html#idDefFun">Defining functions</a><br/>
+              &nbsp;&nbsp;&nbsp;<a href="mup_interface_oprt.html#idDefOprt">Defining operators</a><br/>
+              &nbsp;&nbsp;&nbsp;<a href="mup_interface_oprt.html#idUnOp">Unary operators</a><br/>
+              &nbsp;&nbsp;&nbsp;<a href="mup_interface_oprt.html#idBinOp">Binary operators</a><br/>
+
+              <a href="mup_interface.html#idQueryVar">Querying variables</a><br/>
+              <a href="mup_interface.html#idQueryConst">Querying constants</a><br/>
+              <a href="mup_interface.html#idDefConst2">Value recognition callbacks</a><br/>
+              <a href="mup_interface.html#idDefConst2">Removing variables/constants</a><br/>
+              <a href="mup_locale.html#idLoc">Localization</a><br/>
+              <a href="mup_interface.html#idErrors">Error handling</a><br/>
+              <a href="mup_version.html#idExample">Example code</a><br/>
+            </div>
+
+            <h3 class="navi_heading navi_question">Current version</h3>
+            <div class="sidebarlink">
+              <a href="mup_version.html#idBench">Benchmarks</a><br/>
+            </div>
+
+            <br/>
+            <div align="center">
+              <a href="http://www.opensource.org/"><img style="border:0;" src="images/osi.jpg" alt="Open source initiative logo"/></a>
+              <br/>
+              <br/>
+              <a href="http://validator.w3.org/check?uri=referer">
+                <img src="http://www.w3.org/Icons/valid-xhtml10-blue" alt="Valid XHTML 1.0 Transitional" style="border:0;width:88px;height:31px"/>
+              </a>
+              <br/>
+              <br/>
+	      <a href="http://jigsaw.w3.org/css-validator/check/referer">
+                <img style="border:0;width:88px;height:31px" src="http://jigsaw.w3.org/css-validator/images/vcss-blue" alt="CSS ist valide!" />
+	      </a>
+
+            </div>
+          </td>
+
+          <td style="height: 100%; padding: 1em; vertical-align: top;">
+            <!-- 
+              This section contains the real page content. 
+              pages are created automatically by using the script "build_page.sh"
+              which combines section templated with the navigation bar.
+
+	      This creates webpages that do not rely on php3 or Javascript for 
+              serverside or client side html inclusion.
+            //-->
+            <!-- $PLACEHOLDER -->
+<!-- 
+//
+//
+//  
+//   Adding the parser to your projects
+//
+//
+//
+-->
+
+
+<br/>
+<h1><a id="idBuild"></a>Build instructions</h1>
+<h2><a id="idInstWin"></a>Building on win32</h2>
+<b>muParser</b> supports various win32 command-line compilers:
+<ul>
+  <li>Mingw</li>
+  <li>Borland C++</li>
+  <li>Watcom</li>
+  <li>Microsoft CL</li>
+</ul>
+In order to compile muParser from makefiles, open a command prompt then move to the muParser/build directory and
+type:
+
+<ul>
+  <li>mingw32-make -fmakefile.mingw    for mingw</li>
+  <li>nmake -fmakefile.vc              for msvc</li>
+  <li>make -fmakefile.bcc              for borland</li>
+  <li>wmake -fmakefile.wat             for watcom</li>
+</ul>
+
+All makefiles support the following options:
+<pre>
+  # Set to 1 to build debug version [0,1]
+  #   0 - Release
+  #   1 - Debug
+  DEBUG = 0
+
+  # Set to 1 to build shared (DLL) version [0,1]
+  #   0 - Static
+  #   1 - DLL
+  SHARED = 0
+
+  # Set to 1 to compile samples [0,1]
+  SAMPLES = 1
+</pre>
+The muParser library is created in the 'lib' folder and the sample
+binaries are created in samples\example1 or samples\example2. (You may need to copy the dll
+into the example2 directory in order to run it.)
+
+<table>
+<tr>
+  <td><img src="images/warning.gif" alt="warning"/></td> 
+  <td>samples\example1 can be compiled *only* when building muParser as a STATIC library (SHARED=0).<br/>
+      samples\example2 can be compiled *only* when building muParser as a SHARED library (SHARED=1).
+  </td>
+</tr>
+</table>
+
+<h2><a id="idInstLinux"></a>Building on BSD/Linux</h2>
+muParser can be installed just extracting the sources somewhere and then, from a terminal, typing:
+
+<pre>
+ cd [path to muParser]
+ ./configure [--enable-shared=yes/no] [--enable-samples=yes/no]
+             [--enable-debug=yes/no]
+ make
+ [sudo*] make install
+</pre>
+ <small>* = this command must be executed with root permissions and thus
+     you have to use 'sudo' or just 'su' to gain root access.
+     Note that installation is not strictly required.</small>
+<p>
+The "make" step will create the muParser library in 'lib' and the
+sample binary in samples/example1. The samples/example2 is win32-specific and 
+thus won't be built.
+</p>
+
+<h2><a id="idInstMisc"></a>Other miscellaneous info Unix-specific</h2>
+If you don't like to have your muParser folder filled by temporary
+files created by GCC, then you can do the following:
+
+<pre>
+  mkdir mybuild &amp;&amp; cd mybuild &amp;&amp; ../configure &amp;&amp; make
+</pre>
+
+to put all object files in the "mybuild" directory. If you want to use 
+muParser library in your programs, you can use the pkg-config program 
+(this works only if muParser was installed with 'make install' !). 
+The commands:
+<ul>
+   <li>pkg-config muparser --cflags</li>
+   <li>pkg-config muparser --libs</li>
+</ul>
+will return all useful info you need to build your programs against
+muParser !
+
+<h2><a id="idInstInc"></a><a name="idUseSource"></a>Including the source code directly</h2>
+Sometimes including the library sources directly into an application is the easiest 
+possibility to avoid linker conflicts originating from different versions of the 
+runtime libraries used by the parser and your project.
+
+In order to use the parser simply include the following files into your project:
+
+<p>
+<i>muParser.cpp</i><br/>
+<i>muParserBase.cpp</i><br/>
+<i>muParserBytecode.cpp</i><br/>
+<i>muParserCallback.cpp</i><br/>
+<i>muParserError.cpp</i><br/>
+<i>muParserTokenReader.cpp</i>
+</p>
+
+And make sure the following files can be found in your projects include path:
+<p>
+<i>muParser.h</i><br/>
+<i>muParserBase.h</i><br/>
+<i>muParserBytecode.h</i><br/>
+<i>muParserCallback.h</i><br/>
+<i>muParserDef.h</i><br/>
+<i>muParserError.h</i><br/>
+<i>muParserFixes.h</i><br/>
+<i>muParserStack.h</i><br/>
+<i>muParserToken.h</i><br/>
+<i>muParserTokenReader.h</i><br/>
+</p>
+
+The parser class and all related classes reside in the namespace <code>mu</code> (MathUtils). So make sure to either
+add a using 
+
+<pre>
+using namespace mu;
+</pre>
+
+to your files or reference all classes with their complete name.
+
+<h2><a id="idCompilerSwitches"></a>Compiler switches</h2>
+If you use muParser by compiling your own version or including the source code directly you can use 
+a set of preprocessor definitions in order to customize its behaviour. The following definitions 
+are located in the file <b>muParserDef.h</b>: 
+
+<pre>
+<span class="code_pp">#define MUP_BASETYPE double</span>
+</pre>
+
+The macro <b>MUP_BASETYPE</b> defines the underlying datatype used by muParser. This can be any 
+floating point value type (<code>float</code>,<code>double</code> or <code>long double</code>). 
+The macro defaults to <code>double</code>. Modify this value if you need higher precision or want 
+to use muParser seemless with client code that is using float as its data type.
+
+<pre>
+<span class="code_pp">#define MUP_MATH_EXCEPTIONS</span>
+</pre>
+
+When this option is set an exception is generated in case of a division by zero. By default this
+option is not set and division by zero is silently signalled with +/-inf.
+
+<a id="idCompilerSwitches_openMP"></a>
+<pre>
+<span class="code_pp">#define MUP_USE_OPENMP</span>
+</pre>
+If this option is set OpenMP is used for parallelization of the calculations performed in the bulk
+mode. By default this option is not set. According to my observations OpenMP does not bring any
+benefit when used with fully optimized code as produced by C++/VS2008 under Windows. It does however
+bring a significant performance increase when using the muParser dll from C#. I don't really have a good 
+explanation for this but my best guess is that C# has a significant overhead when muParser is using 
+callback functions implemented as C# delegates. OpenMP can spread this overhead amongst multiple 
+cores whilst it can't improve the C++ code since it is already highly optimized and the execution
+speed is finally limited by the memory bandwidth.
+
+<pre>
+<span class="code_pp">#define MUP_STRING_TYPE std::wstring</span>
+</pre>
+
+This definition determines the string type used by muParser. This can either be 
+<code>std::string</code> or <code>std::wstring</code>. This definition shouldn't be set directly. 
+It is defined to <code>std::wstring</code> if there is a preprocessor macro <code>_UNICODE</code> 
+present. (This definition is set by VS2008 accoring to the project settings.)
+
+<h2><a id="idHelp"></a>Where to ask for help</h2>
+
+If you find problems with either compilation, installation or usage
+of muParser, then you can ask in the muParser forum at:<br/>
+<ul>
+<li><a href="https://sourceforge.net/forum/forum.php?forum_id=462843">https://sourceforge.net/forum/forum.php?forum_id=462843</a></li>
+</ul>
+
+For more info about muParser, visit:
+<ul>
+<li><a href="http://sourceforge.net/projects/muparser/">http://sourceforge.net/projects/muparser/</a><br/></li>
+<li><a href="http://muparser.sourceforge.net">http://muparser.sourceforge.net</a></li>
+</ul>
+
+            <hr/>
+            <table border="0" style="width:100%">
+            <tr>
+              <td>&copy; 2005-2011 Ingo Berg</td>
+              <td style="text-align:right; padding-right: 3em;">
+                <a href="#top">^ TOP</a>
+              </td>
+            </tr>
+          </table>
+          <br/>
+          <br/>
+
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+
+    <script type="text/javascript">
+    var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+    document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+    <script type="text/javascript">
+    try 
+    {
+      var pageTracker = _gat._getTracker("UA-1019178-1");
+      pageTracker._trackPageview();
+    } 
+    catch(err) {}
+    </script>
+
+</body>
+</html>
