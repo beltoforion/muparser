@@ -1,0 +1,265 @@
+2010-04-03
+- Fixed but in Zone::clear() (thanks to dok.slade).
+
+2010-04-21
+- Fixed REP_... instructions.
+
+2010-04-19
+- Added missing instructions that uses the REP prefix (rep_movsb, ...).
+- Fixed bug in Compiler when tried to move allocated variable to different one.
+
+2010-04-14
+- Fixed FADD instruction (incorrect opcode, thanks to Kev).
+
+2010-03-27
+- Fixed misspelled MonitorMWait in Cpu features detection (issue 9, reported by arturomdn).
+
+2010-03-16
+- Fixed AsmJit::Compiler::clear() method (crashing if used) (reported by Wolfgang).
+- Fixed X64 RIP issue (reported by vanviegen).
+
+2010-02-15
+- Added shufpd instruction (Issue 6).
+
+2010-01-30
+- Fixed mulps instruction (thanks to Ben Harper).
+
+2009-12-19
+- Added possibility to specify short jump type.
+  Added pseudo-instructions:
+  - jcc_short (all jxx_short() conditions).
+  - jmp_short (jmp variant).
+  Added also related error code and test.
+
+2009-10-17
+- Implemented call(imm) and jmp(imm). Trampoline is used if relative displacement
+  isn't possible.
+
+2009-10-11
+- Added Assembler::newLabel() - similar functionality to compiler
+- Added Clear method to Zone
+- Assembler::clear() now calls _zone.clear() instead of _zone.freeAll(), this
+  means that reusing Assembler instance is bit more efficient.
+- Assembler::clear() now clears also error code.
+- Assembler::free() now clears also error code.
+
+2009-10-09
+- MemoryManager is now pure virtual, added DefaultMemoryManager that implements
+  it.
+
+2009-10-08
+- Added SETcc instructions
+- Fixed cmake project issue
+- Fixed AsmJit::Serializer visibility bug (it was declared as hidden)
+- Added error codes to AsmJit/Defs.h
+- Common defs are now in AsmJit/Defs.h, X86 specific in AsmJit/DefsX86X64.h
+- Invalid instruction now sets ERROR_INVALID_INSTRUCTION error
+- Memory allocation failure now sets ERROR_NO_HEAP_MEMORY error
+- _emitX86() virtual method now can be called with NULL arguments. No need
+  to wrap code to operand of type OP_NONE
+- __emitX86() methods now renamed to emitX86() and are public
+- SerializerCore::make() now accepts MemoryManager instance as first argument
+
+2009-09-06:
+- Added initial support for inline comments
+- Compiler now produces inline comments when allocating / spilling variables
+- Added support to name variables
+
+2009-08-23
+- Split Complier class to CompilerCore, CompilerIntrinsics and Compiler
+  (Same as Serializer to not export unneeded symbols in dlls)
+- Added missing movq instruction for reg64/xmm and xmm/reg64
+
+2009-08-19
+- Fixed relocation problems for variables that were passed as a function argument
+  (address was not relocated)
+- Added more variable types and now the x87 and xmm float/doubles are different
+  (added also float4 and double2 packed types)
+- Fixed variable allocation again
+- Fixed wrong prolog / epilog generation with naked() turned on
+
+2009-08-18
+- Fixed incorrect memory access count generated for variables when using .m()
+- Fixed stack arguments in 64-bit mode (X64W and X64U calling conventions)
+
+2009-08-15
+- Fixed issue - Operand size in compiler, reported by Frank
+
+2009-06-02
+- Fixed generating incorrect REX prefix (0x42), reported by Jaroslav Smid
+
+2009-04-10
+- Released 0.8
+
+2009-04-09
+- Fixed pinsrb/pinsrd/pinsrq/pinsrw instructions
+
+2009-04-06
+- Added methods to get count of free gp/mm/xmm registers to Function and Compiler
+
+2009-04-02
+- Changed header/source file names
+- Modified cmake script and build scripts (preparing for final 0.8)
+
+2009-03-31
+- Fixed assegnment operators in Int32Ref, Int64Ref, MMRef and XMMRef
+
+2009-03-30
+- Released 0.8-rc2
+
+2009-03-29
+- Fixed 'Setting a preferred register leads to excessive load/store' bug
+- Fixed incorrect target display in Logger
+
+2009-03-28
+- Fixed logging [REG - DISP] form
+- Fixed jmpAndRestore()
+- Fixed issue #4 - Serializer::movss()
+- Fixed issue #5 - Serializer::subss()
+
+2009-03-27
+- Enchanced register allocator. It now remembers everything that is needed to
+  successfully save / restore state. This is step to have complete saving /
+  restoring implementation with jumps support.
+- Operand structure was cleaned up. Now operand is bigger, but structure data
+  for individual operand types are more organized. No more unused1... values,
+  design is now clean.
+- Added experimental support for jmp() and jcc() instructions to restore state
+- Fixed setState(), restoreState(), saveState() methods
+
+2009-03-26
+- Register allocator now checks for all nonpreserved registers first. This can
+  save some push/pop instructions in prolog/epilog if there are allocated only
+  few registers (this is probably most useful for x64 platforms).
+- Register allocator is now able to realloc variable to different one.
+- Extended Function::emit() to log more informations about generated function.
+- Added teststate.cpp to see if State saving and restoring works
+
+2009-03-25
+- Released 0.8-rc1
+- Fixed fxch instruction
+- Updated README - build instructions and introduction
+- Refactorized directory structure
+- Build shared library by default
+- Save last register used by variable to alloc it back when needed, this will
+  reduce overhead when switching states.
+- Removed operand_cast<>, use reinterpret_cast<> instead!
+- Added statistics to Function and Variable classes.
+- Fixed register allocator to use registerAccessCount
+- Fixed SysInt Variable in 64-bit mode
+
+2009-03-23
+- Fixed 64 bit jump table problems and 64 bit addressing again
+- Fixed fnstsw and fstsw instructions
+- Fixed ptr(Label*, displacement) operands to accept and use displacement
+- Fixed absolute addressing with displacement
+- Log illegal instructions
+
+2009-03-22:
+- Fixed x64 addressing
+- Added more embeddable types into Serializer (dfloat, ddouble)
+- Updated JumpTable and added Compiler::jumpToTable() method to invoking jump
+
+2009-03-20:
+- Added possibility to set code generation flags in Serializer:
+  Assembler:
+   - OptimizeAlign - Use processor best way to align instruction stream
+   - EmitConditionHints - Emit condition hints HINT_TAKEN, HINT_NOT_TAKEN
+   - AlwaysEmitRex - Force rex prefix (for x64)
+  Compiler:
+   - OptimizePrologEpilog - Optimize prolog/epilog
+- Added sfence() cleanup to Function
+- Added JumpTable and Compiler::newJumpTable
+- Removed Relocable, same effect is to use Compiler::newImmediate()
+
+2009-03-19:
+- Fixed problems with new memory allocator
+- Enchanced mov(reg, imm) instruction in 64 bit mode to use only 4 byte immediate
+  if it's possible
+- Changed Compiler::build() to Compiler::serialize()
+
+2009-03-18:
+- Added segment override prefixes
+- Added absolute addressing for x86 (32 bit mode)
+- Added memory operands to Labels with displacements.
+- Added absolute jumps to Compiler - jmp(), call() instructions
+- Added MemoryManager
+- Added Lock (used by MemoryManager)
+- Updated logger
+- Removed jmp_ptr
+- Added embedding data in code possibility + basic methods
+  (db, dw, dd, dq, dptr, ...)
+- Added make() to Serializer, allows Assembler and Compiler to use same
+  method to make functions.
+- Renamed AsmJit::VM to AsmJit::VirtualMemory
+- Updated examples to use new MemoryManager and Serializer::make() methods
+- Added memory test application
+
+2009-03-09
+- Released 0.6
+
+2009-03-08
+- Released 0.6-rc1
+- Implemented preferred registers allocation
+- Documentation updates
+
+2009-03-04
+- Improved Compiler
+- Fixed alloc/spill of MM and XMM registers
+- Added better prolog / epilog code
+- Added support for custom spill / restore functions (to bypass default 
+  ones - this is mainly for MMX/SSE programming)
+- Added first implementation of State (state of current variables that can
+  be saved or restored)
+- Fixed wrong sfence() data in instruction map
+
+2009-02-26:
+- Released 0.6-alpha
+- Fixed many bugs related to assembler and compiler parts. Tested MMX and 
+  SSE2 code generation.
+- Finished basic parts of compiler and register allocation, but there are
+  still space for improvements
+
+2009-02-18:
+- Added 3dNow! and enchanced 3dNow! instructions
+
+2009-02-17:
+- Fixed few bugs
+- added few remaining instructions in basic x86 instruction set
+
+2009-02-15
+- Complete rewrite
+- Added Serializer
+- Added typesafe operands, introduced new operand Relocable
+- Assembler uses Serializer to serialize instructions and only overrides 
+  _emitX86() method to emit binary code.
+
+2009-02-10
+- Released 0.5.1 bugfix release
+- Fixed movdqa(), movdqu() bugs
+- Added new register constructors (they are used by Compiler)
+
+2009-02-08
+- Released 0.5 (should be last stable release before Compiler support)
+- Fixed few GCC issues, fixed one broken opcode
+- Code refactorization, X86 to Assembler, refactorized header files
+
+2009-02-08
+- Relocations, toOffset(), released 0.4
+
+2009-02-03
+- Cleanup, released 0.3.2
+
+2009-02-02
+- Fixed issue #3, mmx/sse instructions with immediates and movd().
+
+2009-01-26:
+- Finished X64 support
+
+2009-01-23:
+- Fixed wrong asserts in some instructions
+- Added some new instructions
+- Added some examples to the documentataion
+
+2009-01-22:
+- Fixed wrong asserts in some instructions

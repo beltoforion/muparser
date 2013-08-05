@@ -1,0 +1,114 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="src">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="AsmJit-0.8.6\AsmJit\AsmJit.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="AsmJit-0.8.6\AsmJit\Assembler.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="AsmJit-0.8.6\AsmJit\AssemblerX86X64.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="AsmJit-0.8.6\AsmJit\Build.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="AsmJit-0.8.6\AsmJit\Compiler.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="AsmJit-0.8.6\AsmJit\CompilerX86X64.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="AsmJit-0.8.6\AsmJit\Config.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="AsmJit-0.8.6\AsmJit\CpuInfo.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="AsmJit-0.8.6\AsmJit\Defs.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="AsmJit-0.8.6\AsmJit\DefsX86X64.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="AsmJit-0.8.6\AsmJit\Lock.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="AsmJit-0.8.6\AsmJit\Logger.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="AsmJit-0.8.6\AsmJit\LoggerX86X64.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="AsmJit-0.8.6\AsmJit\MemoryManager.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="AsmJit-0.8.6\AsmJit\Serializer.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="AsmJit-0.8.6\AsmJit\SerializerX86X64.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="AsmJit-0.8.6\AsmJit\Util.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="AsmJit-0.8.6\AsmJit\VirtualMemory.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="AsmJit-0.8.6\AsmJit\WarningsPop.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="AsmJit-0.8.6\AsmJit\WarningsPush.h">
+      <Filter>src</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="AsmJit-0.8.6\AsmJit\AssemblerX86X64.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="AsmJit-0.8.6\AsmJit\CompilerX86X64.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="AsmJit-0.8.6\AsmJit\CpuInfo.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="AsmJit-0.8.6\AsmJit\Defs.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="AsmJit-0.8.6\AsmJit\Lock.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="AsmJit-0.8.6\AsmJit\Logger.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="AsmJit-0.8.6\AsmJit\LoggerX86X64.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="AsmJit-0.8.6\AsmJit\LoggerX86X64Dump.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="AsmJit-0.8.6\AsmJit\MemoryManager.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="AsmJit-0.8.6\AsmJit\SerializerX86X64.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="AsmJit-0.8.6\AsmJit\Util.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="AsmJit-0.8.6\AsmJit\VirtualMemory.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="AsmJit-0.8.6\AsmJit\LoggerX86X64Dump.py">
+      <Filter>src</Filter>
+    </None>
+  </ItemGroup>
+</Project>

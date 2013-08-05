@@ -1,0 +1,579 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+  <link rel="stylesheet" type="text/css" href="style/formate.css"/>
+  <meta name="author" content="Ingo Berg"/>
+
+  <!-- $META -->
+  <meta name="keywords" content="math parser, math expression parser, muparser, muparserx, muparser.net, .net, c++, lib, dll, donation, function parser"/>
+  <meta name="description" content="muParser - a fast math parser library"/>
+  <title>muParser - a fast math parser library</title>
+
+  <script src="script/functions.js" language="javascript" type="text/javascript"></script>
+  <script type="text/javascript">
+  imgHome=new Image();
+  imgHome.src="images/home.png";
+  imgHomeDark=new Image();
+  imgHomeDark.src="images/home_dark.png";
+
+  imgApi=new Image();
+  imgApi.src="images/api.png"; 
+  imgApiDark=new Image();
+  imgApiDark.src="images/api_dark.png";
+
+  function ChangeButtonImage(num,obj)
+  {
+    window.document.images[num].src=obj.src;
+  }
+  </script>
+</head>
+
+<body>
+    <div class="gradient" id="top">
+      <div class="header">
+        muParser - a fast math parser library
+        <br/>
+        <div style="font-size:10pt;">Version 2.1.0</div>
+      </div>
+
+      <div style="position:absolute; width:250px; height:100px; top:20px; text-align:center">
+        <a href="http://sourceforge.net/projects/muparser">
+          <img src="http://sflogo.sourceforge.net/sflogo.php?group_id=137191&amp;type=15" 
+               width="150" 
+               height="40" 
+               border="0"
+               alt="Get muParser - A fast math parser library at SourceForge.net. Fast, secure and Free Open Source software downloads" />
+        </a>
+      </div>	
+
+      <div style="position:absolute; width:100px; right:110px; text-align:center; line-height: 1em;">
+        <a class="white" 
+           href="http://beltoforion.de"  
+           onmouseover="ChangeButtonImage(1,imgHome)" 
+           onmouseout="ChangeButtonImage(1,imgHomeDark)">
+          <img src="images/home_dark.png" border="0" height="40" alt="My home page"/>
+          <br/>
+          <span class="tiny_text dark_text">My home<br/>page</span>
+        </a>
+     </div>
+
+     <div  style="position:absolute; width:100px; right:10px; text-align:center; line-height: 1em;">
+       <a class="white" 
+          href="http://muparser.sourceforge.net/classdocu/index.html"
+          onmouseover="ChangeButtonImage(2,imgApi)" 
+          onmouseout="ChangeButtonImage(2,imgApiDark)">
+         <img src="images/api_dark.png" border="0" alt="class documentation" height="40"/>
+         <br/>
+         <span class="tiny_text dark_text">muParser<br/>API-doc</span>
+       </a>
+    </div>
+  </div> <!-- class="gradient" -->
+
+    <!-- Tabelle mit Hauptinhalt der Seite -->
+    <table id="MainTable" border="0" cellpadding="5" cellspacing="0" style="width:100%; height:100%;">
+      <tbody>
+        <tr>
+          <td style="vertical-align: top; text-align: center" width="230">
+            <h3 class="navi_heading navi_info">Introduction</h3>
+            <div class="sidebarlink">
+                <a href="index.html">About the parser</a><br/>
+                <a href="mup_intro.html#idRelNote">Release notes</a><br/>
+                <a href="http://sourceforge.net/news/?group_id=137191">News</a><br/>
+                <a href="mup_links.html">Software using muParser</a><br/>
+                <a href="mup_licence.html">Licence</a><br/>
+            </div>
+
+            <h3 class="navi_heading navi_blocks">Features</h3>
+            <div class="sidebarlink">
+              <a href="mup_features.html">Features</a><br/>
+              <a href="mup_features.html#idFeatureOverview">Overview</a><br/>
+              <a href="mup_features.html#idDef2">Built in functions</a><br/>
+              <a href="mup_features.html#idDef3">Built in binary operators</a><br/>
+              <a href="mup_features.html#idDef4">Other operators</a><br/>
+            </div>
+
+            <h3 class="navi_heading navi_build">Build instructions</h3>
+            <div class="sidebarlink">
+              <a href="mup_usage.html#idInstWin">Building on Win32</a><br/>
+              <a href="mup_usage.html#idInstLinux">Building on BSD/Linux</a><br/>
+              <a href="mup_usage.html#idInstMisc">Misc build instructions</a><br/>
+              <a href="mup_usage.html#idInstInc">Including the files</a><br/>
+              <a href="mup_usage.html#idCompilerSwitches">Compiler switches</a><br/>
+              <a href="mup_usage.html#idHelp">Where to ask for help</a><br/>
+            </div>
+
+            <h3 class="navi_heading navi_list">Math parser interface</h3>
+            <div class="sidebarlink">
+              <a href="mup_interface.html#idInit">Parser (de)initialization</a><br/>
+              <a href="mup_interface.html#idEval">Evaluating an expression</a><br/>
+              &nbsp;&nbsp;&nbsp;<a href="mup_interface.html#idEvalSimple">Single return value</a><br/>
+              &nbsp;&nbsp;&nbsp;<a href="mup_interface.html#idEvalMulti">Multiple return values</a><br/>
+              &nbsp;&nbsp;&nbsp;<a href="mup_interface.html#idEvalBulk">Bulk mode</a><br/>
+
+              <a href="mup_interface.html#idSetExpr">Setting the expression</a><br/>
+              <a href="mup_interface.html#idDefCharset">Defining identifier charsets</a><br/>
+              <a href="mup_interface.html#idDefVar">Defining parser variables</a><br/>
+              <a href="mup_interface.html#idDefVarEx">Explicit variable definition</a><br/>
+              <a href="mup_interface.html#idDefVarIm">Implicit variable definition</a><br/>
+              <a href="mup_interface.html#idDefConst">Defining constants</a><br/>
+
+              <a href="mup_interface_oprt.html#idAddFunOp">Adding functionand operators</a><br/>
+              &nbsp;&nbsp;&nbsp;<a href="mup_interface_oprt.html#idDefFun">Defining functions</a><br/>
+              &nbsp;&nbsp;&nbsp;<a href="mup_interface_oprt.html#idDefOprt">Defining operators</a><br/>
+              &nbsp;&nbsp;&nbsp;<a href="mup_interface_oprt.html#idUnOp">Unary operators</a><br/>
+              &nbsp;&nbsp;&nbsp;<a href="mup_interface_oprt.html#idBinOp">Binary operators</a><br/>
+
+              <a href="mup_interface.html#idQueryVar">Querying variables</a><br/>
+              <a href="mup_interface.html#idQueryConst">Querying constants</a><br/>
+              <a href="mup_interface.html#idDefConst2">Value recognition callbacks</a><br/>
+              <a href="mup_interface.html#idDefConst2">Removing variables/constants</a><br/>
+              <a href="mup_locale.html#idLoc">Localization</a><br/>
+              <a href="mup_interface.html#idErrors">Error handling</a><br/>
+              <a href="mup_version.html#idExample">Example code</a><br/>
+            </div>
+
+            <h3 class="navi_heading navi_question">Current version</h3>
+            <div class="sidebarlink">
+              <a href="mup_version.html#idBench">Benchmarks</a><br/>
+            </div>
+
+            <br/>
+            <div align="center">
+              <a href="http://www.opensource.org/"><img style="border:0;" src="images/osi.jpg" alt="Open source initiative logo"/></a>
+              <br/>
+              <br/>
+              <a href="http://validator.w3.org/check?uri=referer">
+                <img src="http://www.w3.org/Icons/valid-xhtml10-blue" alt="Valid XHTML 1.0 Transitional" style="border:0;width:88px;height:31px"/>
+              </a>
+              <br/>
+              <br/>
+	      <a href="http://jigsaw.w3.org/css-validator/check/referer">
+                <img style="border:0;width:88px;height:31px" src="http://jigsaw.w3.org/css-validator/images/vcss-blue" alt="CSS ist valide!" />
+	      </a>
+
+            </div>
+          </td>
+
+          <td style="height: 100%; padding: 1em; vertical-align: top;">
+            <!-- 
+              This section contains the real page content. 
+              pages are created automatically by using the script "build_page.sh"
+              which combines section templated with the navigation bar.
+
+	      This creates webpages that do not rely on php3 or Javascript for 
+              serverside or client side html inclusion.
+            //-->
+            <!-- $PLACEHOLDER -->
+<script type="text/javascript">
+  imgParserNET=new Image();
+  imgParserNET.src="images/muparsernet.png";
+  imgParserNETDark=new Image();
+  imgParserNETDark.src="images/muparsernet_.png";
+
+  imgParserX=new Image();
+  imgParserX.src="images/muparserx.png"; 
+  imgParserXDark=new Image();
+  imgParserXDark.src="images/muparserx_.png";
+
+  imgParserSSE=new Image();
+  imgParserSSE.src="images/muparsersse.png"; 
+  imgParserSSEDark=new Image();
+  imgParserSSEDark.src="images/muparsersse_.png";
+
+  imgDownload=new Image();
+  imgDownload.src="images/download_muparser.png"; 
+  imgDownloadDark=new Image();
+  imgDownloadDark.src="images/download_muparser_.png";
+</script>
+
+<h2>About the parser</h2> 
+
+<p>
+Many applications require the parsing of mathematical expressions.
+The main objective of this library is to provide a fast and easy way of
+doing this. muParser is an extensible high performance
+math expression parser library written in <a href="http://www.cplusplus.com/">C++</a>. It works 
+by transforming a mathematical expression into bytecode and precalculating constant 
+parts of the expression.
+</p>
+
+<div style="border: 1px solid #000000; width:420px; height:440px; text-align:left; float:left; margin:10px; background-color: #ffffff;">
+  
+  <img src="images/related.png" alt="math expression parser - related links" border="0" width="420"/>
+  <a href="http://www.codeproject.com/KB/recipes/muParser.aspx">
+    <img src="images/muparsernet_.png" 
+         alt=".NET math parser" 
+         border="0" 
+         width="150" 
+         style="float:left; margin-right:10px; margin-left:10px;"
+         onmouseover="ChangeButtonImage(7,imgParserNET)" 
+         onmouseout="ChangeButtonImage(7,imgParserNETDark)"/>
+    <br/>
+    <br/><strong>muParser C# wrapper</strong>
+    <br/>
+    <span class="tiny_text">a math parser for .NET</span>
+  </a>
+
+  <br clear="all"/><br/>
+  <a href="http://code.google.com/p/muparserx/">
+    <img src="images/muparserx_.png" 
+         alt="math expression parser" 
+         border="0" 
+         width="150" 
+         style="float:left; margin-right:10px; margin-left:10px;"
+         onmouseover="ChangeButtonImage(8,imgParserX)" 
+         onmouseout="ChangeButtonImage(8,imgParserXDark)"/>
+    <br/><strong>muParserX</strong>
+    <br/>
+    <span class="tiny_text">a math parser with support for arrays, strings and complex numbers.</span>
+
+  <br clear="all"/><br/>
+  <a href="http://beltoforion.de/muparsersse/math_expression_compiler_en.html">
+    <img src="images/muparsersse_.png" 
+         alt="math expression parser" 
+         border="0" 
+         width="150" 
+         style="float:left; margin-right:10px; margin-left:10px;"
+         onmouseover="ChangeButtonImage(9,imgParserSSE)" 
+         onmouseout="ChangeButtonImage(9,imgParserSSEDark)"/>
+    <br/><strong>muParserSSE</strong>
+    <br/>
+    <span class="tiny_text">a muParser version with a just in time compiler based on asmjit</span>
+  </a>
+</div>
+The library was designed with portability in mind and should compile on every
+standard compliant C++ compiler. Wrapper for <strong>C</strong> and <strong>C#</strong> 
+exist. The parser archive contains ready to use project and makefiles files for a variety of 
+platforms. The code runs on both 32 bit and 
+64 bit architechtures and has been tested using MS VC++ V8.0 
+and GCC V4.4.1. Code samples are provided in order to help you understand its 
+usage. The library is open source and distributed under 
+the <a href="http://www.opensource.org/licenses/mit-license.php">MIT license</a>.
+
+<div style="text-align:center;">
+<a href="http://sourceforge.net/project/showfiles.php?group_id=137191">
+  <img src="images/download_muparser_.png" 
+       border="0" 
+       alt="muParser download"
+       onmouseover="ChangeButtonImage(10,imgDownload)" 
+       onmouseout="ChangeButtonImage(10,imgDownloadDark)"/>
+</a>
+</div>
+
+<p>
+Before I go on, I'd like to thank <a href="http://sourceforge.net">SourceForge</a> for hosting this project. This
+pages would not exist without the webspace provided by them and of course I'd like 
+to thank <a href="http://www.codeproject.com">CodeProject</a> for hosting the original 
+<a href="http://www.codeproject.com/cpp/FastMathParser.asp" target="_blank">math parser</a> 
+article.
+</p>
+
+
+<h2>Support this project</h2>
+muParser is free software and anyone can use it free of charge for commercial and noncommercial purposes. If you wish you can support this project by making a small donation:
+<br/>
+<br/>
+<div style="text-align:center;">
+  <a href="http://sourceforge.net/donate/index.php?group_id=137191">
+    <img src="http://images.sourceforge.net/images/project-support.jpg" 
+         border="0" 
+         alt="Support This Project"/> 
+  </a>
+</div>
+<br/>
+A project like muParser requires permanent maintanence in order to adopt to new platforms, new compiler version and for fixing bugs. So if you are using the library and find it useful i would like to encourage you to make a donation in order to help keeping the project up to date. I can officially guarantee that you make my day by donating even a small amount of money. In a way this is a "Wow the people actually really appreciate what i'm doing" kind of thing and that's whats driving me and ultimately this is what is keeping this project alive.
+
+<!-- 
+//
+//
+//  
+//   History
+//
+//
+//
+-->
+
+<h2><a name="idRelNote"></a>Release Notes</h2>
+<h4>Rev 2.1.0: 19.11.2011</h4>
+This is a service release incorporating minor bugfixes.
+<ul>
+  <li><b>New feature</b>
+      <ul>
+        <li>Function atan2 added.</li> 
+      </ul>
+  </li>
+
+  <li><b>Bugfixes</b>
+      <ul>
+        <li>Issue 3438380:  Changed behaviour of tellg with GCC >4.6 led to failures  
+            in value detection callbacks.</li>
+        <li>Issue 3438715:  only "double" is a valid MUP_BASETYPE 
+                     MUP_BASETYPE can now be any of:
+                       float, 
+                       double, 
+                       long double, 
+                       short, 
+                       unsigned short, 
+                       unsigned int, 
+                       long,
+                       unsigned long. 
+                     Previousely only floating point types were allowed. 
+                     Using "int" is still not allowed!</li>
+        <li>Custom value recognotion callbacks added with AddValIdent had lower
+            priority than built in ones. Consequently hex value recognition
+            using IsHexVal would fail since the built in IsVal would read the "0"
+            from the hex prefix "0x". </li>
+      </ul>
+  </li>
+</ul>
+
+<hr/>
+<h4>Rev 2.0.0: 04.09.2011</h4>
+This release introduces a new version numbering scheme in order to make future changes in the ABI 
+apparent to users of the library. The number is now based on the SONAME property as used by GNU/Linux. 
+<ul>
+  <li><b>Changes</b>
+    <ul>
+      <li>Beginning with this version all version numbers will be SONAME compliant.</li> 
+      <li>Project files for MSVC2010 added.</li>
+      <li>Bytecode parsing engine cleaned up and rewritten.</li>
+      <li>Retrieving all results of expressions made up of comma separate subexpressions is now possible with a new Eval overload.</li>
+      <li>Callback functions with fixed number of arguments can now have up to 10 Parameters (previous limit was 5).</li>
+    </ul>
+  </li>
+
+  <li><b>New features</b>
+    <ul>
+      <li>ternary if-then-else operator added (C++ like; "(...) ? ... : ..." )</li> 
+      <li>new intrinsic binary operators: "&&", "||" (logical and, or)</li>
+      <li>A new bulkmode allows submitting large arrays as variables to compute large 
+     numbers of expressions with a single call. This can drastically improve 
+     parsing performance when interfacing the library from managed languages like 
+     C#. (It doesn't bring any performance benefit for C++ users though...)</li>
+    </ul>
+  </li>
+
+  <li><b>Removed features</b>
+    <ul>
+      <li>Project files for MSVC2003 removed</li> 
+      <li>intrinsic "and", "or" and "xor" operators have been removed. I'd like to let 
+          users the freedom of defining them on their own versions (either as logical or bitwise 
+          operators).</li>
+      <li>Implementation for complex numbers removed. This was merely a hack. If you 
+          need complex numbers try muParserX which provides native support for them.
+          (see: <a href="http://code.google.com/p/muparserx/">muParserX</a>)</li>
+    </ul>
+  </li>
+
+  <li><b>Bugfixes</b>
+    <ul>
+      <li>User defined operators could collide with built in operators that entirely 
+          contained their identifier. i.e. user defined "&" would not work with the built 
+          in "&&" operator since the user defined operator was detected with a higher 
+          priority resulting in a syntax error.</li>
+      <li>Detection of unknown variables did not work properly in case a postfix operator
+          was defined which was part of the undefined variable.
+          i.e. If a postfix operator "m" was defined expressions like "multi*1.0" did
+          not detect "multi" as an undefined variable.
+          (Reference:  <a href="http://sourceforge.net/tracker/index.php?func=detail&aid=3343891&group_id=137191&atid=737979">see bug tracker</a>)</li>
+      <li>Postfix operators sharing the first few characters were causing bogus parsing exception.
+          (Reference: <a href="https://sourceforge.net/tracker/?func=detail&aid=3358571&group_id=137191&atid=737979">see bug tracker</a>)</li>
+    </ul>
+  </li>
+
+<hr/>
+<h4>Rev 1.34: 04.09.2010</h4>
+This is the second service release of 2010.  
+<ul>
+  <li><b>Changes</b>
+    <ul>
+      <li>The prefix needed for parsing hex values is now "0x" and no longer "$".</li> 
+      <li>AddValIdent reintroduced into the DLL interface.</li>
+    </ul>
+  </li>
+
+  <li><b>New features</b>
+    <ul>
+      <li>The associativity of binary operators can now be changed. The pow operator is now right associative. 
+     (This is what mathematica is using)</li>
+      <li>Seperator can now be used outside of functions. This allows compund expressions like:
+     "a=10,b=20,c=a*b" The last "argument" will be taken as the return value</li>
+    </ul>
+  </li>
+
+  <li><b>Bugfixes</b>
+    <ul>
+      <li>The copy constructor did not copy binary operator definitions. Those were lost in the copied parser 
+          instance.</li>
+      <li>Mixing special characters and alphabetic characters in binary operator names led to inconsistent parsing
+          behaviour when parsing expressions like "a ++ b" and "a++b" when "++" is defined as a binary operator. 
+          Binary operators must now consist entirely of special characters or of alphabetic ones.
+          (<a href="https://sourceforge.net/projects/muparser/forums/forum/462843/topic/3696881/index/page/1">           original bug report</a>)</li>
+      <li>User defined operators were not exactly handled like built in operators. This led to inconsistencies 
+          in expression evaluation when using them. The results differed due to slightly different precedence 
+          rules.</li>
+      <li>Using empty string arguments ("") would cause a crash of muParser</li>
+    </ul>
+  </li>
+</ul>
+
+<hr/>
+<h4>Rev 1.32: 30.01.2010</h4>
+This is a service release to fix problems with modern compilers.
+<ul>
+  <li><b>Changes</b>
+    <ul>
+      <li>Added a function for retrieving the Version number of muparser.</li>
+      <li>example3 renamed to example2</li>
+      <li>Project files for bcb and msvc6 removed (include the source directly into your projects)</li>
+      <li>Project files for msvc2003, msvc2005 and msvc2008 added</li>
+    </ul>
+  </li>
+
+  <li><b>Bugfixes</b>
+    <ul>
+      <li>Deprecated feature warnings removed for gcc</li>
+      <li>example1 changed to get rid of memory leaks. Added code for memory leak detection (VisualStudio only)</li>
+      <li>Changes to allow compilation with msvc10 beta2</li>
+      <li>gcc versions >4.0 were not able to run with a customized locale (resulted in std::bad_cast exception)</li>
+    </ul>
+  </li>
+</ul>
+<hr/>
+<h4>Rev 1.30: 09.06.2008</h4>
+This is a service release with minor extensions and bugfixes.
+
+<ul>
+  <li><b>Changes</b>
+    <ul>
+      <li>Epsilon of the numerical differentiation algorithm changed to allow greater accuracy.</li>
+    </ul>
+  </li>
+
+  <li><b>New features</b>
+    <ul>
+      <li>Setting thousands separator and decimal separator is now possible</li>
+    </ul>
+  </li>
+
+  <li><b>Bugfixes</b>
+    <ul>
+      <li>The dll interface did not provide a callback for functions without any arguments.</li>
+    </ul>
+  </li>
+</ul>
+<hr/>
+<h4>Rev 1.28: 02.07.2007</h4>
+
+<ul>
+  <li><b>Library changes</b>
+    <ul>
+      <li>Interface for the dynamic library changed and extended to create an interface using pure C functions only.</li>
+      <li>mupInit() removed</li>
+    </ul>
+  </li>
+
+  <li><b>New features</b>
+    <ul>
+      <li>Functions without parameters added</li>
+    </ul>
+  </li>
+
+  <li><b>Build system</b>
+    <ul>
+      <li>MSVC7 Project files removed in favor of MSVC8.</li>
+    </ul>
+  </li>
+
+  <li><b>Bugfixes</b>
+    <ul>
+      <li>The dynamic library did not build on other systems than linux due to a misplaced
+           preprocessor definition. This is fixed now.</li>
+    </ul>
+  </li>
+
+</ul>
+
+<hr/>
+<h4>Rev 1.2: 14.04.2005</h4>
+First of all the interface has changed so this version is not backwards compatible. 
+After receiving a couple of questions about it, this version features support for user defined binary operators. Consequently the built in operators can now be turned off, thus you can deactivate them and write complete customized parser subclasses that only contain the functionality you want. Other new feature is the introduction of callback functions taking string arguments, implicit generation of 
+variables and the Assignement operator. 
+
+<ul>
+  <li> <b>Functionality</b>
+  <ul>
+    <li><a href="mup_features.html#idDef3">New built in operator</a>: <code>xor</code>; Logical xor.</li>
+    <li>New built in operator: Assignement operator; Defining variables in terms of other 			       variables/constants</li> 
+    <li>New feature: <a href="mup_interface.html#idDefFun">Strings as arguments for callback functions</a></li>
+    <li>New feature: <a href="mup_interface.html#idDefOprt">User defined binary operators</a></li>
+    <li>New feature: <code>ParserInt</code> a class with a sample implementation for
+                     integer numbers.</li> 
+    <li>New feature: <a href="mup_interface.html#idDefConst2">Callbacks to value regognition functions.</a></li> 
+
+    <li>Removed:  all predefined postfix operators have been removed.</li> 
+    <li>New project file:  Now comes with a ready to use windows DLL.</li> 
+    <li>New project file:  Makefile for cygwin now included.</li> 
+    <li>New example:  Example3 shows usage of the DLL.</li> 
+  </ul>
+  </li>
+
+  <li> <b>Interface changes</b>
+  <ul>
+    <li><a href="mup_interface.html#idBinOp">New member function</a>: <code>DefineOprt</code> For 
+                                                    adding user defined binary operators.</li>
+    <li>New member function: <code>EnableBuiltInOprt(bool)</code>  Enables/Disables <a href="mup_features.html#idDef3">
+                             built in binary operators</a>.</li>
+    <li>New member function: <code>AddValIdent(...)</code> to add callbacks for custom value recognition functions.</li>
+    <li>Removed: <code>SetVar()</code>, <code>SetConst()</code>.</li> 
+    <li>Renamed: Most interface functions have been renamed</li>
+    <li>Changed:  The <a href="mup_interface.html#idDefFun">type for multiargument callbacks</a> <code>multfun_type</code> has changed. 
+                  It no longer takes a std::vector as input.</li>
+  </ul>
+  </li>
+  
+  <li> <b>Internal changes</b>
+  <ul>
+     <li>new class <i>muParserTokenReader.h</i> encapsulates the token identification and token assignement.</li>
+     <li>Internal handling of function callbacks unified as a result the performance of the bytecode evaluation 
+         increased.</li>
+  </ul>
+  </li>
+</ul>
+
+
+            <hr/>
+            <table border="0" style="width:100%">
+            <tr>
+              <td>&copy; 2005-2011 Ingo Berg</td>
+              <td style="text-align:right; padding-right: 3em;">
+                <a href="#top">^ TOP</a>
+              </td>
+            </tr>
+          </table>
+          <br/>
+          <br/>
+
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+
+    <script type="text/javascript">
+    var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+    document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+    <script type="text/javascript">
+    try 
+    {
+      var pageTracker = _gat._getTracker("UA-1019178-1");
+      pageTracker._trackPageview();
+    } 
+    catch(err) {}
+    </script>
+
+</body>
+</html>
