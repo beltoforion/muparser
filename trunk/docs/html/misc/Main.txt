@@ -1,0 +1,44 @@
+/** \mainpage
+Welcome to the muParser API documentation. These pages contain the muParser API documentation.
+
+<table border="0" width="100%">
+<tr>
+
+<td>
+<img src="../images/mathparser_small.jpg" width="200"/>
+</td>
+
+<td>
+<b>More muParser resources</b>
+<ul>
+<li><p>The <a href="http://muparser.sourceforge.net/">muParser homepage</a>
+<br><small>More dokumentation; benchmarks ...</small>
+</li>
+<li><p>The official <a href="http://sourceforge.net/project/showfiles.php?group_id=137191">Project page</a> at Sourceforge<br>
+<small>Downloadlinks for the current and older versions.</small>
+</li>
+<li><p>The <a href="http://www.codeproject.com/KB/recipes/FastMathParser.aspx">Project page</a> at CodeProject<br>
+<small>This is how it started, provides an alternate package for VS2005.</small>
+</li>
+<li><p>A CodeProject article featuring a <a href="http://www.codeproject.com/KB/recipes/muParser.aspx">C# wrapper for muParser</a>
+<br><small>Uses muParser with C# and the .NET framework.</small>
+</li>
+</ul>
+<p>
+
+<b>Things i do when i'm not working on muParser.</b>
+<ul>
+<li>
+<p><a href="http://www.codeproject.com/KB/openGL/Wator.aspx">Wator Screensaver</a> (for Windows; requires OpenGL)
+<br><small>A simulation of predator prey dynamic  C# wrapper for muParser</small>
+</li>
+<li><p><a href="http://www.codeproject.com/KB/recipes/MagneticPendulum.aspx">The magnetic pendulum fractal</a> (for Windows; requires OpenGL)
+<br><small>Chaotic motion of a pendulum over three magnets</small>
+</li>
+</ul>
+</td>
+
+
+</tr>
+</table>
+*/
