@@ -754,7 +754,9 @@ namespace mu
       int iStart = m_iPos;
       if ( (*item)(m_strFormula.c_str() + m_iPos, &m_iPos, &fVal)==1 )
       {
-        strTok.assign(m_strFormula.c_str(), iStart, m_iPos);
+        // 2013-11-27 Issue 2:  https://code.google.com/p/muparser/issues/detail?id=2
+        strTok.assign(m_strFormula.c_str(), iStart, m_iPos-iStart);
+
         if (m_iSynFlags & noVAL)
           Error(ecUNEXPECTED_VAL, m_iPos - (int)strTok.length(), strTok);
 
