@@ -28,6 +28,8 @@
 #include <vector>
 
 #include "muParserDef.h"
+#include "muParserStack.h"
+#include "muParserMath.h"
 
 
 MUP_NAMESPACE_START
@@ -209,7 +211,7 @@ MUP_NAMESPACE_START
       }
 
       //-------------------------------------------------------------------------------------------
-      void Finalize(TValue *pStack)
+      void Finalize(TValue * /*pStack*/)
       {
         Substitute();
         
@@ -358,15 +360,15 @@ MUP_NAMESPACE_START
                
                 if (m_vRPN[i].Val.ptr==&ParserBase<TValue, TString>::g_NullValue)
                 {
-	                _OUT << _SL("[ADDR: &ParserBase::g_NullValue]"); 
+                  _OUT << _SL("[ADDR: &ParserBase::g_NullValue]");
                 }
                 else
                 {
-	                _OUT << _SL("[ADDR: 0x") << std::hex << m_vRPN[i].Val.ptr << _SL("]"); 
+                  _OUT << _SL("[ADDR: 0x") << std::hex << m_vRPN[i].Val.ptr << _SL("]");
                   _OUT << _SL("[IDENT:")   << m_vRPN[i].Ident << _SL("]"); 
                 }
 
-	              _OUT << _SL("[MUL: ") << m_vRPN[i].Val.mul   << _SL("]"); 
+                _OUT << _SL("[MUL: ") << m_vRPN[i].Val.mul   << _SL("]");
                 _OUT << _SL("[ADD:")  << m_vRPN[i].Val.fixed << _SL("]\n");
 
                 if (m_vRPN[i].Val.ptr2!=nullptr)
@@ -375,15 +377,15 @@ MUP_NAMESPACE_START
 
                   if (m_vRPN[i].Val.ptr2==&ParserBase<TValue, TString>::g_NullValue)
                   {
-	                  _OUT << _SL("[ADDR:  &ParserBase::g_NullValue]"); 
+                    _OUT << _SL("[ADDR:  &ParserBase::g_NullValue]");
                   }
                   else
                   {
-	                  _OUT << _SL("[ADDR: 0x") << std::hex << m_vRPN[i].Val.ptr2 << _SL("]"); 
+                    _OUT << _SL("[ADDR: 0x") << std::hex << m_vRPN[i].Val.ptr2 << _SL("]");
                     _OUT << _SL("[IDENT:")   << m_vRPN[i].Ident << _SL("]"); 
                   }
 
-	                _OUT << _SL("[MUL: ") << m_vRPN[i].Val.mul2   << _SL("]"); 
+                  _OUT << _SL("[MUL: ") << m_vRPN[i].Val.mul2   << _SL("]");
                   _OUT << _SL("[ADD:")  << m_vRPN[i].Val.fixed2 << _SL("]\n");
                 }
                 break;

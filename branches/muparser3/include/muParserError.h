@@ -136,7 +136,7 @@ MUP_NAMESPACE_START
                           const TString &strReplaceWith)
     {
       TString strResult;
-      TString::size_type iPos(0), iNext(0);
+      typename TString::size_type iPos(0), iNext(0);
 
       for(;;)
       {
@@ -167,9 +167,9 @@ MUP_NAMESPACE_START
 
     //---------------------------------------------------------------------------------------------
     ParserError()
-      :m_strMsg()
-      ,m_strFormula()
-      ,m_strTok()
+      :m_sMsg()
+      ,m_sExpr()
+      ,m_sTok()
       ,m_iPos(-1)
       ,m_iErrc(ecUNDEFINED)
       ,m_ErrMsg(ParserErrorMsg<TString>::Instance())
@@ -217,8 +217,8 @@ MUP_NAMESPACE_START
       :m_sMsg()
       ,m_sExpr()
       ,m_sTok(sTok)
-      ,m_iPos(iPos)
-      ,m_iErrc(iErrc)
+      ,m_iPos(a_iPos)
+      ,m_iErrc(a_iErrc)
       ,m_ErrMsg(ParserErrorMsg<TString>::Instance())
     {
       m_sMsg = m_ErrMsg[m_iErrc];
@@ -259,9 +259,9 @@ MUP_NAMESPACE_START
       if (this==&a_Obj)
         return *this;
 
-      m_strMsg = a_Obj.m_strMsg;
-      m_strFormula = a_Obj.m_strFormula;
-      m_strTok = a_Obj.m_strTok;
+      m_sMsg = a_Obj.m_sMsg;
+      m_sExpr = a_Obj.m_sExpr;
+      m_sTok = a_Obj.m_sTok;
       m_iPos = a_Obj.m_iPos;
       m_iErrc = a_Obj.m_iErrc;
       return *this;
@@ -272,9 +272,9 @@ MUP_NAMESPACE_START
     {}
 
     //---------------------------------------------------------------------------------------------
-    void SetFormula(const TString &a_strFormula)
+    void SetFormula(const TString &a_sExpr)
     {
-      m_strFormula = a_strFormula;
+      m_sExpr = a_sExpr;
     }
 
     //---------------------------------------------------------------------------------------------

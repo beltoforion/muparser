@@ -2,8 +2,9 @@
 #define _MU_PARSER_TEST_H
 
 #include <string>
-#include <cstdlib>
+//#include <cstdlib>
 #include <numeric> // for accumulate
+#include <limits>
 #include "muParser.h"
 
 
@@ -94,12 +95,12 @@ MUP_NAMESPACE_START
         unsigned iVal(0);
 
         // New code based on streams for UNICODE compliance:
-        stringstream_type::pos_type nPos(0);
+        typename stringstream_type::pos_type nPos(0);
         stringstream_type ss(a_szExpr + 2);
         ss >> std::hex >> iVal;
         nPos = ss.tellg();
 
-        if (nPos==(stringstream_type::pos_type)0)
+        if (nPos==(typename stringstream_type::pos_type)0)
           return 1;
 
         *a_iPos += (int)(2 + nPos);
@@ -142,9 +143,9 @@ MUP_NAMESPACE_START
         }
 
         if (iStat==0) 
-          _OUT << _SL("passed") << endl;
+          _OUT << _SL("passed") << std::endl;
         else 
-          _OUT << _SL("\n  failed with ") << iStat << _SL(" errors") << endl;
+          _OUT << _SL("\n  failed with ") << iStat << _SL(" errors") << std::endl;
 
         return iStat;
       }
@@ -159,9 +160,9 @@ MUP_NAMESPACE_START
         iStat += EqnTest(_SL("b*(a-b/a)"), -2, true);
 
         if (iStat==0)
-          _OUT << _SL("passed") << endl;
+          _OUT << _SL("passed") << std::endl;
         else 
-          _OUT << _SL("\n  failed with ") << iStat << _SL(" errors") << endl;
+          _OUT << _SL("\n  failed with ") << iStat << _SL(" errors") << std::endl;
 
         return iStat;
       }
@@ -222,9 +223,9 @@ MUP_NAMESPACE_START
         iStat += EqnTest(_SL("3+4*2/(1-5)^2^3"), 3.0001220703125, true); 
 
         if (iStat==0)
-          _OUT << _SL("passed") << endl;
+          _OUT << _SL("passed") << std::endl;
         else 
-          _OUT << _SL("\n  failed with ") << iStat << _SL(" errors") << endl;
+          _OUT << _SL("\n  failed with ") << iStat << _SL(" errors") << std::endl;
 
         return iStat;
       }
@@ -270,9 +271,9 @@ MUP_NAMESPACE_START
         iStat += EqnTest(_SL("sin()"), 0, false);     // unexpected closing bracket
 
         if (iStat==0)
-          _OUT << _SL("passed") << endl;
+          _OUT << _SL("passed") << std::endl;
         else 
-          _OUT << _SL("\n  failed with ") << iStat << _SL(" errors") << endl;
+          _OUT << _SL("\n  failed with ") << iStat << _SL(" errors") << std::endl;
 
         return iStat;
       }
@@ -379,9 +380,9 @@ MUP_NAMESPACE_START
         }
 
         if (iStat==0)  
-          _OUT << _SL("passed") << endl;
+          _OUT << _SL("passed") << std::endl;
         else
-          _OUT << _SL("\n  failed with ") << iStat << _SL(" errors") << endl;
+          _OUT << _SL("\n  failed with ") << iStat << _SL(" errors") << std::endl;
 
         return iStat;
       }
@@ -455,9 +456,9 @@ MUP_NAMESPACE_START
         iStat += EqnTest( _SL("sum(,1,2)"),  0, false);
 
         if (iStat==0) 
-          _OUT << _SL("passed") << endl;
+          _OUT << _SL("passed") << std::endl;
         else
-          _OUT << _SL("\n  failed with ") << iStat << _SL(" errors") << endl;
+          _OUT << _SL("\n  failed with ") << iStat << _SL(" errors") << std::endl;
   
         return iStat;
       }
@@ -520,9 +521,9 @@ MUP_NAMESPACE_START
         iStat += EqnTest( _SL("~~ 123"),  123+2, true);
 
         if (iStat==0)
-          _OUT << _SL("passed") << endl;
+          _OUT << _SL("passed") << std::endl;
         else
-          _OUT << _SL("\n  failed with ") << iStat << _SL(" errors") << endl;
+          _OUT << _SL("\n  failed with ") << iStat << _SL(" errors") << std::endl;
 
         return iStat;
       }
@@ -572,9 +573,9 @@ MUP_NAMESPACE_START
         iStat += ThrowTest( _SL("multi*1.0"), ecUNASSIGNABLE_TOKEN);
 
         if (iStat==0)
-          _OUT << _SL("passed") << endl;
+          _OUT << _SL("passed") << std::endl;
         else
-          _OUT << _SL("\n  failed with ") << iStat << _SL(" errors") << endl;
+          _OUT << _SL("\n  failed with ") << iStat << _SL(" errors") << std::endl;
 
         return iStat;
       }
@@ -657,9 +658,9 @@ MUP_NAMESPACE_START
         iStat += EqnTest( _SL("(b+1)*(b+2)*(b+3)*(b+4)*(b+5)*(b+6)*(b+7)*(b+8)*(b+9)*(b+10)*(b+11)*(b+12)"), (b+1)*(b+2)*(b+3)*(b+4)*(b+5)*(b+6)*(b+7)*(b+8)*(b+9)*(b+10)*(b+11)*(b+12), true);
  
         if (iStat==0) 
-          _OUT << _SL("passed") << endl;  
+          _OUT << _SL("passed") << std::endl;
         else 
-          _OUT << _SL("\n  failed with ") << iStat << _SL(" errors") << endl;
+          _OUT << _SL("\n  failed with ") << iStat << _SL(" errors") << std::endl;
 
         return iStat;
       }
@@ -765,9 +766,9 @@ MUP_NAMESPACE_START
         iStat += EqnTest(_SL("a=0?5:b=1?3:4, b"), 3, true);
 
         if (iStat==0) 
-          _OUT << _SL("passed") << endl;  
+          _OUT << _SL("passed") << std::endl;
         else 
-          _OUT << _SL("\n  failed with ") << iStat << _SL(" errors") << endl;
+          _OUT << _SL("\n  failed with ") << iStat << _SL(" errors") << std::endl;
 
         return iStat;
       }
@@ -804,9 +805,9 @@ MUP_NAMESPACE_START
         iStat += ThrowTest(_SL("(a)=5"), ecUNEXPECTED_OPERATOR);
 
         if (iStat==0) 
-          _OUT << _SL("passed") << endl;
+          _OUT << _SL("passed") << std::endl;
         else 
-          _OUT << _SL("\n  failed with ") << iStat << _SL(" errors") << endl;
+          _OUT << _SL("\n  failed with ") << iStat << _SL(" errors") << std::endl;
 
         return iStat;
       }
@@ -840,7 +841,7 @@ MUP_NAMESPACE_START
         int iStat = 0;
         try
         {
-          cout << "Running test suite (value type:" 
+          _OUT << "Running test suite (value type:"
                << typeid(TValue).name() << "; char type:" 
                << typeid(typename TString::value_type).name() << ")\n";
 
@@ -849,13 +850,13 @@ MUP_NAMESPACE_START
         }
         catch(ParserError<TString> &e)
         {
-          _OUT << _SL("\n") << e.GetMsg() << endl;
-          _OUT << e.GetToken() << endl;
+          _OUT << _SL("\n") << e.GetMsg() << std::endl;
+          _OUT << e.GetToken() << std::endl;
           Abort();
         }
         catch(std::exception &e)
         {
-          _OUT << e.what() << endl;
+          _OUT << e.what() << std::endl;
           Abort();
         }
         catch(...)
@@ -866,13 +867,13 @@ MUP_NAMESPACE_START
 
         if (iStat==0) 
         {
-          _OUT << "Test passed (" <<  ParserTester::c_iCount << " expressions)" << endl;
+          _OUT << "Test passed (" <<  ParserTester::c_iCount << " expressions)" << std::endl;
         }
         else 
         {
           _OUT << "Test failed with " << iStat 
                     << " errors (" <<  ParserTester::c_iCount 
-                    << " expressions)" << endl;
+                    << " expressions)" << std::endl;
         }
         ParserTester::c_iCount = 0;
       }
@@ -1102,8 +1103,10 @@ MUP_NAMESPACE_START
             // The tests equations never result in infinity, if they do thats a bug.
             // reference:
             // http://sourceforge.net/projects/muparser/forums/forum/462843/topic/5037825
-            if (numeric_limits<TValue>::has_infinity)
-              bCloseEnough &= (fabs(fVal[i]) != numeric_limits<TValue>::infinity());
+            if (std::numeric_limits<TValue>::has_infinity)
+            {
+              bCloseEnough &= (fabs(fVal[i]) != std::numeric_limits<TValue>::infinity());
+            }
           }
 
           iRet = ((bCloseEnough && a_fPass) || (!bCloseEnough && !a_fPass)) ? 0 : 1;
@@ -1147,7 +1150,7 @@ MUP_NAMESPACE_START
       /** \brief Internal error in test class Test is going to be aborted. */
       void Abort() const
       {
-        _OUT << _SL("Test failed (internal error in test class)") << endl;
+        _OUT << _SL("Test failed (internal error in test class)") << std::endl;
         while (!getchar());
         exit(-1);
       }

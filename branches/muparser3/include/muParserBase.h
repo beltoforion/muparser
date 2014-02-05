@@ -29,16 +29,16 @@ class ParserBase
 
   protected:
 
-    typedef TValue (ParserBase::*ParseFunction)() const;  
+  typedef TValue (ParserBase::*ParseFunction)() const;
 
-    typedef Token<TValue, TString> token_type;
-    typedef ParserTokenReader<TValue, TString> token_reader_type;
-    typedef TValue* (*facfun_type)(const typename TString::value_type*, void*);
-    typedef int (*identfun_type)(const typename TString::value_type *sExpr, int *nPos, TValue *fVal);
-    typedef void (MUP_FASTCALL *fun_type)(TValue*, int narg);
-    typedef std::basic_stringstream<typename TString::value_type,
-                                    std::char_traits<typename TString::value_type>,  
-                                    std::allocator<typename TString::value_type> > stringstream_type;
+  typedef Token<TValue, TString> token_type;
+  typedef ParserTokenReader<TValue, TString> token_reader_type;
+  typedef TValue* (*facfun_type)(const typename TString::value_type*, void*);
+  typedef int (*identfun_type)(const typename TString::value_type *sExpr, int *nPos, TValue *fVal);
+  typedef void (MUP_FASTCALL *fun_type)(TValue*, int narg);
+  typedef std::basic_stringstream<typename TString::value_type,
+                                  std::char_traits<typename TString::value_type>,
+                                  std::allocator<typename TString::value_type> > stringstream_type;
 
   public:
 
@@ -830,8 +830,8 @@ protected:
     TValue ParseCmdCode() const
     {
       TValue *Stack = m_pStack;
-      const token_type::SValDef *pVal = nullptr;
-      const token_type::SFunDef *pFun = nullptr;
+      const typename token_type::SValDef *pVal = nullptr;
+      const typename token_type::SFunDef *pFun = nullptr;
 
       register int sidx(0);
 
@@ -911,7 +911,7 @@ protected:
 
   #define SXO_FUN(TOK) \
           {                                                               \
-            const token_type::SFunDef &fun = (TOK)->Fun;                  \
+            const typename token_type::SFunDef &fun = (TOK)->Fun;                  \
             (*fun.ptr)(&m_pStack[sidx -= fun.argc - 1], fun.argc);        \
             if (fun.ptr2!=nullptr)                                        \
             {                                                             \
@@ -926,32 +926,32 @@ protected:
         return m_pStack[1];
 
   #define ParseFunc2(What, OP1, OP2) \
-      TValue ParseCmdCode_##What##() const  \
+      TValue ParseCmdCode_##What() const  \
       {                                     \
         SXO_INIT                            \
-        SXO_##OP1##(&m_pRPN[0])             \
-        SXO_##OP2##(&m_pRPN[1])             \
+        SXO_##OP1(&m_pRPN[0])             \
+        SXO_##OP2(&m_pRPN[1])             \
         SXO_RET                             \
       }
 
   #define ParseFunc3(What, OP1, OP2, OP3)   \
-      TValue ParseCmdCode_##What##() const  \
+      TValue ParseCmdCode_##What() const  \
       {                                     \
         SXO_INIT                            \
-        SXO_##OP1##(&m_pRPN[0])             \
-        SXO_##OP2##(&m_pRPN[1])             \
-        SXO_##OP3##(&m_pRPN[2])             \
+        SXO_##OP1(&m_pRPN[0])             \
+        SXO_##OP2(&m_pRPN[1])             \
+        SXO_##OP3(&m_pRPN[2])             \
         SXO_RET                             \
       }
 
   #define ParseFunc4(What, OP1, OP2, OP3, OP4) \
-      TValue ParseCmdCode_##What##() const     \
+      TValue ParseCmdCode_##What() const     \
       {                                        \
         SXO_INIT                               \
-        SXO_##OP1##(&m_pRPN[0])                \
-        SXO_##OP2##(&m_pRPN[1])                \
-        SXO_##OP3##(&m_pRPN[2])                \
-        SXO_##OP4##(&m_pRPN[3])                \
+        SXO_##OP1(&m_pRPN[0])                \
+        SXO_##OP2(&m_pRPN[1])                \
+        SXO_##OP3(&m_pRPN[2])                \
+        SXO_##OP4(&m_pRPN[3])                \
         SXO_RET                                \
       }
 

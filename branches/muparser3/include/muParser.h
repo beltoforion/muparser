@@ -9,6 +9,8 @@
 //--- Parser includes -----------------------------------------------------------------------------
 #include "muParserBase.h"
 #include "muParserMath.h"
+#include "muParserDef.h"
+
 
 MUP_NAMESPACE_START
 
@@ -18,6 +20,8 @@ MUP_NAMESPACE_START
   template<typename TValue, typename TString = std::string>
   class Parser : public ParserBase<TValue, TString>
   {
+  typedef typename ParserBase<TValue, TString>::stringstream_type stringstream_type;
+
   public:
 
     //---------------------------------------------------------------------------------------------
@@ -26,17 +30,17 @@ MUP_NAMESPACE_START
       Preconfigures the parser according to its underlying valuetype.
     */
     Parser()
-      :ParserBase()
+      :ParserBase<TValue, TString>()
     {
-      if (!details::value_traits<typename TValue>::IsInteger())
+      if (!details::value_traits<TValue>::IsInteger())
       {
-        AddValIdent(IsFloatVal);
+        ParserBase<TValue, TString>::AddValIdent(IsFloatVal);
       }
       else
       {
-        AddValIdent(IsIntVal); // lowest priority
-        AddValIdent(IsBinVal);
-        AddValIdent(IsHexVal); // highest priority
+        ParserBase<TValue, TString>::AddValIdent(IsIntVal); // lowest priority
+        ParserBase<TValue, TString>::AddValIdent(IsBinVal);
+        ParserBase<TValue, TString>::AddValIdent(IsHexVal); // highest priority
       }
 
       InitFun();
@@ -52,46 +56,46 @@ MUP_NAMESPACE_START
       if (!details::value_traits<TValue>::IsInteger())
       {
         // trigonometric functions
-        DefineFun( _SL("sin"),   MathImpl<TValue, TString>::Sin, 1);
-        DefineFun( _SL("cos"),   MathImpl<TValue, TString>::Cos, 1);
-        DefineFun( _SL("tan"),   MathImpl<TValue, TString>::Tan, 1);
+        ParserBase<TValue, TString>::DefineFun( _SL("sin"),   MathImpl<TValue, TString>::Sin, 1);
+        ParserBase<TValue, TString>::DefineFun( _SL("cos"),   MathImpl<TValue, TString>::Cos, 1);
+        ParserBase<TValue, TString>::DefineFun( _SL("tan"),   MathImpl<TValue, TString>::Tan, 1);
       
         // arcus functions
-        DefineFun( _SL("asin"),  MathImpl<TValue, TString>::ASin,  1);
-        DefineFun( _SL("acos"),  MathImpl<TValue, TString>::ACos,  1);
-        DefineFun( _SL("atan"),  MathImpl<TValue, TString>::ATan,  1);
-        DefineFun( _SL("atan2"), MathImpl<TValue, TString>::ATan2, 2);
+        ParserBase<TValue, TString>::DefineFun( _SL("asin"),  MathImpl<TValue, TString>::ASin,  1);
+        ParserBase<TValue, TString>::DefineFun( _SL("acos"),  MathImpl<TValue, TString>::ACos,  1);
+        ParserBase<TValue, TString>::DefineFun( _SL("atan"),  MathImpl<TValue, TString>::ATan,  1);
+        ParserBase<TValue, TString>::DefineFun( _SL("atan2"), MathImpl<TValue, TString>::ATan2, 2);
       
         // hyperbolic functions
-        DefineFun( _SL("sinh"),  MathImpl<TValue, TString>::Sinh, 1);
-        DefineFun( _SL("cosh"),  MathImpl<TValue, TString>::Cosh, 1);
-        DefineFun( _SL("tanh"),  MathImpl<TValue, TString>::Tanh, 1);
+        ParserBase<TValue, TString>::DefineFun( _SL("sinh"),  MathImpl<TValue, TString>::Sinh, 1);
+        ParserBase<TValue, TString>::DefineFun( _SL("cosh"),  MathImpl<TValue, TString>::Cosh, 1);
+        ParserBase<TValue, TString>::DefineFun( _SL("tanh"),  MathImpl<TValue, TString>::Tanh, 1);
       
         // arcus hyperbolic functions
-        DefineFun( _SL("asinh"), MathImpl<TValue, TString>::ASinh, 1);
-        DefineFun( _SL("acosh"), MathImpl<TValue, TString>::ACosh, 1);
-        DefineFun( _SL("atanh"), MathImpl<TValue, TString>::ATanh, 1);
+        ParserBase<TValue, TString>::DefineFun( _SL("asinh"), MathImpl<TValue, TString>::ASinh, 1);
+        ParserBase<TValue, TString>::DefineFun( _SL("acosh"), MathImpl<TValue, TString>::ACosh, 1);
+        ParserBase<TValue, TString>::DefineFun( _SL("atanh"), MathImpl<TValue, TString>::ATanh, 1);
       
         // Logarithm functions
-        DefineFun( _SL("log2"),  MathImpl<TValue, TString>::Log2,  1);
-        DefineFun( _SL("log10"), MathImpl<TValue, TString>::Log10, 1);
-        DefineFun( _SL("log"),   MathImpl<TValue, TString>::Log,   1);
-        DefineFun( _SL("ln"),    MathImpl<TValue, TString>::Log,   1);
+        ParserBase<TValue, TString>::DefineFun( _SL("log2"),  MathImpl<TValue, TString>::Log2,  1);
+        ParserBase<TValue, TString>::DefineFun( _SL("log10"), MathImpl<TValue, TString>::Log10, 1);
+        ParserBase<TValue, TString>::DefineFun( _SL("log"),   MathImpl<TValue, TString>::Log,   1);
+        ParserBase<TValue, TString>::DefineFun( _SL("ln"),    MathImpl<TValue, TString>::Log,   1);
 
         // misc
-        DefineFun( _SL("exp"),   MathImpl<TValue, TString>::Exp,  1);
-        DefineFun( _SL("sqrt"),  MathImpl<TValue, TString>::Sqrt, 1);
-        DefineFun( _SL("sign"),  MathImpl<TValue, TString>::Sign, 1);
-        DefineFun( _SL("rint"),  MathImpl<TValue, TString>::Rint, 1);
-        DefineFun( _SL("avg"),   MathImpl<TValue, TString>::Avg, -1);
+        ParserBase<TValue, TString>::DefineFun( _SL("exp"),   MathImpl<TValue, TString>::Exp,  1);
+        ParserBase<TValue, TString>::DefineFun( _SL("sqrt"),  MathImpl<TValue, TString>::Sqrt, 1);
+        ParserBase<TValue, TString>::DefineFun( _SL("sign"),  MathImpl<TValue, TString>::Sign, 1);
+        ParserBase<TValue, TString>::DefineFun( _SL("rint"),  MathImpl<TValue, TString>::Rint, 1);
+        ParserBase<TValue, TString>::DefineFun( _SL("avg"),   MathImpl<TValue, TString>::Avg, -1);
       }
 
-      DefineFun( _SL("abs"),   MathImpl<TValue, TString>::Abs,  1);
+      ParserBase<TValue, TString>::DefineFun( _SL("abs"),   MathImpl<TValue, TString>::Abs,  1);
       
       // Functions with variable number of arguments
-      DefineFun( _SL("sum"),   MathImpl<TValue, TString>::Sum, -1);
-      DefineFun( _SL("min"),   MathImpl<TValue, TString>::Min, -1);
-      DefineFun( _SL("max"),   MathImpl<TValue, TString>::Max, -1);
+      ParserBase<TValue, TString>::DefineFun( _SL("sum"),   MathImpl<TValue, TString>::Sum, -1);
+      ParserBase<TValue, TString>::DefineFun( _SL("min"),   MathImpl<TValue, TString>::Min, -1);
+      ParserBase<TValue, TString>::DefineFun( _SL("max"),   MathImpl<TValue, TString>::Max, -1);
     }
 
     //---------------------------------------------------------------------------------------------
@@ -99,51 +103,52 @@ MUP_NAMESPACE_START
     {
       if (!details::value_traits<TValue>::IsInteger())
       {
-        DefineConst( _SL("_pi"), MathImpl<TValue, TString>::c_pi);
-        DefineConst( _SL("_e"),  MathImpl<TValue, TString>::c_e);
+        ParserBase<TValue, TString>::DefineConst( _SL("_pi"), MathImpl<TValue, TString>::c_pi);
+        ParserBase<TValue, TString>::DefineConst( _SL("_e"),  MathImpl<TValue, TString>::c_e);
       }
     }
 
     //---------------------------------------------------------------------------------------------
     void InitOprt() 
     {
-      DefineInfixOprt( _SL("-"), MathImpl<TValue, TString>::UnaryMinus);
-      DefineInfixOprt( _SL("+"), MathImpl<TValue, TString>::UnaryPlus);
+      ParserBase<TValue, TString>::DefineInfixOprt( _SL("-"), MathImpl<TValue, TString>::UnaryMinus);
+      ParserBase<TValue, TString>::DefineInfixOprt( _SL("+"), MathImpl<TValue, TString>::UnaryPlus);
 
-      DefineOprt( _SL("&&"), MathImpl<TValue, TString>::And,       prLOGIC);
-      DefineOprt( _SL("||"), MathImpl<TValue, TString>::Or,        prLOGIC);
+      ParserBase<TValue, TString>::DefineOprt( _SL("&&"), MathImpl<TValue, TString>::And,       prLOGIC);
+      ParserBase<TValue, TString>::DefineOprt( _SL("||"), MathImpl<TValue, TString>::Or,        prLOGIC);
 
-      DefineOprt( _SL("<"),  MathImpl<TValue, TString>::Less,      prCMP);
-      DefineOprt( _SL(">"),  MathImpl<TValue, TString>::Greater,   prCMP);
-      DefineOprt( _SL("<="), MathImpl<TValue, TString>::LessEq,    prCMP);
-      DefineOprt( _SL(">="), MathImpl<TValue, TString>::GreaterEq, prCMP);
-      DefineOprt( _SL("=="), MathImpl<TValue, TString>::Equal,     prCMP);
-      DefineOprt( _SL("!="), MathImpl<TValue, TString>::NotEqual,  prCMP);
+      ParserBase<TValue, TString>::DefineOprt( _SL("<"),  MathImpl<TValue, TString>::Less,      prCMP);
+      ParserBase<TValue, TString>::DefineOprt( _SL(">"),  MathImpl<TValue, TString>::Greater,   prCMP);
+      ParserBase<TValue, TString>::DefineOprt( _SL("<="), MathImpl<TValue, TString>::LessEq,    prCMP);
+      ParserBase<TValue, TString>::DefineOprt( _SL(">="), MathImpl<TValue, TString>::GreaterEq, prCMP);
+      ParserBase<TValue, TString>::DefineOprt( _SL("=="), MathImpl<TValue, TString>::Equal,     prCMP);
+      ParserBase<TValue, TString>::DefineOprt( _SL("!="), MathImpl<TValue, TString>::NotEqual,  prCMP);
 
-      DefineOprt( _SL("+"), MathImpl<TValue, TString>::Add, prADD_SUB);
-      DefineOprt( _SL("-"), MathImpl<TValue, TString>::Sub, prADD_SUB);
-      DefineOprt( _SL("*"), MathImpl<TValue, TString>::Mul, prMUL_DIV, oaRIGHT);
+      ParserBase<TValue, TString>::DefineOprt( _SL("+"), MathImpl<TValue, TString>::Add, prADD_SUB);
+      ParserBase<TValue, TString>::DefineOprt( _SL("-"), MathImpl<TValue, TString>::Sub, prADD_SUB);
+      ParserBase<TValue, TString>::DefineOprt( _SL("*"), MathImpl<TValue, TString>::Mul, prMUL_DIV, oaRIGHT);
 
       if (!details::value_traits<TValue>::IsInteger())
       {
-        DefineOprt( _SL("/"), MathImpl<TValue, TString>::Div, prMUL_DIV);
-        DefineOprt( _SL("^"), MathImpl<TValue, TString>::Pow, prPOW, oaRIGHT);
+        ParserBase<TValue, TString>::DefineOprt( _SL("/"), MathImpl<TValue, TString>::Div, prMUL_DIV);
+        ParserBase<TValue, TString>::DefineOprt( _SL("^"), MathImpl<TValue, TString>::Pow, prPOW, oaRIGHT);
       }
     }
 
   protected:
 
     //---------------------------------------------------------------------------
-    static int IsFloatVal(typename const TString::value_type* a_szExpr, int *a_iPos, TValue *a_fVal)
+    static int IsFloatVal(const typename TString::value_type* a_szExpr, int *a_iPos, TValue *a_fVal)
     {
       TValue fVal(0);
 
-      stringstream_type stream(a_szExpr);
+      typename ParserBase<TValue, TString>::stringstream_type stream(a_szExpr);
+
       stream.seekg(0);
       stream >> fVal;
-      stringstream_type::pos_type iEnd = stream.tellg(); // Position after reading
+      typename ParserBase<TValue, TString>::stringstream_type::pos_type iEnd = stream.tellg(); // Position after reading
 
-      if (iEnd==(stringstream_type::pos_type)-1)
+      if (iEnd==(typename ParserBase<TValue, TString>::stringstream_type::pos_type)-1)
         return 0;
 
       *a_iPos += (int)iEnd;
@@ -159,7 +164,7 @@ MUP_NAMESPACE_START
                position in the expression.
         \param [out] a_fVal Pointer to the position where the detected value shall be stored.
     */
-    static int IsIntVal(typename const TString::value_type* a_szExpr, int *a_iPos, TValue *a_fVal)
+    static int IsIntVal(const typename TString::value_type* a_szExpr, int *a_iPos, TValue *a_fVal)
     {
       TString buf(a_szExpr);
       std::size_t pos = buf.find_first_not_of(_SL("0123456789"));
@@ -174,11 +179,11 @@ MUP_NAMESPACE_START
       if (stream.fail())
         return 0;
       
-      stringstream_type::pos_type iEnd = stream.tellg();   // Position after reading
+      typename stringstream_type::pos_type iEnd = stream.tellg();   // Position after reading
       if (stream.fail())
         iEnd = stream.str().length();  
 
-      if (iEnd==(stringstream_type::pos_type)-1)
+      if (iEnd==(typename stringstream_type::pos_type)-1)
         return 0;
 
       *a_iPos += (int)iEnd;
@@ -196,7 +201,7 @@ MUP_NAMESPACE_START
 
       Hey values must be prefixed with "0x" in order to be detected properly.
     */
-    static int IsHexVal(typename const TString::value_type* a_szExpr, int *a_iPos, TValue *a_fVal)
+    static int IsHexVal(const typename TString::value_type* a_szExpr, int *a_iPos, TValue *a_fVal)
     {
       if (a_szExpr[1]==0 || (a_szExpr[0]!='0' || a_szExpr[1]!='x') ) 
         return 0;
@@ -204,12 +209,12 @@ MUP_NAMESPACE_START
       unsigned iVal(0);
 
       // New code based on streams for UNICODE compliance:
-      stringstream_type::pos_type nPos(0);
+      typename stringstream_type::pos_type nPos(0);
       stringstream_type ss(a_szExpr + 2);
       ss >> std::hex >> iVal;
       nPos = ss.tellg();
 
-      if (nPos==(stringstream_type::pos_type)0)
+      if (nPos==(typename stringstream_type::pos_type)0)
         return 1;
 
       *a_iPos += (int)(2 + nPos);
@@ -218,7 +223,7 @@ MUP_NAMESPACE_START
     }
 
     //---------------------------------------------------------------------------------------------
-    static int IsBinVal(typename const TString::value_type* a_szExpr, int *a_iPos, TValue *a_fVal)
+    static int IsBinVal(const typename TString::value_type* a_szExpr, int *a_iPos, TValue *a_fVal)
     {
       if (a_szExpr[0]!='#') 
         return 0;

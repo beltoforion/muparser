@@ -184,7 +184,7 @@ MUP_NAMESPACE_START
         assert(m_pParser);
 
         std::stack<int> FunArgs;
-        const TString::value_type *szFormula = m_strFormula.c_str();
+        const typename TString::value_type *szFormula = m_strFormula.c_str();
         token_type tok;
 
         // Ignore all non printable characters when reading the expression
@@ -345,14 +345,14 @@ MUP_NAMESPACE_START
       */
       bool IsBuiltIn(token_type &a_Tok)
       {
-        const TString::value_type **const pOprtDef = m_pParser->c_DefaultOprt,
-                                   *const szFormula = m_strFormula.c_str();
+        const typename TString::value_type **const pOprtDef = m_pParser->c_DefaultOprt,
+                                            *const szFormula = m_strFormula.c_str();
 
         // Compare token with function and operator strings
         // check string for operator/function
         for (int i=0; pOprtDef[i]; i++)
         {
-          std::size_t len( std::char_traits<TString::value_type>::length(pOprtDef[i]) );
+          std::size_t len( std::char_traits<typename TString::value_type>::length(pOprtDef[i]) );
           if ( TString(pOprtDef[i]) == TString(szFormula + m_iPos, szFormula + m_iPos + len) )
           {
             switch(i)
@@ -429,12 +429,12 @@ MUP_NAMESPACE_START
       //-------------------------------------------------------------------------------------------
       bool IsArgSep(token_type &a_Tok)
       {
-        const TString::value_type* szFormula = m_strFormula.c_str();
+        const typename TString::value_type* szFormula = m_strFormula.c_str();
 
         if (szFormula[m_iPos]==m_cArgSep)
         {
           // copy the separator into null terminated string
-          TString::value_type szSep[2];
+          typename TString::value_type szSep[2];
           szSep[0] = m_cArgSep;
           szSep[1] = 0;
 
@@ -462,7 +462,7 @@ MUP_NAMESPACE_START
       */
       bool IsEOF(token_type &a_Tok)
       {
-        const TString::value_type* szFormula = m_strFormula.c_str();
+        const typename TString::value_type* szFormula = m_strFormula.c_str();
 
         // check for EOF
         if ( !szFormula[m_iPos] /*|| szFormula[m_iPos] == '\n'*/)
@@ -493,7 +493,7 @@ MUP_NAMESPACE_START
           return false;
 
         // iteraterate over all postfix operator strings
-        std::map<TString, token_type>::const_reverse_iterator it = m_pInfixOprtDef->rbegin();
+        auto it = m_pInfixOprtDef->rbegin();
         for ( ; it!=m_pInfixOprtDef->rend(); ++it)
         {
           if (sTok.find(it->first)!=0)
@@ -531,7 +531,7 @@ MUP_NAMESPACE_START
           return false;
 
         // Check if the next sign is an opening bracket
-        const TString::value_type *szFormula = m_strFormula.c_str();
+        const typename TString::value_type *szFormula = m_strFormula.c_str();
         if (szFormula[iEnd]!='(')
           return false;
 
@@ -552,7 +552,7 @@ MUP_NAMESPACE_START
       */
       bool IsOprt(token_type &a_Tok)
       {
-        const TString::value_type *const szExpr = m_strFormula.c_str();
+        const typename TString::value_type *const szExpr = m_strFormula.c_str();
         TString strTok;
 
         int iEnd = ExtractOperatorToken(strTok, m_iPos);
@@ -560,7 +560,7 @@ MUP_NAMESPACE_START
           return false;
 
         // Check if the operator is a built in operator, if so ignore it here
-        const TString::value_type **const pOprtDef = m_pParser->c_DefaultOprt;
+        const typename TString::value_type **const pOprtDef = m_pParser->c_DefaultOprt;
         for (int i=0; pOprtDef[i]; ++i)
         {
           if (TString(pOprtDef[i])==strTok)
@@ -573,7 +573,7 @@ MUP_NAMESPACE_START
         // are part of long token names (like: "add123") will be found instead 
         // of the long ones.
         // Length sorting is done with ascending length so we use a reverse iterator here.
-        std::map<TString, token_type>::const_reverse_iterator it = m_pOprtDef->rbegin();
+        auto it = m_pOprtDef->rbegin();
         for ( ; it!=m_pOprtDef->rend(); ++it)
         {
           const TString &sID = it->first;
@@ -639,7 +639,7 @@ MUP_NAMESPACE_START
           return false;
 
         // iteraterate over all postfix operator strings
-        std::map<TString, token_type>::const_reverse_iterator it = m_pPostOprtDef->rbegin();
+        auto it = m_pPostOprtDef->rbegin();
         for ( ; it!=m_pPostOprtDef->rend(); ++it)
         {
           if (sTok.find(it->first)!=0)

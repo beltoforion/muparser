@@ -75,7 +75,7 @@ MUP_NAMESPACE_START
 
       //---------------------------------------------------------------------------------------------
       static void MUP_FASTCALL UnaryMinus(T *arg, int)  { *arg *= -1; }
-      static void MUP_FASTCALL UnaryPlus(T *arg, int)  { }
+      static void MUP_FASTCALL UnaryPlus(T * /*arg*/, int)  { }
 
       //---------------------------------------------------------------------------------------------
       // Functions with unlimited number of arguments
@@ -192,7 +192,7 @@ MUP_NAMESPACE_START
       static void MUP_FASTCALL Equal     (int *arg, int) { *arg = *arg == arg[1]; }
       static void MUP_FASTCALL NotEqual  (int *arg, int) { *arg = *arg != arg[1]; }
       static void MUP_FASTCALL UnaryMinus(int *arg, int) { *arg *= -1; }
-      static void MUP_FASTCALL UnaryPlus(int *arg, int) { }
+      static void MUP_FASTCALL UnaryPlus(int * /*arg*/, int) { }
 
       //---------------------------------------------------------------------------------------------
       // Functions with unlimited number of arguments
