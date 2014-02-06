@@ -220,7 +220,7 @@ private:
 
       virtual std::string do_grouping() const 
       { 
-        return std::string(1, m_nGroup); 
+        return std::string(1, (char)m_nGroup); 
       }
 
     private:
