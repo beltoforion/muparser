@@ -35,7 +35,7 @@ class ParserBase
   typedef ParserTokenReader<TValue, TString> token_reader_type;
   typedef TValue* (*facfun_type)(const typename TString::value_type*, void*);
   typedef int (*identfun_type)(const typename TString::value_type *sExpr, int *nPos, TValue *fVal);
-  typedef void (MUP_FASTCALL *fun_type)(TValue*, int narg);
+  typedef void (*fun_type)(TValue*, int narg);
   typedef std::basic_stringstream<typename TString::value_type,
                                   std::char_traits<typename TString::value_type>,
                                   std::allocator<typename TString::value_type> > stringstream_type;
@@ -310,16 +310,6 @@ class ParserBase
         ss << _SL("; RELEASE");
   #endif
 
-  //#ifdef _UNICODE
-  //      ss << _SL("; UNICODE");
-  //#else
-  //  #ifdef _MBCS
-  //      ss << _SL("; MBCS");
-  //  #else
-  //      ss << _SL("; ASCII");
-  //  #endif
-  //#endif
-
   #if defined(MUP_MATH_EXCEPTIONS)
       ss << _SL("; MATHEXC");
   #endif
@@ -338,7 +328,7 @@ class ParserBase
       throw ParserError<TString>(a_iErrc, a_sTok, m_pTokenReader->GetExpr(), a_iPos);
     }
 
-protected:
+  protected:
 
     static const typename TString::value_type* c_DefaultOprt[];
     static const typename TString::value_type* c_sNameChars;
@@ -466,40 +456,6 @@ protected:
     }
 
     //---------------------------------------------------------------------------
-    void ApplyIfElse(ParserStack<token_type> &a_stOpt,
-                     ParserStack<token_type> &a_stVal) const
-    {
-      // Check if there is an if Else clause to be calculated
-      while (a_stOpt.size() && a_stOpt.top().Cmd==cmELSE)
-      {
-        token_type opElse = a_stOpt.pop();
-        MUP_ASSERT(a_stOpt.size()>0);
-
-        // Take the value associated with the else branch from the value stack
-        token_type vVal2 = a_stVal.pop();
-        MUP_ASSERT(a_stOpt.size()>0);
-        MUP_ASSERT(a_stVal.size()>=2);
-
-        // it then else is a ternary operator Pop all three values from the value 
-        // stack and just return the right value
-        token_type vVal1 = a_stVal.pop();
-        token_type vExpr = a_stVal.pop();
-
-        token_type one;
-        one.SetVal(1);
-        a_stVal.push(one);
-
-        token_type opIf = a_stOpt.pop();
-        MUP_ASSERT(opElse.Cmd==cmELSE);
-        MUP_ASSERT(opIf.Cmd==cmIF);
-
-        token_type tokEndIf;
-        tokEndIf.Cmd = cmENDIF;
-        m_vRPN.AddTok(tokEndIf);
-      } // while pending if-else-clause found
-    }
-
-    //---------------------------------------------------------------------------
     void ApplyBinOprt(ParserStack<token_type> &a_stOpt,
                       ParserStack<token_type> &a_stVal) const
     {
@@ -535,8 +491,7 @@ protected:
                             ParserStack<token_type> &stVal) const
     {
       while (stOpt.size() && 
-             stOpt.top().Cmd != cmBO &&
-             stOpt.top().Cmd != cmIF)
+             stOpt.top().Cmd != cmBO)
       {
         token_type tok = stOpt.top();
         switch (tok.Cmd)
@@ -548,10 +503,6 @@ protected:
               ApplyFunc(stOpt, stVal, 1);
             else
               ApplyBinOprt(stOpt, stVal);
-            break;
-
-        case cmELSE:
-            ApplyIfElse(stOpt, stVal);
             break;
 
         default:
@@ -570,8 +521,6 @@ protected:
       case cmEND:      return -5;
       case cmARG_SEP:  return -4;
       case cmASSIGN:   return -1;               
-      case cmELSE:
-      case cmIF:       return  0;
 
       // user defined binary operators
       case cmOPRT_INFIX: 
@@ -621,17 +570,6 @@ protected:
                   opt.Cmd = cmVAL_EX;
                   m_vRPN.AddVal(opt);
                   break;
-
-          case cmELSE:
-                  m_nIfElseCounter--;
-                  if (m_nIfElseCounter<0)
-                    Error(ecMISPLACED_COLON, m_pTokenReader->GetPos());
-
-                  ApplyRemainingOprt(stOpt, stVal);
-                  m_vRPN.AddElse(opt);
-                  stOpt.push(opt);
-                  break;
-
 
           case cmARG_SEP:
                   if (stArgCount.empty())
@@ -683,18 +621,12 @@ protected:
           //
           // Next are the binary operator entries
           //
-          case cmIF:
-                  m_nIfElseCounter++;
-                  // fallthrough intentional (no break!)
-
           case cmASSIGN:
           case cmOPRT_BIN:
 
                   // A binary operator (user defined or built in) has been found. 
                   while ( stOpt.size() && 
-                          stOpt.top().Cmd != cmBO &&
-                          stOpt.top().Cmd != cmELSE &&
-                          stOpt.top().Cmd != cmIF)
+                          stOpt.top().Cmd != cmBO)
                   {
                     int nPrec1 = GetOprtPrecedence(stOpt.top()),
                         nPrec2 = GetOprtPrecedence(opt);
@@ -722,10 +654,7 @@ protected:
                       ApplyBinOprt(stOpt, stVal);
                   } // while ( ... )
 
-                  if (opt.Cmd==cmIF)
-                    m_vRPN.AddIf(opt);
-
-    			        // The operator can't be evaluated right now, push back to the operator stack
+                  // The operator can't be evaluated right now, push back to the operator stack
                   stOpt.push(opt);
                   break;
 
@@ -777,7 +706,7 @@ protected:
       m_vStackBuffer.resize(m_vRPN.GetMaxStackSize());
       m_pRPN   = m_vRPN.GetBase();
       m_pStack = &m_vStackBuffer[0];
-      m_vRPN.Finalize(m_pStack);
+      m_vRPN.Finalize();
 
       if (ParserBase::g_DbgDumpCmdCode)
         m_vRPN.AsciiDump();
@@ -801,11 +730,11 @@ protected:
         switch(ec & ~ecNO_MUL)
         {   
         case ecV:    if (m_pRPN[0].Val.mul==0)
-                       m_pParseFormula = &ParserBase::ParseCmdCode_C1;
+                       m_pParseFormula = &ParserBase::ParseCmdCode_V1;
                      else if (m_pRPN[0].Val.mul!=0 && m_pRPN[0].Val.fixed==0)
-                       m_pParseFormula = &ParserBase::ParseCmdCode_C2;
+                       m_pParseFormula = &ParserBase::ParseCmdCode_V2;
                      else
-                       m_pParseFormula = &ParserBase::ParseCmdCode_V;   
+                       m_pParseFormula = &ParserBase::ParseCmdCode_V3;
                      break;
 
         case ecVF:    m_pParseFormula = (bNoMul) ? &ParserBase::ParseCmdCode_VF   : &ParserBase::ParseCmdCode_XF;   break;
@@ -843,47 +772,21 @@ protected:
               --sidx; Stack[sidx] = *pTok->Oprt.ptr = Stack[sidx+1]; 
               continue;
 
-        case  cmIF:
-              if (Stack[sidx--]==0)
-                pTok += pTok->Oprt.offset;
-              continue;
-
-        case  cmELSE:   
-              pTok += pTok->Oprt.offset;  
-              continue;
-
-        case  cmENDIF:  
-              continue;
-
         case  cmVAL_EX: 
               { 
                 pVal = &(pTok->Val);
                 Stack[++sidx] = *pVal->ptr * pVal->mul + pVal->fixed; 
-
-                if (pVal->ptr2!=nullptr)
-                  Stack[++sidx] = *pVal->ptr2 * pVal->mul2 + pVal->fixed2; 
               }
               continue;
 
         case  cmVAR:   ++sidx; Stack[sidx] = *pTok->Val.ptr;   continue;
         case  cmVAL:   ++sidx; Stack[sidx] =  pTok->Val.fixed; continue;
+
         case  cmFUNC:
               { 
                 pFun = &(pTok->Fun);
                 sidx -= pFun->argc - 1;
                 (*pFun->ptr)(&Stack[sidx], pFun->argc);
-
-                if (pFun->ptr2!=nullptr)
-                {
-                  sidx -= pFun->argc2 - 1;
-                  (*pFun->ptr2)(&Stack[sidx], pFun->argc2);
-
-                  if (pFun->ptr3!=nullptr)
-                  {
-                    sidx -= pFun->argc3 - 1;
-                    (*pFun->ptr3)(&Stack[sidx], pFun->argc3);
-                  }
-                }
               }
               continue;
       
@@ -897,78 +800,70 @@ protected:
     }
 
   #define SXO_INIT   \
-        register int sidx = 0;
+          int sidx = 0;
 
-  #define SXO_VAX(TOK) \
-          m_pStack[++sidx] = (TOK)->Val.mul * *(TOK)->Val.ptr + (TOK)->Val.fixed;        \
-          if ((TOK)->Val.ptr2!=nullptr)                                                  \
-            m_pStack[++sidx] = (TOK)->Val.mul2 * *(TOK)->Val.ptr2 + (TOK)->Val.fixed2;
+  #define SXO_VAX(TOK,IDX) \
+          m_pStack[++sidx] = (TOK[IDX])->Val.fixed + *(TOK[IDX])->Val.ptr * (TOK[IDX])->Val.mul;  \
 
-  #define SXO_VAL(TOK) \
-          m_pStack[++sidx] = *(TOK)->Val.ptr + (TOK)->Val.fixed;         \
-          if ((TOK)->Val.ptr2!=nullptr)                                  \
-            m_pStack[++sidx] = *(TOK)->Val.ptr2 + (TOK)->Val.fixed2;
+  #define SXO_VAL(TOK,IDX) \
+          m_pStack[++sidx] = (TOK[IDX])->Val.fixed + *(TOK[IDX])->Val.ptr;  \
 
-  #define SXO_FUN(TOK) \
-          {                                                               \
-            const typename token_type::SFunDef &fun = (TOK)->Fun;                  \
-            (*fun.ptr)(&m_pStack[sidx -= fun.argc - 1], fun.argc);        \
-            if (fun.ptr2!=nullptr)                                        \
-            {                                                             \
-              (*fun.ptr2)(&m_pStack[sidx -= fun.argc2 - 1], fun.argc2);   \
-                                                                          \
-              if (fun.ptr3!=nullptr)                                      \
-                (*fun.ptr3)(&m_pStack[sidx -= fun.argc3 - 1], fun.argc3); \
-            }                                                             \
+  #define SXO_CON(TOK,IDX) \
+          m_pStack[++sidx] = (TOK[IDX])->Val.fixed;  \
+
+  #define SXO_FUN(TOK,IDX) \
+          {                                                         \
+            const typename token_type::SFunDef &fun = (TOK[IDX])->Fun;   \
+            (*fun.ptr)(&m_pStack[sidx -= fun.argc - 1], fun.argc);  \
           }
 
   #define SXO_RET   \
         return m_pStack[1];
 
-  #define ParseFunc2(What, OP1, OP2) \
-      TValue ParseCmdCode_##What() const  \
-      {                                     \
-        SXO_INIT                            \
-        SXO_##OP1(&m_pRPN[0])             \
-        SXO_##OP2(&m_pRPN[1])             \
-        SXO_RET                             \
+  #define ParseFunc2(What, OP1, OP2)           \
+      TValue ParseCmdCode_##What() const       \
+      {                                        \
+        SXO_INIT                               \
+        SXO_##OP1(&m_pRPN,0)                  \
+        SXO_##OP2(&m_pRPN,1)                  \
+        SXO_RET                                \
       }
 
-  #define ParseFunc3(What, OP1, OP2, OP3)   \
-      TValue ParseCmdCode_##What() const  \
-      {                                     \
-        SXO_INIT                            \
-        SXO_##OP1(&m_pRPN[0])             \
-        SXO_##OP2(&m_pRPN[1])             \
-        SXO_##OP3(&m_pRPN[2])             \
-        SXO_RET                             \
+  #define ParseFunc3(What, OP1, OP2, OP3)      \
+      TValue ParseCmdCode_##What() const       \
+      {                                        \
+        SXO_INIT                               \
+        SXO_##OP1(&m_pRPN,0)                  \
+        SXO_##OP2(&m_pRPN,1)                  \
+        SXO_##OP3(&m_pRPN,2)                  \
+        SXO_RET                                \
       }
 
   #define ParseFunc4(What, OP1, OP2, OP3, OP4) \
-      TValue ParseCmdCode_##What() const     \
+      TValue ParseCmdCode_##What() const       \
       {                                        \
         SXO_INIT                               \
-        SXO_##OP1(&m_pRPN[0])                \
-        SXO_##OP2(&m_pRPN[1])                \
-        SXO_##OP3(&m_pRPN[2])                \
-        SXO_##OP4(&m_pRPN[3])                \
+        SXO_##OP1(&m_pRPN,0)                  \
+        SXO_##OP2(&m_pRPN,1)                  \
+        SXO_##OP3(&m_pRPN,2)                  \
+        SXO_##OP4(&m_pRPN,3)                  \
         SXO_RET                                \
       }
 
     //---------------------------------------------------------------------------------------------
-    TValue ParseCmdCode_C1() const
+    TValue ParseCmdCode_V1() const
     {    
       return m_pRPN->Val.fixed;
     }
 
     //---------------------------------------------------------------------------------------------
-    TValue ParseCmdCode_C2() const
+    TValue ParseCmdCode_V2() const
     {    
       return *m_pRPN->Val.ptr * m_pRPN->Val.mul;
     }
 
     //---------------------------------------------------------------------------------------------
-    TValue ParseCmdCode_V() const
+    TValue ParseCmdCode_V3() const
     {    
       return *m_pRPN->Val.ptr * m_pRPN->Val.mul + m_pRPN->Val.fixed;
     }
@@ -981,6 +876,50 @@ protected:
     ParseFunc4(VFVF, VAL, FUN, VAL, FUN)
     ParseFunc4(VVFF, VAL, VAL, FUN, FUN)
     ParseFunc4(VVVF, VAL, VAL, VAL, FUN)
+
+/*
+#define ParseFunc4(What, OP1, OP2, OP3, OP4) \
+    TValue ParseCmdCode_##What() const       \
+    {                                        \
+      SXO_INIT                               \
+      SXO_##OP1(&m_pRPN[0])                  \
+      SXO_##OP2(&m_pRPN[1])                  \
+      SXO_##OP3(&m_pRPN[2])                  \
+      SXO_##OP4(&m_pRPN[3])                  \
+      SXO_RET                                \
+    }
+
+#define ParseFunc(ARG1, ARG2, ARG3, ARG4, ARG5) ParseFunc4(ARG1, 1, ARG2, 2, ARG3, 3, ARG4, 4, ARG5)
+
+//  ParseFunc(VVVF, VAL, VAL, VAL, FUN)
+//    ParseFunc4(VVVF, 1, VAL, 2, VAL, 3, VAL, 4, FUN)
+*/
+
+/*
+    //---------------------------------------------------------------------------------------------
+    TValue ParseCmdCode_VVVF() const
+    {
+      m_pStack[1] = m_pRPN[0]->Val.fixed + *(m_pRPN[0])->Val.ptr;
+      m_pStack[2] = m_pRPN[1]->Val.fixed + *(m_pRPN[1])->Val.ptr;
+      m_pStack[3] = m_pRPN[2]->Val.fixed + *(m_pRPN[2])->Val.ptr;
+      {
+        const typename token_type::SFunDef &fun = (m_pRPN[3])->Fun;
+        (*fun.ptr)(&m_pStack[1], fun.argc);
+      }
+      return m_pStack[1];
+    }
+
+    //---------------------------------------------------------------------------------------------
+    TValue ParseCmdCode_VVVF() const
+    {
+      *m_pStack_1 = m_pRPN_0->Val.fixed + *(m_pRPN_0->Val.ptr);
+      *m_pStack_2 = m_pRPN_1->Val.fixed + *(m_pRPN_1->Val.ptr);
+      *m_pStack_3 = m_pRPN_2->Val.fixed + *(m_pRPN_2->Val.ptr);
+      (*m_pRPN_3->Fun.ptr)(&m_pStack_1, m_pRPN_3->Fun.argc);
+      return *m_pStack_1;
+    }
+
+ */
 
     ParseFunc2(XF,   VAX, FUN)
     ParseFunc3(XFF,  VAX, FUN, FUN)
@@ -1030,24 +969,21 @@ protected:
         {
           switch(stOprt.top().Cmd)
           {
-          case cmVAR:   _OUT << _SL("VAR\n");  break;
-          case cmVAL:   _OUT << _SL("VAL\n");  break;
-          case cmFUNC:  _OUT << _SL("FUNC \"") 
+          case cmVAR:        _OUT << _SL("VAR\n");  break;
+          case cmVAL:        _OUT << _SL("VAL\n");  break;
+          case cmFUNC:       _OUT << _SL("FUNC \"")
                                   << stOprt.top().Ident
                                   << _SL("\"\n");   break;
           case cmOPRT_INFIX: _OUT << _SL("OPRT_INFIX \"")
-                                       << stOprt.top().Ident
-                                       << _SL("\"\n");          break;
-          case cmOPRT_BIN:   _OUT << _SL("OPRT_BIN \"") 
-                                       << stOprt.top().Ident
-                                       << _SL("\"\n");          break;
-          case cmEND:      _OUT << _SL("END\n");            break;
-          case cmBO:       _OUT << _SL("BRACKET \"(\"\n");  break;
-          case cmBC:       _OUT << _SL("BRACKET \")\"\n");  break;
-          case cmIF:       _OUT << _SL("IF\n");  break;
-          case cmELSE:     _OUT << _SL("ELSE\n");  break;
-          case cmENDIF:    _OUT << _SL("ENDIF\n");  break;
-          default:         _OUT << stOprt.top().Cmd << _SL(" ");  break;
+                                  << stOprt.top().Ident
+                                  << _SL("\"\n");          break;
+          case cmOPRT_BIN:   _OUT << _SL("OPRT_BIN \"")
+                                  << stOprt.top().Ident
+                                  << _SL("\"\n");          break;
+          case cmEND:        _OUT << _SL("END\n");            break;
+          case cmBO:         _OUT << _SL("BRACKET \"(\"\n");  break;
+          case cmBC:         _OUT << _SL("BRACKET \")\"\n");  break;
+          default:           _OUT << stOprt.top().Cmd << _SL(" ");  break;
           }
         }	
         stOprt.pop();
@@ -1079,9 +1015,7 @@ protected:
   template<typename TValue, typename TString>
   const typename TString::value_type* ParserBase<TValue, TString>::c_DefaultOprt[] = { _SL("="), 
                                                                                        _SL("("), 
-                                                                                       _SL(")"), 
-                                                                                       _SL("?"),
-                                                                                       _SL(":"), 
+                                                                                       _SL(")"),
                                                                                        nullptr };
 
   template<typename TValue, typename TString>

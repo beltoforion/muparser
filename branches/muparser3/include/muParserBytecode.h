@@ -49,7 +49,7 @@ MUP_NAMESPACE_START
       typedef std::basic_stringstream<typename TString::value_type,
                                       std::char_traits<typename TString::value_type>,  
                                       std::allocator<typename TString::value_type> > stringstream_type;
-      typedef void (MUP_FASTCALL *fun_type)(TValue*, int narg);
+      typedef void (*fun_type)(TValue*, int narg);
 
       unsigned m_iStackPos;
       int m_nFoldableValues;
@@ -58,31 +58,31 @@ MUP_NAMESPACE_START
       bool m_bEnableOptimizer;
 
       //-------------------------------------------------------------------------------------------
-      static void MUP_FASTCALL FUN_AA(TValue *arg, int)  { arg[0] += arg[1] + arg[2]; }
-      static void MUP_FASTCALL FUN_AS(TValue *arg, int)  { arg[0] -= arg[1] + arg[2]; }
-      static void MUP_FASTCALL FUN_MA(TValue *arg, int)  { arg[0] += arg[1] * arg[2]; }
-      static void MUP_FASTCALL FUN_AM(TValue *arg, int)  { arg[0] *= arg[1] + arg[2]; }
-      static void MUP_FASTCALL FUN_MM(TValue *arg, int)  { arg[0] *= arg[1] * arg[2]; }
-      static void MUP_FASTCALL FUN_DD(TValue *arg, int)  { arg[0] /= arg[1] / arg[2]; }
-      static void MUP_FASTCALL FUN_MD(TValue *arg, int)  { arg[0] /= arg[1] * arg[2]; }
-      static void MUP_FASTCALL FUN_DM(TValue *arg, int)  { arg[0] *= arg[1] / arg[2]; }
-      static void MUP_FASTCALL FUN_DA(TValue *arg, int)  { arg[0] += arg[1] / arg[2]; }
-      static void MUP_FASTCALL FUN_AD(TValue *arg, int)  { arg[0] /= arg[1] + arg[2]; }
-      static void MUP_FASTCALL FUN_DS(TValue *arg, int)  { arg[0] -= arg[1] / arg[2]; }
-      static void MUP_FASTCALL FUN_SD(TValue *arg, int)  { arg[0] /= arg[1] - arg[2]; }
+      static void FUN_AA(TValue *arg, int)  { arg[0] += arg[1] + arg[2]; }
+      static void FUN_AS(TValue *arg, int)  { arg[0] -= arg[1] + arg[2]; }
+      static void FUN_MA(TValue *arg, int)  { arg[0] += arg[1] * arg[2]; }
+      static void FUN_AM(TValue *arg, int)  { arg[0] *= arg[1] + arg[2]; }
+      static void FUN_MM(TValue *arg, int)  { arg[0] *= arg[1] * arg[2]; }
+      static void FUN_DD(TValue *arg, int)  { arg[0] /= arg[1] / arg[2]; }
+      static void FUN_MD(TValue *arg, int)  { arg[0] /= arg[1] * arg[2]; }
+      static void FUN_DM(TValue *arg, int)  { arg[0] *= arg[1] / arg[2]; }
+      static void FUN_DA(TValue *arg, int)  { arg[0] += arg[1] / arg[2]; }
+      static void FUN_AD(TValue *arg, int)  { arg[0] /= arg[1] + arg[2]; }
+      static void FUN_DS(TValue *arg, int)  { arg[0] -= arg[1] / arg[2]; }
+      static void FUN_SD(TValue *arg, int)  { arg[0] /= arg[1] - arg[2]; }
 
-      static void MUP_FASTCALL FUN_P2(TValue *arg, int)  { arg[0] *= arg[0]; }
-      static void MUP_FASTCALL FUN_P3(TValue *arg, int)  { arg[0] *= arg[0] * arg[0]; }
-      static void MUP_FASTCALL FUN_P4(TValue *arg, int)  { arg[0] *= arg[0] * arg[0] * arg[0]; }
-      static void MUP_FASTCALL FUN_P5(TValue *arg, int)  { arg[0] *= arg[0] * arg[0] * arg[0] * arg[0]; }
+      static void FUN_P2(TValue *arg, int)  { arg[0] *= arg[0]; }
+      static void FUN_P3(TValue *arg, int)  { arg[0] *= arg[0] * arg[0]; }
+      static void FUN_P4(TValue *arg, int)  { arg[0] *= arg[0] * arg[0] * arg[0]; }
+      static void FUN_P5(TValue *arg, int)  { arg[0] *= arg[0] * arg[0] * arg[0] * arg[0]; }
 
-      static void MUP_FASTCALL FUN_P2M(TValue *arg, int) { arg[0] *= arg[1] * arg[1]; }
-      static void MUP_FASTCALL FUN_P3M(TValue *arg, int) { arg[0] *= arg[1] * arg[1] * arg[1]; }
-      static void MUP_FASTCALL FUN_P4M(TValue *arg, int) { arg[0] *= arg[1] * arg[1] * arg[1] * arg[1]; }
+      static void FUN_P2M(TValue *arg, int) { arg[0] *= arg[1] * arg[1]; }
+      static void FUN_P3M(TValue *arg, int) { arg[0] *= arg[1] * arg[1] * arg[1]; }
+      static void FUN_P4M(TValue *arg, int) { arg[0] *= arg[1] * arg[1] * arg[1] * arg[1]; }
 
-      static void MUP_FASTCALL FUN_P2A(TValue *arg, int) { arg[0] += arg[1] * arg[1]; }
-      static void MUP_FASTCALL FUN_P3A(TValue *arg, int) { arg[0] += arg[1] * arg[1] * arg[1]; }
-      static void MUP_FASTCALL FUN_P4A(TValue *arg, int) { arg[0] += arg[1] * arg[1] * arg[1] * arg[1]; }
+      static void FUN_P2A(TValue *arg, int) { arg[0] += arg[1] * arg[1]; }
+      static void FUN_P3A(TValue *arg, int) { arg[0] += arg[1] * arg[1] * arg[1]; }
+      static void FUN_P4A(TValue *arg, int) { arg[0] += arg[1] * arg[1] * arg[1] * arg[1]; }
 
   public:
 
@@ -125,11 +125,6 @@ MUP_NAMESPACE_START
       void AddVal(token_type &tok)
       {
         ++m_iStackPos;
-
-        tok.Val.ptr2 = nullptr;  // NUR nullptr, steht für uninitialisiert!
-        tok.Val.mul2 = 0;
-        tok.Val.fixed2 = 0;
-
         m_iMaxStackSize = std::max(m_iMaxStackSize, (size_t)m_iStackPos);
         AddTok(tok);
       }
@@ -157,22 +152,6 @@ MUP_NAMESPACE_START
         MUP_ASSERT(tok.Cmd==cmASSIGN);
         MUP_ASSERT(m_iStackPos>=1);
 
-        AddTok(tok);
-      }
-
-      //-------------------------------------------------------------------------------------------
-      void AddIf(const token_type &tok)
-      {
-        MUP_ASSERT(tok.Cmd==cmIF);
-        m_iStackPos--;
-        AddTok(tok);
-      }
-
-      //-------------------------------------------------------------------------------------------
-      void AddElse(const token_type &tok)
-      {
-        MUP_ASSERT(tok.Cmd==cmELSE);
-        m_iStackPos = tok.StackPos = m_vRPN.back().StackPos-1;
         AddTok(tok);
       }
 
@@ -211,21 +190,17 @@ MUP_NAMESPACE_START
       }
 
       //-------------------------------------------------------------------------------------------
-      void Finalize(TValue * /*pStack*/)
+      void Finalize()
       {
         Substitute();
         
-        // reduce the number of tokens by sqeezing multiple tokens into a single one
-        Compress();
-
         // Add end marker
         token_type tok;
         tok.Cmd = cmEND;
         m_vRPN.push_back(tok);
 
         // Determine the if-then-else jump offsets
-        ParserStack<int> stIf, stElse;
-        int idx, nEngineCode = 0;
+        int nEngineCode = 0;
         bool bNoMul = true;
         for (int i=0; i<(int)m_vRPN.size(); ++i)
         {
@@ -233,11 +208,11 @@ MUP_NAMESPACE_START
 
           // Reintroduce cmVAL and cmVAR codes, they can be evaluated more 
           // efficiently (compared to cmVAL_EX)
-          if (tok.Val.mul==0 && tok.Cmd==cmVAL_EX && tok.Val.ptr2==nullptr)
+          if (tok.Val.mul==0 && tok.Cmd==cmVAL_EX)
           {
             tok.Cmd = cmVAL;
           }
-          else if (tok.Val.fixed==0 && tok.Val.mul==1 && tok.Cmd==cmVAL_EX && tok.Val.ptr2==nullptr)
+          else if (tok.Val.fixed==0 && tok.Val.mul==1 && tok.Cmd==cmVAL_EX)
           {
             tok.Cmd = cmVAR;
           }
@@ -247,21 +222,6 @@ MUP_NAMESPACE_START
 
           switch(tok.Cmd)
           {
-          case cmIF:      stIf.push(i);
-                          nEngineCode |= ecUNOPTIMIZABLE;
-                          break;
-
-          case cmELSE:    stElse.push(i);
-                          idx = stIf.pop();
-                          m_vRPN[idx].Oprt.offset = i - idx;
-                          nEngineCode |= ecUNOPTIMIZABLE;
-                          break;
-      
-          case cmENDIF:   idx = stElse.pop();
-                          m_vRPN[idx].Oprt.offset = i - idx;
-                          nEngineCode |= ecUNOPTIMIZABLE;
-                          break;
-
           case cmVAL:
           case cmVAR:
           case cmVAL_EX:  if (nEngineCode<ecUNOPTIMIZABLE)
@@ -298,9 +258,6 @@ MUP_NAMESPACE_START
           m_eEngineCode = (EEngineCode)(nEngineCode | ecNO_MUL);
         else
           m_eEngineCode = (EEngineCode)nEngineCode;
-
-        // reduce the number of tokens by sqeezing multiple tokens into a single one
-//        Compress();
       }
 
       //-------------------------------------------------------------------------------------------
@@ -370,24 +327,6 @@ MUP_NAMESPACE_START
 
                 _OUT << _SL("[MUL: ") << m_vRPN[i].Val.mul   << _SL("]");
                 _OUT << _SL("[ADD:")  << m_vRPN[i].Val.fixed << _SL("]\n");
-
-                if (m_vRPN[i].Val.ptr2!=nullptr)
-                {
-                  _OUT << _SL("\tVAL_EX \t");
-
-                  if (m_vRPN[i].Val.ptr2==&ParserBase<TValue, TString>::g_NullValue)
-                  {
-                    _OUT << _SL("[ADDR:  &ParserBase::g_NullValue]");
-                  }
-                  else
-                  {
-                    _OUT << _SL("[ADDR: 0x") << std::hex << m_vRPN[i].Val.ptr2 << _SL("]");
-                    _OUT << _SL("[IDENT:")   << m_vRPN[i].Ident << _SL("]"); 
-                  }
-
-                  _OUT << _SL("[MUL: ") << m_vRPN[i].Val.mul2   << _SL("]");
-                  _OUT << _SL("[ADD:")  << m_vRPN[i].Val.fixed2 << _SL("]\n");
-                }
                 break;
 
           case  cmVAL:   
@@ -408,38 +347,6 @@ MUP_NAMESPACE_START
                 _OUT << _SL("[ARG:")     << std::dec << m_vRPN[i].Fun.argc << _SL("]"); 
                 _OUT << _SL("[ADDR: 0x") << std::hex << m_vRPN[i].Fun.ptr  << _SL("]"); 
                 _OUT << _SL("\n");
-
-                if (m_vRPN[i].Fun.ptr2!=nullptr)
-                {
-                  _OUT << _SL("\tCALL\t");
-                  _OUT << _SL("[IDENT: \"\"]"); 
-                  _OUT << _SL("[ARG:")     << std::dec << m_vRPN[i].Fun.argc2 << _SL("]"); 
-                  _OUT << _SL("[ADDR: 0x") << std::hex << m_vRPN[i].Fun.ptr2  << _SL("]"); 
-                  _OUT << _SL("\n");
-                }
-
-                if (m_vRPN[i].Fun.ptr3!=nullptr)
-                {
-                  _OUT << _SL("\tCALL\t");
-                  _OUT << _SL("[IDENT: \"\"]"); 
-                  _OUT << _SL("[ARG:")     << std::dec << m_vRPN[i].Fun.argc3 << _SL("]"); 
-                  _OUT << _SL("[ADDR: 0x") << std::hex << m_vRPN[i].Fun.ptr3  << _SL("]"); 
-                  _OUT << _SL("\n");
-                }
-                break;
-
-          case  cmIF:    
-                _OUT << _SL("IF\t");
-                _OUT << _SL("[OFFSET:") << std::dec << m_vRPN[i].Oprt.offset << _SL("]\n");
-                break;
-
-          case  cmELSE:  
-                _OUT << _SL("ELSE\t");
-                _OUT << _SL("[OFFSET:") << std::dec << m_vRPN[i].Oprt.offset << _SL("]\n");
-                break;
-
-          case  cmENDIF: 
-                _OUT << _SL("ENDIF\n"); 
                 break;
 
           case  cmASSIGN: 
@@ -724,81 +631,6 @@ MUP_NAMESPACE_START
           default:
                 newRPN.push_back(tokOrig);
                 continue;
-          }
-        }
-
-        m_vRPN = newRPN;
-      }
-
-      //-------------------------------------------------------------------------------------------
-      /** \brief Try to shorten the bytecode.
-      
-        This function will try shortening the bytecode by merging successive 
-        entries into a single one. Successive arithmetic operations will
-        be replaced with ternary function calls if applicable. 
-
-        a+b+c -> add(a,b,c)
-      */
-      void Compress()
-      {
-        rpn_type  newRPN;
-
-        if (m_bEnableOptimizer)
-        {
-          for (std::size_t i=0; i<m_vRPN.size(); ++i)
-          {
-            token_type &tokOrig = m_vRPN[i];
-
-            if (!newRPN.size())
-            {
-              newRPN.push_back(tokOrig);
-              continue;
-            }
-
-            token_type &tokNew = newRPN.back();
-            switch(tokOrig.Cmd)
-            {
-            case  cmFUNC:
-                  if (tokNew.Cmd==cmFUNC)
-                  {
-                    if (tokNew.Fun.ptr2==nullptr)
-                    {
-                      // Join the two function tokens
-                      tokNew.Fun.ptr2  = tokOrig.Fun.ptr;
-                      tokNew.Fun.argc2 = tokOrig.Fun.argc;
-                      continue;
-                    }
-                    else if (tokNew.Fun.ptr3==nullptr)
-                    {
-                      // Joint with 3rd function
-                      tokNew.Fun.ptr3  = tokOrig.Fun.ptr;
-                      tokNew.Fun.argc3 = tokOrig.Fun.argc;
-                      continue;
-                    }
-                  }
-
-                  // Function tokens can't be joined
-                  newRPN.push_back(tokOrig);
-                  continue;
-
-            case  cmVAL_EX:
-                  if (tokNew.Cmd==cmVAL_EX && tokNew.Val.ptr2==nullptr)
-                  {
-                    // Join the two function tokens
-                    tokNew.Val.ptr2   = tokOrig.Val.ptr;
-                    tokNew.Val.fixed2 = tokOrig.Val.fixed;
-                    tokNew.Val.mul2   = tokOrig.Val.mul;
-                    continue;
-                  }
-
-                  // Function tokens can't be joined
-                  newRPN.push_back(tokOrig);
-                  continue;
-
-            default:
-                  newRPN.push_back(tokOrig);
-                  continue;
-            }
           }
         }
 

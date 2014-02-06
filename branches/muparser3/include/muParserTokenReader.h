@@ -399,19 +399,6 @@ MUP_NAMESPACE_START
                     Error(ecUNEXPECTED_PARENS, m_iPos, pOprtDef[i]);
                   break;
 
-            case cmELSE:
-                  if (m_iSynFlags & noELSE)
-                    Error(ecUNEXPECTED_CONDITIONAL, m_iPos, pOprtDef[i]);
-
-                  m_iSynFlags = noBC | noPOSTOP | noEND | noOPT | noIF | noELSE;
-                  break;
-
-            case cmIF:
-                  if (m_iSynFlags & noIF)
-                    Error(ecUNEXPECTED_CONDITIONAL, m_iPos, pOprtDef[i]);
-
-                  m_iSynFlags = noBC | noPOSTOP | noEND | noOPT | noIF | noELSE;
-                  break;
 
 		        default:      // The operator is listed in c_DefaultOprt, but not here. This is a bad thing...
                   Error(ecINTERNAL_ERROR);

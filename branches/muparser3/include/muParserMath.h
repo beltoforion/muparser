@@ -24,11 +24,11 @@ MUP_NAMESPACE_START
       static const T c_pi;
 
       // basic arithmetic operations
-      static void MUP_FASTCALL Add(T *arg, int /*argc*/) { *arg += arg[1]; }
-      static void MUP_FASTCALL Sub(T *arg, int /*argc*/) { *arg -= arg[1]; }
-      static void MUP_FASTCALL Mul(T *arg, int /*argc*/) { *arg *= arg[1]; }
-      static void MUP_FASTCALL Div(T *arg, int /*argc*/) { *arg /= arg[1]; }
-      static void MUP_FASTCALL Pow(T *arg, int /*argc*/)   
+      static void Add(T *arg, int /*argc*/) { *arg += arg[1]; }
+      static void Sub(T *arg, int /*argc*/) { *arg -= arg[1]; }
+      static void Mul(T *arg, int /*argc*/) { *arg *= arg[1]; }
+      static void Div(T *arg, int /*argc*/) { *arg /= arg[1]; }
+      static void Pow(T *arg, int /*argc*/)
       { 
         T v2 = arg[1]; 
 
@@ -39,47 +39,47 @@ MUP_NAMESPACE_START
           arg[0] = std::pow(arg[0], v2); 
       }
 
-      static void MUP_FASTCALL And(T *arg,       int) { *arg = *arg && arg[1]; }
-      static void MUP_FASTCALL Or(T *arg,        int) { *arg = *arg || arg[1]; }
-      static void MUP_FASTCALL Less(T *arg,      int) { *arg = *arg <  arg[1]; }
-      static void MUP_FASTCALL Greater(T *arg,   int) { *arg = *arg >  arg[1]; }
-      static void MUP_FASTCALL LessEq(T *arg,    int) { *arg = *arg <= arg[1]; }
-      static void MUP_FASTCALL GreaterEq(T *arg, int) { *arg = *arg >= arg[1]; }
-      static void MUP_FASTCALL Equal(T *arg,     int) { *arg = *arg == arg[1]; }
-      static void MUP_FASTCALL NotEqual(T *arg,  int) { *arg = *arg != arg[1]; }
+      static void And(T *arg,       int) { *arg = *arg && arg[1]; }
+      static void Or(T *arg,        int) { *arg = *arg || arg[1]; }
+      static void Less(T *arg,      int) { *arg = *arg <  arg[1]; }
+      static void Greater(T *arg,   int) { *arg = *arg >  arg[1]; }
+      static void LessEq(T *arg,    int) { *arg = *arg <= arg[1]; }
+      static void GreaterEq(T *arg, int) { *arg = *arg >= arg[1]; }
+      static void Equal(T *arg,     int) { *arg = *arg == arg[1]; }
+      static void NotEqual(T *arg,  int) { *arg = *arg != arg[1]; }
 
       // 
-      static void MUP_FASTCALL Sin(T *arg,   int) { *arg = sin(*arg);  }
-      static void MUP_FASTCALL Cos(T *arg,   int) { *arg = cos(*arg);  }
-      static void MUP_FASTCALL Tan(T *arg,   int) { *arg = tan(*arg);  }
-      static void MUP_FASTCALL ASin(T *arg,  int) { *arg = asin(*arg); }
-      static void MUP_FASTCALL ACos(T *arg,  int) { *arg = acos(*arg); }
-      static void MUP_FASTCALL ATan(T *arg,  int) { *arg = atan(*arg); }
-      static void MUP_FASTCALL ATan2(T *arg, int) { *arg = atan2(*arg, arg[1]); }
-      static void MUP_FASTCALL Sinh(T *arg,  int) { *arg = sinh(*arg); }
-      static void MUP_FASTCALL Cosh(T *arg,  int) { *arg = cosh(*arg); }
-      static void MUP_FASTCALL Tanh(T *arg,  int) { *arg = tanh(*arg); }
-      static void MUP_FASTCALL ASinh(T *arg, int) { T &v = *arg; *arg = log(v + sqrt(v * v + 1)); }
-      static void MUP_FASTCALL ACosh(T *arg, int) { T &v = *arg; *arg = log(v + sqrt(v * v - 1)); }
-      static void MUP_FASTCALL ATanh(T *arg, int) { T &v = *arg; *arg = ((T)0.5 * log((1 + v) / (1 - v))); }
+      static void Sin(T *arg,   int) { *arg = sin(*arg);  }
+      static void Cos(T *arg,   int) { *arg = cos(*arg);  }
+      static void Tan(T *arg,   int) { *arg = tan(*arg);  }
+      static void ASin(T *arg,  int) { *arg = asin(*arg); }
+      static void ACos(T *arg,  int) { *arg = acos(*arg); }
+      static void ATan(T *arg,  int) { *arg = atan(*arg); }
+      static void ATan2(T *arg, int) { *arg = atan2(*arg, arg[1]); }
+      static void Sinh(T *arg,  int) { *arg = sinh(*arg); }
+      static void Cosh(T *arg,  int) { *arg = cosh(*arg); }
+      static void Tanh(T *arg,  int) { *arg = tanh(*arg); }
+      static void ASinh(T *arg, int) { T &v = *arg; *arg = log(v + sqrt(v * v + 1)); }
+      static void ACosh(T *arg, int) { T &v = *arg; *arg = log(v + sqrt(v * v - 1)); }
+      static void ATanh(T *arg, int) { T &v = *arg; *arg = ((T)0.5 * log((1 + v) / (1 - v))); }
       
       // Logarithms and exponential functions
-      static void MUP_FASTCALL Log(T *arg,   int) { *arg = log(*arg); } 
-      static void MUP_FASTCALL Log2(T *arg,  int) { *arg = log(*arg)/log((T)2); } // Logarithm base 2
-      static void MUP_FASTCALL Log10(T *arg, int) { *arg = log10(*arg); }         // Logarithm base 10
-      static void MUP_FASTCALL Exp(T *arg,   int) { *arg = exp(*arg);   }
-      static void MUP_FASTCALL Abs(T *arg,   int) { T &v = arg[0]; *arg = (v>=0) ? v : -v; }
-      static void MUP_FASTCALL Sqrt(T *arg,  int) { *arg = sqrt(*arg);  }
-      static void MUP_FASTCALL Rint(T *arg,  int) { *arg = floor(*arg + (T)0.5); }
-      static void MUP_FASTCALL Sign(T *arg,  int) { T &v = arg[0]; *arg = (T)((v<0) ? -1 : (v>0) ? 1 : 0); }
+      static void Log(T *arg,   int) { *arg = log(*arg); }
+      static void Log2(T *arg,  int) { *arg = log(*arg)/log((T)2); } // Logarithm base 2
+      static void Log10(T *arg, int) { *arg = log10(*arg); }         // Logarithm base 10
+      static void Exp(T *arg,   int) { *arg = exp(*arg);   }
+      static void Abs(T *arg,   int) { T &v = arg[0]; *arg = (v>=0) ? v : -v; }
+      static void Sqrt(T *arg,  int) { *arg = sqrt(*arg);  }
+      static void Rint(T *arg,  int) { *arg = floor(*arg + (T)0.5); }
+      static void Sign(T *arg,  int) { T &v = arg[0]; *arg = (T)((v<0) ? -1 : (v>0) ? 1 : 0); }
 
       //---------------------------------------------------------------------------------------------
-      static void MUP_FASTCALL UnaryMinus(T *arg, int)  { *arg *= -1; }
-      static void MUP_FASTCALL UnaryPlus(T * /*arg*/, int)  { }
+      static void UnaryMinus(T *arg, int)  { *arg *= -1; }
+      static void UnaryPlus(T * /*arg*/, int)  { }
 
       //---------------------------------------------------------------------------------------------
       // Functions with unlimited number of arguments
-      static void MUP_FASTCALL Sum(T *arg, int a_iArgc)
+      static void Sum(T *arg, int a_iArgc)
       { 
         if (!a_iArgc)	
           throw ParserError<TString>(_SL("too few arguments for function sum."));
@@ -92,7 +92,7 @@ MUP_NAMESPACE_START
       }
 
       //---------------------------------------------------------------------------
-      static void MUP_FASTCALL Avg(T *arg, int a_iArgc)
+      static void Avg(T *arg, int a_iArgc)
       { 
         if (!a_iArgc)	
           throw ParserError<TString>(_SL("too few arguments for function sum."));
@@ -105,7 +105,7 @@ MUP_NAMESPACE_START
       }
 
       //---------------------------------------------------------------------------
-      static void MUP_FASTCALL Min(T *arg, int a_iArgc)
+      static void Min(T *arg, int a_iArgc)
       { 
         if (!a_iArgc)	
           throw ParserError<TString>(_SL("too few arguments for function min."));
@@ -118,7 +118,7 @@ MUP_NAMESPACE_START
       }
 
       //---------------------------------------------------------------------------
-      static void MUP_FASTCALL Max(T *arg, int a_iArgc)
+      static void Max(T *arg, int a_iArgc)
       { 
         if (!a_iArgc)	
           throw ParserError<TString>(_SL("too few arguments for function min."));
@@ -143,97 +143,6 @@ MUP_NAMESPACE_START
 
     template<typename T, typename TString>
     const T MathImpl<T, TString>::c_e  = (T)2.718281828459045235360287;
-
-
-    //---------------------------------------------------------------------------------------------
-    /** \brief Mathematical functions for integer values.
-    */
-    template<typename TString>
-    struct MathImpl<int, TString>
-    {
-      // Constants
-      static const int c_e  = 3;
-      static const int c_pi = 4;
-
-      static void MUP_FASTCALL Sin(int*,   int) { throw ParserError<TString>(_SL("unimplemented function.")); }
-      static void MUP_FASTCALL Cos(int*,   int) { throw ParserError<TString>(_SL("unimplemented function.")); }
-      static void MUP_FASTCALL Tan(int*,   int) { throw ParserError<TString>(_SL("unimplemented function.")); }
-      static void MUP_FASTCALL ASin(int*,  int) { throw ParserError<TString>(_SL("unimplemented function.")); }
-      static void MUP_FASTCALL ACos(int*,  int) { throw ParserError<TString>(_SL("unimplemented function.")); }
-      static void MUP_FASTCALL ATan(int*,  int) { throw ParserError<TString>(_SL("unimplemented function.")); }
-      static void MUP_FASTCALL ATan2(int*, int) { throw ParserError<TString>(_SL("unimplemented function.")); }
-      static void MUP_FASTCALL Sinh(int*,  int) { throw ParserError<TString>(_SL("unimplemented function.")); }
-      static void MUP_FASTCALL Cosh(int*,  int) { throw ParserError<TString>(_SL("unimplemented function.")); }
-      static void MUP_FASTCALL Tanh(int*,  int) { throw ParserError<TString>(_SL("unimplemented function.")); }
-      static void MUP_FASTCALL ASinh(int*, int) { throw ParserError<TString>(_SL("unimplemented function.")); }
-      static void MUP_FASTCALL ACosh(int*, int) { throw ParserError<TString>(_SL("unimplemented function.")); }
-      static void MUP_FASTCALL ATanh(int*, int) { throw ParserError<TString>(_SL("unimplemented function.")); }
-      static void MUP_FASTCALL Log(int*,   int) { throw ParserError<TString>(_SL("unimplemented function.")); }
-      static void MUP_FASTCALL Log2(int*,  int) { throw ParserError<TString>(_SL("unimplemented function.")); }
-      static void MUP_FASTCALL Log10(int*, int) { throw ParserError<TString>(_SL("unimplemented function.")); }
-      static void MUP_FASTCALL Exp(int*,   int) { throw ParserError<TString>(_SL("unimplemented function.")); }
-      static void MUP_FASTCALL Sqrt(int*,  int) { throw ParserError<TString>(_SL("unimplemented function.")); }
-      static void MUP_FASTCALL Rint(int*,  int) { throw ParserError<TString>(_SL("unimplemented function.")); }
-      static void MUP_FASTCALL Avg(int*,   int) { throw ParserError<TString>(_SL("unimplemented function.")); }
-      
-      static void MUP_FASTCALL Sign      (int *arg, int) { int &v = arg[0]; *arg = (v<0) ? -1 : (v>0) ? 1 : 0; }
-      static void MUP_FASTCALL Add       (int *arg, int) { *arg += arg[1]; }
-      static void MUP_FASTCALL Sub       (int *arg, int) { *arg -= arg[1]; }
-      static void MUP_FASTCALL Mul       (int *arg, int) { *arg *= arg[1]; }
-      static void MUP_FASTCALL Div       (int *arg, int) { *arg /= arg[1]; }
-      static void MUP_FASTCALL Pow       (int *arg, int) {  arg[0] = std::pow((long double)arg[0], arg[1]); }
-      static void MUP_FASTCALL Abs       (int *arg, int) { *arg = std::abs(*arg); }
-      static void MUP_FASTCALL And       (int *arg, int) { *arg = *arg && arg[1]; }
-      static void MUP_FASTCALL Or        (int *arg, int) { *arg = *arg || arg[1]; }
-      static void MUP_FASTCALL Less      (int *arg, int) { *arg = *arg <  arg[1]; }
-      static void MUP_FASTCALL Greater   (int *arg, int) { *arg = *arg >  arg[1]; }
-      static void MUP_FASTCALL LessEq    (int *arg, int) { *arg = *arg <= arg[1]; }
-      static void MUP_FASTCALL GreaterEq (int *arg, int) { *arg = *arg >= arg[1]; }
-      static void MUP_FASTCALL Equal     (int *arg, int) { *arg = *arg == arg[1]; }
-      static void MUP_FASTCALL NotEqual  (int *arg, int) { *arg = *arg != arg[1]; }
-      static void MUP_FASTCALL UnaryMinus(int *arg, int) { *arg *= -1; }
-      static void MUP_FASTCALL UnaryPlus(int * /*arg*/, int) { }
-
-      //---------------------------------------------------------------------------------------------
-      // Functions with unlimited number of arguments
-      static void MUP_FASTCALL Sum(int *arg, int a_iArgc)
-      { 
-        if (!a_iArgc)	
-          throw ParserError<TString>(_SL("too few arguments for function sum."));
-
-        int sum = 0;
-        for (int i=0; i<a_iArgc; ++i) 
-          sum += arg[i];
-
-        arg[0] = sum;
-      }
-
-      //-------------------------------------------------------------------------------------------
-      static void MUP_FASTCALL Min(int *arg, int a_iArgc)
-      { 
-        if (!a_iArgc)	
-          throw ParserError<TString>(_SL("too few arguments for function min."));
-
-        int min = arg[0];
-        for (int i=0; i<a_iArgc; ++i) 
-          min = std::min(min, arg[i]);
-
-        arg[0] = min;
-      }
-
-      //-------------------------------------------------------------------------------------------
-      static void MUP_FASTCALL Max(int *arg, int a_iArgc)
-      { 
-        if (!a_iArgc)	
-          throw ParserError<TString>(_SL("too few arguments for function min."));
-
-        int max = arg[0];
-        for (int i=0; i<a_iArgc; ++i) 
-          max = std::max(max, arg[i]);
-
-        arg[0] = max;
-      }
-    };
 }
 
 #endif

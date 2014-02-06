@@ -25,48 +25,48 @@ MUP_NAMESPACE_START
 
       // Multiarg callbacks
       	
-      static void MUP_FASTCALL arg2(TValue *arg, int)
+      static void arg2(TValue *arg, int)
       {
         arg[0] = arg[1];
       }
 
-      static void MUP_FASTCALL Min(TValue *arg, int)
+      static void Min(TValue *arg, int)
       {
         arg[0] = (arg[0]<arg[1]) ? arg[0] : arg[1];
       }
 
-      static void MUP_FASTCALL Max(TValue* arg, int /*argc*/)
+      static void Max(TValue* arg, int /*argc*/)
       {
         arg[0] = (arg[0]>arg[1]) ? arg[0] : arg[1];
       }
 
-      static void MUP_FASTCALL plus2(TValue* arg, int /*argc*/)
+      static void plus2(TValue* arg, int /*argc*/)
       { 
         arg[0] += 2;
       }
 
-      static void MUP_FASTCALL times3(TValue* arg, int /*argc*/)
+      static void times3(TValue* arg, int /*argc*/)
       { 
         arg[0] *= 3; 
       }
         
-      static void MUP_FASTCALL sqr(TValue* arg, int /*argc*/)
+      static void sqr(TValue* arg, int /*argc*/)
       { 
         arg[0] = arg[0]*arg[0]; 
       }
 
-      static void MUP_FASTCALL land(TValue* arg, int /*argc*/)
+      static void land(TValue* arg, int /*argc*/)
       {
         arg[0] = (int)arg[0] & (int)arg[1];
       }
         
-      static void MUP_FASTCALL FirstArg(TValue* /*arg*/, int argc)
+      static void FirstArg(TValue* /*arg*/, int argc)
       {
         if (!argc)	
           throw ParserError<TString>(_SL("too few arguments for function FirstArg."));
       }
 
-      static void MUP_FASTCALL LastArg(TValue *arg, int argc)
+      static void LastArg(TValue *arg, int argc)
       {
         if (!argc)	
           throw ParserError<TString>(_SL("too few arguments for function LastArg."));
@@ -74,15 +74,15 @@ MUP_NAMESPACE_START
         arg[0] = arg[argc-1];
       }
 
-      static void MUP_FASTCALL Ping(TValue *arg, int)
+      static void Ping(TValue *arg, int)
       { 
         arg[0] = 10;
       }
 
       // postfix operator callback
-      static void MUP_FASTCALL Mega(TValue *arg , int) { arg[0] *= (TValue)1e6;  }
-      static void MUP_FASTCALL Micro(TValue *arg, int) { arg[0] *= (TValue)1e-6; }
-      static void MUP_FASTCALL Milli(TValue *arg, int) { arg[0] *= (TValue)1e-3; }
+      static void Mega(TValue *arg , int) { arg[0] *= (TValue)1e6;  }
+      static void Micro(TValue *arg, int) { arg[0] *= (TValue)1e-6; }
+      static void Milli(TValue *arg, int) { arg[0] *= (TValue)1e-3; }
 
       // Custom value recognition
 
@@ -665,114 +665,6 @@ MUP_NAMESPACE_START
         return iStat;
       }
 
-
-
-      //---------------------------------------------------------------------------
-      int TestIfThenElse()
-      {
-        int iStat = 0;
-        _OUT << _SL("testing if-then-else operator...");
-
-        // Test error detection
-        iStat += ThrowTest(_SL(":3"), ecUNEXPECTED_CONDITIONAL); 
-        iStat += ThrowTest(_SL("? 1 : 2"), ecUNEXPECTED_CONDITIONAL); 
-        iStat += ThrowTest(_SL("(a<b) ? (b<c) ? 1 : 2"), ecMISSING_ELSE_CLAUSE); 
-        iStat += ThrowTest(_SL("(a<b) ? 1"), ecMISSING_ELSE_CLAUSE); 
-        iStat += ThrowTest(_SL("(a<b) ? a"), ecMISSING_ELSE_CLAUSE); 
-        iStat += ThrowTest(_SL("(a<b) ? a+b"), ecMISSING_ELSE_CLAUSE); 
-        iStat += ThrowTest(_SL("a : b"), ecMISPLACED_COLON); 
-        iStat += ThrowTest(_SL("1 : 2"), ecMISPLACED_COLON); 
-        iStat += ThrowTest(_SL("(1) ? 1 : 2 : 3"), ecMISPLACED_COLON); 
-        iStat += ThrowTest(_SL("(true) ? 1 : 2 : 3"), ecUNASSIGNABLE_TOKEN); 
-
-        iStat += EqnTest(_SL("1 ? 128 : 255"), 128, true);
-        iStat += EqnTest(_SL("1<2 ? 128 : 255"), 128, true);
-        iStat += EqnTest(_SL("a<b ? 128 : 255"), 128, true);
-        iStat += EqnTest(_SL("(a<b) ? 128 : 255"), 128, true);
-        iStat += EqnTest(_SL("(1) ? 10 : 11"), 10, true);
-        iStat += EqnTest(_SL("(0) ? 10 : 11"), 11, true);
-        iStat += EqnTest(_SL("(1) ? a+b : c+d"), 3, true);
-        iStat += EqnTest(_SL("(0) ? a+b : c+d"), 1, true);
-        iStat += EqnTest(_SL("(1) ? 0 : 1"), 0, true);
-        iStat += EqnTest(_SL("(0) ? 0 : 1"), 1, true);
-        iStat += EqnTest(_SL("(a<b) ? 10 : 11"), 10, true);
-        iStat += EqnTest(_SL("(a>b) ? 10 : 11"), 11, true);
-        iStat += EqnTest(_SL("(a<b) ? c : d"), 3, true);
-        iStat += EqnTest(_SL("(a>b) ? c : d"), -2, true);
-
-        iStat += EqnTest(_SL("(a>b) ? 1 : 0"), 0, true);
-        iStat += EqnTest(_SL("((a>b) ? 1 : 0) ? 1 : 2"), 2, true);
-        iStat += EqnTest(_SL("((a>b) ? 1 : 0) ? 1 : sum((a>b) ? 1 : 2)"), 2, true);
-        iStat += EqnTest(_SL("((a>b) ? 0 : 1) ? 1 : sum((a>b) ? 1 : 2)"), 1, true);
-
-        iStat += EqnTest(_SL("sum((a>b) ? 1 : 2)"), 2, true);
-        iStat += EqnTest(_SL("sum((1) ? 1 : 2)"), 1, true);
-        iStat += EqnTest(_SL("sum((a>b) ? 1 : 2, 100)"), 102, true);
-        iStat += EqnTest(_SL("sum((1) ? 1 : 2, 100)"), 101, true);
-        iStat += EqnTest(_SL("sum(3, (a>b) ? 3 : 10)"), 13, true);
-        iStat += EqnTest(_SL("sum(3, (a<b) ? 3 : 10)"), 6, true);
-        iStat += EqnTest(_SL("10*sum(3, (a>b) ? 3 : 10)"), 130, true);
-        iStat += EqnTest(_SL("10*sum(3, (a<b) ? 3 : 10)"), 60, true);
-        iStat += EqnTest(_SL("sum(3, (a>b) ? 3 : 10)*10"), 130, true);
-        iStat += EqnTest(_SL("sum(3, (a<b) ? 3 : 10)*10"), 60, true);
-        iStat += EqnTest(_SL("(a<b) ? sum(3, (a<b) ? 3 : 10)*10 : 99"), 60, true);
-        iStat += EqnTest(_SL("(a>b) ? sum(3, (a<b) ? 3 : 10)*10 : 99"), 99, true);
-        iStat += EqnTest(_SL("(a<b) ? sum(3, (a<b) ? 3 : 10,10,20)*10 : 99"), 360, true);
-        iStat += EqnTest(_SL("(a>b) ? sum(3, (a<b) ? 3 : 10,10,20)*10 : 99"), 99, true);
-        iStat += EqnTest(_SL("(a>b) ? sum(3, (a<b) ? 3 : 10,10,20)*10 : sum(3, (a<b) ? 3 : 10)*10"), 60, true);
-
-        // todo: auch für muParserX hinzufügen!
-        iStat += EqnTest(_SL("(a<b)&&(a<b) ? 128 : 255"), 128, true);
-        iStat += EqnTest(_SL("(a>b)&&(a<b) ? 128 : 255"), 255, true);
-        iStat += EqnTest(_SL("(1<2)&&(1<2) ? 128 : 255"), 128, true);
-        iStat += EqnTest(_SL("(1>2)&&(1<2) ? 128 : 255"), 255, true);
-        iStat += EqnTest(_SL("((1<2)&&(1<2)) ? 128 : 255"), 128, true);
-        iStat += EqnTest(_SL("((1>2)&&(1<2)) ? 128 : 255"), 255, true);
-        iStat += EqnTest(_SL("((a<b)&&(a<b)) ? 128 : 255"), 128, true);
-        iStat += EqnTest(_SL("((a>b)&&(a<b)) ? 128 : 255"), 255, true);
-
-        iStat += EqnTest(_SL("1>0 ? 1>2 ? 128 : 255 : 1>0 ? 32 : 64"), 255, true);
-        iStat += EqnTest(_SL("1>0 ? 1>2 ? 128 : 255 :(1>0 ? 32 : 64)"), 255, true);
-        iStat += EqnTest(_SL("1>0 ? 1>0 ? 128 : 255 : 1>2 ? 32 : 64"), 128, true);
-        iStat += EqnTest(_SL("1>0 ? 1>0 ? 128 : 255 :(1>2 ? 32 : 64)"), 128, true);
-        iStat += EqnTest(_SL("1>2 ? 1>2 ? 128 : 255 : 1>0 ? 32 : 64"), 32, true);
-        iStat += EqnTest(_SL("1>2 ? 1>0 ? 128 : 255 : 1>2 ? 32 : 64"), 64, true);
-        iStat += EqnTest(_SL("1>0 ? 50 :  1>0 ? 128 : 255"), 50, true);
-        iStat += EqnTest(_SL("1>0 ? 50 : (1>0 ? 128 : 255)"), 50, true);
-        iStat += EqnTest(_SL("1>0 ? 1>0 ? 128 : 255 : 50"), 128, true);
-        iStat += EqnTest(_SL("1>2 ? 1>2 ? 128 : 255 : 1>0 ? 32 : 1>2 ? 64 : 16"), 32, true);
-        iStat += EqnTest(_SL("1>2 ? 1>2 ? 128 : 255 : 1>0 ? 32 :(1>2 ? 64 : 16)"), 32, true);
-        iStat += EqnTest(_SL("1>0 ? 1>2 ? 128 : 255 :  1>0 ? 32 :1>2 ? 64 : 16"), 255, true);
-        iStat += EqnTest(_SL("1>0 ? 1>2 ? 128 : 255 : (1>0 ? 32 :1>2 ? 64 : 16)"), 255, true);
-        iStat += EqnTest(_SL("1 ? 0 ? 128 : 255 : 1 ? 32 : 64"), 255, true);
-
-        // assignment operators
-        iStat += EqnTest(_SL("a= 0 ? 128 : 255, a"), 255, true);
-        iStat += EqnTest(_SL("a=((a>b)&&(a<b)) ? 128 : 255, a"), 255, true);
-        iStat += EqnTest(_SL("c=(a<b)&&(a<b) ? 128 : 255, c"), 128, true);
-        iStat += EqnTest(_SL("0 ? a=a+1 : 666, a"), 1, true);
-        iStat += EqnTest(_SL("1?a=10:a=20, a"), 10, true);
-        iStat += EqnTest(_SL("0?a=10:a=20, a"), 20, true);
-        iStat += EqnTest(_SL("0?a=sum(3,4):10, a"), 1, true);  // a should not change its value due to lazy calculation
-      
-        iStat += EqnTest(_SL("a=1?b=1?3:4:5, a"), 3, true);
-        iStat += EqnTest(_SL("a=1?b=1?3:4:5, b"), 3, true);
-        iStat += EqnTest(_SL("a=0?b=1?3:4:5, a"), 5, true);
-        iStat += EqnTest(_SL("a=0?b=1?3:4:5, b"), 2, true);
-
-        iStat += EqnTest(_SL("a=1?5:b=1?3:4, a"), 5, true);
-        iStat += EqnTest(_SL("a=1?5:b=1?3:4, b"), 2, true);
-        iStat += EqnTest(_SL("a=0?5:b=1?3:4, a"), 3, true);
-        iStat += EqnTest(_SL("a=0?5:b=1?3:4, b"), 3, true);
-
-        if (iStat==0) 
-          _OUT << _SL("passed") << std::endl;
-        else 
-          _OUT << _SL("\n  failed with ") << iStat << _SL(" errors") << std::endl;
-
-        return iStat;
-      }
-
       //---------------------------------------------------------------------------
       int TestException()
       {
@@ -826,7 +718,6 @@ MUP_NAMESPACE_START
         AddTest(&ParserTester<TValue, TString>::TestVarConst);
         AddTest(&ParserTester<TValue, TString>::TestMultiArg);
         AddTest(&ParserTester<TValue, TString>::TestExpression);
-        AddTest(&ParserTester<TValue, TString>::TestIfThenElse);
         AddTest(&ParserTester<TValue, TString>::TestInterface);
         AddTest(&ParserTester<TValue, TString>::TestBinOprt);
         AddTest(&ParserTester<TValue, TString>::TestOptimizer);

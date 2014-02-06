@@ -41,8 +41,8 @@ MUP_NAMESPACE_START
     /** \brief Data for functions and operators. */
     struct SFunDef 
     {
-      typename parser_types<TValue, TString>::fun_type ptr, ptr2, ptr3;          ///> function pointers for up to three successive functions
-      int argc, argc2, argc3;        ///> number of arguments
+      typename parser_types<TValue, TString>::fun_type ptr;          ///> function pointers for up to three successive functions
+      int argc;                      ///> number of arguments
       int prec;                      ///> precedence (only for operators)
       EOprtAssociativity asoc;       ///> associativity (only for operators)
     };
@@ -54,15 +54,9 @@ MUP_NAMESPACE_START
     */
     struct SValDef 
     {
-      // erster wert
       TValue *ptr;
       TValue  mul;
       TValue  fixed;
-
-      // zweiter wert
-      TValue *ptr2;
-      TValue  mul2;
-      TValue  fixed2;
     };
 
     /** \brief Data for built in operators. */
@@ -107,11 +101,7 @@ MUP_NAMESPACE_START
       Fun.asoc = asoc;
       Fun.prec = prec;
       Fun.argc  = argc;
-      Fun.argc2 = 0;
-      Fun.argc3 = 0;
       Fun.ptr  = pFun;
-      Fun.ptr2 = nullptr;
-      Fun.ptr3 = nullptr;
     }
 
     //---------------------------------------------------------------------------------------------

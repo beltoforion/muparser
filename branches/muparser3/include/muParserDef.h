@@ -49,11 +49,9 @@
 #define MUP_NAMESPACE_END }
 
 #if defined(_MSC_VER)
-  #define MUP_FASTCALL __fastcall
   #define MUP_INLINE __forceinline
 #else
-  #define MUP_FASTCALL
-  #define MUP_INLINE 
+  #define MUP_INLINE inline
 #endif
 
 #if defined(_DEBUG)
@@ -159,14 +157,11 @@ MUP_NAMESPACE_START
     cmASSIGN        = 0,
     cmBO            = 1,
     cmBC            = 2,
-    cmIF            = 3,
-    cmELSE          = 4,
-    cmENDIF         = 5,
-    cmARG_SEP       = 6,
-    cmVAL_EX        = 7,
-    cmVAR           = 8,
-    cmVAL           = 9,
-    cmFUNC          = 10,
+    cmARG_SEP       = 3,
+    cmVAL_EX        = 4,
+    cmVAR           = 5,
+    cmVAL           = 6,
+    cmFUNC          = 7,
     cmOPRT_BIN,
     cmOPRT_POSTFIX,
     cmOPRT_INFIX,
@@ -264,7 +259,7 @@ MUP_NAMESPACE_START
   struct parser_types
   {
     typedef TVal value_type;
-    typedef void (MUP_FASTCALL *fun_type)(TVal*, int narg);
+    typedef void (*fun_type)(TVal*, int narg);
     typedef int (*identfun_type)(const typename TString::value_type *sExpr, int *nPos, TVal *fVal);
     typedef TVal* (*facfun_type)(const typename TString::value_type*, void*);
     typedef Token<TVal, TString> token_type;
