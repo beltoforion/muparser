@@ -25,6 +25,7 @@
 
 #include "muParserBytecode.h"
 
+#include <algorithm>
 #include <cassert>
 #include <string>
 #include <stack>
