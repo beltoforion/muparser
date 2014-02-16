@@ -237,7 +237,7 @@ MUP_NAMESPACE_START
         noFUN     = 1 << 5,  ///< to avoid i.e. "sqrt cos" or "(1)sin"	
         noOPT     = 1 << 6,  ///< to avoid i.e. "(+)"
         noPOSTOP  = 1 << 7,  ///< to avoid i.e. "(5!!)" "sin!"
-	      noINFIXOP = 1 << 8,  ///< to avoid i.e. "++4" "!!4"
+        noINFIXOP = 1 << 8,  ///< to avoid i.e. "++4" "!!4"
         noEND     = 1 << 9,  ///< to avoid unexpected end of formula
         noASSIGN  = 1 << 10, ///< to block assignement to constant i.e. "4=7"
         noIF      = 1 << 11,
@@ -724,10 +724,9 @@ MUP_NAMESPACE_START
           Error(ecUNEXPECTED_VAR, m_iPos, strTok);
 
         m_iPos = iEnd;
-        a_Tok.Cmd = cmVAR;
+        a_Tok.Cmd = cmVAL_EX;
         a_Tok.Ident = strTok;
         a_Tok.Val.ptr = item->second;
-        a_Tok.Val.mul = 1;
         a_Tok.Val.fixed = 0;
         m_UsedVar[item->first] = item->second;  // Add variable to used-var-list
 
@@ -756,7 +755,7 @@ MUP_NAMESPACE_START
         if (m_pFactory)
         {
           TValue *pVar = m_pFactory(strTok.c_str(), m_pFactoryData);
-          a_Tok.Cmd = cmVAR;
+          a_Tok.Cmd = cmVAL_EX;
           a_Tok.Ident = strTok;
           a_Tok.Val.ptr = pVar;
 
@@ -771,7 +770,7 @@ MUP_NAMESPACE_START
         }
         else
         {
-          a_Tok.Cmd = cmVAR;
+          a_Tok.Cmd = cmVAL_EX;
           a_Tok.Ident = strTok;
           a_Tok.Val.ptr = (TValue*)&m_fZero;
           m_UsedVar[strTok] = 0;  // Add variable to used-var-list

@@ -75,8 +75,6 @@ MUP_NAMESPACE_START
       m_vErrMsg[ecVAL_EXPECTED]           = _SL("String value used where a numerical argument is expected.");
       m_vErrMsg[ecGENERIC]                = _SL("Parser error.");
       m_vErrMsg[ecLOCALE]                 = _SL("Decimal separator is identic to function argument separator.");
-      m_vErrMsg[ecUNEXPECTED_CONDITIONAL] = _SL("The \"$TOK$\" operator must be preceeded by a closing bracket.");
-      m_vErrMsg[ecMISSING_ELSE_CLAUSE]    = _SL("If-then-else operator is missing an else clause");
       m_vErrMsg[ecMISPLACED_COLON]        = _SL("Misplaced colon at position $POS$");
 
       #if defined(_DEBUG)

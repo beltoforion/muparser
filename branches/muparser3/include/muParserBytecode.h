@@ -92,7 +92,7 @@ MUP_NAMESPACE_START
         ,m_iMaxStackSize(0)
         ,m_vRPN()
         ,m_bEnableOptimizer(true)
-        ,m_eEngineCode(ecUNOPTIMIZABLE)
+        ,m_nEngineID(-1)
       {
         m_vRPN.reserve(50);
       }
@@ -199,65 +199,43 @@ MUP_NAMESPACE_START
         tok.Cmd = cmEND;
         m_vRPN.push_back(tok);
 
-        // Determine the if-then-else jump offsets
-        int nEngineCode = 0;
-        bool bNoMul = true;
-        for (int i=0; i<(int)m_vRPN.size(); ++i)
+        unsigned nEngineBits = 0;
+
+        for (std::size_t i=0; i<m_vRPN.size(); ++i)
         {
           token_type &tok = m_vRPN[i];
 
-          // Reintroduce cmVAL and cmVAR codes, they can be evaluated more 
-          // efficiently (compared to cmVAL_EX)
-          if (tok.Val.mul==0 && tok.Cmd==cmVAL_EX)
-          {
-            tok.Cmd = cmVAL;
-          }
-          else if (tok.Val.fixed==0 && tok.Val.mul==1 && tok.Cmd==cmVAL_EX)
-          {
-            tok.Cmd = cmVAR;
-          }
-
-          if (tok.Cmd == cmVAL_EX && tok.Val.mul!=1)
-            bNoMul = false;
-
           switch(tok.Cmd)
           {
-          case cmVAL:
-          case cmVAR:
-          case cmVAL_EX:  if (nEngineCode<ecUNOPTIMIZABLE)
-                          {
-                            nEngineCode = nEngineCode << 1;
-                            nEngineCode |= 1;
-                          }
+          case cmVAL_EX:  nEngineBits = nEngineBits << 1;
+                          nEngineBits |= 1;
                           break;
 
-          case cmFUNC:    // Functions with more than one or no parameter 
-                          // will not be subject to short expression optimization
-                          if (tok.Fun.argc<1)
+          case cmFUNC:    if (i==0)
                           {
-                            nEngineCode |= ecUNOPTIMIZABLE;
-                            break;
+                            // RPN fängt mit funktion an, wird nicht optimiert: z.B. "rnd()+1"
+                            m_nEngineID = -1;
+                            return;
                           }
-
-                          if (nEngineCode<ecUNOPTIMIZABLE)
-                            nEngineCode = nEngineCode << 1;
-                          break;
-
+                          else
+                          {
+                            nEngineBits = nEngineBits << 1;
+                          }
           case cmEND:     break;
 
-          default:        nEngineCode |= ecUNOPTIMIZABLE;
-                          break;
+          default:        m_nEngineID = -1;
+                          return;
           }
         }
 
-        // Determine the code for the short expression optimization
-        if (nEngineCode>=ecUNOPTIMIZABLE)
-          nEngineCode = ecUNOPTIMIZABLE;
-  
-        if (bNoMul && nEngineCode != ecUNOPTIMIZABLE)
-          m_eEngineCode = (EEngineCode)(nEngineCode | ecNO_MUL);
+        if (nEngineBits!=0 && ((nEngineBits & 1)==0 || (nEngineBits==1)))
+        {
+            m_nEngineID = (int)(nEngineBits/2);
+        }
         else
-          m_eEngineCode = (EEngineCode)nEngineCode;
+        {
+            m_nEngineID = -1;
+        }
       }
 
       //-------------------------------------------------------------------------------------------
@@ -266,7 +244,6 @@ MUP_NAMESPACE_START
         m_vRPN.clear();
         m_iStackPos     = 0;
         m_iMaxStackSize = 0;
-        m_eEngineCode   = ecUNOPTIMIZABLE;
       }
 
       //-------------------------------------------------------------------------------------------
@@ -291,9 +268,9 @@ MUP_NAMESPACE_START
       }
 
       //-------------------------------------------------------------------------------------------
-      EEngineCode GetEngineCode() const
+      int GetEngineID() const
       {
-        return m_eEngineCode;
+          return m_nEngineID;
       }
 
       //-------------------------------------------------------------------------------------------
@@ -305,7 +282,22 @@ MUP_NAMESPACE_START
           return;
         }
 
-        _OUT << _SL("Number of RPN tokens:") << (int)m_vRPN.size()-1 << _SL("\n");
+        TString sEngineBits;
+
+        if (m_nEngineID>0)
+        {
+          for (int i=m_vRPN.size()-2; i>=0; --i)
+          {
+            sEngineBits += (m_nEngineID & 1<<i) ? 'V' : 'C';
+          }
+        }
+        else
+        {
+            sEngineBits = _SL("N/A");
+        }
+
+        _OUT << _SL("Engine ID:") << std::dec << m_nEngineID << _SL(";  Code: ") << sEngineBits;
+        _OUT << _SL(";  Number of tokens:") << (int)m_vRPN.size()-1 << _SL("\n");
         for (std::size_t i=0; i<m_vRPN.size() && m_vRPN[i].Cmd!=cmEND; ++i)
         {
           _OUT << std::dec << i << _SL(" : ") << m_vRPN[i].StackPos << _SL("\t");
@@ -313,7 +305,7 @@ MUP_NAMESPACE_START
           switch (m_vRPN[i].Cmd)
           {
           case  cmVAL_EX:
-                _OUT << _SL("VAL_EX \t");
+                _OUT << _SL("VAL \t");
                
                 if (m_vRPN[i].Val.ptr==&ParserBase<TValue, TString>::g_NullValue)
                 {
@@ -325,20 +317,7 @@ MUP_NAMESPACE_START
                   _OUT << _SL("[IDENT:")   << m_vRPN[i].Ident << _SL("]"); 
                 }
 
-                _OUT << _SL("[MUL: ") << m_vRPN[i].Val.mul   << _SL("]");
-                _OUT << _SL("[ADD:")  << m_vRPN[i].Val.fixed << _SL("]\n");
-                break;
-
-          case  cmVAL:   
-                _OUT << _SL("VAL \t");
-                _OUT << _SL("[") << m_vRPN[i].Val.fixed << _SL("]");
-                _OUT << _SL("[IDENT:") << m_vRPN[i].Ident << _SL("]\n"); 
-                break;
-
-          case  cmVAR:
-                _OUT << _SL("VAR \t");
-                _OUT << _SL("[ADDR: 0x") << std::hex << m_vRPN[i].Val.ptr << _SL("]"); 
-                _OUT << _SL("[IDENT:")   << m_vRPN[i].Ident << _SL("]\n"); 
+                _OUT << _SL("[CON:")  << m_vRPN[i].Val.fixed << _SL("]\n");
                 break;
 
           case  cmFUNC:
@@ -365,11 +344,13 @@ MUP_NAMESPACE_START
 
   private:
 
-      EEngineCode m_eEngineCode;  ///< A code identifying the precompiled parsing engine to use with this bytecode
+      int m_nEngineID;
 
       //-------------------------------------------------------------------------------------------
-      bool TryOptimizeAddSub(token_type &tok)
+      bool TryOptimizeAddSub(token_type & /*tok*/)
       {
+        return false;
+/*
         std::size_t sz = m_vRPN.size();
 
         // 0.) Transform minus operations into an addition of a negative value. This will make 
@@ -436,11 +417,14 @@ MUP_NAMESPACE_START
         }
 
         return false;
+*/
       }
 
       //-------------------------------------------------------------------------------------------
       bool TryOptimizeMul(const token_type & /*tok*/)
       {
+        return false;
+/*
         std::size_t sz = m_vRPN.size();
         if (sz<2 || m_vRPN[sz-1].Cmd != cmVAL_EX ||  m_vRPN[sz-2].Cmd != cmVAL_EX) 
           return false;
@@ -466,14 +450,17 @@ MUP_NAMESPACE_START
         }
 
         return false;
+*/
       }
 
       //-------------------------------------------------------------------------------------------
       /** \brief Tries to replace calls to pow with low integer exponents with 
                  faster versions. 
       */
-      bool TryOptimizePow(const token_type &tok)
+      bool TryOptimizePow(const token_type & /*tok*/)
       {
+        return false;
+/*
         std::size_t sz = m_vRPN.size();
         if (sz<2)
           return false;
@@ -504,11 +491,14 @@ MUP_NAMESPACE_START
         }
 
         return false;
+*/
       }
 
       //---------------------------------------------------------------------------
-      bool TryConstantFolding(const token_type &tok)
+      bool TryConstantFolding(const token_type & /*tok*/)
       {
+        return false;
+/*
         std::size_t sz = m_vRPN.size();
         if (sz<(std::size_t)tok.Fun.argc || tok.Fun.argc>=20)
           return false;
@@ -521,12 +511,12 @@ MUP_NAMESPACE_START
         {
           const token_type &t = m_vRPN[sz - tok.Fun.argc + i];
       
-          if (t.Cmd!=cmVAL && t.Cmd!=cmVAR && t.Cmd!=cmVAL_EX)
+          if (t.Cmd!=cmVAL_EX)
             return false;
 
           // If there is a variable component no optimization is possible,
           // else collect the constant value for function application
-          if (t.Val.mul!=0)
+          if (t.Val.ptr==&ParserBase<TValue, TString>::g_NullValue)
             return false;
           else
             buf[i] = t.Val.fixed;
@@ -541,11 +531,14 @@ MUP_NAMESPACE_START
         result.Val.fixed = buf[0];
         m_iStackPos = result.StackPos;
         return true;
+*/
       }
 
       //---------------------------------------------------------------------------------------------
-      bool TrySubstitute(const TString &op1, const TString &op2, fun_type pFun, token_type &t1, token_type &t2) 
+      bool TrySubstitute(const TString & /*op1*/, const TString & /*op2*/, fun_type /*pFun*/, token_type & /*t1*/, token_type & /*t2*/)
       {
+        return false;
+/*
         if (t1.Ident==op1 && t2.Ident==op2)
         {
           t2.Ident = op1 + op2;
@@ -555,18 +548,21 @@ MUP_NAMESPACE_START
         }
 
         return false;
+*/
       }
 
       //---------------------------------------------------------------------------------------------
       /** \brief Substitute Multiplication with a power of x with a single function call.
       */
-      bool TrySubstitute(const TString &op1, 
-                         fun_type pFunPow, 
-                         fun_type pFun, 
-                         token_type &t1, 
-                         token_type &t2, 
-                         const TString &sIdent) 
+      bool TrySubstitute(const TString & /*op1*/,
+                         fun_type /*pFunPow*/,
+                         fun_type /*pFun*/,
+                         token_type &/*t1*/,
+                         token_type &/*t2*/,
+                         const TString &/*sIdent*/)
       {
+        return false;
+/*
         if (t1.Ident==op1 && t2.Fun.ptr==pFunPow)
         {
           t2.Ident = sIdent;
@@ -576,6 +572,7 @@ MUP_NAMESPACE_START
         }
 
         return false;
+*/
       }
       //-------------------------------------------------------------------------------------------
       void Substitute()

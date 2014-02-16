@@ -55,7 +55,6 @@ MUP_NAMESPACE_START
     struct SValDef 
     {
       TValue *ptr;
-      TValue  mul;
       TValue  fixed;
     };
 
@@ -63,7 +62,6 @@ MUP_NAMESPACE_START
     struct SOprtDef 
     {
       TValue *ptr;
-      int offset;
     };
 
     ECmdCode Cmd;
@@ -80,10 +78,9 @@ MUP_NAMESPACE_START
     //---------------------------------------------------------------------------------------------
     void SetVal(TValue v, const TString &sIdent = TString())
     {
-      Cmd = cmVAL;
+      Cmd = cmVAL_EX;
       Ident = sIdent;
       Val.fixed = v;
-      Val.mul = 0;
       Val.ptr = &ParserBase<TValue, TString>::g_NullValue;
     }
 
@@ -116,7 +113,6 @@ MUP_NAMESPACE_START
     void ResetVariablePart()
     {
       assert(Cmd==cmVAL_EX);
-      Val.mul = 0;
       Val.ptr = &ParserBase<TValue, TString>::g_NullValue;
     }
   };

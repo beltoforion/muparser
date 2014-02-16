@@ -29,7 +29,7 @@ class ParserBase
 
   protected:
 
-  typedef TValue (ParserBase::*ParseFunction)() const;
+  typedef TValue (ParserBase::*ParseFunction)();
 
   typedef Token<TValue, TString> token_type;
   typedef ParserTokenReader<TValue, TString> token_reader_type;
@@ -67,11 +67,12 @@ class ParserBase
       ,m_OprtDef()
       ,m_ConstDef()
       ,m_VarDef()
-      ,m_nIfElseCounter(0)
       ,m_vStackBuffer()
       ,m_nFinalResultIdx(0)
+      ,m_nEngineID(0)
     {
       InitTokenReader();
+      InitPrecompiledEngined();
     }
 
     //---------------------------------------------------------------------------------------------
@@ -87,9 +88,9 @@ class ParserBase
       ,m_OprtDef()
       ,m_ConstDef()
       ,m_VarDef()
-      ,m_nIfElseCounter(0)
     {
       m_pTokenReader.reset(new token_reader_type(this));
+      InitPrecompiledEngined();
       Assign(a_Parser);
     }
 
@@ -118,24 +119,9 @@ class ParserBase
       successive call to Eval for the same expression with the same set of variable will invoke a 
       highly optimized evaluation function and speed up evaluation dramatically.
     */
-    MUP_INLINE TValue  Eval() const
+    MUP_INLINE TValue  Eval()
     {
       return (this->*m_pParseFormula)(); 
-    }
-
-    //---------------------------------------------------------------------------------------------
-    /** \brief Evaluate an expression with multiple return values.
-        \param nStackSize [out] The number of return values 
-        \return Pointer to an array with the return values.
-
-      This function will evaluate an expression and return a pointer to an array of its return 
-      values.
-    */
-    TValue* Eval(int &nStackSize) const
-    {
-      ParseCmdCode();
-      nStackSize = m_nFinalResultIdx;
-      return &m_vStackBuffer[1];
     }
 
     //---------------------------------------------------------------------------------------------
@@ -354,7 +340,6 @@ class ParserBase
       m_VarDef          = a_Parser.m_VarDef;           // Copy user defined variables
       m_vStackBuffer    = a_Parser.m_vStackBuffer;
       m_nFinalResultIdx = a_Parser.m_nFinalResultIdx;
-      m_nIfElseCounter  = a_Parser.m_nIfElseCounter;
       m_pTokenReader.reset(a_Parser.m_pTokenReader->Clone(this));
 
       // Copy function and operator callbacks
@@ -376,7 +361,6 @@ class ParserBase
       m_pParseFormula = &ParserBase::ParseString;
       m_vRPN.Clear();
       m_pTokenReader->ReInit();
-      m_nIfElseCounter = 0;
     }
 
     //---------------------------------------------------------------------------
@@ -450,9 +434,7 @@ class ParserBase
       m_vRPN.AddFun(funTok);
 
       // Push dummy value representing the function result to the stack
-      token_type token;
-      token.Val.mul = 1;
-      a_stVal.push(token);
+      a_stVal.push(token_type());
     }
 
     //---------------------------------------------------------------------------
@@ -467,13 +449,13 @@ class ParserBase
       {
         MUP_ASSERT(a_stVal.size()>=2);
         token_type valTok1 = a_stVal.pop(),
-               valTok2 = a_stVal.pop(),
-               optTok  = a_stOpt.pop(),
-               resTok; 
+                   valTok2 = a_stVal.pop(),
+                   optTok  = a_stOpt.pop(),
+                   resTok;
 
         if (optTok.Cmd==cmASSIGN)
         {
-          if (valTok2.Cmd!=cmVAR)
+          if (valTok2.Cmd!=cmVAL_EX || valTok2.Val.ptr==&ParserBase<TValue, TString>::g_NullValue)
             Error(ecUNEXPECTED_OPERATOR, -1, _SL("="));
                       
           optTok.Oprt.ptr = valTok2.Val.ptr;
@@ -564,8 +546,6 @@ class ParserBase
         switch (opt.Cmd)
         {
           case cmVAL_EX:
-          case cmVAR:
-          case cmVAL:
                   stVal.push(opt);
                   opt.Cmd = cmVAL_EX;
                   m_vRPN.AddVal(opt);
@@ -691,9 +671,6 @@ class ParserBase
         }
       } // while (true)
 
-      if (m_nIfElseCounter>0)
-        Error(ecMISSING_ELSE_CLAUSE);
-
       // get the last value (= final result) from the stack
       MUP_ASSERT(stArgCount.size()==1);
       m_nFinalResultIdx = stArgCount.top();
@@ -709,54 +686,39 @@ class ParserBase
       m_vRPN.Finalize();
 
       if (ParserBase::g_DbgDumpCmdCode)
+      {
         m_vRPN.AsciiDump();
+      }
     }
 
     //---------------------------------------------------------------------------------------------
-    TValue ParseString() const
+    TValue ParseString()
     {
       CreateRPN();
-    
-      if (m_nFinalResultIdx!=1)
-      {
-        // Functions with multiple return values do not use short expression 
-        // optimization
-        m_pParseFormula = &ParserBase::ParseCmdCode; 
-      }
-      else
-      {
-        EEngineCode ec = m_vRPN.GetEngineCode();
-        bool bNoMul = (ec & ecNO_MUL) != 0;
-        switch(ec & ~ecNO_MUL)
-        {   
-        case ecV:    if (m_pRPN[0].Val.mul==0)
-                       m_pParseFormula = &ParserBase::ParseCmdCode_V1;
-                     else if (m_pRPN[0].Val.mul!=0 && m_pRPN[0].Val.fixed==0)
-                       m_pParseFormula = &ParserBase::ParseCmdCode_V2;
-                     else
-                       m_pParseFormula = &ParserBase::ParseCmdCode_V3;
-                     break;
-
-        case ecVF:    m_pParseFormula = (bNoMul) ? &ParserBase::ParseCmdCode_VF   : &ParserBase::ParseCmdCode_XF;   break;
-        case ecVFF:   m_pParseFormula = (bNoMul) ? &ParserBase::ParseCmdCode_VFF  : &ParserBase::ParseCmdCode_XFF;  break;
-        case ecVVF:   m_pParseFormula = (bNoMul) ? &ParserBase::ParseCmdCode_VVF  : &ParserBase::ParseCmdCode_XXF;  break;
-        case ecVFFF:  m_pParseFormula = (bNoMul) ? &ParserBase::ParseCmdCode_VFFF : &ParserBase::ParseCmdCode_XFFF; break;
-        case ecVFVF:  m_pParseFormula = (bNoMul) ? &ParserBase::ParseCmdCode_VFVF : &ParserBase::ParseCmdCode_XFXF; break;
-        case ecVVFF:  m_pParseFormula = (bNoMul) ? &ParserBase::ParseCmdCode_VVFF : &ParserBase::ParseCmdCode_XXFF; break;
-        case ecVVVF:  m_pParseFormula = (bNoMul) ? &ParserBase::ParseCmdCode_VVVF : &ParserBase::ParseCmdCode_XXXF; break;
-
-        case ecUNOPTIMIZABLE:
-        default: 
-              m_pParseFormula = &ParserBase::ParseCmdCode; 
-              break;
-        }
-      }
+      AssignOptimizedEngine();
       return (this->*m_pParseFormula)(); 
     }
 
     //---------------------------------------------------------------------------------------------
+    void AssignOptimizedEngine()
+    {
+      int nEngineID = m_vRPN.GetEngineID();
+
+      // nEngineID < 0                         - nicht optimierbar
+      // nEngineID >= s_nNumPrecompiledEngines - theoretisch optimierbar, praktisch zu lang
+      if (nEngineID<0 || nEngineID>=s_nNumPrecompiledEngines)
+      {
+        m_pParseFormula = &ParserBase::ParseCmdCode;
+      }
+      else
+      {
+        m_pParseFormula = m_pPrecompiledEngines[nEngineID];
+      }
+    }
+
+    //---------------------------------------------------------------------------------------------
     // Parsing engines
-    TValue ParseCmdCode() const
+    TValue ParseCmdCode()
     {
       TValue *Stack = m_pStack;
       const typename token_type::SValDef *pVal = nullptr;
@@ -773,14 +735,9 @@ class ParserBase
               continue;
 
         case  cmVAL_EX: 
-              { 
-                pVal = &(pTok->Val);
-                Stack[++sidx] = *pVal->ptr * pVal->mul + pVal->fixed; 
-              }
+              pVal = &(pTok->Val);
+              Stack[++sidx] = *pVal->ptr + pVal->fixed;
               continue;
-
-        case  cmVAR:   ++sidx; Stack[sidx] = *pTok->Val.ptr;   continue;
-        case  cmVAL:   ++sidx; Stack[sidx] =  pTok->Val.fixed; continue;
 
         case  cmFUNC:
               { 
@@ -802,14 +759,8 @@ class ParserBase
   #define SXO_INIT   \
           int sidx = 0;
 
-  #define SXO_VAX(TOK,IDX) \
-          m_pStack[++sidx] = (TOK[IDX])->Val.fixed + *(TOK[IDX])->Val.ptr * (TOK[IDX])->Val.mul;  \
-
   #define SXO_VAL(TOK,IDX) \
           m_pStack[++sidx] = (TOK[IDX])->Val.fixed + *(TOK[IDX])->Val.ptr;  \
-
-  #define SXO_CON(TOK,IDX) \
-          m_pStack[++sidx] = (TOK[IDX])->Val.fixed;  \
 
   #define SXO_FUN(TOK,IDX) \
           {                                                         \
@@ -820,114 +771,272 @@ class ParserBase
   #define SXO_RET   \
         return m_pStack[1];
 
+#define ParseFunc1(What, OP1)                  \
+    TValue PrecompiledExpr_##What()               \
+    {                                          \
+      SXO_INIT                                 \
+      SXO_##OP1(&m_pRPN,0)                     \
+      SXO_RET                                  \
+    }
+
   #define ParseFunc2(What, OP1, OP2)           \
-      TValue ParseCmdCode_##What() const       \
+      TValue PrecompiledExpr_##What()             \
       {                                        \
         SXO_INIT                               \
-        SXO_##OP1(&m_pRPN,0)                  \
-        SXO_##OP2(&m_pRPN,1)                  \
+        SXO_##OP1(&m_pRPN,0)                   \
+        SXO_##OP2(&m_pRPN,1)                   \
         SXO_RET                                \
       }
 
   #define ParseFunc3(What, OP1, OP2, OP3)      \
-      TValue ParseCmdCode_##What() const       \
+      TValue PrecompiledExpr_##What()             \
       {                                        \
         SXO_INIT                               \
-        SXO_##OP1(&m_pRPN,0)                  \
-        SXO_##OP2(&m_pRPN,1)                  \
-        SXO_##OP3(&m_pRPN,2)                  \
+        SXO_##OP1(&m_pRPN,0)                   \
+        SXO_##OP2(&m_pRPN,1)                   \
+        SXO_##OP3(&m_pRPN,2)                   \
         SXO_RET                                \
       }
 
   #define ParseFunc4(What, OP1, OP2, OP3, OP4) \
-      TValue ParseCmdCode_##What() const       \
+      TValue PrecompiledExpr_##What()             \
       {                                        \
         SXO_INIT                               \
-        SXO_##OP1(&m_pRPN,0)                  \
-        SXO_##OP2(&m_pRPN,1)                  \
-        SXO_##OP3(&m_pRPN,2)                  \
-        SXO_##OP4(&m_pRPN,3)                  \
+        SXO_##OP1(&m_pRPN,0)                   \
+        SXO_##OP2(&m_pRPN,1)                   \
+        SXO_##OP3(&m_pRPN,2)                   \
+        SXO_##OP4(&m_pRPN,3)                   \
         SXO_RET                                \
       }
 
-    //---------------------------------------------------------------------------------------------
-    TValue ParseCmdCode_V1() const
-    {    
-      return m_pRPN->Val.fixed;
-    }
-
-    //---------------------------------------------------------------------------------------------
-    TValue ParseCmdCode_V2() const
-    {    
-      return *m_pRPN->Val.ptr * m_pRPN->Val.mul;
-    }
-
-    //---------------------------------------------------------------------------------------------
-    TValue ParseCmdCode_V3() const
-    {    
-      return *m_pRPN->Val.ptr * m_pRPN->Val.mul + m_pRPN->Val.fixed;
-    }
-
-    //---------------------------------------------------------------------------------------------
-    ParseFunc2(VF,   VAL, FUN)
-    ParseFunc3(VFF,  VAL, FUN, FUN)
-    ParseFunc3(VVF,  VAL, VAL, FUN)
-    ParseFunc4(VFFF, VAL, FUN, FUN, FUN)
-    ParseFunc4(VFVF, VAL, FUN, VAL, FUN)
-    ParseFunc4(VVFF, VAL, VAL, FUN, FUN)
-    ParseFunc4(VVVF, VAL, VAL, VAL, FUN)
-
-/*
-#define ParseFunc4(What, OP1, OP2, OP3, OP4) \
-    TValue ParseCmdCode_##What() const       \
-    {                                        \
-      SXO_INIT                               \
-      SXO_##OP1(&m_pRPN[0])                  \
-      SXO_##OP2(&m_pRPN[1])                  \
-      SXO_##OP3(&m_pRPN[2])                  \
-      SXO_##OP4(&m_pRPN[3])                  \
-      SXO_RET                                \
-    }
-
-#define ParseFunc(ARG1, ARG2, ARG3, ARG4, ARG5) ParseFunc4(ARG1, 1, ARG2, 2, ARG3, 3, ARG4, 4, ARG5)
-
-//  ParseFunc(VVVF, VAL, VAL, VAL, FUN)
-//    ParseFunc4(VVVF, 1, VAL, 2, VAL, 3, VAL, 4, FUN)
-*/
-
-/*
-    //---------------------------------------------------------------------------------------------
-    TValue ParseCmdCode_VVVF() const
-    {
-      m_pStack[1] = m_pRPN[0]->Val.fixed + *(m_pRPN[0])->Val.ptr;
-      m_pStack[2] = m_pRPN[1]->Val.fixed + *(m_pRPN[1])->Val.ptr;
-      m_pStack[3] = m_pRPN[2]->Val.fixed + *(m_pRPN[2])->Val.ptr;
-      {
-        const typename token_type::SFunDef &fun = (m_pRPN[3])->Fun;
-        (*fun.ptr)(&m_pStack[1], fun.argc);
+#define ParseFunc5(What, OP1, OP2, OP3, OP4, OP5) \
+      TValue PrecompiledExpr_##What()             \
+      {                                        \
+        SXO_INIT                               \
+        SXO_##OP1(&m_pRPN,0)                   \
+        SXO_##OP2(&m_pRPN,1)                   \
+        SXO_##OP3(&m_pRPN,2)                   \
+        SXO_##OP4(&m_pRPN,3)                   \
+        SXO_##OP5(&m_pRPN,4)                   \
+        SXO_RET                                \
       }
-      return m_pStack[1];
-    }
 
-    //---------------------------------------------------------------------------------------------
-    TValue ParseCmdCode_VVVF() const
-    {
-      *m_pStack_1 = m_pRPN_0->Val.fixed + *(m_pRPN_0->Val.ptr);
-      *m_pStack_2 = m_pRPN_1->Val.fixed + *(m_pRPN_1->Val.ptr);
-      *m_pStack_3 = m_pRPN_2->Val.fixed + *(m_pRPN_2->Val.ptr);
-      (*m_pRPN_3->Fun.ptr)(&m_pStack_1, m_pRPN_3->Fun.argc);
-      return *m_pStack_1;
-    }
+#define ParseFunc6(What, OP1, OP2, OP3, OP4, OP5, OP6) \
+      TValue PrecompiledExpr_##What()             \
+      {                                        \
+        SXO_INIT                               \
+        SXO_##OP1(&m_pRPN,0)                   \
+        SXO_##OP2(&m_pRPN,1)                   \
+        SXO_##OP3(&m_pRPN,2)                   \
+        SXO_##OP4(&m_pRPN,3)                   \
+        SXO_##OP5(&m_pRPN,4)                   \
+        SXO_##OP6(&m_pRPN,5)                   \
+        SXO_RET                                \
+      }
 
- */
+#define ParseFunc7(What, OP1, OP2, OP3, OP4, OP5, OP6, OP7) \
+      TValue PrecompiledExpr_##What()             \
+      {                                        \
+        SXO_INIT                               \
+        SXO_##OP1(&m_pRPN,0)                   \
+        SXO_##OP2(&m_pRPN,1)                   \
+        SXO_##OP3(&m_pRPN,2)                   \
+        SXO_##OP4(&m_pRPN,3)                   \
+        SXO_##OP5(&m_pRPN,4)                   \
+        SXO_##OP6(&m_pRPN,5)                   \
+        SXO_##OP7(&m_pRPN,6)                   \
+        SXO_RET                                \
+      }
 
-    ParseFunc2(XF,   VAX, FUN)
-    ParseFunc3(XFF,  VAX, FUN, FUN)
-    ParseFunc3(XXF,  VAX, VAX, FUN)
-    ParseFunc4(XFFF, VAX, FUN, FUN, FUN)
-    ParseFunc4(XFXF, VAX, FUN, VAX, FUN)
-    ParseFunc4(XXFF, VAX, VAX, FUN, FUN)
-    ParseFunc4(XXXF, VAX, VAX, VAX, FUN)
+#define ParseFunc8(What, OP1, OP2, OP3, OP4, OP5, OP6, OP7, OP8) \
+      TValue PrecompiledExpr_##What()             \
+      {                                        \
+        SXO_INIT                               \
+        SXO_##OP1(&m_pRPN,0)                   \
+        SXO_##OP2(&m_pRPN,1)                   \
+        SXO_##OP3(&m_pRPN,2)                   \
+        SXO_##OP4(&m_pRPN,3)                   \
+        SXO_##OP5(&m_pRPN,4)                   \
+        SXO_##OP6(&m_pRPN,5)                   \
+        SXO_##OP7(&m_pRPN,6)                   \
+        SXO_##OP8(&m_pRPN,7)                   \
+        SXO_RET                                \
+      }
+
+#define ParseFunc9(What, OP1, OP2, OP3, OP4, OP5, OP6, OP7, OP8, OP9) \
+      TValue PrecompiledExpr_##What()             \
+      {                                        \
+        SXO_INIT                               \
+        SXO_##OP1(&m_pRPN,0)                   \
+        SXO_##OP2(&m_pRPN,1)                   \
+        SXO_##OP3(&m_pRPN,2)                   \
+        SXO_##OP4(&m_pRPN,3)                   \
+        SXO_##OP5(&m_pRPN,4)                   \
+        SXO_##OP6(&m_pRPN,5)                   \
+        SXO_##OP7(&m_pRPN,6)                   \
+        SXO_##OP8(&m_pRPN,7)                   \
+        SXO_##OP9(&m_pRPN,8)                   \
+        SXO_RET                                \
+      }
+
+#define ParseFunc10(What, OP1, OP2, OP3, OP4, OP5, OP6, OP7, OP8, OP9, OP10) \
+      TValue PrecompiledExpr_##What()             \
+      {                                        \
+        SXO_INIT                               \
+        SXO_##OP1(&m_pRPN,0)                   \
+        SXO_##OP2(&m_pRPN,1)                   \
+        SXO_##OP3(&m_pRPN,2)                   \
+        SXO_##OP4(&m_pRPN,3)                   \
+        SXO_##OP5(&m_pRPN,4)                   \
+        SXO_##OP6(&m_pRPN,5)                   \
+        SXO_##OP7(&m_pRPN,6)                   \
+        SXO_##OP8(&m_pRPN,7)                   \
+        SXO_##OP9(&m_pRPN,8)                   \
+        SXO_##OP10(&m_pRPN,9)                  \
+        SXO_RET                                \
+      }
+
+#define ParseFunc11(What, OP1, OP2, OP3, OP4, OP5, OP6, OP7, OP8, OP9, OP10, OP11) \
+      TValue PrecompiledExpr_##What()             \
+      {                                        \
+        SXO_INIT                               \
+        SXO_##OP1(&m_pRPN,0)                   \
+        SXO_##OP2(&m_pRPN,1)                   \
+        SXO_##OP3(&m_pRPN,2)                   \
+        SXO_##OP4(&m_pRPN,3)                   \
+        SXO_##OP5(&m_pRPN,4)                   \
+        SXO_##OP6(&m_pRPN,5)                   \
+        SXO_##OP7(&m_pRPN,6)                   \
+        SXO_##OP8(&m_pRPN,7)                   \
+        SXO_##OP9(&m_pRPN,8)                   \
+        SXO_##OP10(&m_pRPN,9)                  \
+        SXO_##OP11(&m_pRPN,10)                 \
+        SXO_RET                                \
+      }
+
+#define ParseFunc12(What, OP1, OP2, OP3, OP4, OP5, OP6, OP7, OP8, OP9, OP10, OP11, OP12) \
+      TValue PrecompiledExpr_##What()             \
+      {                                        \
+        SXO_INIT                               \
+        SXO_##OP1(&m_pRPN,0)                   \
+        SXO_##OP2(&m_pRPN,1)                   \
+        SXO_##OP3(&m_pRPN,2)                   \
+        SXO_##OP4(&m_pRPN,3)                   \
+        SXO_##OP5(&m_pRPN,4)                   \
+        SXO_##OP6(&m_pRPN,5)                   \
+        SXO_##OP7(&m_pRPN,6)                   \
+        SXO_##OP8(&m_pRPN,7)                   \
+        SXO_##OP9(&m_pRPN,8)                   \
+        SXO_##OP10(&m_pRPN,9)                  \
+        SXO_##OP11(&m_pRPN,10)                 \
+        SXO_##OP12(&m_pRPN,11)                 \
+        SXO_RET                                \
+      }
+
+#define ParseFunc13(What, OP1, OP2, OP3, OP4, OP5, OP6, OP7, OP8, OP9, OP10, OP11, OP12, OP13) \
+      TValue PrecompiledExpr_##What()             \
+      {                                        \
+        SXO_INIT                               \
+        SXO_##OP1(&m_pRPN,0)                   \
+        SXO_##OP2(&m_pRPN,1)                   \
+        SXO_##OP3(&m_pRPN,2)                   \
+        SXO_##OP4(&m_pRPN,3)                   \
+        SXO_##OP5(&m_pRPN,4)                   \
+        SXO_##OP6(&m_pRPN,5)                   \
+        SXO_##OP7(&m_pRPN,6)                   \
+        SXO_##OP8(&m_pRPN,7)                   \
+        SXO_##OP9(&m_pRPN,8)                   \
+        SXO_##OP10(&m_pRPN,9)                  \
+        SXO_##OP11(&m_pRPN,10)                 \
+        SXO_##OP12(&m_pRPN,11)                 \
+        SXO_##OP13(&m_pRPN,12)                 \
+        SXO_RET                                \
+      }
+
+#define ParseFunc14(What, OP1, OP2, OP3, OP4, OP5, OP6, OP7, OP8, OP9, OP10, OP11, OP12, OP13, OP14) \
+      TValue PrecompiledExpr_##What()             \
+      {                                        \
+        SXO_INIT                               \
+        SXO_##OP1(&m_pRPN,0)                   \
+        SXO_##OP2(&m_pRPN,1)                   \
+        SXO_##OP3(&m_pRPN,2)                   \
+        SXO_##OP4(&m_pRPN,3)                   \
+        SXO_##OP5(&m_pRPN,4)                   \
+        SXO_##OP6(&m_pRPN,5)                   \
+        SXO_##OP7(&m_pRPN,6)                   \
+        SXO_##OP8(&m_pRPN,7)                   \
+        SXO_##OP9(&m_pRPN,8)                   \
+        SXO_##OP10(&m_pRPN,9)                  \
+        SXO_##OP11(&m_pRPN,10)                 \
+        SXO_##OP12(&m_pRPN,11)                 \
+        SXO_##OP13(&m_pRPN,12)                 \
+        SXO_##OP14(&m_pRPN,13)                 \
+        SXO_RET                                \
+      }
+
+#define ParseFunc15(What, OP1, OP2, OP3, OP4, OP5, OP6, OP7, OP8, OP9, OP10, OP11, OP12, OP13, OP14, OP15) \
+      TValue PrecompiledExpr_##What()             \
+      {                                        \
+        SXO_INIT                               \
+        SXO_##OP1(&m_pRPN,0)                   \
+        SXO_##OP2(&m_pRPN,1)                   \
+        SXO_##OP3(&m_pRPN,2)                   \
+        SXO_##OP4(&m_pRPN,3)                   \
+        SXO_##OP5(&m_pRPN,4)                   \
+        SXO_##OP6(&m_pRPN,5)                   \
+        SXO_##OP7(&m_pRPN,6)                   \
+        SXO_##OP8(&m_pRPN,7)                   \
+        SXO_##OP9(&m_pRPN,8)                   \
+        SXO_##OP10(&m_pRPN,9)                  \
+        SXO_##OP11(&m_pRPN,10)                 \
+        SXO_##OP12(&m_pRPN,11)                 \
+        SXO_##OP13(&m_pRPN,12)                 \
+        SXO_##OP14(&m_pRPN,13)                 \
+        SXO_##OP15(&m_pRPN,14)                 \
+        SXO_RET                                \
+      }
+
+#define ParseFunc16(What, OP1, OP2, OP3, OP4, OP5, OP6, OP7, OP8, OP9, OP10, OP11, OP12, OP13, OP14, OP15, OP16) \
+      TValue PrecompiledExpr_##What()             \
+      {                                        \
+        SXO_INIT                               \
+        SXO_##OP1(&m_pRPN,0)                   \
+        SXO_##OP2(&m_pRPN,1)                   \
+        SXO_##OP3(&m_pRPN,2)                   \
+        SXO_##OP4(&m_pRPN,3)                   \
+        SXO_##OP5(&m_pRPN,4)                   \
+        SXO_##OP6(&m_pRPN,5)                   \
+        SXO_##OP7(&m_pRPN,6)                   \
+        SXO_##OP8(&m_pRPN,7)                   \
+        SXO_##OP9(&m_pRPN,8)                   \
+        SXO_##OP10(&m_pRPN,9)                  \
+        SXO_##OP11(&m_pRPN,10)                 \
+        SXO_##OP12(&m_pRPN,11)                 \
+        SXO_##OP13(&m_pRPN,12)                 \
+        SXO_##OP14(&m_pRPN,13)                 \
+        SXO_##OP15(&m_pRPN,14)                 \
+        SXO_##OP16(&m_pRPN,15)                 \
+        SXO_RET                                \
+      }
+
+#include "muPrecompiledEngines.h"
+
+    #undef ParseFunc1
+    #undef ParseFunc2
+    #undef ParseFunc3
+    #undef ParseFunc4
+    #undef ParseFunc5
+    #undef ParseFunc6
+    #undef ParseFunc7
+    #undef ParseFunc8
+    #undef ParseFunc9
+    #undef ParseFunc10
+    #undef ParseFunc11
+    #undef ParseFunc12
+    #undef SXO_VAL
+    #undef SXO_FUN
+    #undef SXO_INIT
+    #undef SXO_RET
 
     //---------------------------------------------------------------------------------------------
     void CheckName(const TString &a_sName,
@@ -969,8 +1078,7 @@ class ParserBase
         {
           switch(stOprt.top().Cmd)
           {
-          case cmVAR:        _OUT << _SL("VAR\n");  break;
-          case cmVAL:        _OUT << _SL("VAL\n");  break;
+          case cmVAL_EX:     _OUT << _SL("VAL_EX\n");  break;
           case cmFUNC:       _OUT << _SL("FUNC \"")
                                   << stOprt.top().Ident
                                   << _SL("\"\n");   break;
@@ -1004,12 +1112,11 @@ class ParserBase
     std::map<TString, TValue>   m_ConstDef;
     std::map<TString, TValue*>  m_VarDef;
 
-    mutable int m_nIfElseCounter;
-
     mutable const token_type *m_pRPN;
     mutable TValue *m_pStack;
     mutable std::vector<TValue> m_vStackBuffer;
     mutable int m_nFinalResultIdx;
+    mutable int m_nEngineID;
 };
 
   template<typename TValue, typename TString>

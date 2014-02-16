@@ -97,59 +97,6 @@
 MUP_NAMESPACE_START
 
   //------------------------------------------------------------------------------
-  /** \brief Code used to distinguish different hardcoded parsing engines.
-  */
-  enum EEngineCode
-  {
-    // V - Value entry   : 1 
-    // F - Function call : 0
-    //     Integer     Binary 
-    ecV     =  1,      //       1
-    ecVF    =  2,      //      10
-
-    ecVFF   =  4,      //     100
-    ecVVF   =  6,      //     110
-
-    ecVFFF  =  8,      //    1000
-    ecVFVF  = 10,      //    1010  
-    ecVVFF  = 12,      //    1100
-    ecVVVF  = 14,      //    1110
-
-    ecVFFFF = 16,      //   10000
-    ecVFFVF = 18,      //   10010
-    ecVFVFF = 20,      //   10100   
-    ecVFVVF = 22,      //   10110   
-    ecVVFFF = 24,      //   11000
-    ecVVFVF = 26,      //   11010
-    ecVVVFF = 28,      //   11100
-    ecVVVVF = 30,      //   11110
-
-    ecUNOPTIMIZABLE = 32,
-    ecNO_MUL = 64      // If this flag is set the expression does not have any variable multiplier in VAL_EX tokens.
-
-/*
-    ecVFFFFF = 32,     //  100000
-    ecVFFFVF = 34,     //  100010
-    ecVFFVFF = 36,     //  100100   
-    ecVFFVVF = 38,     //  100110
-    ecVFVFFF = 40,     //  101000
-    ecVFVFVF = 42,     //  101010
-    ecVFVVFF = 44,     //  101100
-
-    ecVVFFFF = 48,     //  110000
-    ecVVFFVF = 50,     //  100010
-    ecVVFVFF = 52,     //  100100   
-    ecVVFVVF = 54,     //  100110
-    ecVVVFFF = 56,     //  101000
-    ecVVVFVF = 58,     //  101010
-    ecVVVVFF = 60,     //  101100
-    ecVVVVVF = 62,     //  101100
-
-    ecUNOPTIMIZABLE = 64
-*/
-  };
-
-  //------------------------------------------------------------------------------
   /** \brief Code for expression tokens.
   */
   enum ECmdCode
@@ -159,9 +106,7 @@ MUP_NAMESPACE_START
     cmBC            = 2,
     cmARG_SEP       = 3,
     cmVAL_EX        = 4,
-    cmVAR           = 5,
-    cmVAL           = 6,
-    cmFUNC          = 7,
+    cmFUNC          = 5,
     cmOPRT_BIN,
     cmOPRT_POSTFIX,
     cmOPRT_INFIX,
@@ -233,12 +178,10 @@ MUP_NAMESPACE_START
     ecGENERIC                = 25, ///< Generic error
     ecLOCALE                 = 26, ///< Conflict with current locale
 
-    ecUNEXPECTED_CONDITIONAL = 27,
-    ecMISSING_ELSE_CLAUSE    = 28, 
-    ecMISPLACED_COLON        = 29,
+    ecMISPLACED_COLON        = 27,
 
     // internal errors
-    ecINTERNAL_ERROR         = 30, ///< Internal error of any kind.
+    ecINTERNAL_ERROR         = 28, ///< Internal error of any kind.
   
     // The last two are special entries 
     ecCOUNT,                       ///< This is no error code, It just stores just the total number of error codes

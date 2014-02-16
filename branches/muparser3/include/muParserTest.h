@@ -887,7 +887,7 @@ MUP_NAMESPACE_START
       {
         ParserTester<TValue, TString>::c_iCount++;
         int iRet(0);
-        TValue fVal[5] = {-999, -998, -997, -996, -995}; // initially should be different
+        TValue fVal[4] = {-999, -998, -997, -996}; // initially should be different
 
         try
         {
@@ -973,12 +973,6 @@ MUP_NAMESPACE_START
             Parser<TValue, TString> p3;
             p3 = p2;
             fVal[3] = p3.Eval();
-
-            // Test Eval function for multiple return values
-            // use p2 since it has the optimizer enabled!
-            int nNum;
-            TValue *v = p2.Eval(nNum);
-            fVal[4] = v[nNum-1];
           }
           catch(std::exception &e)
           {
@@ -1008,8 +1002,7 @@ MUP_NAMESPACE_START
                           << _SL(" ;calculated: ") << fVal[0] << _SL(",") 
                                                    << fVal[1] << _SL(",")
                                                    << fVal[2] << _SL(",")
-                                                   << fVal[3] << _SL(",")
-                                                   << fVal[4] << _SL(").");
+                                                   << fVal[3] << _SL(").");
           }
         }
         catch(ParserError<TString> &e)
