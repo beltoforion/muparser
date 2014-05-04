@@ -701,7 +701,7 @@ namespace mu
       // because it deletes the array with the used variables
       m_pParseFormula = &ParserBase::ParseString;
       m_pTokenReader->IgnoreUndefVar(false);
-      throw e;
+      throw;
     }
     
     return m_pTokenReader->GetUsedVar();
@@ -1730,13 +1730,13 @@ namespace mu
     #endif
 
     int nMaxThreads = std::min(omp_get_max_threads(), s_MaxNumOpenMPThreads);
-    int nThreadID, ct=0;
+    int ct=0;
     omp_set_num_threads(nMaxThreads);
 
     #pragma omp parallel for schedule(static, nBulkSize/nMaxThreads) private(nThreadID)
     for (i=0; i<nBulkSize; ++i)
     {
-      nThreadID = omp_get_thread_num();
+      int nThreadID = omp_get_thread_num();
       results[i] = ParseCmdCodeBulk(i, nThreadID);
 
       #ifdef DEBUG_OMP_STUFF

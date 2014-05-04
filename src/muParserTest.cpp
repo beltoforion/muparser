@@ -1180,9 +1180,9 @@ namespace mu
       try
       {
         Parser  p;
+        value_type var = 0;
 
         // variable
-        value_type var = 0;
         p.DefineVar( _T("a"), &var);
         p.SetExpr(a_str);
 

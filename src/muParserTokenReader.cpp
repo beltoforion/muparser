@@ -255,7 +255,6 @@ namespace mu
   {
     assert(m_pParser);
 
-    std::stack<int> FunArgs;
     const char_type *szFormula = m_strFormula.c_str();
     token_type tok;
 
@@ -656,7 +655,7 @@ namespace mu
         }
 
         m_iPos += (int)sID.length();
-        m_iSynFlags  = noBC | noOPT | noARG_SEP | noPOSTOP | noEND | noBC | noASSIGN;
+        m_iSynFlags  = noBC | noOPT | noARG_SEP | noPOSTOP | noEND | noASSIGN;
         return true;
       }
     }
