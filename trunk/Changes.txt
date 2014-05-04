@@ -32,6 +32,8 @@ Rev 2.2.4: 04.05.2014
    * Project Files for VS2008 and VS2010 removed from the repository 
    * Fix for Issue 4 (https://code.google.com/p/muparser/issues/detail?id=4)
    * Fix for VS2013 64 bit build option
+   * return type of ParserError::GetPos changed to int
+   * OpenMP support enabled in the VS2013 project files and precompiled windows DLL's
 	
 Rev 2.2.3: 22.12.2012
 ---------------------
