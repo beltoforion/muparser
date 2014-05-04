@@ -1,0 +1,4 @@
+C:\Users\user\Documents\projects\muparser_gc\branches\muparser_csharp\muparser_csharp\bin\Debug\muparser_csharp.dll
+C:\Users\user\Documents\projects\muparser_gc\branches\muparser_csharp\muparser_csharp\bin\Debug\muparser_csharp.pdb
+C:\Users\user\Documents\projects\muparser_gc\branches\muparser_csharp\muparser_csharp\obj\Debug\muparser_csharp.dll
+C:\Users\user\Documents\projects\muparser_gc\branches\muparser_csharp\muparser_csharp\obj\Debug\muparser_csharp.pdb

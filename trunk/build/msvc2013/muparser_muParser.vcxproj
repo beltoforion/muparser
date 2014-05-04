@@ -35,7 +35,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectName>muParser</ProjectName>
+    <ProjectName>muparser</ProjectName>
     <ProjectGuid>{2A1F639A-7642-57CC-BF97-3EC5B5C89D91}</ProjectGuid>
     <RootNamespace>muParser</RootNamespace>
   </PropertyGroup>
