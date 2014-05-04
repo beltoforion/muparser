@@ -30,6 +30,7 @@ muFloat_t ZeroArg()
 
 muFloat_t BulkTest(int nBulkIdx, int nThreadIdx, muFloat_t v1)
 {
+  (void*)&nThreadIdx;  // STFU compiler warning...
   printf("%d,%2.2f\n", nBulkIdx, v1);
   return v1/(nBulkIdx+1);
 }
@@ -81,7 +82,7 @@ muFloat_t* AddVariable(const muChar_t* a_szName, void *pUserData)
   static muFloat_t afValBuf[PARSER_MAXVARS];  // I don't want dynamic allocation here
   static int iVal = 0;                     // so i used this buffer
 
-  printf("Generating new variable \"%s\" (slots left: %d; context pointer: 0x%x)\n", a_szName, PARSER_MAXVARS-iVal, pUserData);
+  printf("Generating new variable \"%s\" (slots left: %d; context pointer: 0x%x)\n", a_szName, PARSER_MAXVARS-iVal, (int)pUserData);
 
   afValBuf[iVal] = 0;
   if (iVal>=PARSER_MAXVARS-1) 
@@ -413,7 +414,7 @@ int main(int argc, char *argv[])
   // The next line is just for shutting up the compiler warning
   // about unused variables without getting another warning about not
   // beeing able to use type lists in function declarations.
-  printf("Executing \"%s\"\n", argv[0]);
+  printf("Executing \"%s\" (argc=%d)\n", argv[0], argc);
   Calc();
   printf("done...");
 }

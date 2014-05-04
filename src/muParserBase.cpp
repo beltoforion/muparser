@@ -28,6 +28,7 @@
 
 //--- Standard includes ------------------------------------------------------------------------
 #include <cassert>
+#include <algorithm>
 #include <cmath>
 #include <memory>
 #include <vector>
@@ -695,7 +696,7 @@ namespace mu
       m_pParseFormula = &ParserBase::ParseString;
       m_pTokenReader->IgnoreUndefVar(false);
     }
-    catch(exception_type &e)
+    catch(exception_type & /*e*/)
     {
       // Make sure to stay in string parse mode, dont call ReInit()
       // because it deletes the array with the used variables
@@ -1730,13 +1731,13 @@ namespace mu
     #endif
 
     int nMaxThreads = std::min(omp_get_max_threads(), s_MaxNumOpenMPThreads);
-    int ct=0;
+	int nThreadID = 0, ct = 0;
     omp_set_num_threads(nMaxThreads);
 
     #pragma omp parallel for schedule(static, nBulkSize/nMaxThreads) private(nThreadID)
     for (i=0; i<nBulkSize; ++i)
     {
-      int nThreadID = omp_get_thread_num();
+      nThreadID = omp_get_thread_num();
       results[i] = ParseCmdCodeBulk(i, nThreadID);
 
       #ifdef DEBUG_OMP_STUFF

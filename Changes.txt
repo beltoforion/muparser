@@ -9,7 +9,7 @@
 #        \/                       \/            \/      \/            #
 #					  Fast math parser Library    #
 #                                                                     #
-#  Copyright (C) 2013 Ingo Berg                                       #
+#  Copyright (C) 2014 Ingo Berg                                       #
 #                                                                     #
 #  Web:     muparser.beltoforion.de                                   #
 #  e-mail:  muparser@beltoforion.de                                   #
@@ -21,7 +21,7 @@
 History:
 --------
 
-Rev 2.2.4: 08.07.2013
+Rev 2.2.4: 04.05.2014
 ---------------------
   Changes:
    * explicit positive sign allowed
@@ -29,6 +29,9 @@ Rev 2.2.4: 08.07.2013
   Bugfixes:
    * String constants did not work properly. Using more than a single one 
      was impossible.
+   * Project Files for VS2008 and VS2010 removed from the repository 
+   * Fix for Issue 4 (https://code.google.com/p/muparser/issues/detail?id=4)
+   * Fix for VS2013 64 bit build option
 	
 Rev 2.2.3: 22.12.2012
 ---------------------

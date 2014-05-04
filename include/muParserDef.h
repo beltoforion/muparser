@@ -37,7 +37,7 @@
 */
 
 #define MUP_VERSION _T("2.2.4")
-#define MUP_VERSION_DATE _T("20130723; SF")
+#define MUP_VERSION_DATE _T("20140504; GC")
 
 #define MUP_CHARS _T("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
 
