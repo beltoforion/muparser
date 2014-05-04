@@ -316,7 +316,7 @@ namespace mu
 
     If the error is not related to a distinct position this will return -1
   */
-  std::size_t ParserError::GetPos() const
+  int ParserError::GetPos() const
   {
     return m_iPos;
   }

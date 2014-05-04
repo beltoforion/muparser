@@ -157,7 +157,7 @@ public:
     void SetFormula(const string_type &a_strFormula);
     const string_type& GetExpr() const;
     const string_type& GetMsg() const;
-    std::size_t GetPos() const;
+    int GetPos() const;
     const string_type& GetToken() const;
     EErrorCodes GetCode() const;
 

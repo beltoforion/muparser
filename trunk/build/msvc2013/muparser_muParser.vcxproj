@@ -77,6 +77,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release Static|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <PlatformToolset>v120</PlatformToolset>
+    <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
   <ImportGroup Label="ExtensionSettings">
@@ -202,7 +203,7 @@
       <AdditionalOptions>/MP %(AdditionalOptions)</AdditionalOptions>
       <Optimization>MaxSpeed</Optimization>
       <AdditionalIncludeDirectories>..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;_USRDLL;DLL_EXPORTS;NDEBUG;MUPARSER_DLL;MUPARSERLIB_EXPORTS;_WIN32;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_USRDLL;DLL_EXPORTS;NDEBUG;MUPARSER_DLL;MUPARSERLIB_EXPORTS;_WIN32;MUP_USE_OPENMP;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ExceptionHandling>Sync</ExceptionHandling>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <RuntimeTypeInfo>true</RuntimeTypeInfo>
@@ -279,7 +280,7 @@
       <AdditionalOptions>/MP %(AdditionalOptions)</AdditionalOptions>
       <Optimization>Disabled</Optimization>
       <AdditionalIncludeDirectories>..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>WIN32;_USRDLL;DLL_EXPORTS;_DEBUG;MUPARSER_DLL;MUPARSERLIB_EXPORTS;_WIN32;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>WIN32;_USRDLL;DLL_EXPORTS;_DEBUG;MUPARSER_DLL;MUPARSERLIB_EXPORTS;_WIN32;_CRT_SECURE_NO_WARNINGS;MUP_USE_OPENMP;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ExceptionHandling>Sync</ExceptionHandling>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -325,11 +326,14 @@
       <PreprocessorDefinitions>_LIB;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
     </ClCompile>
+    <Lib>
+      <OutputFile>..\..\lib\muparser64.lib</OutputFile>
+    </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release DLL|x64'">
     <ClCompile>
       <AdditionalIncludeDirectories>..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_USRDLL;DLL_EXPORTS;NDEBUG;MUPARSER_DLL;MUPARSERLIB_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_USRDLL;DLL_EXPORTS;NDEBUG;MUPARSER_DLL;MUPARSERLIB_EXPORTS;MUP_USE_OPENMP;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
       <ObjectFileName>obj\vc_shared_rel\muParser\</ObjectFileName>
       <ProgramDataBaseFileName>..\..\lib\muparser64.pdb</ProgramDataBaseFileName>
@@ -348,15 +352,16 @@
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <WarningLevel>Level4</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <Optimization>Disabled</Optimization>
     </ClCompile>
     <Lib>
-      <OutputFile>..\..\lib\muparserd.lib</OutputFile>
+      <OutputFile>..\..\lib\muparserd64.lib</OutputFile>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug DLL|x64'">
     <ClCompile>
       <AdditionalIncludeDirectories>..\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>_USRDLL;DLL_EXPORTS;_DEBUG;MUPARSER_DLL;MUPARSERLIB_EXPORTS;_CRT_SECURE_NO_WARNINGS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>_USRDLL;DLL_EXPORTS;_DEBUG;MUPARSER_DLL;MUPARSERLIB_EXPORTS;_CRT_SECURE_NO_WARNINGS;MUP_USE_OPENMP;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
       <ObjectFileName>obj\vc_shared_dbg\muParser\</ObjectFileName>
       <ProgramDataBaseFileName>..\..\lib\muparserd64.pdb</ProgramDataBaseFileName>
@@ -392,6 +397,7 @@
     <ClInclude Include="..\..\include\muParserFixes.h" />
     <ClInclude Include="..\..\include\muParserInt.h" />
     <ClInclude Include="..\..\include\muParserStack.h" />
+    <ClInclude Include="..\..\include\muParserTemplateMagic.h" />
     <ClInclude Include="..\..\include\muParserTest.h" />
     <ClInclude Include="..\..\include\muParserToken.h" />
     <ClInclude Include="..\..\include\muParserTokenReader.h" />
