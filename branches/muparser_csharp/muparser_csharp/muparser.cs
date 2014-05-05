@@ -385,9 +385,9 @@ namespace muParser
             string s = GetExpr();
 
             ParserException exc = new ParserException(GetExpr(),
-                                                        GetErrorMsg(),
-                                                        mupGetErrorPos(m_parser),
-                                                        GetErrorToken() );
+                                                      GetErrorMsg(),
+                                                      mupGetErrorPos(m_parser),
+                                                      GetErrorToken() );
             throw exc;
         }
 
@@ -821,10 +821,11 @@ namespace muParser
 
         [DllImport("muparser.dll", CallingConvention=CallingConvention.Cdecl)]
         protected static extern void mupGetExprVar(IntPtr a_parser,
-                                                    int idx,
-                                                    ref IntPtr name,
-                                                    ref IntPtr ptr);
+                                                   int idx,
+                                                   ref IntPtr name,
+                                                   ref IntPtr ptr);
 
+/* <ibg 20140504/> Those are unneded since the C# wrapper is keeping track of variables on its own.
         [DllImport("muparser.dll", CallingConvention=CallingConvention.Cdecl)]
         protected static extern int mupGetVarNum(IntPtr a_parser);
 
@@ -833,14 +834,14 @@ namespace muParser
                                                int idx,
                                                ref IntPtr name,
                                                ref IntPtr ptr);
-
+*/
         [DllImport("muparser.dll", CallingConvention=CallingConvention.Cdecl)]
         protected static extern int mupGetConstNum(IntPtr a_parser);
 
         [DllImport("muparser.dll", CallingConvention=CallingConvention.Cdecl)]
-        protected static extern void mupGetConst( IntPtr a_parser, 
-                                                int idx, 
-                                                ref IntPtr str,
+        protected static extern void mupGetConst(IntPtr a_parser, 
+                                                 int idx, 
+                                                 ref IntPtr str,
                                                 ref double value);
 
         //-------------------------------------------------------------------------------------------

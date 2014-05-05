@@ -49,7 +49,7 @@ namespace muWrapper
         try
         {
           m_parser = new Parser(Parser.EBaseType.tpDOUBLE);
-          lbVersion.Text = String.Format("muParser V{0}", m_parser.GetVersion());
+          lbVersion.Text = String.Format("muparser V{0}", m_parser.GetVersion());
           m_parser.DefineFun("fun1", new Parser.Fun1Delegate(fun1), true);
           m_parser.DefineFun("fun3", new Parser.Fun3Delegate(fun3), true);
           m_parser.DefineFun("fun4", new Parser.Fun4Delegate(fun4), true);
@@ -544,7 +544,7 @@ namespace muWrapper
           pb.DefineVar("x", m_xarray);
           pb.DefineVar("y", m_yarray);
 
-          // Calculate the expressions for all three colorplanes
+          // Calculate the expressions for all three colorplanes using bulk mode (Open MP)
           pr.Eval(rr, rr.Length);
           pg.Eval(rg, rg.Length);
           pb.Eval(rb, rb.Length);
@@ -635,7 +635,6 @@ namespace muWrapper
           {
             x.Value = (xi - 400) * mult;
 
-            int nNum;
             double[] ret = p.EvalMultiExpr();
             r = GetColorComponent(ret[0]);
             g = GetColorComponent(ret[1]);
