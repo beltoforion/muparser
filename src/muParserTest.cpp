@@ -1175,10 +1175,11 @@ namespace mu
                                            double a_fRes2)
     {
       ParserTester::c_iCount++;
-      value_type fVal[2] = {-999, -999 }; // should be equalinitially
 
       try
       {
+        value_type fVal[2] = {-999, -999 }; // should be equalinitially
+	  
         Parser  p;
         value_type var = 0;
 
@@ -1410,11 +1411,11 @@ namespace mu
       ParserTester::c_iCount++;
 
       value_type vVarVal[] = {1, 2, 3};   // variable values
-      value_type fVal[2] = {-99, -999};   // results: initially should be different
       int iRet(0);
 
       try
       {
+        value_type fVal[2] = {-99, -999};   // results: initially should be different
         ParserInt p;
         p.DefineConst( _T("const1"), 1);
         p.DefineConst( _T("const2"), 2);
