@@ -776,7 +776,7 @@ API_EXPORT(void) mupGetVar(muParserHandle_t a_hParser,
 
     item = VarMap.begin();
     for (unsigned i=0; i<a_iVar; ++i)
-      item++;
+      ++item;
 
      strncpy(szName, item->first.c_str(), sizeof(szName));
      szName[sizeof(szName)-1] = 0;
@@ -848,7 +848,7 @@ API_EXPORT(void) mupGetExprVar(muParserHandle_t a_hParser,
 
     item = VarMap.begin();
     for (unsigned i=0; i<a_iVar; ++i)
-      item++;
+      ++item;
 
      strncpy(szName, item->first.c_str(), sizeof(szName));
      szName[sizeof(szName)-1] = 0;
@@ -942,7 +942,7 @@ API_EXPORT(void) mupGetConst( muParserHandle_t a_hParser,
     mu::valmap_type::const_iterator item;
     item = ValMap.begin();
     for (unsigned i=0; i<a_iVar; ++i)
-      item++;
+      ++item;
 
     strncpy(szName, item->first.c_str(), sizeof(szName));
     szName[sizeof(szName)-1] = 0;

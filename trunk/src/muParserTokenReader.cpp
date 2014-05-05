@@ -97,6 +97,8 @@ namespace mu
     m_pFactoryData    = a_Reader.m_pFactoryData;
     m_iBrackets       = a_Reader.m_iBrackets;
     m_cArgSep         = a_Reader.m_cArgSep;
+	m_fZero           = a_Reader.m_fZero;
+	m_lastTok         = a_Reader.m_lastTok;
   }
 
   //---------------------------------------------------------------------------
@@ -775,7 +777,7 @@ namespace mu
   */
   bool ParserTokenReader::IsVarTok(token_type &a_Tok)
   {
-    if (!m_pVarDef->size())
+    if (m_pVarDef->empty())
       return false;
 
     string_type strTok;
@@ -806,7 +808,7 @@ namespace mu
   //---------------------------------------------------------------------------
   bool ParserTokenReader::IsStrVarTok(token_type &a_Tok)
   {
-    if (!m_pStrVarDef || !m_pStrVarDef->size())
+    if (!m_pStrVarDef || m_pStrVarDef->empty())
       return false;
 
     string_type strTok;

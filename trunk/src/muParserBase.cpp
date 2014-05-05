@@ -266,8 +266,6 @@ namespace mu
   */
   string_type ParserBase::GetVersion(EParserVersionInfo eInfo) const
   {
-    string_type sCompileTimeSettings;
-    
     stringstream_type ss;
 
     ss << MUP_VERSION;
@@ -1177,7 +1175,6 @@ namespace mu
     ParserStack<int> stArgCount;
     token_type opta, opt;  // for storing operators
     token_type val, tval;  // for storing value
-    string_type strBuf;    // buffer for string function arguments
 
     ReInit();
     
