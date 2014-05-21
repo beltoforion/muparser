@@ -104,7 +104,7 @@ void Intro(muParserHandle_t hParser)
   printf("  |__|_|  /|____/ |____|    (____  /|__|  /____  > \\___  >|__|    \n");
   printf("        \\/                       \\/            \\/      \\/         \n");
   printf("  Version %s (DLL)\n", mupGetVersion(hParser));
-  printf("  (C) 2013 Ingo Berg\n");
+  printf("  (C) 2014 Ingo Berg\n");
   printf("---------------------------------------\n");
   printf("Commands:\n");
   printf("  list var     - list parser variables\n");
