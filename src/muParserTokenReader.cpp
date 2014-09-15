@@ -421,8 +421,7 @@ namespace mu
                 Error(ecUNEXPECTED_OPERATOR, m_iPos, pOprtDef[i]);
               }
 
-              m_iSynFlags  = noBC | noOPT | noARG_SEP | noPOSTOP | noASSIGN | noIF | noELSE;
-              m_iSynFlags |= ( (i != cmEND) && ( i != cmBC) ) ? noEND : 0;
+              m_iSynFlags  = noBC | noOPT | noARG_SEP | noPOSTOP | noASSIGN | noIF | noELSE | noEND;
               break;
 
 		    case cmBO:
