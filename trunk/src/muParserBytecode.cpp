@@ -346,7 +346,7 @@ namespace mu
 
     SToken tok;
     tok.Cmd = cmASSIGN;
-    tok.Val.ptr = a_pVar;
+    tok.Oprt.ptr = a_pVar;
     m_vRPN.push_back(tok);
   }
 
