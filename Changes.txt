@@ -21,7 +21,7 @@
 History:
 --------
 
-Rev 2.2.4: 04.05.2014
+Rev 2.2.4: 24.09.2014
 ---------------------
   Changes:
    * explicit positive sign allowed
@@ -34,6 +34,7 @@ Rev 2.2.4: 04.05.2014
    * Fix for VS2013 64 bit build option
    * return type of ParserError::GetPos changed to int
    * OpenMP support enabled in the VS2013 project files and precompiled windows DLL's
+   * Bulkmode did not evaluate properly if "=" and "," operator was used in the expression
 	
 Rev 2.2.3: 22.12.2012
 ---------------------

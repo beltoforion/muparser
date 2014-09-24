@@ -1042,7 +1042,12 @@ namespace mu
       case  cmLOR:  --sidx; Stack[sidx]  = Stack[sidx] || Stack[sidx+1]; continue;
 
       case  cmASSIGN: 
-            --sidx; Stack[sidx] = *pTok->Oprt.ptr = Stack[sidx+1]; continue;
+          // Bugfix for Bulkmode:
+          // for details see:
+          //    https://groups.google.com/forum/embed/?place=forum/muparser-dev&showsearch=true&showpopout=true&showtabs=false&parenturl=http://muparser.beltoforion.de/mup_forum.html&afterlogin&pli=1#!topic/muparser-dev/szgatgoHTws
+          --sidx; Stack[sidx] = *(pTok->Oprt.ptr + nOffset) = Stack[sidx + 1]; continue;
+          // original code:
+          //--sidx; Stack[sidx] = *pTok->Oprt.ptr = Stack[sidx+1]; continue;
 
       //case  cmBO:  // unused, listed for compiler optimization purposes
       //case  cmBC:
@@ -1708,6 +1713,8 @@ namespace mu
   //---------------------------------------------------------------------------
   void ParserBase::Eval(value_type *results, int nBulkSize)
   {
+/* <ibg 2014-09-24/> Commented because it is making a unit test impossible
+
     // Parallelization does not make sense for fewer than 10000 computations 
     // due to thread creation overhead. If the bulk size is below 2000
     // computation is refused. 
@@ -1715,7 +1722,7 @@ namespace mu
     {
       throw ParserError(ecUNREASONABLE_NUMBER_OF_COMPUTATIONS);
     }
-
+*/
     CreateRPN();
 
     int i = 0;
