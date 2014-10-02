@@ -348,7 +348,8 @@ namespace mu
   int ParserTokenReader::ExtractOperatorToken(string_type &a_sTok, 
                                               int a_iPos) const
   {
-    int iEnd = (int)m_strFormula.find_first_not_of(m_pParser->ValidInfixOprtChars(), a_iPos);
+    // Changed as per Issue 6: https://code.google.com/p/muparser/issues/detail?id=6
+    int iEnd = (int)m_strFormula.find_first_not_of(m_pParser->ValidOprtChars(), a_iPos);
     if (iEnd==(int)string_type::npos)
       iEnd = (int)m_strFormula.length();
 
