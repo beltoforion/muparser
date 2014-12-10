@@ -6,7 +6,7 @@
 
 # NOTE:
 #  the version of the project must be updated also in docs/Doxyfile !
-AC_INIT([muParser], [2.2.3], [muparser@beltoforion.de])
+AC_INIT([muparser], [2.2.4], [muparser@beltoforion.de])
 
 AC_PREREQ([2.57])
 AC_CONFIG_AUX_DIR([build/autoconf])

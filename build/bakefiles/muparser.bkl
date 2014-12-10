@@ -73,7 +73,7 @@
         <libname>muparser$(DEBUG_BUILD_POSTFIX)</libname>
 
         <version>2.2</version>
-        <so_version>2.2.3</so_version>
+        <so_version>2.2.4</so_version>
         <mac_version>1</mac_version>        <!-- must be > 0 -->
     </dll>
 
