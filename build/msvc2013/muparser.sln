@@ -29,6 +29,7 @@ Global
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
 		{2A1F639A-7642-57CC-BF97-3EC5B5C89D91}.Debug DLL|Any CPU.ActiveCfg = Debug DLL|Win32
+		{2A1F639A-7642-57CC-BF97-3EC5B5C89D91}.Debug DLL|Any CPU.Build.0 = Debug DLL|Win32
 		{2A1F639A-7642-57CC-BF97-3EC5B5C89D91}.Debug DLL|Mixed Platforms.ActiveCfg = Debug DLL|Win32
 		{2A1F639A-7642-57CC-BF97-3EC5B5C89D91}.Debug DLL|Mixed Platforms.Build.0 = Debug DLL|Win32
 		{2A1F639A-7642-57CC-BF97-3EC5B5C89D91}.Debug DLL|Win32.ActiveCfg = Debug DLL|Win32
@@ -36,6 +37,7 @@ Global
 		{2A1F639A-7642-57CC-BF97-3EC5B5C89D91}.Debug DLL|x64.ActiveCfg = Debug DLL|x64
 		{2A1F639A-7642-57CC-BF97-3EC5B5C89D91}.Debug DLL|x64.Build.0 = Debug DLL|x64
 		{2A1F639A-7642-57CC-BF97-3EC5B5C89D91}.Debug Static|Any CPU.ActiveCfg = Debug Static|Win32
+		{2A1F639A-7642-57CC-BF97-3EC5B5C89D91}.Debug Static|Any CPU.Build.0 = Debug Static|Win32
 		{2A1F639A-7642-57CC-BF97-3EC5B5C89D91}.Debug Static|Mixed Platforms.ActiveCfg = Debug Static|Win32
 		{2A1F639A-7642-57CC-BF97-3EC5B5C89D91}.Debug Static|Mixed Platforms.Build.0 = Debug Static|Win32
 		{2A1F639A-7642-57CC-BF97-3EC5B5C89D91}.Debug Static|Win32.ActiveCfg = Debug Static|Win32
@@ -43,6 +45,7 @@ Global
 		{2A1F639A-7642-57CC-BF97-3EC5B5C89D91}.Debug Static|x64.ActiveCfg = Debug Static|x64
 		{2A1F639A-7642-57CC-BF97-3EC5B5C89D91}.Debug Static|x64.Build.0 = Debug Static|x64
 		{2A1F639A-7642-57CC-BF97-3EC5B5C89D91}.Release DLL|Any CPU.ActiveCfg = Release DLL|Win32
+		{2A1F639A-7642-57CC-BF97-3EC5B5C89D91}.Release DLL|Any CPU.Build.0 = Release DLL|Win32
 		{2A1F639A-7642-57CC-BF97-3EC5B5C89D91}.Release DLL|Mixed Platforms.ActiveCfg = Release DLL|Win32
 		{2A1F639A-7642-57CC-BF97-3EC5B5C89D91}.Release DLL|Mixed Platforms.Build.0 = Release DLL|Win32
 		{2A1F639A-7642-57CC-BF97-3EC5B5C89D91}.Release DLL|Win32.ActiveCfg = Release DLL|Win32
@@ -50,6 +53,7 @@ Global
 		{2A1F639A-7642-57CC-BF97-3EC5B5C89D91}.Release DLL|x64.ActiveCfg = Release DLL|x64
 		{2A1F639A-7642-57CC-BF97-3EC5B5C89D91}.Release DLL|x64.Build.0 = Release DLL|x64
 		{2A1F639A-7642-57CC-BF97-3EC5B5C89D91}.Release Static|Any CPU.ActiveCfg = Release Static|Win32
+		{2A1F639A-7642-57CC-BF97-3EC5B5C89D91}.Release Static|Any CPU.Build.0 = Release Static|Win32
 		{2A1F639A-7642-57CC-BF97-3EC5B5C89D91}.Release Static|Mixed Platforms.ActiveCfg = Release Static|Win32
 		{2A1F639A-7642-57CC-BF97-3EC5B5C89D91}.Release Static|Mixed Platforms.Build.0 = Release Static|Win32
 		{2A1F639A-7642-57CC-BF97-3EC5B5C89D91}.Release Static|Win32.ActiveCfg = Release Static|Win32
@@ -62,6 +66,7 @@ Global
 		{A1DCD664-8803-54E2-B35F-84D96B9CA6DF}.Debug DLL|Win32.ActiveCfg = Debug Static|Win32
 		{A1DCD664-8803-54E2-B35F-84D96B9CA6DF}.Debug DLL|x64.ActiveCfg = Debug Static|x64
 		{A1DCD664-8803-54E2-B35F-84D96B9CA6DF}.Debug Static|Any CPU.ActiveCfg = Debug Static|Win32
+		{A1DCD664-8803-54E2-B35F-84D96B9CA6DF}.Debug Static|Any CPU.Build.0 = Debug Static|Win32
 		{A1DCD664-8803-54E2-B35F-84D96B9CA6DF}.Debug Static|Mixed Platforms.ActiveCfg = Debug Static|Win32
 		{A1DCD664-8803-54E2-B35F-84D96B9CA6DF}.Debug Static|Mixed Platforms.Build.0 = Debug Static|Win32
 		{A1DCD664-8803-54E2-B35F-84D96B9CA6DF}.Debug Static|Win32.ActiveCfg = Debug Static|Win32
@@ -74,6 +79,7 @@ Global
 		{A1DCD664-8803-54E2-B35F-84D96B9CA6DF}.Release DLL|Win32.ActiveCfg = Release Static|Win32
 		{A1DCD664-8803-54E2-B35F-84D96B9CA6DF}.Release DLL|x64.ActiveCfg = Release Static|x64
 		{A1DCD664-8803-54E2-B35F-84D96B9CA6DF}.Release Static|Any CPU.ActiveCfg = Release Static|Win32
+		{A1DCD664-8803-54E2-B35F-84D96B9CA6DF}.Release Static|Any CPU.Build.0 = Release Static|Win32
 		{A1DCD664-8803-54E2-B35F-84D96B9CA6DF}.Release Static|Mixed Platforms.ActiveCfg = Release Static|Win32
 		{A1DCD664-8803-54E2-B35F-84D96B9CA6DF}.Release Static|Mixed Platforms.Build.0 = Release Static|Win32
 		{A1DCD664-8803-54E2-B35F-84D96B9CA6DF}.Release Static|Win32.ActiveCfg = Release Static|Win32
@@ -81,6 +87,7 @@ Global
 		{A1DCD664-8803-54E2-B35F-84D96B9CA6DF}.Release Static|x64.ActiveCfg = Release Static|x64
 		{A1DCD664-8803-54E2-B35F-84D96B9CA6DF}.Release Static|x64.Build.0 = Release Static|x64
 		{B405983E-B929-5BCF-8CC8-03CF34796A23}.Debug DLL|Any CPU.ActiveCfg = Debug DLL|Win32
+		{B405983E-B929-5BCF-8CC8-03CF34796A23}.Debug DLL|Any CPU.Build.0 = Debug DLL|Win32
 		{B405983E-B929-5BCF-8CC8-03CF34796A23}.Debug DLL|Mixed Platforms.ActiveCfg = Debug DLL|Win32
 		{B405983E-B929-5BCF-8CC8-03CF34796A23}.Debug DLL|Mixed Platforms.Build.0 = Debug DLL|Win32
 		{B405983E-B929-5BCF-8CC8-03CF34796A23}.Debug DLL|Win32.ActiveCfg = Debug DLL|Win32
@@ -93,6 +100,7 @@ Global
 		{B405983E-B929-5BCF-8CC8-03CF34796A23}.Debug Static|Win32.ActiveCfg = Debug DLL|Win32
 		{B405983E-B929-5BCF-8CC8-03CF34796A23}.Debug Static|x64.ActiveCfg = Debug DLL|x64
 		{B405983E-B929-5BCF-8CC8-03CF34796A23}.Release DLL|Any CPU.ActiveCfg = Release DLL|Win32
+		{B405983E-B929-5BCF-8CC8-03CF34796A23}.Release DLL|Any CPU.Build.0 = Release DLL|Win32
 		{B405983E-B929-5BCF-8CC8-03CF34796A23}.Release DLL|Mixed Platforms.ActiveCfg = Release DLL|Win32
 		{B405983E-B929-5BCF-8CC8-03CF34796A23}.Release DLL|Mixed Platforms.Build.0 = Release DLL|Win32
 		{B405983E-B929-5BCF-8CC8-03CF34796A23}.Release DLL|Win32.ActiveCfg = Release DLL|Win32
