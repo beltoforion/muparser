@@ -32,6 +32,7 @@
 #include <map>
 #include <memory>
 #include <locale>
+#include <limits.h>
 
 //--- Parser includes --------------------------------------------------------------------------
 #include "muParserDef.h"
