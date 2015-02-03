@@ -7,9 +7,9 @@
 #  |  Y Y  \|  |  /|    |     / __ \_|  | \/\___ \ \  ___/ |  | \/    #
 #  |__|_|  /|____/ |____|    (____  /|__|  /____  > \___  >|__|       #
 #        \/                       \/            \/      \/            #
-#					  Fast math parser Library    #
+#					  Fast math parser Library                        #
 #                                                                     #
-#  Copyright (C) 2014 Ingo Berg                                       #
+#  Copyright (C) 2015 Ingo Berg                                       #
 #                                                                     #
 #  Web:     muparser.beltoforion.de                                   #
 #  e-mail:  muparser@beltoforion.de                                   #
@@ -21,6 +21,15 @@
 History:
 --------
 
+Rev 2.2.5: 01.02.2015
+---------------------
+  Changes:
+   * example2 extended to work with UNICODE character set
+   
+  Bugfixes:
+   * muChar_t in muParserDLL.h was not set properly when UNICODE was used
+   * muparser.dll did not build on UNICODE systems
+   
 Rev 2.2.4: 02.10.2014
 ---------------------
   Changes:
