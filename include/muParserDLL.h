@@ -47,7 +47,13 @@ extern "C"
 
 // Basic types
 typedef void*  muParserHandle_t;    // parser handle
-typedef char   muChar_t;            // character type
+
+#ifndef _UNICODE
+    typedef char   muChar_t;            // character type
+#else
+    typedef wchar_t   muChar_t;            // character type
+#endif
+
 typedef int    muBool_t;            // boolean type
 typedef int    muInt_t;             // integer type 
 typedef double muFloat_t;           // floating point type

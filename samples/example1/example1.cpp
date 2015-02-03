@@ -6,7 +6,7 @@
 //  |  Y Y  \|  |  /|    |     / __ \_|  | \/\___ \ \  ___/ |  | \/
 //  |__|_|  /|____/ |____|    (____  /|__|  /____  > \___  >|__|   
 //        \/                       \/            \/      \/        
-//  (C) 2013 Ingo Berg
+//  (C) 2015 Ingo Berg
 //
 //  example1.cpp - using the parser as a static library
 //
@@ -175,7 +175,7 @@ void Splash()
   mu::console() << _T("  |__|_|  /|____/ |____|    (____  /|__|  /____  > \\___  >|__|    \n");
   mu::console() << _T("        \\/                       \\/            \\/      \\/         \n");
   mu::console() << _T("  Version ") << Parser().GetVersion(pviFULL) << _T("\n");
-  mu::console() << _T("  (C) 2014 Ingo Berg\n");
+  mu::console() << _T("  (C) 2015 Ingo Berg\n");
 }
 
 //---------------------------------------------------------------------------

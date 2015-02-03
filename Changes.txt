@@ -21,12 +21,13 @@
 History:
 --------
 
-Rev 2.2.4: 24.09.2014
+Rev 2.2.4: 02.10.2014
 ---------------------
   Changes:
    * explicit positive sign allowed
 
   Bugfixes:
+   * Fix for Issue 6 (https://code.google.com/p/muparser/issues/detail?id=6)
    * String constants did not work properly. Using more than a single one 
      was impossible.
    * Project Files for VS2008 and VS2010 removed from the repository 
