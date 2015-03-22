@@ -1,4 +1,4 @@
-namespace muWrapper
+namespace sample
 {
     partial class WndSample
     {
