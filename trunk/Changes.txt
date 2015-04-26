@@ -25,6 +25,7 @@ Rev 2.2.5: 01.02.2015
 ---------------------
   Changes:
    * example2 extended to work with UNICODE character set
+   * Applied patch from Issue 9
    
   Bugfixes:
    * muChar_t in muParserDLL.h was not set properly when UNICODE was used

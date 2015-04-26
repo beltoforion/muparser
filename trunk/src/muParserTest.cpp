@@ -218,7 +218,7 @@ namespace mu
       iStat += EqnTest(_T("b>=a"), 1, true);
       iStat += EqnTest(_T("a>=b"), 0, true);
 
-      // Test logical operators, expecially if user defined "&" and the internal "&&" collide
+      // Test logical operators, especially if user defined "&" and the internal "&&" collide
       iStat += EqnTest(_T("1 && 1"), 1, true); 
       iStat += EqnTest(_T("1 && 0"), 0, true); 
       iStat += EqnTest(_T("(a<b) && (b>a)"), 1, true); 
@@ -230,7 +230,7 @@ namespace mu
       iStat += EqnTest(_T("12&255"), 12, true); 
       iStat += EqnTest(_T("12&0"), 0, true); 
 
-      // Assignement operator
+      // Assignment operator
       iStat += EqnTest(_T("a = b"), 2, true); 
       iStat += EqnTest(_T("a = sin(b)"), 0.909297, true); 
       iStat += EqnTest(_T("a = 1+sin(b)"), 1.909297, true);
@@ -542,7 +542,7 @@ namespace mu
           throw false;
         
         // the next check will fail if the parser 
-        // erroneousely creates new variables internally
+        // erroneously creates new variables internally
         if (p.GetVar().size()!=5)
           throw false;
 
@@ -561,7 +561,7 @@ namespace mu
           throw false;
 
         // the next check will fail if the parser 
-        // erroneousely creates new variables internally
+        // erroneously creates new variables internally
         if (p.GetVar().size()!=5)
           throw false;
 
@@ -841,7 +841,7 @@ namespace mu
       iStat += EqnTest( _T("(2*b+1)*4"), (2*b+1)*4, true);
       iStat += EqnTest( _T("4*(2*b+1)"), (2*b+1)*4, true);
 
-      // operator precedencs
+      // operator precedences
       iStat += EqnTest( _T("1+2-3*4/5^6"), 2.99923, true);
       iStat += EqnTest( _T("1^2/3*4-5+6"), 2.33333333, true);
       iStat += EqnTest( _T("1+2*3"), 7, true);
@@ -1071,7 +1071,7 @@ namespace mu
       iStat += ThrowTest( _T("strfun3(\"1\", 3, \"100\")"),  ecVAL_EXPECTED);
       iStat += ThrowTest( _T("strfun3(\"1\", \"100\", \"100\", \"100\")"),  ecTOO_MANY_PARAMS);
 
-      // assignement operator
+      // assignment operator
       iStat += ThrowTest( _T("3=4"), ecUNEXPECTED_OPERATOR);
       iStat += ThrowTest( _T("sin(8)=4"), ecUNEXPECTED_OPERATOR);
       iStat += ThrowTest( _T("\"test\"=a"), ecUNEXPECTED_OPERATOR);
@@ -1205,7 +1205,7 @@ namespace mu
 
       try
       {
-        value_type fVal[2] = {-999, -999 }; // should be equalinitially
+        value_type fVal[2] = {-999, -999 }; // should be equal
 	  
         Parser  p;
         value_type var = 0;
@@ -1260,7 +1260,7 @@ namespace mu
       {
         std::auto_ptr<Parser> p1;
         Parser  p2, p3;   // three parser objects
-                          // they will be used for testing copy and assihnment operators
+                          // they will be used for testing copy and assignment operators
         // p1 is a pointer since i'm going to delete it in order to test if
         // parsers after copy construction still refer to members of it.
         // !! If this is the case this function will crash !!
@@ -1343,7 +1343,7 @@ namespace mu
         if (fVal[0]!=fVal[1])
           throw Parser::exception_type( _T("Bytecode / string parsing mismatch.") );
 
-        // Test copy and assignement operators
+        // Test copy and assignment operators
         try
         {
           // Test copy constructor
@@ -1357,7 +1357,7 @@ namespace mu
 
           fVal[2] = p2.Eval();
 
-          // Test assignement operator
+          // Test assignment operator
           // additionally  disable Optimizer this time
           mu::Parser p3;
           p3 = p2;

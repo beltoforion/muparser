@@ -100,7 +100,7 @@ namespace mu
   //---------------------------------------------------------------------------
   /** \brief Copy constructor. 
 
-    Tha parser can be safely copy constructed but the bytecode is reset during
+    The parser can be safely copy constructed but the bytecode is reset during
     copy construction.
   */
   ParserBase::ParserBase(const ParserBase &a_Parser)
@@ -130,9 +130,9 @@ namespace mu
   {}
 
   //---------------------------------------------------------------------------
-  /** \brief Assignement operator. 
+  /** \brief Assignment operator. 
 
-    Implemented by calling Assign(a_Parser). Self assignement is suppressed.
+    Implemented by calling Assign(a_Parser). Self assignment is suppressed.
     \param a_Parser Object to copy to this.
     \return *this
     \throw nothrow
@@ -313,7 +313,7 @@ namespace mu
   /** \brief Add a value parsing function. 
       
       When parsing an expression muParser tries to detect values in the expression
-      string using different valident callbacks. Thuis it's possible to parse
+      string using different valident callbacks. Thus it's possible to parse
       for hex values, binary values and floating point values. 
   */
   void ParserBase::AddValIdent(identfun_type a_pCallback)
@@ -364,7 +364,7 @@ namespace mu
   //---------------------------------------------------------------------------
   /** \brief Check if a name contains invalid characters. 
 
-      \throw ParserException if the name contains invalid charakters.
+      \throw ParserException if the name contains invalid characters.
   */
   void ParserBase::CheckOprt(const string_type &a_sName,
                              const ParserCallback &a_Callback,
@@ -386,7 +386,7 @@ namespace mu
   //---------------------------------------------------------------------------
   /** \brief Check if a name contains invalid characters. 
 
-      \throw ParserException if the name contains invalid charakters.
+      \throw ParserException if the name contains invalid characters.
   */
   void ParserBase::CheckName(const string_type &a_sName,
                              const string_type &a_szCharSet) const
@@ -587,7 +587,7 @@ namespace mu
   //---------------------------------------------------------------------------
   /** \brief Add a user defined variable. 
       \param [in] a_sName the variable name
-      \param [in] a_pVar A pointer to the variable vaule.
+      \param [in] a_pVar A pointer to the variable value.
       \post Will reset the Parser to string parsing mode.
       \throw ParserException in case the name contains invalid signs or a_pVar is NULL.
   */
@@ -786,7 +786,7 @@ namespace mu
       \param iArgCount Number of Arguments actually gathered used only for multiarg functions.
       \post The result is pushed to the value stack
       \post The function token is removed from the stack
-      \throw exception_type if Argument count does not mach function requirements.
+      \throw exception_type if Argument count does not match function requirements.
   */
   void ParserBase::ApplyFunc( ParserStack<token_type> &a_stOpt,
                               ParserStack<token_type> &a_stVal, 
@@ -1183,7 +1183,7 @@ namespace mu
 
     ReInit();
     
-    // The outermost counter counts the number of seperated items
+    // The outermost counter counts the number of separated items
     // such as in "a=10,b=20,c=c+a"
     stArgCount.push(1);
     
@@ -1344,7 +1344,7 @@ namespace mu
                 break;
 
         //
-        // Last section contains functions and operators implicitely mapped to functions
+        // Last section contains functions and operators implicitly mapped to functions
         //
         case cmBO:
                 stArgCount.push(1);
@@ -1540,7 +1540,7 @@ namespace mu
   }
 
   //---------------------------------------------------------------------------
-  /** \brief Enable the dumping of bytecode amd stack content on the console. 
+  /** \brief Enable the dumping of bytecode and stack content on the console. 
       \param bDumpCmd Flag to enable dumping of the current bytecode to the console.
       \param bDumpStack Flag to enable dumping of the stack content is written to the console.
 
@@ -1661,12 +1661,12 @@ namespace mu
   }
 
   //------------------------------------------------------------------------------
-  /** \brief Evaluate an expression containing comma seperated subexpressions 
+  /** \brief Evaluate an expression containing comma separated subexpressions 
       \param [out] nStackSize The total number of results available
       \return Pointer to the array containing all expression results
 
-      This member function can be used to retriev all results of an expression
-      made up of multiple comma seperated subexpressions (i.e. "x+y,sin(x),cos(y)")
+      This member function can be used to retrieve all results of an expression
+      made up of multiple comma separated subexpressions (i.e. "x+y,sin(x),cos(y)")
   */
   value_type* ParserBase::Eval(int &nStackSize) const
   {
@@ -1680,8 +1680,8 @@ namespace mu
   //---------------------------------------------------------------------------
   /** \brief Return the number of results on the calculation stack. 
   
-    If the expression contains comma seperated subexpressions (i.e. "sin(y), x+y"). 
-    There mey be more than one return value. This function returns the number of 
+    If the expression contains comma separated subexpressions (i.e. "sin(y), x+y"). 
+    There may be more than one return value. This function returns the number of 
     available results.
   */
   int ParserBase::GetNumResults() const
@@ -1696,7 +1696,7 @@ namespace mu
     I consider it important that Calc is a const function.
     Due to caching operations Calc changes only the state of internal variables with one exception
     m_UsedVar this is reset during string parsing and accessible from the outside. Instead of making
-    Calc non const GetUsedVar is non const because it explicitely calls Eval() forcing this update. 
+    Calc non const GetUsedVar is non const because it explicitly calls Eval() forcing this update. 
 
     \pre A formula must be set.
     \pre Variables must have been set (if needed)
