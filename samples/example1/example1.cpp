@@ -371,11 +371,6 @@ int CheckKeywords(const mu::char_type *a_szLine, mu::Parser &a_Parser)
     ListExprVar(a_Parser);
     return 1;
   }
-  else if ( sLine == _T("list const") )
-  {
-    ListConst(a_Parser);
-    return 1;
-  }
   else if ( sLine == _T("locale de") )
   {
     mu::console() << _T("Setting german locale: ArgSep=';' DecSep=',' ThousandsSep='.'\n");
