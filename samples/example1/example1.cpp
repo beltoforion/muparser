@@ -473,6 +473,7 @@ void Calc()
   value_type  vVarVal[] = { 1, 2 }; // Values of the parser variables
   parser.DefineVar(_T("a"), &vVarVal[0]);  // Assign Variable names and bind them to the C++ variables
   parser.DefineVar(_T("b"), &vVarVal[1]);
+  parser.DefineVar(_T("ft"), &vVarVal[1]);
   parser.DefineStrConst(_T("sVar1"), _T("Sample string 1") );
   parser.DefineStrConst(_T("sVar2"), _T("Sample string 2") );
   parser.AddValIdent(IsHexValue);
@@ -496,6 +497,8 @@ void Calc()
   parser.DefineFun(_T("selftest"), SelfTest);
   parser.DefineFun(_T("help"), Help);
 
+  parser.DefinePostfixOprt(_T("{ft}"), Milli);
+  parser.DefinePostfixOprt(_T("ft"), Milli);
 #ifdef _DEBUG
 //  parser.EnableDebugDump(1, 0);
 #endif

@@ -984,7 +984,7 @@ API_EXPORT(void) mupGetConst(muParserHandle_t a_hParser,
 }
 
 //---------------------------------------------------------------------------
-/** \brief Add a custom value regognition function.
+/** \brief Add a custom value recognition function.
 */
 API_EXPORT(void) mupAddValIdent(muParserHandle_t a_hParser,
     muIdentFun_t a_pFun)
@@ -996,7 +996,7 @@ API_EXPORT(void) mupAddValIdent(muParserHandle_t a_hParser,
 }
 
 //---------------------------------------------------------------------------
-/** \brief Query if an error occured.
+/** \brief Query if an error occurred.
 
     After querying the internal error bit will be reset. So a consecutive call
     will return false.
@@ -1069,7 +1069,7 @@ API_EXPORT(int) mupGetErrorCode(muParserHandle_t a_hParser)
 }
 
 //---------------------------------------------------------------------------
-/** \brief Return the postion associated with the last error. */
+/** \brief Return the position associated with the last error. */
 API_EXPORT(int) mupGetErrorPos(muParserHandle_t a_hParser)
 {
     return (int)AsParserTag(a_hParser)->exc.GetPos();

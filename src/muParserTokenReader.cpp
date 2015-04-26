@@ -55,9 +55,9 @@ namespace mu
   }
     
   //---------------------------------------------------------------------------
-  /** \brief Assignement operator.
+  /** \brief Assignment operator.
 
-      Self assignement will be suppressed otherwise #Assign is called.
+      Self assignment will be suppressed otherwise #Assign is called.
 
       \param a_Reader Object to copy to this token reader.
       \throw nothrow
@@ -220,11 +220,11 @@ namespace mu
   }
 
   //---------------------------------------------------------------------------
-  /** \brief Set Flag that contronls behaviour in case of undefined variables beeing found. 
+  /** \brief Set Flag that controls behaviour in case of undefined variables being found. 
   
     If true, the parser does not throw an exception if an undefined variable is found. 
     otherwise it does. This variable is used internally only!
-    It supresses a "undefined variable" exception in GetUsedVar().  
+    It suppresses a "undefined variable" exception in GetUsedVar().  
     Those function should return a complete list of variables including 
     those the are not defined by the time of it's call.
   */
@@ -406,7 +406,7 @@ namespace mu
               //if (len!=sTok.length())
               //  continue;
 
-              // The assignement operator need special treatment
+              // The assignment operator need special treatment
               if (i==cmASSIGN && m_iSynFlags & noASSIGN)
                 Error(ecUNEXPECTED_OPERATOR, m_iPos, pOprtDef[i]);
 
@@ -538,7 +538,7 @@ namespace mu
     if (iEnd==m_iPos)
       return false;
 
-    // iteraterate over all postfix operator strings
+    // iterate over all postfix operator strings
     funmap_type::const_reverse_iterator it = m_pInfixOprtDef->rbegin();
     for ( ; it!=m_pInfixOprtDef->rend(); ++it)
     {
@@ -694,7 +694,7 @@ namespace mu
     if (iEnd==m_iPos)
       return false;
 
-    // iteraterate over all postfix operator strings
+    // iterate over all postfix operator strings
     funmap_type::const_reverse_iterator it = m_pPostOprtDef->rbegin();
     for ( ; it!=m_pPostOprtDef->rend(); ++it)
     {
@@ -865,7 +865,7 @@ namespace mu
 
       // Do not use m_pParser->DefineVar( strTok, fVar );
       // in order to define the new variable, it will clear the
-      // m_UsedVar array which will kill previousely defined variables
+      // m_UsedVar array which will kill previously defined variables
       // from the list
       // This is safe because the new variable can never override an existing one
       // because they are checked first!

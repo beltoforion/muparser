@@ -160,7 +160,7 @@ namespace mu
       \param [in] a_iErrc the error code.
       \param [in] sTok The token string related to this error.
       \param [in] sExpr The expression related to the error.
-      \param [in] a_iPos the position in the expression where the error occured. 
+      \param [in] a_iPos the position in the expression where the error occurred. 
   */
   ParserError::ParserError( EErrorCodes iErrc,
                             const string_type &sTok,
@@ -183,7 +183,7 @@ namespace mu
   //------------------------------------------------------------------------------
   /** \brief Construct an error object. 
       \param [in] iErrc the error code.
-      \param [in] iPos the position in the expression where the error occured. 
+      \param [in] iPos the position in the expression where the error occurred. 
       \param [in] sTok The token string related to this error.
   */
   ParserError::ParserError(EErrorCodes iErrc, int iPos, const string_type &sTok) 
@@ -253,7 +253,7 @@ namespace mu
   {}
 
   //------------------------------------------------------------------------------
-  /** \brief Replace all ocuurences of a substring with another string. 
+  /** \brief Replace all occurrences of a substring with another string. 
       \param strFind The string that shall be replaced.
       \param strReplaceWith The string that should be inserted instead of strFind
   */
