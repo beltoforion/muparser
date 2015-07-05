@@ -21,7 +21,7 @@
 History:
 --------
 
-Rev 2.2.5: 01.02.2015
+Rev 2.2.5: 27.04.2015
 ---------------------
   Changes:
    * example2 extended to work with UNICODE character set
