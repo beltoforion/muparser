@@ -734,7 +734,7 @@ namespace mu
       iStat += EqnTest( _T("(-3)^2"),9, true);
       iStat += EqnTest( _T("-(-2^2)"),4, true);
       iStat += EqnTest( _T("3+-3^2"),-6, true);
-      // The following assumes use of sqr as postfix operator ("§") together
+      // The following assumes use of sqr as postfix operator ("Â§") together
       // with a sign operator of low priority:
       iStat += EqnTest( _T("-2'"), -4, true);
       iStat += EqnTest( _T("-(1+1)'"),-4, true);
@@ -948,7 +948,7 @@ namespace mu
       iStat += EqnTest(_T("(a>b) ? sum(3, (a<b) ? 3 : 10,10,20)*10 : 99"), 99, true);
       iStat += EqnTest(_T("(a>b) ? sum(3, (a<b) ? 3 : 10,10,20)*10 : sum(3, (a<b) ? 3 : 10)*10"), 60, true);
 
-      // todo: auch für muParserX hinzufügen!
+      // todo: auch fÃ¼r muParserX hinzufÃ¼gen!
       iStat += EqnTest(_T("(a<b)&&(a<b) ? 128 : 255"), 128, true);
       iStat += EqnTest(_T("(a>b)&&(a<b) ? 128 : 255"), 255, true);
       iStat += EqnTest(_T("(1<2)&&(1<2) ? 128 : 255"), 128, true);
@@ -1259,8 +1259,6 @@ namespace mu
       try
       {
         std::auto_ptr<Parser> p1;
-        Parser  p2, p3;   // three parser objects
-                          // they will be used for testing copy and assignment operators
         // p1 is a pointer since i'm going to delete it in order to test if
         // parsers after copy construction still refer to members of it.
         // !! If this is the case this function will crash !!
