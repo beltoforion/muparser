@@ -110,13 +110,13 @@ static muChar_t s_tmpOutBuf[2048];
 //---------------------------------------------------------------------------
 
 //---------------------------------------------------------------------------
-muParser_t* AsParser(muParserHandle_t a_hParser)
+inline muParser_t* AsParser(muParserHandle_t a_hParser)
 {
     return static_cast<ParserTag*>(a_hParser)->pParser;
 }
 
 //---------------------------------------------------------------------------
-ParserTag* AsParserTag(muParserHandle_t a_hParser)
+inline ParserTag* AsParserTag(muParserHandle_t a_hParser)
 {
     return static_cast<ParserTag*>(a_hParser);
 }
