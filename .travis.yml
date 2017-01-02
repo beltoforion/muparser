@@ -1,0 +1,14 @@
+language: cpp
+
+addons:
+  apt:
+    packages:
+    - doxygen
+
+script:
+  - mkdir build && pushd build
+  - ../configure --prefix=$HOME/.local
+  - make lib -j2
+  - make
+  - make install
+  
