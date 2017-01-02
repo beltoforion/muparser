@@ -59,7 +59,7 @@ namespace mu
   Complementary to a set of internally implemented functions the parser is able to handle 
   user defined functions and variables. 
 */
-class ParserBase 
+class API_EXPORT ParserBase 
 {
 friend class ParserTokenReader;
 

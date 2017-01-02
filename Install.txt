@@ -22,81 +22,63 @@
  Contents
  ========
 
- 1. Installation on win32
- 2. Installation on unix
-    2.1 Other miscellaneous info Unix-specific
- 3. Where to ask for help
+ 1. Installation
+   1.1 Linux
+   1.2 Win32
+ 2. Where to ask for help
 
 
+ 1. Installation
+ ===============
 
- 1. Installation on win32
- ========================
-
- muParser supports various win32 command-line compilers:
+ muParser supports various compilers:
  -> mingw
  -> watcom
  -> microsoft CL
- and provides also the project files for MSVC6 IDE.
+ -> gcc
 
- In order to compile muParser from makefiles, open an MSDOS
- prompt and then move to the muParser/build directory and
- type:
-   
-   mingw32-make -fmakefile.mingw    for mingw
-   nmake -fmakefile.vc              for msvc
-   make -fmakefile.bcc              for borland
-   wmake -fmakefile.wat             for watcom
+ muParser use cmake to generate Makefiles or Visual Studio Solutions.
+ muParser buidl system accepts the following options:
+ 
+ cmake [-DBUILD_SHARED_LIBS=ON|OFF]
+       [-DBUILD_SAMPLES=ON|OFF]
+       [-DCMAKE_BUILD_TYPE=Debug|Release] 
+       <path to sources>
 
- All makefiles supports the following options:
+ Alternatively you can use cmake-gui graphical interface.
 
-        # Set to 1 to build debug version [0,1]
-        #   0 - Release
-        #   1 - Debug
-        DEBUG = 0
-
-        # Set to 1 to build shared (DLL) version [0,1]
-        #   0 - Static
-        #   1 - DLL
-        SHARED = 0
-
-        # Set to 1 to compile samples [0,1]
-        SAMPLES = 1
-
- The muParser library is created in the 'lib' folder and the sample
- binaries are created in samples\example1 or samples\example2.
-
- NOTE: samples\example1 can be compiled *only* when building
-       muParser as a STATIC library (SHARED=0).
-       samples\example2 can be compiled *only* when building
-       muParser as a SHARED library (SHARED=1).
-
-
-
- 2. Installation on Unix/Linux
- =============================
-
- muParser can be installed just extracting the sources somewhere
- and then, from a terminal, typing:
+ 1.1 Linux
+ ---------
+ 
+ muParser use cmake to generate Makefiles or Visual Studio Solutions.
 
    cd [path to muParser]
-   ./configure [--enable-shared=yes/no] [--enable-samples=yes/no]
-               [--enable-debug=yes/no]
-   make
-   [sudo*] make install
-   [sudo*] ldconfig
-   cd samples/example1
-   ./example1
+   cmake -DCMAKE_INSTALL_PREFIX=~/.local .
+   make -j4
+   make install
+   ./sample1
 
  * = this command must be executed with root permissions and thus
      you have to use 'sudo' or just 'su' to gain root access.
      Note that installation and ldconfig are not strictly required unless
      you built in shared mode.
 
- The "make" step will create the muParser library in 'lib' and the
- sample binary in samples/example1.
- The samples/example2 is win32-specific and thus won't be built.
 
-
+ 1.2 Windows
+ -----------
+ 
+ 1.2.1 NMake command line
+ ~~~~~~~~~~~~~~~~~~~~~~~~
+ 
+ cd [path to muParser]
+ cmake -G "NMake Makefiles" .
+ nmake
+ 
+ 1.2.2 Visual Studio
+ ~~~~~~~~~~~~~~~~~~~
+ cd [path to muParser]
+ cmake -G "Visual Studio 10 2010" .
+ <Open .sln> ...
 
  2.1 Other miscellaneous info Unix-specific
  ==========================================
@@ -118,7 +100,7 @@
  will return all useful info you need to build your programs against
  muParser !
 
-
+ Alteratively, you can use CMake with find_package (muParser NO_MODULE)
 
  3. Where to ask for help
  ========================
