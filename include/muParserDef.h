@@ -297,19 +297,19 @@ namespace mu
   /** \brief Callback type used for functions with five arguments. */
   typedef value_type (*fun_type5)(value_type, value_type, value_type, value_type, value_type);
 
-  /** \brief Callback type used for functions with five arguments. */
+  /** \brief Callback type used for functions with six arguments. */
   typedef value_type (*fun_type6)(value_type, value_type, value_type, value_type, value_type, value_type);
 
-  /** \brief Callback type used for functions with five arguments. */
+  /** \brief Callback type used for functions with seven arguments. */
   typedef value_type (*fun_type7)(value_type, value_type, value_type, value_type, value_type, value_type, value_type);
 
-  /** \brief Callback type used for functions with five arguments. */
+  /** \brief Callback type used for functions with eight arguments. */
   typedef value_type (*fun_type8)(value_type, value_type, value_type, value_type, value_type, value_type, value_type, value_type);
 
-  /** \brief Callback type used for functions with five arguments. */
+  /** \brief Callback type used for functions with nine arguments. */
   typedef value_type (*fun_type9)(value_type, value_type, value_type, value_type, value_type, value_type, value_type, value_type, value_type);
 
-  /** \brief Callback type used for functions with five arguments. */
+  /** \brief Callback type used for functions with ten arguments. */
   typedef value_type (*fun_type10)(value_type, value_type, value_type, value_type, value_type, value_type, value_type, value_type, value_type, value_type);
 
   /** \brief Callback type used for functions without arguments. */
@@ -330,19 +330,19 @@ namespace mu
   /** \brief Callback type used for functions with five arguments. */
   typedef value_type (*bulkfun_type5)(int, int, value_type, value_type, value_type, value_type, value_type);
 
-  /** \brief Callback type used for functions with five arguments. */
+  /** \brief Callback type used for functions with six arguments. */
   typedef value_type (*bulkfun_type6)(int, int, value_type, value_type, value_type, value_type, value_type, value_type);
 
-  /** \brief Callback type used for functions with five arguments. */
+  /** \brief Callback type used for functions with seven arguments. */
   typedef value_type (*bulkfun_type7)(int, int, value_type, value_type, value_type, value_type, value_type, value_type, value_type);
 
-  /** \brief Callback type used for functions with five arguments. */
+  /** \brief Callback type used for functions with eight arguments. */
   typedef value_type (*bulkfun_type8)(int, int, value_type, value_type, value_type, value_type, value_type, value_type, value_type, value_type);
 
-  /** \brief Callback type used for functions with five arguments. */
+  /** \brief Callback type used for functions with nine arguments. */
   typedef value_type (*bulkfun_type9)(int, int, value_type, value_type, value_type, value_type, value_type, value_type, value_type, value_type, value_type);
 
-  /** \brief Callback type used for functions with five arguments. */
+  /** \brief Callback type used for functions with ten arguments. */
   typedef value_type (*bulkfun_type10)(int, int, value_type, value_type, value_type, value_type, value_type, value_type, value_type, value_type, value_type, value_type);
 
   /** \brief Callback type used for functions with a variable argument list. */
