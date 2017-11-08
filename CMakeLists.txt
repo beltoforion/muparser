@@ -15,8 +15,11 @@ add_library(muparser
 )
 target_compile_definitions(muparser PRIVATE MUPARSERLIB_EXPORTS)
 
-add_executable(example1 samples/example1/example1.cpp)
-target_link_libraries(example1 muparser)
+option(ENABLE_SAMPLES "Build the samples" ON)
+if(ENABLE_SAMPLES)
+    add_executable(example1 samples/example1/example1.cpp)
+    target_link_libraries(example1 muparser)
+endif()
 # the C example does not compile at the moment, because definitions must be
 # inside external "C" { } to avoid name mangling.
 #add_executable(example2 samples/example2/example2.c)
