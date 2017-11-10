@@ -69,6 +69,8 @@ namespace mu
     _T(")"),   _T("?"),  _T(":"), 0 
   };
 
+  const int ParserBase::s_MaxNumOpenMPThreads = 16;
+
   //------------------------------------------------------------------------------
   /** \brief Constructor.
       \param a_szFormula the formula to interpret.
