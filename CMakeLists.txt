@@ -2,6 +2,9 @@
 cmake_minimum_required(VERSION 3.1)
 project(muParserProject)
 
+include(CTest)
+enable_testing()
+
 # Bump versions on release
 set(MUPARSER_VERSION_MAJOR 2)
 set(MUPARSER_VERSION_MINOR 2)
@@ -43,13 +46,15 @@ set_target_properties(muparser PROPERTIES
 export(TARGETS muparser FILE "${CMAKE_BINARY_DIR}/muparser-targets.cmake")
 
 if(ENABLE_SAMPLES)
+    # the C example does not compile at the moment, because definitions must be
+    # inside external "C" { } to avoid name mangling.
+    #add_executable(example2 samples/example2/example2.c)
+    #target_link_libraries(example2 muparser)
+    
     add_executable(example1 samples/example1/example1.cpp)
     target_link_libraries(example1 muparser)
+    add_test(base example1)
 endif()
-# the C example does not compile at the moment, because definitions must be
-# inside external "C" { } to avoid name mangling.
-#add_executable(example2 samples/example2/example2.c)
-#target_link_libraries(example2 muparser)
 
 install(TARGETS muparser DESTINATION lib)
 install(FILES
