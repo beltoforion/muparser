@@ -86,7 +86,7 @@ private:
     typedef ParserToken<value_type, string_type> token_type;
 
     /** \brief Maximum number of threads spawned by OpenMP when using the bulk mode. */
-    static const int s_MaxNumOpenMPThreads = 16;
+    static const int s_MaxNumOpenMPThreads;
 
  public:
 
@@ -314,4 +314,3 @@ private:
 } // namespace mu
 
 #endif
-
