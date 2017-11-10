@@ -1,13 +1,24 @@
+# CMake based on work from @xantares
 cmake_minimum_required(VERSION 3.1)
 project(muParserProject)
 
 # Bump versions on release
 set(MUPARSER_VERSION_MAJOR 2)
 set(MUPARSER_VERSION_MINOR 2)
-set(MUPARSER_VERSION_PATCH 4)
+set(MUPARSER_VERSION_PATCH 5)
 set(MUPARSER_VERSION ${MUPARSER_VERSION_MAJOR}.${MUPARSER_VERSION_MINOR}.${MUPARSER_VERSION_PATCH})
 
-include_directories(${CMAKE_SOURCE_DIR}/include)
+# Build options
+option(ENABLE_SAMPLES "Build the samples" ON)
+option(ENABLE_OPENMP "Enable OpenMP for multithreading" OFF)
+
+if(ENABLE_OPENMP)
+    find_package(OpenMP REQUIRED)
+    set(CMAKE_CXX_FLAGS "${OpenMP_CXX_FLAGS} ${CMAKE_CXX_FLAGS}")
+    set(CMAKE_SHARED_LIBRARY_CXX_FLAGS "${OpenMP_CXX_FLAGS} ${CMAKE_SHARED_LIBRARY_CXX_FLAGS}")
+endif()
+
+include_directories("${CMAKE_SOURCE_DIR}/include")
 add_library(muparser
     src/muParserBase.cpp
     src/muParserBytecode.cpp
@@ -20,12 +31,17 @@ add_library(muparser
     src/muParserTokenReader.cpp
 )
 target_compile_definitions(muparser PRIVATE MUPARSERLIB_EXPORTS)
+if(ENABLE_OPENMP)
+    target_compile_definitions(muparser PRIVATE MUP_USE_OPENMP)
+endif()
 set_target_properties(muparser PROPERTIES
     VERSION ${MUPARSER_VERSION}
     SOVERSION ${MUPARSER_VERSION_MAJOR}
 )
 
-option(ENABLE_SAMPLES "Build the samples" ON)
+# Install the export set for use with the install-tree
+export(TARGETS muparser FILE "${CMAKE_BINARY_DIR}/muparser-targets.cmake")
+
 if(ENABLE_SAMPLES)
     add_executable(example1 samples/example1/example1.cpp)
     target_link_libraries(example1 muparser)
@@ -60,11 +76,11 @@ install(FILES
 include(GNUInstallDirs)
 set(PACKAGE_NAME muparser)
 configure_file(
-    ${CMAKE_SOURCE_DIR}/build/autoconf/muparser.pc.cmakein
-    ${CMAKE_BINARY_DIR}/muparser.pc
+    "${CMAKE_SOURCE_DIR}/build/autoconf/muparser.pc.cmakein"
+    "${CMAKE_BINARY_DIR}/muparser.pc"
     @ONLY
 )
 install(
-    FILES ${CMAKE_BINARY_DIR}/muparser.pc
-    DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig
+    FILES "${CMAKE_BINARY_DIR}/muparser.pc"
+    DESTINATION "${CMAKE_INSTALL_LIBDIR}/pkgconfig"
 )
