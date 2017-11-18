@@ -51,7 +51,7 @@ private:
     static value_type  Abs(value_type);
     static value_type  Sign(value_type);
     static value_type  Ite(value_type, value_type, value_type);
-    // !! The unary Minus is a MUST, otherwise you cant use negative signs !!
+    // !! The unary Minus is a MUST, otherwise you can't use negative signs !!
     static value_type  UnaryMinus(value_type);
     // Functions with variable number of arguments
     static value_type  Sum(const value_type* a_afArg, int a_iArgc);  // sum

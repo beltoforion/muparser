@@ -6129,7 +6129,7 @@ cat <<EOF >dllar.sh
 #  Software Foundation, 59 Temple Place - Suite 330, Boston, MA
 #  02111-1307, USA.
 
-# To successfuly run this program you will need:
+# To successfully run this program you will need:
 #  - Current drive should have LFN support (HPFS, ext2, network, etc)
 #    (Sometimes dllar generates filenames which won't fit 8.3 scheme)
 #  - gcc
@@ -6240,7 +6240,7 @@ PrintHelp() {
 }
 
 # Execute a command.
-# If exit code of the commnad <> 0 CleanUp() is called and we'll exit the script.
+# If exit code of the command <> 0 CleanUp() is called and we'll exit the script.
 # @Uses    Whatever CleanUp() uses.
 doCommand() {
     echo "${D}*"

@@ -698,7 +698,7 @@ namespace mu
     }
     catch(exception_type & /*e*/)
     {
-      // Make sure to stay in string parse mode, dont call ReInit()
+      // Make sure to stay in string parse mode, don't call ReInit()
       // because it deletes the array with the used variables
       m_pParseFormula = &ParserBase::ParseString;
       m_pTokenReader->IgnoreUndefVar(false);
@@ -812,7 +812,7 @@ namespace mu
     // string parameter whilst GetArgCount() counts only numeric parameters.
     int iArgRequired = funTok.GetArgCount() + ((funTok.GetType()==tpSTR) ? 1 : 0);
 
-    // Thats the number of numerical parameters
+    // That's the number of numerical parameters
     int iArgNumerical = iArgCount - ((funTok.GetType()==tpSTR) ? 1 : 0);
 
     if (funTok.GetCode()==cmFUNC_STR && iArgCount-iArgNumerical>1)
@@ -1437,7 +1437,7 @@ namespace mu
     \param a_iErrc [in] The error code of type #EErrorCodes.
     \param a_iPos [in] The position where the error was detected.
     \param a_strTok [in] The token string representation associated with the error.
-    \throw ParserException always throws thats the only purpose of this function.
+    \throw ParserException always throws that's the only purpose of this function.
   */
   void  ParserBase::Error(EErrorCodes a_iErrc, int a_iPos, const string_type &a_sTok) const
   {
