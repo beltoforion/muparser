@@ -180,7 +180,7 @@ Rev 1.34: 04.09.2010
   New features:
    * The associativity of binary operators can now be changed. The pow operator 
      is now right associative. (This is what Mathematica is using) 
-   * Seperator can now be used outside of functions. This allows compound 
+   * Separator can now be used outside of functions. This allows compound 
      expressions like:
      "a=10,b=20,c=a*b" The last "argument" will be taken as the return value
 
@@ -226,7 +226,7 @@ Rev 1.32: 29.01.2010
 
 
 
-Rev 1.31cp: 15.01.2010  (Maintainance release for CodeProject)
+Rev 1.31cp: 15.01.2010  (Maintenance release for CodeProject)
 ----------------------
 
   Changes:
@@ -359,7 +359,7 @@ Changes:
 
   Project Changes:
     * Borland project files removed
-      (The code should still compile with BCB but I cant provide you with project files)
+      (The code should still compile with BCB but I can't provide you with project files)
 
   Internal Changes:
     * unnecessary template files have been removed:
@@ -377,11 +377,11 @@ user defined binary operators. Consequently the built in operators can now be
 turned off, thus you can deactivate them and write complete customized parser
 subclasses that only contain the functionality you want. Another new feature is 
 the introduction of callback functions taking string arguments, implicit 
-generation of variables and the Assignement operator.
+generation of variables and the Assignment operator.
 
   Functionality
     * New built in operator: xor; Logical xor.
-    * New built in operator: Assignement operator; Defining variables in terms of 
+    * New built in operator: Assignment operator; Defining variables in terms of 
                              other variables/constants
     * New feature: Strings as arguments for callback functions
     * New feature: User defined binary operators
@@ -407,7 +407,7 @@ generation of variables and the Assignement operator.
 
   Internal changes
     * new class muParserTokenReader.h encapsulates the token identification 
-      and token assignement.
+      and token assignment.
     * Internal handling of function callbacks unified as a result the performance 
       of the bytecode evaluation increased.
 
@@ -453,7 +453,7 @@ Rev 1.09 : November 20, 2004
     * Internal structure changed; changing base datatype at compile time is now possible.
     * Bug fix: Postfix operator parsing could fail in certain cases; This has been fixed now.
     * Internal change:  Removed most dependencies from the C-string libraries.
-    * Internal change:  Bytecode is now stored in a seperate class: ParserByteCode.h.
+    * Internal change:  Bytecode is now stored in a separate class: ParserByteCode.h.
     * Internal change:  GetUsedVar() does no longer require that variables are defined at time of call.
     * Internal change:  Error treatment changed. ParserException is no longer derived from 
                         std::runtime_error; Internal treatment of Error messages changed.

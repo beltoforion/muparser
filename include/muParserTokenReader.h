@@ -97,7 +97,7 @@ namespace mu
 	      noINFIXOP = 1 << 8,  ///< to avoid i.e. "++4" "!!4"
         noEND     = 1 << 9,  ///< to avoid unexpected end of formula
         noSTR     = 1 << 10, ///< to block numeric arguments on string functions
-        noASSIGN  = 1 << 11, ///< to block assignement to constant i.e. "4=7"
+        noASSIGN  = 1 << 11, ///< to block assignment to constant i.e. "4=7"
         noIF      = 1 << 12,
         noELSE    = 1 << 13,
         sfSTART_OF_LINE = noOPT | noBC | noPOSTOP | noASSIGN | noIF | noELSE | noARG_SEP,

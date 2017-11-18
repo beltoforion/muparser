@@ -248,13 +248,13 @@ namespace mu
 
   /** \brief The stringtype used by the parser. 
 
-    Depends on wether UNICODE is used or not.
+    Depends on whether UNICODE is used or not.
   */
   typedef MUP_STRING_TYPE string_type;
 
   /** \brief The character type used by the parser. 
   
-    Depends on wether UNICODE is used or not.
+    Depends on whether UNICODE is used or not.
   */
   typedef string_type::value_type char_type;
 
