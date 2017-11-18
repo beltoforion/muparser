@@ -105,7 +105,7 @@ namespace mu
       }
       
       //------------------------------------------------------------------------------
-      /** \brief Assignement operator. 
+      /** \brief Assignment operator. 
       
           Copy token state from another token and return this.
           Implemented by calling Assign(...).
@@ -138,7 +138,7 @@ namespace mu
       //------------------------------------------------------------------------------
       /** \brief Assign a token type. 
 
-        Token may not be of type value, variable or function. Those have seperate set functions. 
+        Token may not be of type value, variable or function. Those have separate set functions. 
 
         \pre [assert] a_iType!=cmVAR
         \pre [assert] a_iType!=cmVAL
@@ -148,7 +148,7 @@ namespace mu
       */
       ParserToken& Set(ECmdCode a_iType, const TString &a_strTok=TString())
       {
-        // The following types cant be set this way, they have special Set functions
+        // The following types can't be set this way, they have special Set functions
         assert(a_iType!=cmVAR);
         assert(a_iType!=cmVAL);
         assert(a_iType!=cmFUNC);
