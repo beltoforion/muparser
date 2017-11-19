@@ -306,7 +306,9 @@ namespace mu
                 bOptimized = true;
               }
               break;
-              
+        default:
+            // no optimization for other opcodes
+            break;
         } // switch a_Oprt
       }
     }
