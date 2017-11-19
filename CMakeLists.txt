@@ -14,6 +14,7 @@ set(MUPARSER_VERSION ${MUPARSER_VERSION_MAJOR}.${MUPARSER_VERSION_MINOR}.${MUPAR
 # Build options
 option(ENABLE_SAMPLES "Build the samples" ON)
 option(ENABLE_OPENMP "Enable OpenMP for multithreading" OFF)
+set(LIB_SUFFIX CACHE STRING "Library install path suffix (for lib64)")
 
 if(ENABLE_OPENMP)
     find_package(OpenMP REQUIRED)
@@ -70,7 +71,12 @@ if(ENABLE_SAMPLES)
     add_test(base example1)
 endif()
 
-install(TARGETS muparser DESTINATION lib)
+install(TARGETS muparser
+    LIBRARY DESTINATION lib${LIB_SUFFIX}
+    ARCHIVE DESTINATION lib${LIB_SUFFIX}
+    RUNTIME DESTINATION bin
+)
+
 install(FILES
     include/muParserBase.h
     include/muParserBytecode.h
