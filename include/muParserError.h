@@ -47,7 +47,7 @@ enum EErrorCodes
 {
   // Formula syntax errors
   ecUNEXPECTED_OPERATOR    = 0,  ///< Unexpected binary operator found
-  ecUNASSIGNABLE_TOKEN     = 1,  ///< Token cant be identified.
+  ecUNASSIGNABLE_TOKEN     = 1,  ///< Token can't be identified.
   ecUNEXPECTED_EOF         = 2,  ///< Unexpected end of formula. (Example: "2+sin(")
   ecUNEXPECTED_ARG_SEP     = 3,  ///< An unexpected comma has been found. (Example: "1,23")
   ecUNEXPECTED_ARG         = 4,  ///< An unexpected argument has been found

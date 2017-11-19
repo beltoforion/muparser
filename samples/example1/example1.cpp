@@ -1,3 +1,4 @@
+/*
 //---------------------------------------------------------------------------
 //
 //                 __________                                      
@@ -11,6 +12,7 @@
 //  example1.cpp - using the parser as a static library
 //
 //---------------------------------------------------------------------------
+*/
 
 #include "muParserTest.h"
 
@@ -49,7 +51,7 @@ using namespace mu;
 
 // Dumping memory leaks in the destructor of the static guard
 // guarantees i won't get false positives from the ParserErrorMsg 
-// class wich is a singleton with a static instance.
+// class which is a singleton with a static instance.
 struct DumpLeaks
 {
  ~DumpLeaks()

@@ -426,7 +426,7 @@ void Calc()
 
     } // while 
 
-    // finalle free the parser ressources
+    // finally free the parser resources
     mupRelease(hParser);
 }
 
@@ -435,7 +435,7 @@ int main(int argc, char *argv[])
 {
     // The next line is just for shutting up the compiler warning
     // about unused variables without getting another warning about not
-    // beeing able to use type lists in function declarations.
+    // being able to use type lists in function declarations.
     myprintf(_T("Executing \"%s\" (argc=%d)\n"), argv[0], argc);
     Calc();
     printf(_T("done..."));

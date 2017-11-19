@@ -248,7 +248,7 @@ void ParserInt::InitOprt()
   // (they don't do rounding of values)
   EnableBuiltInOprt(false);
 
-  // Disable all built in operators, they wont work with integer numbers
+  // Disable all built in operators, they won't work with integer numbers
   // since they are designed for floating point numbers
   DefineInfixOprt( _T("-"), UnaryMinus);
   DefineInfixOprt( _T("!"), Not);
