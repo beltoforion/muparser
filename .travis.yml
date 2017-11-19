@@ -1,0 +1,9 @@
+language: c++
+dist: trusty
+sudo: false
+compiler:
+  - clang
+  - gcc
+script:
+  - cmake -Bbuild-ci -H.
+  - cmake --build build-ci
