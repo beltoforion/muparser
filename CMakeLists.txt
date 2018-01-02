@@ -1,5 +1,11 @@
 # CMake based on work from @xantares
-cmake_minimum_required(VERSION 3.1)
+cmake_minimum_required (VERSION 2.8.12)
+
+# By default, build in Release mode. Must appear before project() command
+if (NOT DEFINED CMAKE_BUILD_TYPE)
+  set (CMAKE_BUILD_TYPE Release CACHE STRING "Build type")
+endif ()
+
 project(muParserProject)
 
 include(CTest)
@@ -49,8 +55,21 @@ add_library(muparser
     src/muParserTokenReader.cpp
 )
 target_compile_definitions(muparser PRIVATE MUPARSERLIB_EXPORTS)
+
+if (BUILD_SHARED_LIBS)
+  target_compile_definitions(muparser PRIVATE MUPARSER_DLL MUPARSERLIB_EXPORTS SHARED=1)
+else ()
+  target_compile_definitions(muparser PRIVATE SHARED=0)
+endif()
+
+if (CMAKE_BUILD_TYPE STREQUAL Release)
+  target_compile_definitions(muparser PRIVATE DEBUG=1)
+else ()
+  target_compile_definitions(muparser PRIVATE DDEBUG=0)
+endif ()
+
 if(ENABLE_OPENMP)
-    target_compile_definitions(muparser PRIVATE MUP_USE_OPENMP)
+  target_compile_definitions(muparser PRIVATE MUP_USE_OPENMP)
 endif()
 set_target_properties(muparser PROPERTIES
     VERSION ${MUPARSER_VERSION}
@@ -71,10 +90,14 @@ if(ENABLE_SAMPLES)
     add_test(base example1)
 endif()
 
+# The GNUInstallDirs defines ${CMAKE_INSTALL_DATAROOTDIR}
+# See https://cmake.org/cmake/help/latest/module/GNUInstallDirs.html
+include (GNUInstallDirs)
+
 install(TARGETS muparser
-    LIBRARY DESTINATION lib${LIB_SUFFIX}
-    ARCHIVE DESTINATION lib${LIB_SUFFIX}
-    RUNTIME DESTINATION bin
+    LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT RuntimeLibraries
+    ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT Development
+    RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} COMPONENT RuntimeLibraries
 )
 
 install(FILES
@@ -93,12 +116,10 @@ install(FILES
     include/muParserToken.h
     include/muParserTokenReader.h
     DESTINATION include
+    COMPONENT Development
 )
 
 # Define variables for the pkg-config file
-# The GNUInstallDirs defines ${CMAKE_INSTALL_DATAROOTDIR}
-# See https://cmake.org/cmake/help/latest/module/GNUInstallDirs.html
-include(GNUInstallDirs)
 set(PACKAGE_NAME muparser)
 configure_file(
     "${CMAKE_SOURCE_DIR}/build/autoconf/muparser.pc.cmakein"
