@@ -45,7 +45,6 @@ muFloat_t ZeroArg()
 
 muFloat_t BulkTest(int nBulkIdx, int nThreadIdx, muFloat_t v1)
 {
-    (void*)&nThreadIdx;  // STFU compiler warning...
     myprintf(_T("%d,%2.2f\n"), nBulkIdx, v1);
     return v1 / (nBulkIdx + 1);
 }
@@ -179,7 +178,7 @@ void ListVar(muParserHandle_t a_hParser)
         muFloat_t* pVar = 0;
 
         mupGetVar(a_hParser, i, &szName, &pVar);
-        myprintf(_T("Name: %s    Address: [0x%x]\n"), szName, (long long)pVar);
+        myprintf(_T("Name: %s    Address: [0x%x]\n"), szName, (int)pVar);
     }
 }
 
@@ -206,7 +205,7 @@ void ListExprVar(muParserHandle_t a_hParser)
         muFloat_t* pVar = 0;
 
         mupGetExprVar(a_hParser, i, &szName, &pVar);
-        myprintf(_T("Name: %s   Address: [0x%x]\n"), szName, (long long)pVar);
+        myprintf(_T("Name: %s   Address: [0x%x]\n"), szName, (int)pVar);
     }
 }
 
