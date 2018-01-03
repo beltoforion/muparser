@@ -57,15 +57,15 @@ add_library(muparser
 target_compile_definitions(muparser PRIVATE MUPARSERLIB_EXPORTS)
 
 if (BUILD_SHARED_LIBS)
-  target_compile_definitions(muparser PRIVATE MUPARSER_DLL MUPARSERLIB_EXPORTS SHARED=1)
+  target_compile_definitions(muparser PRIVATE MUPARSER_DLL SHARED=1)
 else ()
   target_compile_definitions(muparser PRIVATE SHARED=0)
 endif()
 
 if (CMAKE_BUILD_TYPE STREQUAL Release)
-  target_compile_definitions(muparser PRIVATE DEBUG=1)
+  target_compile_definitions(muparser PRIVATE DEBUG=0)
 else ()
-  target_compile_definitions(muparser PRIVATE DDEBUG=0)
+  target_compile_definitions(muparser PRIVATE DEBUG=1)
 endif ()
 
 if(ENABLE_OPENMP)
