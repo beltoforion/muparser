@@ -20,7 +20,6 @@ set(MUPARSER_VERSION ${MUPARSER_VERSION_MAJOR}.${MUPARSER_VERSION_MINOR}.${MUPAR
 # Build options
 option(ENABLE_SAMPLES "Build the samples" ON)
 option(ENABLE_OPENMP "Enable OpenMP for multithreading" OFF)
-set(LIB_SUFFIX CACHE STRING "Library install path suffix (for lib64)")
 
 if(ENABLE_OPENMP)
     find_package(OpenMP REQUIRED)
@@ -54,18 +53,18 @@ add_library(muparser
     src/muParserTest.cpp
     src/muParserTokenReader.cpp
 )
-target_compile_definitions(muparser PRIVATE MUPARSERLIB_EXPORTS)
+
+# this compiles the "DLL" interface (C API)
+target_compile_definitions(muparser PRIVATE MUPARSER_DLL)
 
 if (BUILD_SHARED_LIBS)
-  target_compile_definitions(muparser PRIVATE MUPARSER_DLL SHARED=1)
+  target_compile_definitions(muparser PRIVATE MUPARSERLIB_EXPORTS)
 else ()
-  target_compile_definitions(muparser PRIVATE SHARED=0)
+  target_compile_definitions(muparser PUBLIC MUPARSER_STATIC)
 endif()
 
-if (CMAKE_BUILD_TYPE STREQUAL Release)
-  target_compile_definitions(muparser PRIVATE DEBUG=0)
-else ()
-  target_compile_definitions(muparser PRIVATE DEBUG=1)
+if (CMAKE_BUILD_TYPE STREQUAL Debug)
+  target_compile_definitions(muparser PRIVATE _DEBUG)
 endif ()
 
 if(ENABLE_OPENMP)
@@ -80,14 +79,11 @@ set_target_properties(muparser PROPERTIES
 export(TARGETS muparser FILE "${CMAKE_BINARY_DIR}/muparser-targets.cmake")
 
 if(ENABLE_SAMPLES)
-    # the C example does not compile at the moment, because definitions must be
-    # inside external "C" { } to avoid name mangling.
-    #add_executable(example2 samples/example2/example2.c)
-    #target_link_libraries(example2 muparser)
-    
-    add_executable(example1 samples/example1/example1.cpp)
-    target_link_libraries(example1 muparser)
-    add_test(base example1)
+  add_executable(example1 samples/example1/example1.cpp)
+  target_link_libraries(example1 muparser)
+
+  add_executable(example2 samples/example2/example2.c)
+  target_link_libraries(example2 muparser)
 endif()
 
 # The GNUInstallDirs defines ${CMAKE_INSTALL_DATAROOTDIR}
