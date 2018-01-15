@@ -194,7 +194,7 @@ API_EXPORT(const muChar_t*) mupGetVersion(muParserHandle_t a_hParser)
 #ifndef _UNICODE
     snprintf(s_tmpOutBuf, 2048, "%s", p->GetVersion().c_str());
 #else
-    wsprintf(s_tmpOutBuf, _T("%s"), p->GetVersion().c_str());
+    wnsprintf(s_tmpOutBuf, 2048, _T("%s"), p->GetVersion().c_str());
 #endif
 
     return s_tmpOutBuf;
@@ -672,7 +672,7 @@ API_EXPORT(const muChar_t*) mupGetExpr(muParserHandle_t a_hParser)
 #ifndef _UNICODE
     snprintf(s_tmpOutBuf, 2048, "%s", p->GetExpr().c_str());
 #else
-    wsprintf(s_tmpOutBuf, _T("%s"), p->GetExpr().c_str());
+    wnsprintf(s_tmpOutBuf, 2048, _T("%s"), p->GetExpr().c_str());
 #endif
 
     return s_tmpOutBuf;
@@ -1035,7 +1035,7 @@ API_EXPORT(const muChar_t*) mupGetErrorMsg(muParserHandle_t a_hParser)
 #ifndef _UNICODE
     snprintf(s_tmpOutBuf, 2048, "%s", pMsg);
 #else
-    wsprintf(s_tmpOutBuf, _T("%s"), pMsg);
+    wnsprintf(s_tmpOutBuf, 2048, _T("%s"), pMsg);
 #endif
 
     return s_tmpOutBuf;
@@ -1054,7 +1054,7 @@ API_EXPORT(const muChar_t*) mupGetErrorToken(muParserHandle_t a_hParser)
 #ifndef _UNICODE
     snprintf(s_tmpOutBuf, 2048, "%s", pToken);
 #else
-    wsprintf(s_tmpOutBuf, _T("%s"), pToken);
+    wnsprintf(s_tmpOutBuf, 2048, _T("%s"), pToken);
 #endif
 
     return s_tmpOutBuf;
