@@ -99,8 +99,8 @@ private:
     int m_nParserType;
 };
 
-const int MAX_BUF = 2048;
-static muChar_t s_tmpOutBuf[MAX_BUF];
+const int MaxBuf = 2048;
+static muChar_t s_tmpOutBuf[MaxBuf];
 
 //---------------------------------------------------------------------------
 //
@@ -193,9 +193,9 @@ API_EXPORT(const muChar_t*) mupGetVersion(muParserHandle_t a_hParser)
         muParser_t* const p(AsParser(a_hParser));
 
 #ifndef _UNICODE
-    snprintf(s_tmpOutBuf, MAX_BUF, "%s", p->GetVersion().c_str());
+    snprintf(s_tmpOutBuf, MaxBuf, "%s", p->GetVersion().c_str());
 #else
-    wnsprintf(s_tmpOutBuf, MAX_BUF, _T("%s"), p->GetVersion().c_str());
+    wnsprintf(s_tmpOutBuf, MaxBuf, _T("%s"), p->GetVersion().c_str());
 #endif
 
     return s_tmpOutBuf;
@@ -671,9 +671,9 @@ API_EXPORT(const muChar_t*) mupGetExpr(muParserHandle_t a_hParser)
     // C# explodes when pMsg is returned directly. For some reason it can't access
     // the memory where the message lies directly.
 #ifndef _UNICODE
-    snprintf(s_tmpOutBuf, MAX_BUF, "%s", p->GetExpr().c_str());
+    snprintf(s_tmpOutBuf, MaxBuf, "%s", p->GetExpr().c_str());
 #else
-    wnsprintf(s_tmpOutBuf, MAX_BUF, _T("%s"), p->GetExpr().c_str());
+    wnsprintf(s_tmpOutBuf, MaxBuf, _T("%s"), p->GetExpr().c_str());
 #endif
 
     return s_tmpOutBuf;
@@ -1034,9 +1034,9 @@ API_EXPORT(const muChar_t*) mupGetErrorMsg(muParserHandle_t a_hParser)
     // C# explodes when pMsg is returned directly. For some reason it can't access
     // the memory where the message lies directly.
 #ifndef _UNICODE
-    snprintf(s_tmpOutBuf, MAX_BUF, "%s", pMsg);
+    snprintf(s_tmpOutBuf, MaxBuf, "%s", pMsg);
 #else
-    wnsprintf(s_tmpOutBuf, MAX_BUF, _T("%s"), pMsg);
+    wnsprintf(s_tmpOutBuf, MaxBuf, _T("%s"), pMsg);
 #endif
 
     return s_tmpOutBuf;
@@ -1053,9 +1053,9 @@ API_EXPORT(const muChar_t*) mupGetErrorToken(muParserHandle_t a_hParser)
     // C# explodes when pMsg is returned directly. For some reason it can't access
     // the memory where the message lies directly.
 #ifndef _UNICODE
-    snprintf(s_tmpOutBuf, MAX_BUF, "%s", pToken);
+    snprintf(s_tmpOutBuf, MaxBuf, "%s", pToken);
 #else
-    wnsprintf(s_tmpOutBuf, MAX_BUF, _T("%s"), pToken);
+    wnsprintf(s_tmpOutBuf, MaxBuf, _T("%s"), pToken);
 #endif
 
     return s_tmpOutBuf;
