@@ -22,6 +22,7 @@ set(MUPARSER_VERSION ${MUPARSER_VERSION_MAJOR}.${MUPARSER_VERSION_MINOR}.${MUPAR
 # Build options
 option(ENABLE_SAMPLES "Build the samples" ON)
 option(ENABLE_OPENMP "Enable OpenMP for multithreading" OFF)
+option(BUILD_SHARED_LIBS "Build shared/static libs" ON)
 
 if(ENABLE_OPENMP)
     find_package(OpenMP REQUIRED)
