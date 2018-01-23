@@ -25,19 +25,7 @@
 #ifndef MU_PARSER_DLL_H
 #define MU_PARSER_DLL_H
 
-#if defined(WIN32) || defined(_WIN32)
-    #if defined(MUPARSER_STATIC)
-        #define API_EXPORT(TYPE) TYPE __cdecl
-    #else
-        #ifdef MUPARSERLIB_EXPORTS
-            #define API_EXPORT(TYPE) __declspec(dllexport) TYPE __cdecl
-        #else
-            #define API_EXPORT(TYPE) __declspec(dllimport) TYPE __cdecl
-        #endif
-    #endif
-#else
-    #define API_EXPORT(TYPE) TYPE
-#endif
+#include "muParserFixes.h"
 
 #ifdef __cplusplus
 extern "C"
@@ -115,127 +103,127 @@ static const int muBASETYPE_INT    = 1;
 
 
 // Basic operations / initialization  
-API_EXPORT(muParserHandle_t) mupCreate(int nBaseType);
-API_EXPORT(void) mupRelease(muParserHandle_t a_hParser);
-API_EXPORT(const muChar_t*) mupGetExpr(muParserHandle_t a_hParser);
-API_EXPORT(void) mupSetExpr(muParserHandle_t a_hParser, const muChar_t *a_szExpr);
-API_EXPORT(void) mupSetVarFactory(muParserHandle_t a_hParser, muFacFun_t a_pFactory, void* pUserData);
-API_EXPORT(const muChar_t*) mupGetVersion(muParserHandle_t a_hParser);
-API_EXPORT(muFloat_t) mupEval(muParserHandle_t a_hParser);
-API_EXPORT(muFloat_t*) mupEvalMulti(muParserHandle_t a_hParser, int *nNum);
-API_EXPORT(void) mupEvalBulk(muParserHandle_t a_hParser, muFloat_t *a_fResult, int nSize);
+API_EXPORT_C(muParserHandle_t) mupCreate(int nBaseType);
+API_EXPORT_C(void) mupRelease(muParserHandle_t a_hParser);
+API_EXPORT_C(const muChar_t*) mupGetExpr(muParserHandle_t a_hParser);
+API_EXPORT_C(void) mupSetExpr(muParserHandle_t a_hParser, const muChar_t *a_szExpr);
+API_EXPORT_C(void) mupSetVarFactory(muParserHandle_t a_hParser, muFacFun_t a_pFactory, void* pUserData);
+API_EXPORT_C(const muChar_t*) mupGetVersion(muParserHandle_t a_hParser);
+API_EXPORT_C(muFloat_t) mupEval(muParserHandle_t a_hParser);
+API_EXPORT_C(muFloat_t*) mupEvalMulti(muParserHandle_t a_hParser, int *nNum);
+API_EXPORT_C(void) mupEvalBulk(muParserHandle_t a_hParser, muFloat_t *a_fResult, int nSize);
 
 // Defining callbacks / variables / constants
-API_EXPORT(void) mupDefineFun0(muParserHandle_t a_hParser, const muChar_t *a_szName, muFun0_t a_pFun, muBool_t a_bOptimize);
-API_EXPORT(void) mupDefineFun1(muParserHandle_t a_hParser, const muChar_t *a_szName, muFun1_t a_pFun, muBool_t a_bOptimize);
-API_EXPORT(void) mupDefineFun2(muParserHandle_t a_hParser, const muChar_t *a_szName, muFun2_t a_pFun, muBool_t a_bOptimize);
-API_EXPORT(void) mupDefineFun3(muParserHandle_t a_hParser, const muChar_t *a_szName, muFun3_t a_pFun, muBool_t a_bOptimize);
-API_EXPORT(void) mupDefineFun4(muParserHandle_t a_hParser, const muChar_t *a_szName, muFun4_t a_pFun, muBool_t a_bOptimize);
-API_EXPORT(void) mupDefineFun5(muParserHandle_t a_hParser, const muChar_t *a_szName, muFun5_t a_pFun, muBool_t a_bOptimize);
-API_EXPORT(void) mupDefineFun6(muParserHandle_t a_hParser, const muChar_t *a_szName, muFun6_t a_pFun, muBool_t a_bOptimize);
-API_EXPORT(void) mupDefineFun7(muParserHandle_t a_hParser, const muChar_t *a_szName, muFun7_t a_pFun, muBool_t a_bOptimize);
-API_EXPORT(void) mupDefineFun8(muParserHandle_t a_hParser, const muChar_t *a_szName, muFun8_t a_pFun, muBool_t a_bOptimize);
-API_EXPORT(void) mupDefineFun9(muParserHandle_t a_hParser, const muChar_t *a_szName, muFun9_t a_pFun, muBool_t a_bOptimize);
-API_EXPORT(void) mupDefineFun10(muParserHandle_t a_hParser, const muChar_t *a_szName, muFun10_t a_pFun, muBool_t a_bOptimize);
+API_EXPORT_C(void) mupDefineFun0(muParserHandle_t a_hParser, const muChar_t *a_szName, muFun0_t a_pFun, muBool_t a_bOptimize);
+API_EXPORT_C(void) mupDefineFun1(muParserHandle_t a_hParser, const muChar_t *a_szName, muFun1_t a_pFun, muBool_t a_bOptimize);
+API_EXPORT_C(void) mupDefineFun2(muParserHandle_t a_hParser, const muChar_t *a_szName, muFun2_t a_pFun, muBool_t a_bOptimize);
+API_EXPORT_C(void) mupDefineFun3(muParserHandle_t a_hParser, const muChar_t *a_szName, muFun3_t a_pFun, muBool_t a_bOptimize);
+API_EXPORT_C(void) mupDefineFun4(muParserHandle_t a_hParser, const muChar_t *a_szName, muFun4_t a_pFun, muBool_t a_bOptimize);
+API_EXPORT_C(void) mupDefineFun5(muParserHandle_t a_hParser, const muChar_t *a_szName, muFun5_t a_pFun, muBool_t a_bOptimize);
+API_EXPORT_C(void) mupDefineFun6(muParserHandle_t a_hParser, const muChar_t *a_szName, muFun6_t a_pFun, muBool_t a_bOptimize);
+API_EXPORT_C(void) mupDefineFun7(muParserHandle_t a_hParser, const muChar_t *a_szName, muFun7_t a_pFun, muBool_t a_bOptimize);
+API_EXPORT_C(void) mupDefineFun8(muParserHandle_t a_hParser, const muChar_t *a_szName, muFun8_t a_pFun, muBool_t a_bOptimize);
+API_EXPORT_C(void) mupDefineFun9(muParserHandle_t a_hParser, const muChar_t *a_szName, muFun9_t a_pFun, muBool_t a_bOptimize);
+API_EXPORT_C(void) mupDefineFun10(muParserHandle_t a_hParser, const muChar_t *a_szName, muFun10_t a_pFun, muBool_t a_bOptimize);
 
 // Defining bulkmode functions
-API_EXPORT(void) mupDefineBulkFun0(muParserHandle_t a_hParser, const muChar_t *a_szName, muBulkFun0_t a_pFun);
-API_EXPORT(void) mupDefineBulkFun1(muParserHandle_t a_hParser, const muChar_t *a_szName, muBulkFun1_t a_pFun);
-API_EXPORT(void) mupDefineBulkFun2(muParserHandle_t a_hParser, const muChar_t *a_szName, muBulkFun2_t a_pFun);
-API_EXPORT(void) mupDefineBulkFun3(muParserHandle_t a_hParser, const muChar_t *a_szName, muBulkFun3_t a_pFun);
-API_EXPORT(void) mupDefineBulkFun4(muParserHandle_t a_hParser, const muChar_t *a_szName, muBulkFun4_t a_pFun);
-API_EXPORT(void) mupDefineBulkFun5(muParserHandle_t a_hParser, const muChar_t *a_szName, muBulkFun5_t a_pFun);
-API_EXPORT(void) mupDefineBulkFun6(muParserHandle_t a_hParser, const muChar_t *a_szName, muBulkFun6_t a_pFun);
-API_EXPORT(void) mupDefineBulkFun7(muParserHandle_t a_hParser, const muChar_t *a_szName, muBulkFun7_t a_pFun);
-API_EXPORT(void) mupDefineBulkFun8(muParserHandle_t a_hParser, const muChar_t *a_szName, muBulkFun8_t a_pFun);
-API_EXPORT(void) mupDefineBulkFun9(muParserHandle_t a_hParser, const muChar_t *a_szName, muBulkFun9_t a_pFun);
-API_EXPORT(void) mupDefineBulkFun10(muParserHandle_t a_hParser, const muChar_t *a_szName, muBulkFun10_t a_pFun);
+API_EXPORT_C(void) mupDefineBulkFun0(muParserHandle_t a_hParser, const muChar_t *a_szName, muBulkFun0_t a_pFun);
+API_EXPORT_C(void) mupDefineBulkFun1(muParserHandle_t a_hParser, const muChar_t *a_szName, muBulkFun1_t a_pFun);
+API_EXPORT_C(void) mupDefineBulkFun2(muParserHandle_t a_hParser, const muChar_t *a_szName, muBulkFun2_t a_pFun);
+API_EXPORT_C(void) mupDefineBulkFun3(muParserHandle_t a_hParser, const muChar_t *a_szName, muBulkFun3_t a_pFun);
+API_EXPORT_C(void) mupDefineBulkFun4(muParserHandle_t a_hParser, const muChar_t *a_szName, muBulkFun4_t a_pFun);
+API_EXPORT_C(void) mupDefineBulkFun5(muParserHandle_t a_hParser, const muChar_t *a_szName, muBulkFun5_t a_pFun);
+API_EXPORT_C(void) mupDefineBulkFun6(muParserHandle_t a_hParser, const muChar_t *a_szName, muBulkFun6_t a_pFun);
+API_EXPORT_C(void) mupDefineBulkFun7(muParserHandle_t a_hParser, const muChar_t *a_szName, muBulkFun7_t a_pFun);
+API_EXPORT_C(void) mupDefineBulkFun8(muParserHandle_t a_hParser, const muChar_t *a_szName, muBulkFun8_t a_pFun);
+API_EXPORT_C(void) mupDefineBulkFun9(muParserHandle_t a_hParser, const muChar_t *a_szName, muBulkFun9_t a_pFun);
+API_EXPORT_C(void) mupDefineBulkFun10(muParserHandle_t a_hParser, const muChar_t *a_szName, muBulkFun10_t a_pFun);
 
 // string functions
-API_EXPORT(void) mupDefineStrFun1(muParserHandle_t a_hParser, const muChar_t *a_szName, muStrFun1_t a_pFun);
-API_EXPORT(void) mupDefineStrFun2(muParserHandle_t a_hParser, const muChar_t *a_szName, muStrFun2_t a_pFun);
-API_EXPORT(void) mupDefineStrFun3(muParserHandle_t a_hParser, const muChar_t *a_szName, muStrFun3_t a_pFun);
+API_EXPORT_C(void) mupDefineStrFun1(muParserHandle_t a_hParser, const muChar_t *a_szName, muStrFun1_t a_pFun);
+API_EXPORT_C(void) mupDefineStrFun2(muParserHandle_t a_hParser, const muChar_t *a_szName, muStrFun2_t a_pFun);
+API_EXPORT_C(void) mupDefineStrFun3(muParserHandle_t a_hParser, const muChar_t *a_szName, muStrFun3_t a_pFun);
 
-API_EXPORT(void) mupDefineMultFun( muParserHandle_t a_hParser, 
+API_EXPORT_C(void) mupDefineMultFun( muParserHandle_t a_hParser, 
                                    const muChar_t* a_szName, 
                                    muMultFun_t a_pFun, 
                                    muBool_t a_bOptimize);
 
-API_EXPORT(void) mupDefineOprt( muParserHandle_t a_hParser, 
+API_EXPORT_C(void) mupDefineOprt( muParserHandle_t a_hParser, 
                                 const muChar_t* a_szName, 
                                 muFun2_t a_pFun, 
                                 muInt_t a_nPrec, 
                                 muInt_t a_nOprtAsct,
                                 muBool_t a_bOptimize);
 
-API_EXPORT(void) mupDefineConst( muParserHandle_t a_hParser, 
+API_EXPORT_C(void) mupDefineConst( muParserHandle_t a_hParser, 
                                  const muChar_t* a_szName, 
                                  muFloat_t a_fVal );
 
-API_EXPORT(void) mupDefineStrConst( muParserHandle_t a_hParser, 
+API_EXPORT_C(void) mupDefineStrConst( muParserHandle_t a_hParser, 
                                     const muChar_t* a_szName, 
                                     const muChar_t *a_sVal );
 
-API_EXPORT(void) mupDefineVar( muParserHandle_t a_hParser, 
+API_EXPORT_C(void) mupDefineVar( muParserHandle_t a_hParser, 
                                const muChar_t* a_szName, 
                                muFloat_t *a_fVar);
 
-API_EXPORT(void) mupDefineBulkVar( muParserHandle_t a_hParser, 
+API_EXPORT_C(void) mupDefineBulkVar( muParserHandle_t a_hParser, 
                                const muChar_t* a_szName, 
                                muFloat_t *a_fVar);
 
-API_EXPORT(void) mupDefinePostfixOprt( muParserHandle_t a_hParser, 
+API_EXPORT_C(void) mupDefinePostfixOprt( muParserHandle_t a_hParser, 
                                        const muChar_t* a_szName, 
                                        muFun1_t a_pOprt, 
                                        muBool_t a_bOptimize);
 
 
-API_EXPORT(void) mupDefineInfixOprt( muParserHandle_t a_hParser, 
+API_EXPORT_C(void) mupDefineInfixOprt( muParserHandle_t a_hParser, 
                                      const muChar_t* a_szName, 
                                      muFun1_t a_pOprt, 
                                      muBool_t a_bOptimize);
 
 // Define character sets for identifiers
-API_EXPORT(void) mupDefineNameChars(muParserHandle_t a_hParser, const muChar_t* a_szCharset);
-API_EXPORT(void) mupDefineOprtChars(muParserHandle_t a_hParser, const muChar_t* a_szCharset);
-API_EXPORT(void) mupDefineInfixOprtChars(muParserHandle_t a_hParser, const muChar_t* a_szCharset);
+API_EXPORT_C(void) mupDefineNameChars(muParserHandle_t a_hParser, const muChar_t* a_szCharset);
+API_EXPORT_C(void) mupDefineOprtChars(muParserHandle_t a_hParser, const muChar_t* a_szCharset);
+API_EXPORT_C(void) mupDefineInfixOprtChars(muParserHandle_t a_hParser, const muChar_t* a_szCharset);
 
 // Remove all / single variables
-API_EXPORT(void) mupRemoveVar(muParserHandle_t a_hParser, const muChar_t* a_szName);
-API_EXPORT(void) mupClearVar(muParserHandle_t a_hParser);
-API_EXPORT(void) mupClearConst(muParserHandle_t a_hParser);
-API_EXPORT(void) mupClearOprt(muParserHandle_t a_hParser);
-API_EXPORT(void) mupClearFun(muParserHandle_t a_hParser);
+API_EXPORT_C(void) mupRemoveVar(muParserHandle_t a_hParser, const muChar_t* a_szName);
+API_EXPORT_C(void) mupClearVar(muParserHandle_t a_hParser);
+API_EXPORT_C(void) mupClearConst(muParserHandle_t a_hParser);
+API_EXPORT_C(void) mupClearOprt(muParserHandle_t a_hParser);
+API_EXPORT_C(void) mupClearFun(muParserHandle_t a_hParser);
 
 // Querying variables / expression variables / constants
-API_EXPORT(int) mupGetExprVarNum(muParserHandle_t a_hParser);
-API_EXPORT(int) mupGetVarNum(muParserHandle_t a_hParser);
-API_EXPORT(int) mupGetConstNum(muParserHandle_t a_hParser);
-API_EXPORT(void) mupGetExprVar(muParserHandle_t a_hParser, unsigned a_iVar, const muChar_t** a_pszName, muFloat_t** a_pVar);
-API_EXPORT(void) mupGetVar(muParserHandle_t a_hParser, unsigned a_iVar, const muChar_t** a_pszName, muFloat_t** a_pVar);
-API_EXPORT(void) mupGetConst(muParserHandle_t a_hParser, unsigned a_iVar, const muChar_t** a_pszName, muFloat_t* a_pVar);
-API_EXPORT(void) mupSetArgSep(muParserHandle_t a_hParser, const muChar_t cArgSep);
-API_EXPORT(void) mupSetDecSep(muParserHandle_t a_hParser, const muChar_t cArgSep);
-API_EXPORT(void) mupSetThousandsSep(muParserHandle_t a_hParser, const muChar_t cArgSep);
-API_EXPORT(void) mupResetLocale(muParserHandle_t a_hParser);
+API_EXPORT_C(int) mupGetExprVarNum(muParserHandle_t a_hParser);
+API_EXPORT_C(int) mupGetVarNum(muParserHandle_t a_hParser);
+API_EXPORT_C(int) mupGetConstNum(muParserHandle_t a_hParser);
+API_EXPORT_C(void) mupGetExprVar(muParserHandle_t a_hParser, unsigned a_iVar, const muChar_t** a_pszName, muFloat_t** a_pVar);
+API_EXPORT_C(void) mupGetVar(muParserHandle_t a_hParser, unsigned a_iVar, const muChar_t** a_pszName, muFloat_t** a_pVar);
+API_EXPORT_C(void) mupGetConst(muParserHandle_t a_hParser, unsigned a_iVar, const muChar_t** a_pszName, muFloat_t* a_pVar);
+API_EXPORT_C(void) mupSetArgSep(muParserHandle_t a_hParser, const muChar_t cArgSep);
+API_EXPORT_C(void) mupSetDecSep(muParserHandle_t a_hParser, const muChar_t cArgSep);
+API_EXPORT_C(void) mupSetThousandsSep(muParserHandle_t a_hParser, const muChar_t cArgSep);
+API_EXPORT_C(void) mupResetLocale(muParserHandle_t a_hParser);
 
 // Add value recognition callbacks
-API_EXPORT(void) mupAddValIdent(muParserHandle_t a_hParser, muIdentFun_t);
+API_EXPORT_C(void) mupAddValIdent(muParserHandle_t a_hParser, muIdentFun_t);
 
 // Error handling
-API_EXPORT(muBool_t) mupError(muParserHandle_t a_hParser);
-API_EXPORT(void) mupErrorReset(muParserHandle_t a_hParser);
-API_EXPORT(void) mupSetErrorHandler(muParserHandle_t a_hParser, muErrorHandler_t a_pErrHandler);
-API_EXPORT(const muChar_t*) mupGetErrorMsg(muParserHandle_t a_hParser);
-API_EXPORT(muInt_t) mupGetErrorCode(muParserHandle_t a_hParser);
-API_EXPORT(muInt_t) mupGetErrorPos(muParserHandle_t a_hParser);
-API_EXPORT(const muChar_t*) mupGetErrorToken(muParserHandle_t a_hParser);
-//API_EXPORT(const muChar_t*) mupGetErrorExpr(muParserHandle_t a_hParser);
+API_EXPORT_C(muBool_t) mupError(muParserHandle_t a_hParser);
+API_EXPORT_C(void) mupErrorReset(muParserHandle_t a_hParser);
+API_EXPORT_C(void) mupSetErrorHandler(muParserHandle_t a_hParser, muErrorHandler_t a_pErrHandler);
+API_EXPORT_C(const muChar_t*) mupGetErrorMsg(muParserHandle_t a_hParser);
+API_EXPORT_C(muInt_t) mupGetErrorCode(muParserHandle_t a_hParser);
+API_EXPORT_C(muInt_t) mupGetErrorPos(muParserHandle_t a_hParser);
+API_EXPORT_C(const muChar_t*) mupGetErrorToken(muParserHandle_t a_hParser);
+//API_EXPORT_C(const muChar_t*) mupGetErrorExpr(muParserHandle_t a_hParser);
 
 // This is used for .NET only. It creates a new variable allowing the dll to
 // manage the variable rather than the .NET garbage collector.
-API_EXPORT(muFloat_t*) mupCreateVar();
-API_EXPORT(void) mupReleaseVar(muFloat_t*);
+API_EXPORT_C(muFloat_t*) mupCreateVar();
+API_EXPORT_C(void) mupReleaseVar(muFloat_t*);
 
 #ifdef __cplusplus
 }

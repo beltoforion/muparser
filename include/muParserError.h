@@ -125,7 +125,7 @@ private:
 
   Part of the math parser package.
 */
-class ParserError
+class API_EXPORT ParserError
 {
 private:
 
