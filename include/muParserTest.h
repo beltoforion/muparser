@@ -46,7 +46,7 @@ namespace mu
 
       (C) 2004-2011 Ingo Berg
     */
-    class ParserTester // final
+    class API_EXPORT ParserTester // final
     {
     private:
         static int c_iCount;
