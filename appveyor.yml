@@ -7,7 +7,6 @@ branches:
     - master
 environment:
   matrix:
-    - CMAKE_PLATFORM: Visual Studio 9 2008
     - CMAKE_PLATFORM: Visual Studio 14 2015
 build_script:
   - cmake -LAH -G "%CMAKE_PLATFORM%" -DCMAKE_INSTALL_PREFIX="%CD:\=/%/install" .
