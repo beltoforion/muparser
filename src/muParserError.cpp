@@ -41,23 +41,6 @@ namespace mu
   }
 
   //---------------------------------------------------------------------------
-  ParserErrorMsg::~ParserErrorMsg()
-  {}
-
-  //---------------------------------------------------------------------------
-  /** \brief Assignment operator is deactivated.
-  */
-  ParserErrorMsg& ParserErrorMsg::operator=(const ParserErrorMsg& )
-  {
-    assert(false);
-    return *this;
-  }
-
-  //---------------------------------------------------------------------------
-  ParserErrorMsg::ParserErrorMsg(const ParserErrorMsg&)
-  {}
-
-  //---------------------------------------------------------------------------
   ParserErrorMsg::ParserErrorMsg()
     :m_vErrMsg(0)
   {
