@@ -27,12 +27,11 @@
 
 namespace mu
 {
-  const ParserErrorMsg ParserErrorMsg::m_Instance;
-
   //------------------------------------------------------------------------------
   const ParserErrorMsg& ParserErrorMsg::Instance()
   {
-    return m_Instance;
+    static const ParserErrorMsg instance;
+    return instance;
   }
 
   //------------------------------------------------------------------------------
