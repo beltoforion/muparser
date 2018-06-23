@@ -44,7 +44,7 @@ elseif(CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wno-long-long -pedantic")
 endif()
 
-include_directories("${CMAKE_SOURCE_DIR}/include")
+include_directories("include")
 add_library(muparser
     src/muParserBase.cpp
     src/muParserBytecode.cpp
@@ -120,12 +120,8 @@ install(FILES
 
 # Define variables for the pkg-config file
 set(PACKAGE_NAME muparser)
-configure_file(
-    "${CMAKE_SOURCE_DIR}/build/autoconf/muparser.pc.cmakein"
-    "${CMAKE_BINARY_DIR}/muparser.pc"
-    @ONLY
-)
-install(
-    FILES "${CMAKE_BINARY_DIR}/muparser.pc"
-    DESTINATION "${CMAKE_INSTALL_LIBDIR}/pkgconfig"
-)
+configure_file("build/autoconf/muparser.pc.cmakein"
+  "${CMAKE_CURRENT_BINARY_DIR}/muparser.pc" @ONLY)
+
+install(FILES "${CMAKE_CURRENT_BINARY_DIR}/muparser.pc"
+  DESTINATION "${CMAKE_INSTALL_LIBDIR}/pkgconfig")
