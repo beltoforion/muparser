@@ -36,8 +36,8 @@
     \brief This file contains standard definitions used by the parser.
 */
 
-#define MUP_VERSION _T("2.2.5")
-#define MUP_VERSION_DATE _T("20150427; GC")
+#define MUP_VERSION _T("2.2.6")
+#define MUP_VERSION_DATE _T("20181004")
 
 #define MUP_CHARS _T("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
 
