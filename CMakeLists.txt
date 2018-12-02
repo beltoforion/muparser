@@ -121,11 +121,11 @@ install(FILES
 # Define variables for the pkg-config file
 set(PACKAGE_NAME muparser)
 configure_file(
-    "${CMAKE_SOURCE_DIR}/build/autoconf/muparser.pc.cmakein"
-    "${CMAKE_BINARY_DIR}/muparser.pc"
+    muparser.pc.in
+    ${CMAKE_BINARY_DIR}/muparser.pc
     @ONLY
 )
 install(
-    FILES "${CMAKE_BINARY_DIR}/muparser.pc"
-    DESTINATION "${CMAKE_INSTALL_LIBDIR}/pkgconfig"
+    FILES ${CMAKE_BINARY_DIR}/muparser.pc
+    DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig
 )
