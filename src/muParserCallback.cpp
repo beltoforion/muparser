@@ -181,7 +181,7 @@ namespace mu
   {}
 
   //---------------------------------------------------------------------------
-  ParserCallback::ParserCallback(fun_type0_ud a_pFun, bool a_bAllowOpti, const UserData &pUserData)
+  ParserCallback::ParserCallback(fun_type0_ud a_pFun, bool a_bAllowOpti, const UserData &userData)
           :m_pFun((void*)a_pFun)
           ,m_iArgc(0)
           ,m_iPri(-1)
@@ -189,11 +189,11 @@ namespace mu
           ,m_iCode(cmFUNC)
           ,m_iType(tpDBL)
           ,m_bAllowOpti(a_bAllowOpti)
-          ,m_pUserData(pUserData.ptr)
+          ,m_pUserData(userData.ptr)
   {}
 
   //---------------------------------------------------------------------------
-  ParserCallback::ParserCallback(fun_type1_ud a_pFun, bool a_bAllowOpti, const UserData &pUserData, int a_iPrec, ECmdCode a_iCode)
+  ParserCallback::ParserCallback(fun_type1_ud a_pFun, bool a_bAllowOpti, const UserData &userData, int a_iPrec, ECmdCode a_iCode)
           :m_pFun((void*)a_pFun)
           ,m_iArgc(1)
           ,m_iPri(a_iPrec)
@@ -201,7 +201,7 @@ namespace mu
           ,m_iCode(a_iCode)
           ,m_iType(tpDBL)
           ,m_bAllowOpti(a_bAllowOpti)
-          ,m_pUserData(pUserData.ptr)
+          ,m_pUserData(userData.ptr)
   {}
 
 
@@ -209,7 +209,7 @@ namespace mu
   /** \brief Constructor for constructing function callbacks taking two arguments.
       \throw nothrow
   */
-  ParserCallback::ParserCallback(fun_type2_ud a_pFun, bool a_bAllowOpti, const UserData &pUserData)
+  ParserCallback::ParserCallback(fun_type2_ud a_pFun, bool a_bAllowOpti, const UserData &userData)
           :m_pFun((void*)a_pFun)
           ,m_iArgc(2)
           ,m_iPri(-1)
@@ -217,11 +217,11 @@ namespace mu
           ,m_iCode(cmFUNC)
           ,m_iType(tpDBL)
           ,m_bAllowOpti(a_bAllowOpti)
-          ,m_pUserData(pUserData.ptr)
+          ,m_pUserData(userData.ptr)
   {}
 
   //---------------------------------------------------------------------------
-  ParserCallback::ParserCallback(fun_type3_ud a_pFun, bool a_bAllowOpti, const UserData &pUserData)
+  ParserCallback::ParserCallback(fun_type3_ud a_pFun, bool a_bAllowOpti, const UserData &userData)
           :m_pFun((void*)a_pFun)
           ,m_iArgc(3)
           ,m_iPri(-1)
@@ -229,12 +229,12 @@ namespace mu
           ,m_iCode(cmFUNC)
           ,m_iType(tpDBL)
           ,m_bAllowOpti(a_bAllowOpti)
-          ,m_pUserData(pUserData.ptr)
+          ,m_pUserData(userData.ptr)
   {}
 
 
   //---------------------------------------------------------------------------
-  ParserCallback::ParserCallback(fun_type4_ud a_pFun, bool a_bAllowOpti, const UserData &pUserData)
+  ParserCallback::ParserCallback(fun_type4_ud a_pFun, bool a_bAllowOpti, const UserData &userData)
           :m_pFun((void*)a_pFun)
           ,m_iArgc(4)
           ,m_iPri(-1)
@@ -242,12 +242,12 @@ namespace mu
           ,m_iCode(cmFUNC)
           ,m_iType(tpDBL)
           ,m_bAllowOpti(a_bAllowOpti)
-          ,m_pUserData(pUserData.ptr)
+          ,m_pUserData(userData.ptr)
   {}
 
 
   //---------------------------------------------------------------------------
-  ParserCallback::ParserCallback(fun_type5_ud a_pFun, bool a_bAllowOpti, const UserData &pUserData)
+  ParserCallback::ParserCallback(fun_type5_ud a_pFun, bool a_bAllowOpti, const UserData &userData)
           :m_pFun((void*)a_pFun)
           ,m_iArgc(5)
           ,m_iPri(-1)
@@ -255,11 +255,11 @@ namespace mu
           ,m_iCode(cmFUNC)
           ,m_iType(tpDBL)
           ,m_bAllowOpti(a_bAllowOpti)
-          ,m_pUserData(pUserData.ptr)
+          ,m_pUserData(userData.ptr)
   {}
 
   //---------------------------------------------------------------------------
-  ParserCallback::ParserCallback(fun_type6_ud a_pFun, bool a_bAllowOpti, const UserData &pUserData)
+  ParserCallback::ParserCallback(fun_type6_ud a_pFun, bool a_bAllowOpti, const UserData &userData)
           :m_pFun((void*)a_pFun)
           ,m_iArgc(6)
           ,m_iPri(-1)
@@ -267,11 +267,11 @@ namespace mu
           ,m_iCode(cmFUNC)
           ,m_iType(tpDBL)
           ,m_bAllowOpti(a_bAllowOpti)
-          ,m_pUserData(pUserData.ptr)
+          ,m_pUserData(userData.ptr)
   {}
 
   //---------------------------------------------------------------------------
-  ParserCallback::ParserCallback(fun_type7_ud a_pFun, bool a_bAllowOpti, const UserData &pUserData)
+  ParserCallback::ParserCallback(fun_type7_ud a_pFun, bool a_bAllowOpti, const UserData &userData)
           :m_pFun((void*)a_pFun)
           ,m_iArgc(7)
           ,m_iPri(-1)
@@ -279,11 +279,11 @@ namespace mu
           ,m_iCode(cmFUNC)
           ,m_iType(tpDBL)
           ,m_bAllowOpti(a_bAllowOpti)
-          ,m_pUserData(pUserData.ptr)
+          ,m_pUserData(userData.ptr)
   {}
 
   //---------------------------------------------------------------------------
-  ParserCallback::ParserCallback(fun_type8_ud a_pFun, bool a_bAllowOpti, const UserData &pUserData)
+  ParserCallback::ParserCallback(fun_type8_ud a_pFun, bool a_bAllowOpti, const UserData &userData)
           :m_pFun((void*)a_pFun)
           ,m_iArgc(8)
           ,m_iPri(-1)
@@ -291,11 +291,11 @@ namespace mu
           ,m_iCode(cmFUNC)
           ,m_iType(tpDBL)
           ,m_bAllowOpti(a_bAllowOpti)
-          ,m_pUserData(pUserData.ptr)
+          ,m_pUserData(userData.ptr)
   {}
 
   //---------------------------------------------------------------------------
-  ParserCallback::ParserCallback(fun_type9_ud a_pFun, bool a_bAllowOpti, const UserData &pUserData)
+  ParserCallback::ParserCallback(fun_type9_ud a_pFun, bool a_bAllowOpti, const UserData &userData)
           :m_pFun((void*)a_pFun)
           ,m_iArgc(9)
           ,m_iPri(-1)
@@ -303,11 +303,11 @@ namespace mu
           ,m_iCode(cmFUNC)
           ,m_iType(tpDBL)
           ,m_bAllowOpti(a_bAllowOpti)
-          ,m_pUserData(pUserData.ptr)
+          ,m_pUserData(userData.ptr)
   {}
 
   //---------------------------------------------------------------------------
-  ParserCallback::ParserCallback(fun_type10_ud a_pFun, bool a_bAllowOpti, const UserData &pUserData)
+  ParserCallback::ParserCallback(fun_type10_ud a_pFun, bool a_bAllowOpti, const UserData &userData)
           :m_pFun((void*)a_pFun)
           ,m_iArgc(10)
           ,m_iPri(-1)
@@ -315,7 +315,7 @@ namespace mu
           ,m_iCode(cmFUNC)
           ,m_iType(tpDBL)
           ,m_bAllowOpti(a_bAllowOpti)
-          ,m_pUserData(pUserData.ptr)
+          ,m_pUserData(userData.ptr)
   {}
 
   //---------------------------------------------------------------------------
@@ -455,6 +455,19 @@ namespace mu
     ,m_iCode(cmFUNC)
     ,m_iType(tpDBL)
     ,m_bAllowOpti(a_bAllowOpti)
+  {}
+    
+    
+  //---------------------------------------------------------------------------
+  ParserCallback::ParserCallback(multfun_type a_pFun, bool a_bAllowOpti, const UserData &userData)
+    :m_pFun((void*)a_pFun)
+    ,m_iArgc(-1)
+    ,m_iPri(-1)
+    ,m_eOprtAsct(oaNONE)
+    ,m_iCode(cmFUNC)
+    ,m_iType(tpDBL)
+    ,m_bAllowOpti(a_bAllowOpti)
+    ,m_pUserData(userData.ptr)
   {}
 
 
