@@ -358,7 +358,7 @@ namespace mu
       \param a_iArgc Number of arguments, negative numbers indicate multiarg functions.
       \param a_pFun Pointer to function callback.
   */
-  void ParserByteCode::AddFun(generic_fun_type a_pFun, int a_iArgc)
+  void ParserByteCode::AddFun(generic_fun_type a_pFun, int a_iArgc, void* a_pUserData)
   {
     if (a_iArgc>=0)
     {
@@ -375,6 +375,7 @@ namespace mu
     tok.Cmd = cmFUNC;
     tok.Fun.argc = a_iArgc;
     tok.Fun.ptr = a_pFun;
+    tok.Fun.userData = a_pUserData;
     m_vRPN.push_back(tok);
   }
 

@@ -275,42 +275,59 @@ namespace mu
   typedef std::map<string_type, std::size_t> strmap_type;
 
   // Parser callbacks
+
+  struct UserData
+  {
+    UserData(void *ptr = 0) : ptr(ptr) {}
+    void *ptr;
+  };
   
   /** \brief Callback type used for functions without arguments. */
   typedef value_type (*generic_fun_type)();
 
   /** \brief Callback type used for functions without arguments. */
   typedef value_type (*fun_type0)();
+  typedef value_type (*fun_type0_ud)(const UserData &);
 
   /** \brief Callback type used for functions with a single arguments. */
   typedef value_type (*fun_type1)(value_type);
+  typedef value_type (*fun_type1_ud)(value_type, const UserData &);
 
   /** \brief Callback type used for functions with two arguments. */
   typedef value_type (*fun_type2)(value_type, value_type);
+  typedef value_type (*fun_type2_ud)(value_type, value_type, const UserData &);
 
   /** \brief Callback type used for functions with three arguments. */
   typedef value_type (*fun_type3)(value_type, value_type, value_type);
+  typedef value_type (*fun_type3_ud)(value_type, value_type, value_type, const UserData &);
 
   /** \brief Callback type used for functions with four arguments. */
   typedef value_type (*fun_type4)(value_type, value_type, value_type, value_type);
+  typedef value_type (*fun_type4_ud)(value_type, value_type, value_type, value_type, const UserData &);
 
   /** \brief Callback type used for functions with five arguments. */
   typedef value_type (*fun_type5)(value_type, value_type, value_type, value_type, value_type);
+  typedef value_type (*fun_type5_ud)(value_type, value_type, value_type, value_type, value_type, const UserData &);
 
   /** \brief Callback type used for functions with six arguments. */
   typedef value_type (*fun_type6)(value_type, value_type, value_type, value_type, value_type, value_type);
+  typedef value_type (*fun_type6_ud)(value_type, value_type, value_type, value_type, value_type, value_type, const UserData &);
 
   /** \brief Callback type used for functions with seven arguments. */
   typedef value_type (*fun_type7)(value_type, value_type, value_type, value_type, value_type, value_type, value_type);
+  typedef value_type (*fun_type7_ud)(value_type, value_type, value_type, value_type, value_type, value_type, value_type, const UserData &);
 
   /** \brief Callback type used for functions with eight arguments. */
   typedef value_type (*fun_type8)(value_type, value_type, value_type, value_type, value_type, value_type, value_type, value_type);
+  typedef value_type (*fun_type8_ud)(value_type, value_type, value_type, value_type, value_type, value_type, value_type, value_type, const UserData &);
 
   /** \brief Callback type used for functions with nine arguments. */
   typedef value_type (*fun_type9)(value_type, value_type, value_type, value_type, value_type, value_type, value_type, value_type, value_type);
+  typedef value_type (*fun_type9_ud)(value_type, value_type, value_type, value_type, value_type, value_type, value_type, value_type, value_type, const UserData &);
 
   /** \brief Callback type used for functions with ten arguments. */
   typedef value_type (*fun_type10)(value_type, value_type, value_type, value_type, value_type, value_type, value_type, value_type, value_type, value_type);
+  typedef value_type (*fun_type10_ud)(value_type, value_type, value_type, value_type, value_type, value_type, value_type, value_type, value_type, value_type, const UserData &);
 
   /** \brief Callback type used for functions without arguments. */
   typedef value_type (*bulkfun_type0)(int, int);
@@ -347,6 +364,7 @@ namespace mu
 
   /** \brief Callback type used for functions with a variable argument list. */
   typedef value_type (*multfun_type)(const value_type*, int);
+  typedef value_type (*multfun_type_ud)(const value_type*, int, const UserData &);
 
   /** \brief Callback type used for functions taking a string as an argument. */
   typedef value_type (*strfun_type1)(const char_type*);

@@ -135,6 +135,12 @@ private:
       AddCallback( a_strName, ParserCallback(a_pFun, a_bAllowOpt), m_FunDef, ValidNameChars() );
     }
 
+    template<typename T>
+    void DefineFun(const string_type &a_strName, T a_pFun, const UserData &a_pUserData, bool a_bAllowOpt = true)
+    {
+      AddCallback( a_strName, ParserCallback(a_pFun, a_bAllowOpt, a_pUserData), m_FunDef, ValidNameChars() );
+    }
+
     void DefineOprt(const string_type &a_strName, 
                     fun_type2 a_pFun, 
                     unsigned a_iPri=0, 

@@ -63,6 +63,18 @@ public:
     ParserCallback(fun_type9  a_pFun, bool a_bAllowOpti);
     ParserCallback(fun_type10 a_pFun, bool a_bAllowOpti);
 
+    ParserCallback(fun_type0_ud  a_pFun, bool a_bAllowOpti, const UserData &userData);
+    ParserCallback(fun_type1_ud  a_pFun, bool a_bAllowOpti, const UserData &userData, int a_iPrec = -1, ECmdCode a_iCode=cmFUNC);
+    ParserCallback(fun_type2_ud  a_pFun, bool a_bAllowOpti, const UserData &userData);
+    ParserCallback(fun_type3_ud  a_pFun, bool a_bAllowOpti, const UserData &userData);
+    ParserCallback(fun_type4_ud  a_pFun, bool a_bAllowOpti, const UserData &userData);
+    ParserCallback(fun_type5_ud  a_pFun, bool a_bAllowOpti, const UserData &userData);
+    ParserCallback(fun_type6_ud  a_pFun, bool a_bAllowOpti, const UserData &userData);
+    ParserCallback(fun_type7_ud  a_pFun, bool a_bAllowOpti, const UserData &userData);
+    ParserCallback(fun_type8_ud  a_pFun, bool a_bAllowOpti, const UserData &userData);
+    ParserCallback(fun_type9_ud  a_pFun, bool a_bAllowOpti, const UserData &userData);
+    ParserCallback(fun_type10_ud a_pFun, bool a_bAllowOpti, const UserData &userData);
+
     ParserCallback(bulkfun_type0  a_pFun, bool a_bAllowOpti);
     ParserCallback(bulkfun_type1  a_pFun, bool a_bAllowOpti);
     ParserCallback(bulkfun_type2  a_pFun, bool a_bAllowOpti);
@@ -76,6 +88,7 @@ public:
     ParserCallback(bulkfun_type10 a_pFun, bool a_bAllowOpti);
 
     ParserCallback(multfun_type a_pFun, bool a_bAllowOpti);
+    ParserCallback(multfun_type_ud a_pFun, bool a_bAllowOpti, const UserData &userData);
     ParserCallback(strfun_type1 a_pFun, bool a_bAllowOpti);
     ParserCallback(strfun_type2 a_pFun, bool a_bAllowOpti);
     ParserCallback(strfun_type3 a_pFun, bool a_bAllowOpti);
@@ -86,6 +99,7 @@ public:
 
     bool  IsOptimizable() const;
     void* GetAddr() const;
+    void* GetUserData() const;
     ECmdCode  GetCode() const;
     ETypeCode GetType() const;
     int GetPri()  const;
@@ -94,6 +108,7 @@ public:
 
 private:
     void *m_pFun;                   ///< Pointer to the callback function, casted to void
+    void *m_pUserData = 0;
     
     /** \brief Number of numeric function arguments
     
