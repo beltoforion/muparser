@@ -459,7 +459,7 @@ namespace mu
     
     
   //---------------------------------------------------------------------------
-  ParserCallback::ParserCallback(multfun_type a_pFun, bool a_bAllowOpti, const UserData &userData)
+  ParserCallback::ParserCallback(multfun_type_ud a_pFun, bool a_bAllowOpti, const UserData &userData)
     :m_pFun((void*)a_pFun)
     ,m_iArgc(-1)
     ,m_iPri(-1)
