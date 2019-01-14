@@ -1,5 +1,5 @@
 .. image:: https://travis-ci.org/beltoforion/muparser.svg?branch=master
-    :target: https://travis-ci.org/beltoforion/muparser.jl
+    :target: https://travis-ci.org/beltoforion/muparser
 
 .. image:: https://ci.appveyor.com/api/projects/status/u4882uj8btuspj9x?svg=true
     :target: https://ci.appveyor.com/project/jschueller/muparser-9ib44
