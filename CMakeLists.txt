@@ -10,8 +10,7 @@ endif ()
 
 project(muParserProject)
 
-include(CTest)
-enable_testing()
+
 
 # Bump versions on release
 set(MUPARSER_VERSION_MAJOR 2)
@@ -129,3 +128,11 @@ install(
     FILES ${CMAKE_BINARY_DIR}/muparser.pc
     DESTINATION ${CMAKE_INSTALL_LIBDIR}/pkgconfig
 )
+
+include(CTest)
+enable_testing()
+
+add_executable (t_ParserTest test/t_ParserTest.cpp)
+target_link_libraries(t_ParserTest muparser)
+add_test (NAME ParserTest COMMAND t_ParserTest)
+

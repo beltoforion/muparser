@@ -146,6 +146,8 @@ namespace mu
       iStat += EqnTest(_T("strfun1(\"100\")"), 100, true);
       iStat += EqnTest(_T("strfun2(\"100\",1)"), 101, true);
       iStat += EqnTest(_T("strfun3(\"99\",1,2)"), 102, true);
+      iStat += EqnTest(_T("strfun4(\"99\",1,2,3)"), 105, true);
+      iStat += EqnTest(_T("strfun5(\"99\",1,2,3,4)"), 109, true);
       // string constants
       iStat += EqnTest(_T("atof(str1)+atof(str2)"), 3.33, true);
 
@@ -1102,7 +1104,7 @@ namespace mu
     }
 
     //---------------------------------------------------------------------------
-    void ParserTester::Run()
+    int ParserTester::Run()
     {
       int iStat = 0;
       try
@@ -1138,6 +1140,7 @@ namespace mu
                   << " expressions)" << endl;
       }
       ParserTester::c_iCount = 0;
+      return iStat;
     }
 
 
@@ -1161,6 +1164,8 @@ namespace mu
         p.DefineFun( _T("strfun1"), StrFun1);
         p.DefineFun( _T("strfun2"), StrFun2);
         p.DefineFun( _T("strfun3"), StrFun3);
+        p.DefineFun( _T("strfun4"), StrFun4);
+        p.DefineFun( _T("strfun4"), StrFun5);
         p.SetExpr(a_str);
         p.Eval();
       }
@@ -1318,6 +1323,8 @@ namespace mu
         p1->DefineFun( _T("strfun1"), StrFun1);
         p1->DefineFun( _T("strfun2"), StrFun2);
         p1->DefineFun( _T("strfun3"), StrFun3);
+        p1->DefineFun( _T("strfun4"), StrFun4);
+        p1->DefineFun( _T("strfun5"), StrFun5);
         p1->DefineFun( _T("lastArg"), LastArg);
         p1->DefineFun( _T("firstArg"), FirstArg);
         p1->DefineFun( _T("order"), FirstArg);

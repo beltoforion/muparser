@@ -150,6 +150,20 @@ namespace mu
           return val + v2 + v3;
         }
 
+        static value_type StrFun4(const char_type* v1, value_type v2, value_type v3, value_type v4)
+        {
+          int val(0);
+          stringstream_type(v1) >> val;
+          return val + v2 + v3 + v4;
+        }
+
+        static value_type StrFun5(const char_type* v1, value_type v2, value_type v3, value_type v4, value_type v5)
+        {
+          int val(0);
+          stringstream_type(v1) >> val;
+          return val + v2 + v3 + v4 + v5;
+        }
+
         static value_type StrToFloat(const char_type* a_szMsg)
         {
           value_type val(0);
@@ -185,7 +199,7 @@ namespace mu
         typedef int (ParserTester::*testfun_type)();
 
 	      ParserTester();
-	      void Run();
+	      int Run();
 
     private:
         std::vector<testfun_type> m_vTestFun;
@@ -205,6 +219,7 @@ namespace mu
 
         // Test Bulkmode
         int EqnTestBulk(const string_type& a_str, double a_fRes[4], bool a_fPass);
+
     };
   } // namespace Test
 } // namespace mu

@@ -11,4 +11,4 @@ environment:
 build_script:
   - cmake -LAH -G "%CMAKE_PLATFORM%" -DCMAKE_INSTALL_PREFIX="%CD:\=/%/install" .
   - cmake --build . --config Release --target install
-  #- ctest -C Release --output-on-failure
+  - ctest -C Release --output-on-failure

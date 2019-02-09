@@ -767,6 +767,8 @@ namespace mu
       case 0: valTok.SetVal(1); a_vArg[0].GetAsString();  break;
       case 1: valTok.SetVal(1); a_vArg[1].GetAsString();  a_vArg[0].GetVal();  break;
       case 2: valTok.SetVal(1); a_vArg[2].GetAsString();  a_vArg[1].GetVal();  a_vArg[0].GetVal();  break;
+      case 3: valTok.SetVal(1); a_vArg[3].GetAsString();  a_vArg[2].GetVal();  a_vArg[1].GetVal();  a_vArg[0].GetVal();  break;
+      case 4: valTok.SetVal(1); a_vArg[4].GetAsString();  a_vArg[3].GetVal();  a_vArg[2].GetVal();  a_vArg[1].GetVal();  a_vArg[0].GetVal();  break;
       default: Error(ecINTERNAL_ERROR);
       }
     }
@@ -1135,6 +1137,8 @@ namespace mu
               case 0: Stack[sidx] = (*(strfun_type1)pTok->Fun.ptr)(m_vStringBuf[iIdxStack].c_str()); continue;
               case 1: Stack[sidx] = (*(strfun_type2)pTok->Fun.ptr)(m_vStringBuf[iIdxStack].c_str(), Stack[sidx]); continue;
               case 2: Stack[sidx] = (*(strfun_type3)pTok->Fun.ptr)(m_vStringBuf[iIdxStack].c_str(), Stack[sidx], Stack[sidx+1]); continue;
+              case 3: Stack[sidx] = (*(strfun_type4)pTok->Fun.ptr)(m_vStringBuf[iIdxStack].c_str(), Stack[sidx], Stack[sidx+1], Stack[sidx+2]); continue;
+              case 4: Stack[sidx] = (*(strfun_type5)pTok->Fun.ptr)(m_vStringBuf[iIdxStack].c_str(), Stack[sidx], Stack[sidx+1], Stack[sidx+2], Stack[sidx+3]); continue;
               }
 
               continue;
