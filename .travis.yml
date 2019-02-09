@@ -1,5 +1,4 @@
 language: c++
-dist: trusty
 sudo: false
 compiler:
   - clang
@@ -7,3 +6,4 @@ compiler:
 script:
   - cmake -Bbuild-ci -H.
   - cmake --build build-ci
+  - ctest --output-on-failure
