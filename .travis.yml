@@ -4,6 +4,6 @@ compiler:
   - clang
   - gcc
 script:
-  - cmake -Bbuild-ci -H.
-  - cmake --build build-ci
+  - cmake -DCMAKE_INSTALL_PREFIX=~/.local/ .
+  - make install -j2
   - ctest --output-on-failure
