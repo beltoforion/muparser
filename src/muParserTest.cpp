@@ -1165,7 +1165,7 @@ namespace mu
         p.DefineFun( _T("strfun2"), StrFun2);
         p.DefineFun( _T("strfun3"), StrFun3);
         p.DefineFun( _T("strfun4"), StrFun4);
-        p.DefineFun( _T("strfun4"), StrFun5);
+        p.DefineFun( _T("strfun5"), StrFun5);
         p.SetExpr(a_str);
         p.Eval();
       }
