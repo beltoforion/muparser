@@ -79,8 +79,8 @@
  and then, from a terminal, typing:
 
    cd [path to muParser]
-   ./configure [--enable-shared=yes/no] [--enable-samples=yes/no]
-               [--enable-debug=yes/no]
+   cmake . [-DENABLE_SAMPLES=ON/OFF] [-DENABLE_OPENMP=OFF/ON]
+           [-DBUILD_SHARED_LIBS=ON/OFF]
    make
    [sudo*] make install
    [sudo*] ldconfig
@@ -104,7 +104,7 @@
  If you don't like to have your muParser folder filled by temporary
  files created by GCC, then you can do the following:
 
-    mkdir mybuild && cd mybuild && ../configure && make
+    mkdir mybuild && cd mybuild && cmake .. && make
 
  to put all object files in the "mybuild" directory.
 
