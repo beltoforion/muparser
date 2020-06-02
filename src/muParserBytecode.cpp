@@ -1,29 +1,29 @@
 /*
-                 __________
-    _____   __ __\______   \_____  _______  ______  ____ _______
+				 __________
+	_____   __ __\______   \_____  _______  ______  ____ _______
    /     \ |  |  \|     ___/\__  \ \_  __ \/  ___/_/ __ \\_  __ \
   |  Y Y  \|  |  /|    |     / __ \_|  | \/\___ \ \  ___/ |  | \/
   |__|_|  /|____/ |____|    (____  /|__|  /____  > \___  >|__|
-        \/                       \/            \/      \/
-  Copyright (C) 2020 Ingo Berg
+		\/                       \/            \/      \/
+  Copyright (C) 2004 - 2020 Ingo Berg
 
-    Redistribution and use in source and binary forms, with or without modification, are permitted
-    provided that the following conditions are met:
+	Redistribution and use in source and binary forms, with or without modification, are permitted
+	provided that the following conditions are met:
 
-      * Redistributions of source code must retain the above copyright notice, this list of
-        conditions and the following disclaimer.
-      * Redistributions in binary form must reproduce the above copyright notice, this list of
-        conditions and the following disclaimer in the documentation and/or other materials provided
-        with the distribution.
+	  * Redistributions of source code must retain the above copyright notice, this list of
+		conditions and the following disclaimer.
+	  * Redistributions in binary form must reproduce the above copyright notice, this list of
+		conditions and the following disclaimer in the documentation and/or other materials provided
+		with the distribution.
 
-    THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR
-    IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
-    FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
-    CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
-    DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
-    DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER
-    IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
-    OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+	THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND ANY EXPRESS OR
+	IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND
+	FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT HOLDER OR
+	CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+	DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+	DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER
+	IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
+	OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
 #include "muParserBytecode.h"
@@ -44,550 +44,550 @@
 
 namespace mu
 {
-  //---------------------------------------------------------------------------
-  /** \brief Bytecode default constructor. */
-  ParserByteCode::ParserByteCode()
-    :m_iStackPos(0)
-    ,m_iMaxStackSize(0)
-    ,m_vRPN()
-    ,m_bEnableOptimizer(true)
-  {
-    m_vRPN.reserve(50);
-  }
+	//---------------------------------------------------------------------------
+	/** \brief Bytecode default constructor. */
+	ParserByteCode::ParserByteCode()
+		:m_iStackPos(0)
+		, m_iMaxStackSize(0)
+		, m_vRPN()
+		, m_bEnableOptimizer(true)
+	{
+		m_vRPN.reserve(50);
+	}
 
-  //---------------------------------------------------------------------------
-  /** \brief Copy constructor. 
-    
-      Implemented in Terms of Assign(const ParserByteCode &a_ByteCode)
-  */
-  ParserByteCode::ParserByteCode(const ParserByteCode &a_ByteCode)
-  {
-    Assign(a_ByteCode);
-  }
+	//---------------------------------------------------------------------------
+	/** \brief Copy constructor.
 
-  //---------------------------------------------------------------------------
-  /** \brief Assignment operator.
-    
-      Implemented in Terms of Assign(const ParserByteCode &a_ByteCode)
-  */
-  ParserByteCode& ParserByteCode::operator=(const ParserByteCode &a_ByteCode)
-  {
-    Assign(a_ByteCode);
-    return *this;
-  }
+		Implemented in Terms of Assign(const ParserByteCode &a_ByteCode)
+	*/
+	ParserByteCode::ParserByteCode(const ParserByteCode& a_ByteCode)
+	{
+		Assign(a_ByteCode);
+	}
 
-  //---------------------------------------------------------------------------
-  void ParserByteCode::EnableOptimizer(bool bStat)
-  {
-    m_bEnableOptimizer = bStat;
-  }
+	//---------------------------------------------------------------------------
+	/** \brief Assignment operator.
 
-  //---------------------------------------------------------------------------
-  /** \brief Copy state of another object to this. 
-    
-      \throw nowthrow
-  */
-  void ParserByteCode::Assign(const ParserByteCode &a_ByteCode)
-  {
-    if (this==&a_ByteCode)    
-      return;
+		Implemented in Terms of Assign(const ParserByteCode &a_ByteCode)
+	*/
+	ParserByteCode& ParserByteCode::operator=(const ParserByteCode& a_ByteCode)
+	{
+		Assign(a_ByteCode);
+		return *this;
+	}
 
-    m_iStackPos = a_ByteCode.m_iStackPos;
-    m_vRPN = a_ByteCode.m_vRPN;
-    m_iMaxStackSize = a_ByteCode.m_iMaxStackSize;
-	m_bEnableOptimizer = a_ByteCode.m_bEnableOptimizer;
-  }
+	//---------------------------------------------------------------------------
+	void ParserByteCode::EnableOptimizer(bool bStat)
+	{
+		m_bEnableOptimizer = bStat;
+	}
 
-  //---------------------------------------------------------------------------
-  /** \brief Add a Variable pointer to bytecode. 
-      \param a_pVar Pointer to be added.
-      \throw nothrow
-  */
-  void ParserByteCode::AddVar(value_type *a_pVar)
-  {
-    ++m_iStackPos;
-    m_iMaxStackSize = std::max(m_iMaxStackSize, (size_t)m_iStackPos);
+	//---------------------------------------------------------------------------
+	/** \brief Copy state of another object to this.
 
-    // optimization does not apply
-    SToken tok;
-    tok.Cmd       = cmVAR;
-    tok.Val.ptr   = a_pVar;
-    tok.Val.data  = 1;
-    tok.Val.data2 = 0;
-    m_vRPN.push_back(tok);
-  }
+		\throw nowthrow
+	*/
+	void ParserByteCode::Assign(const ParserByteCode& a_ByteCode)
+	{
+		if (this == &a_ByteCode)
+			return;
 
-  //---------------------------------------------------------------------------
-  /** \brief Add a Variable pointer to bytecode. 
+		m_iStackPos = a_ByteCode.m_iStackPos;
+		m_vRPN = a_ByteCode.m_vRPN;
+		m_iMaxStackSize = a_ByteCode.m_iMaxStackSize;
+		m_bEnableOptimizer = a_ByteCode.m_bEnableOptimizer;
+	}
 
-      Value entries in byte code consist of:
-      <ul>
-        <li>value array position of the value</li>
-        <li>the operator code according to ParserToken::cmVAL</li>
-        <li>the value stored in #mc_iSizeVal number of bytecode entries.</li>
-      </ul>
+	//---------------------------------------------------------------------------
+	/** \brief Add a Variable pointer to bytecode.
+		\param a_pVar Pointer to be added.
+		\throw nothrow
+	*/
+	void ParserByteCode::AddVar(value_type* a_pVar)
+	{
+		++m_iStackPos;
+		m_iMaxStackSize = std::max(m_iMaxStackSize, (size_t)m_iStackPos);
 
-      \param a_pVal Value to be added.
-      \throw nothrow
-  */
-  void ParserByteCode::AddVal(value_type a_fVal)
-  {
-    ++m_iStackPos;
-    m_iMaxStackSize = std::max(m_iMaxStackSize, (size_t)m_iStackPos);
+		// optimization does not apply
+		SToken tok;
+		tok.Cmd = cmVAR;
+		tok.Val.ptr = a_pVar;
+		tok.Val.data = 1;
+		tok.Val.data2 = 0;
+		m_vRPN.push_back(tok);
+	}
 
-    // If optimization does not apply
-    SToken tok;
-    tok.Cmd = cmVAL;
-    tok.Val.ptr   = NULL;
-    tok.Val.data  = 0;
-    tok.Val.data2 = a_fVal;
-    m_vRPN.push_back(tok);
-  }
+	//---------------------------------------------------------------------------
+	/** \brief Add a Variable pointer to bytecode.
 
-  //---------------------------------------------------------------------------
-  void ParserByteCode::ConstantFolding(ECmdCode a_Oprt)
-  {
-    std::size_t sz = m_vRPN.size();
-    value_type &x = m_vRPN[sz-2].Val.data2,
-               &y = m_vRPN[sz-1].Val.data2;
-    switch (a_Oprt)
-    {
-    case cmLAND: x = (int)x && (int)y; m_vRPN.pop_back(); break;
-    case cmLOR:  x = (int)x || (int)y; m_vRPN.pop_back(); break;
-    case cmLT:   x = x < y;  m_vRPN.pop_back();  break;
-    case cmGT:   x = x > y;  m_vRPN.pop_back();  break;
-    case cmLE:   x = x <= y; m_vRPN.pop_back();  break;
-    case cmGE:   x = x >= y; m_vRPN.pop_back();  break;
-    case cmNEQ:  x = x != y; m_vRPN.pop_back();  break;
-    case cmEQ:   x = x == y; m_vRPN.pop_back();  break;
-    case cmADD:  x = x + y;  m_vRPN.pop_back();  break;
-    case cmSUB:  x = x - y;  m_vRPN.pop_back();  break;
-    case cmMUL:  x = x * y;  m_vRPN.pop_back();  break;
-    case cmDIV: 
+		Value entries in byte code consist of:
+		<ul>
+		  <li>value array position of the value</li>
+		  <li>the operator code according to ParserToken::cmVAL</li>
+		  <li>the value stored in #mc_iSizeVal number of bytecode entries.</li>
+		</ul>
+
+		\param a_pVal Value to be added.
+		\throw nothrow
+	*/
+	void ParserByteCode::AddVal(value_type a_fVal)
+	{
+		++m_iStackPos;
+		m_iMaxStackSize = std::max(m_iMaxStackSize, (size_t)m_iStackPos);
+
+		// If optimization does not apply
+		SToken tok;
+		tok.Cmd = cmVAL;
+		tok.Val.ptr = NULL;
+		tok.Val.data = 0;
+		tok.Val.data2 = a_fVal;
+		m_vRPN.push_back(tok);
+	}
+
+	//---------------------------------------------------------------------------
+	void ParserByteCode::ConstantFolding(ECmdCode a_Oprt)
+	{
+		std::size_t sz = m_vRPN.size();
+		value_type& x = m_vRPN[sz - 2].Val.data2,
+			& y = m_vRPN[sz - 1].Val.data2;
+		switch (a_Oprt)
+		{
+		case cmLAND: x = (int)x && (int)y; m_vRPN.pop_back(); break;
+		case cmLOR:  x = (int)x || (int)y; m_vRPN.pop_back(); break;
+		case cmLT:   x = x < y;  m_vRPN.pop_back();  break;
+		case cmGT:   x = x > y;  m_vRPN.pop_back();  break;
+		case cmLE:   x = x <= y; m_vRPN.pop_back();  break;
+		case cmGE:   x = x >= y; m_vRPN.pop_back();  break;
+		case cmNEQ:  x = x != y; m_vRPN.pop_back();  break;
+		case cmEQ:   x = x == y; m_vRPN.pop_back();  break;
+		case cmADD:  x = x + y;  m_vRPN.pop_back();  break;
+		case cmSUB:  x = x - y;  m_vRPN.pop_back();  break;
+		case cmMUL:  x = x * y;  m_vRPN.pop_back();  break;
+		case cmDIV:
 
 #if defined(MUP_MATH_EXCEPTIONS)
-        if (y==0)
-          throw ParserError(ecDIV_BY_ZERO, _T("0"));
+			if (y == 0)
+				throw ParserError(ecDIV_BY_ZERO, _T("0"));
 #endif
 
-        x = x / y;   
-        m_vRPN.pop_back();
-        break;
+			x = x / y;
+			m_vRPN.pop_back();
+			break;
 
-    case cmPOW: x = MathImpl<value_type>::Pow(x, y); 
-                m_vRPN.pop_back();
-                break;
+		case cmPOW: x = MathImpl<value_type>::Pow(x, y);
+			m_vRPN.pop_back();
+			break;
 
-    default:
-        break;
-    } // switch opcode
-  }
+		default:
+			break;
+		} // switch opcode
+	}
 
-  //---------------------------------------------------------------------------
-  /** \brief Add an operator identifier to bytecode. 
-    
-      Operator entries in byte code consist of:
-      <ul>
-        <li>value array position of the result</li>
-        <li>the operator code according to ParserToken::ECmdCode</li>
-      </ul>
+	//---------------------------------------------------------------------------
+	/** \brief Add an operator identifier to bytecode.
 
-      \sa  ParserToken::ECmdCode
-  */
-  void ParserByteCode::AddOp(ECmdCode a_Oprt)
-  {
-    bool bOptimized = false;
+		Operator entries in byte code consist of:
+		<ul>
+		  <li>value array position of the result</li>
+		  <li>the operator code according to ParserToken::ECmdCode</li>
+		</ul>
 
-    if (m_bEnableOptimizer)
-    {
-      std::size_t sz = m_vRPN.size();
+		\sa  ParserToken::ECmdCode
+	*/
+	void ParserByteCode::AddOp(ECmdCode a_Oprt)
+	{
+		bool bOptimized = false;
 
-      // Check for foldable constants like:
-      //   cmVAL cmVAL cmADD 
-      // where cmADD can stand fopr any binary operator applied to
-      // two constant values.
-      if (sz>=2 && m_vRPN[sz-2].Cmd == cmVAL && m_vRPN[sz-1].Cmd == cmVAL)
-      {
-        ConstantFolding(a_Oprt);
-        bOptimized = true;
-      }
-      else
-      {
-        switch(a_Oprt)
-        {
-        case  cmPOW:
-              // Optimization for polynomials of low order
-              if (m_vRPN[sz-2].Cmd == cmVAR && m_vRPN[sz-1].Cmd == cmVAL)
-              {
-                if (m_vRPN[sz-1].Val.data2==2)
-                  m_vRPN[sz-2].Cmd = cmVARPOW2;
-                else if (m_vRPN[sz-1].Val.data2==3)
-                  m_vRPN[sz-2].Cmd = cmVARPOW3;
-                else if (m_vRPN[sz-1].Val.data2==4)
-                  m_vRPN[sz-2].Cmd = cmVARPOW4;
-                else
-                  break;
+		if (m_bEnableOptimizer)
+		{
+			std::size_t sz = m_vRPN.size();
 
-                m_vRPN.pop_back();
-                bOptimized = true;
-              }
-              break;
+			// Check for foldable constants like:
+			//   cmVAL cmVAL cmADD 
+			// where cmADD can stand fopr any binary operator applied to
+			// two constant values.
+			if (sz >= 2 && m_vRPN[sz - 2].Cmd == cmVAL && m_vRPN[sz - 1].Cmd == cmVAL)
+			{
+				ConstantFolding(a_Oprt);
+				bOptimized = true;
+			}
+			else
+			{
+				switch (a_Oprt)
+				{
+				case  cmPOW:
+					// Optimization for polynomials of low order
+					if (m_vRPN[sz - 2].Cmd == cmVAR && m_vRPN[sz - 1].Cmd == cmVAL)
+					{
+						if (m_vRPN[sz - 1].Val.data2 == 2)
+							m_vRPN[sz - 2].Cmd = cmVARPOW2;
+						else if (m_vRPN[sz - 1].Val.data2 == 3)
+							m_vRPN[sz - 2].Cmd = cmVARPOW3;
+						else if (m_vRPN[sz - 1].Val.data2 == 4)
+							m_vRPN[sz - 2].Cmd = cmVARPOW4;
+						else
+							break;
 
-        case  cmSUB:
-        case  cmADD:
-              // Simple optimization based on pattern recognition for a shitload of different
-              // bytecode combinations of addition/subtraction
-              if ( (m_vRPN[sz-1].Cmd == cmVAR    && m_vRPN[sz-2].Cmd == cmVAL)    ||
-                   (m_vRPN[sz-1].Cmd == cmVAL    && m_vRPN[sz-2].Cmd == cmVAR)    || 
-                   (m_vRPN[sz-1].Cmd == cmVAL    && m_vRPN[sz-2].Cmd == cmVARMUL) ||
-                   (m_vRPN[sz-1].Cmd == cmVARMUL && m_vRPN[sz-2].Cmd == cmVAL)    ||
-                   (m_vRPN[sz-1].Cmd == cmVAR    && m_vRPN[sz-2].Cmd == cmVAR    && m_vRPN[sz-2].Val.ptr == m_vRPN[sz-1].Val.ptr) ||
-                   (m_vRPN[sz-1].Cmd == cmVAR    && m_vRPN[sz-2].Cmd == cmVARMUL && m_vRPN[sz-2].Val.ptr == m_vRPN[sz-1].Val.ptr) ||
-                   (m_vRPN[sz-1].Cmd == cmVARMUL && m_vRPN[sz-2].Cmd == cmVAR    && m_vRPN[sz-2].Val.ptr == m_vRPN[sz-1].Val.ptr) ||
-                   (m_vRPN[sz-1].Cmd == cmVARMUL && m_vRPN[sz-2].Cmd == cmVARMUL && m_vRPN[sz-2].Val.ptr == m_vRPN[sz-1].Val.ptr) )
-              {
-                assert( (m_vRPN[sz-2].Val.ptr==NULL && m_vRPN[sz-1].Val.ptr!=NULL) ||
-                        (m_vRPN[sz-2].Val.ptr!=NULL && m_vRPN[sz-1].Val.ptr==NULL) || 
-                        (m_vRPN[sz-2].Val.ptr == m_vRPN[sz-1].Val.ptr) );
+						m_vRPN.pop_back();
+						bOptimized = true;
+					}
+					break;
 
-                m_vRPN[sz-2].Cmd = cmVARMUL;
-                m_vRPN[sz-2].Val.ptr    = (value_type*)((long long)(m_vRPN[sz-2].Val.ptr) | (long long)(m_vRPN[sz-1].Val.ptr));    // variable
-                m_vRPN[sz-2].Val.data2 += ((a_Oprt==cmSUB) ? -1 : 1) * m_vRPN[sz-1].Val.data2;  // offset
-                m_vRPN[sz-2].Val.data  += ((a_Oprt==cmSUB) ? -1 : 1) * m_vRPN[sz-1].Val.data;   // multiplicand
-                m_vRPN.pop_back();
-                bOptimized = true;
-              } 
-              break;
+				case  cmSUB:
+				case  cmADD:
+					// Simple optimization based on pattern recognition for a shitload of different
+					// bytecode combinations of addition/subtraction
+					if ((m_vRPN[sz - 1].Cmd == cmVAR && m_vRPN[sz - 2].Cmd == cmVAL) ||
+						(m_vRPN[sz - 1].Cmd == cmVAL && m_vRPN[sz - 2].Cmd == cmVAR) ||
+						(m_vRPN[sz - 1].Cmd == cmVAL && m_vRPN[sz - 2].Cmd == cmVARMUL) ||
+						(m_vRPN[sz - 1].Cmd == cmVARMUL && m_vRPN[sz - 2].Cmd == cmVAL) ||
+						(m_vRPN[sz - 1].Cmd == cmVAR && m_vRPN[sz - 2].Cmd == cmVAR && m_vRPN[sz - 2].Val.ptr == m_vRPN[sz - 1].Val.ptr) ||
+						(m_vRPN[sz - 1].Cmd == cmVAR && m_vRPN[sz - 2].Cmd == cmVARMUL && m_vRPN[sz - 2].Val.ptr == m_vRPN[sz - 1].Val.ptr) ||
+						(m_vRPN[sz - 1].Cmd == cmVARMUL && m_vRPN[sz - 2].Cmd == cmVAR && m_vRPN[sz - 2].Val.ptr == m_vRPN[sz - 1].Val.ptr) ||
+						(m_vRPN[sz - 1].Cmd == cmVARMUL && m_vRPN[sz - 2].Cmd == cmVARMUL && m_vRPN[sz - 2].Val.ptr == m_vRPN[sz - 1].Val.ptr))
+					{
+						assert((m_vRPN[sz - 2].Val.ptr == NULL && m_vRPN[sz - 1].Val.ptr != NULL) ||
+							(m_vRPN[sz - 2].Val.ptr != NULL && m_vRPN[sz - 1].Val.ptr == NULL) ||
+							(m_vRPN[sz - 2].Val.ptr == m_vRPN[sz - 1].Val.ptr));
 
-        case  cmMUL:
-              if ( (m_vRPN[sz-1].Cmd == cmVAR && m_vRPN[sz-2].Cmd == cmVAL) ||
-                   (m_vRPN[sz-1].Cmd == cmVAL && m_vRPN[sz-2].Cmd == cmVAR) ) 
-              {
-                m_vRPN[sz-2].Cmd        = cmVARMUL;
-                m_vRPN[sz-2].Val.ptr    = (value_type*)((long long)(m_vRPN[sz-2].Val.ptr) | (long long)(m_vRPN[sz-1].Val.ptr));
-                m_vRPN[sz-2].Val.data   = m_vRPN[sz-2].Val.data2 + m_vRPN[sz-1].Val.data2;
-                m_vRPN[sz-2].Val.data2  = 0;
-                m_vRPN.pop_back();
-                bOptimized = true;
-              } 
-              else if ( (m_vRPN[sz-1].Cmd == cmVAL    && m_vRPN[sz-2].Cmd == cmVARMUL) ||
-                        (m_vRPN[sz-1].Cmd == cmVARMUL && m_vRPN[sz-2].Cmd == cmVAL) )
-              {
-                // Optimization: 2*(3*b+1) or (3*b+1)*2 -> 6*b+2
-                m_vRPN[sz-2].Cmd     = cmVARMUL;
-                m_vRPN[sz-2].Val.ptr = (value_type*)((long long)(m_vRPN[sz-2].Val.ptr) | (long long)(m_vRPN[sz-1].Val.ptr));
-                if (m_vRPN[sz-1].Cmd == cmVAL)
-                {
-                  m_vRPN[sz-2].Val.data  *= m_vRPN[sz-1].Val.data2;
-                  m_vRPN[sz-2].Val.data2 *= m_vRPN[sz-1].Val.data2;
-                }
-                else
-                {
-                  m_vRPN[sz-2].Val.data  = m_vRPN[sz-1].Val.data  * m_vRPN[sz-2].Val.data2;
-                  m_vRPN[sz-2].Val.data2 = m_vRPN[sz-1].Val.data2 * m_vRPN[sz-2].Val.data2;
-                }
-                m_vRPN.pop_back();
-                bOptimized = true;
-              }
-              else if (m_vRPN[sz-1].Cmd == cmVAR && m_vRPN[sz-2].Cmd == cmVAR &&
-                       m_vRPN[sz-1].Val.ptr == m_vRPN[sz-2].Val.ptr)
-              {
-                // Optimization: a*a -> a^2
-                m_vRPN[sz-2].Cmd = cmVARPOW2;
-                m_vRPN.pop_back();
-                bOptimized = true;
-              }
-              break;
+						m_vRPN[sz - 2].Cmd = cmVARMUL;
+						m_vRPN[sz - 2].Val.ptr = (value_type*)((long long)(m_vRPN[sz - 2].Val.ptr) | (long long)(m_vRPN[sz - 1].Val.ptr));    // variable
+						m_vRPN[sz - 2].Val.data2 += ((a_Oprt == cmSUB) ? -1 : 1) * m_vRPN[sz - 1].Val.data2;  // offset
+						m_vRPN[sz - 2].Val.data += ((a_Oprt == cmSUB) ? -1 : 1) * m_vRPN[sz - 1].Val.data;   // multiplicand
+						m_vRPN.pop_back();
+						bOptimized = true;
+					}
+					break;
 
-        case cmDIV:
-              if (m_vRPN[sz-1].Cmd == cmVAL && m_vRPN[sz-2].Cmd == cmVARMUL && m_vRPN[sz-1].Val.data2!=0)
-              {
-                // Optimization: 4*a/2 -> 2*a
-                m_vRPN[sz-2].Val.data  /= m_vRPN[sz-1].Val.data2;
-                m_vRPN[sz-2].Val.data2 /= m_vRPN[sz-1].Val.data2;
-                m_vRPN.pop_back();
-                bOptimized = true;
-              }
-              break;
-        default:
-            // no optimization for other opcodes
-            break;
-        } // switch a_Oprt
-      }
-    }
+				case  cmMUL:
+					if ((m_vRPN[sz - 1].Cmd == cmVAR && m_vRPN[sz - 2].Cmd == cmVAL) ||
+						(m_vRPN[sz - 1].Cmd == cmVAL && m_vRPN[sz - 2].Cmd == cmVAR))
+					{
+						m_vRPN[sz - 2].Cmd = cmVARMUL;
+						m_vRPN[sz - 2].Val.ptr = (value_type*)((long long)(m_vRPN[sz - 2].Val.ptr) | (long long)(m_vRPN[sz - 1].Val.ptr));
+						m_vRPN[sz - 2].Val.data = m_vRPN[sz - 2].Val.data2 + m_vRPN[sz - 1].Val.data2;
+						m_vRPN[sz - 2].Val.data2 = 0;
+						m_vRPN.pop_back();
+						bOptimized = true;
+					}
+					else if ((m_vRPN[sz - 1].Cmd == cmVAL && m_vRPN[sz - 2].Cmd == cmVARMUL) ||
+						(m_vRPN[sz - 1].Cmd == cmVARMUL && m_vRPN[sz - 2].Cmd == cmVAL))
+					{
+						// Optimization: 2*(3*b+1) or (3*b+1)*2 -> 6*b+2
+						m_vRPN[sz - 2].Cmd = cmVARMUL;
+						m_vRPN[sz - 2].Val.ptr = (value_type*)((long long)(m_vRPN[sz - 2].Val.ptr) | (long long)(m_vRPN[sz - 1].Val.ptr));
+						if (m_vRPN[sz - 1].Cmd == cmVAL)
+						{
+							m_vRPN[sz - 2].Val.data *= m_vRPN[sz - 1].Val.data2;
+							m_vRPN[sz - 2].Val.data2 *= m_vRPN[sz - 1].Val.data2;
+						}
+						else
+						{
+							m_vRPN[sz - 2].Val.data = m_vRPN[sz - 1].Val.data * m_vRPN[sz - 2].Val.data2;
+							m_vRPN[sz - 2].Val.data2 = m_vRPN[sz - 1].Val.data2 * m_vRPN[sz - 2].Val.data2;
+						}
+						m_vRPN.pop_back();
+						bOptimized = true;
+					}
+					else if (m_vRPN[sz - 1].Cmd == cmVAR && m_vRPN[sz - 2].Cmd == cmVAR &&
+						m_vRPN[sz - 1].Val.ptr == m_vRPN[sz - 2].Val.ptr)
+					{
+						// Optimization: a*a -> a^2
+						m_vRPN[sz - 2].Cmd = cmVARPOW2;
+						m_vRPN.pop_back();
+						bOptimized = true;
+					}
+					break;
 
-    // If optimization can't be applied just write the value
-    if (!bOptimized)
-    {
-      --m_iStackPos;
-      SToken tok;
-      tok.Cmd = a_Oprt;
-      m_vRPN.push_back(tok);
-    }
-  }
+				case cmDIV:
+					if (m_vRPN[sz - 1].Cmd == cmVAL && m_vRPN[sz - 2].Cmd == cmVARMUL && m_vRPN[sz - 1].Val.data2 != 0)
+					{
+						// Optimization: 4*a/2 -> 2*a
+						m_vRPN[sz - 2].Val.data /= m_vRPN[sz - 1].Val.data2;
+						m_vRPN[sz - 2].Val.data2 /= m_vRPN[sz - 1].Val.data2;
+						m_vRPN.pop_back();
+						bOptimized = true;
+					}
+					break;
+				default:
+					// no optimization for other opcodes
+					break;
+				} // switch a_Oprt
+			}
+		}
 
-  //---------------------------------------------------------------------------
-  void ParserByteCode::AddIfElse(ECmdCode a_Oprt)
-  {
-    SToken tok;
-    tok.Cmd = a_Oprt;
-    m_vRPN.push_back(tok);
-  }
+		// If optimization can't be applied just write the value
+		if (!bOptimized)
+		{
+			--m_iStackPos;
+			SToken tok;
+			tok.Cmd = a_Oprt;
+			m_vRPN.push_back(tok);
+		}
+	}
 
-  //---------------------------------------------------------------------------
-  /** \brief Add an assignment operator
-    
-      Operator entries in byte code consist of:
-      <ul>
-        <li>cmASSIGN code</li>
-        <li>the pointer of the destination variable</li>
-      </ul>
+	//---------------------------------------------------------------------------
+	void ParserByteCode::AddIfElse(ECmdCode a_Oprt)
+	{
+		SToken tok;
+		tok.Cmd = a_Oprt;
+		m_vRPN.push_back(tok);
+	}
 
-      \sa  ParserToken::ECmdCode
-  */
-  void ParserByteCode::AddAssignOp(value_type *a_pVar)
-  {
-    --m_iStackPos;
+	//---------------------------------------------------------------------------
+	/** \brief Add an assignment operator
 
-    SToken tok;
-    tok.Cmd = cmASSIGN;
-    tok.Oprt.ptr = a_pVar;
-    m_vRPN.push_back(tok);
-  }
+		Operator entries in byte code consist of:
+		<ul>
+		  <li>cmASSIGN code</li>
+		  <li>the pointer of the destination variable</li>
+		</ul>
 
-  //---------------------------------------------------------------------------
-  /** \brief Add function to bytecode. 
+		\sa  ParserToken::ECmdCode
+	*/
+	void ParserByteCode::AddAssignOp(value_type* a_pVar)
+	{
+		--m_iStackPos;
 
-      \param a_iArgc Number of arguments, negative numbers indicate multiarg functions.
-      \param a_pFun Pointer to function callback.
-  */
-  void ParserByteCode::AddFun(generic_fun_type a_pFun, int a_iArgc)
-  {
-    if (a_iArgc>=0)
-    {
-      m_iStackPos = m_iStackPos - a_iArgc + 1; 
-    }
-    else
-    {
-      // function with unlimited number of arguments
-      m_iStackPos = m_iStackPos + a_iArgc + 1; 
-    }
-    m_iMaxStackSize = std::max(m_iMaxStackSize, (size_t)m_iStackPos);
+		SToken tok;
+		tok.Cmd = cmASSIGN;
+		tok.Oprt.ptr = a_pVar;
+		m_vRPN.push_back(tok);
+	}
 
-    SToken tok;
-    tok.Cmd = cmFUNC;
-    tok.Fun.argc = a_iArgc;
-    tok.Fun.ptr = a_pFun;
-    m_vRPN.push_back(tok);
-  }
+	//---------------------------------------------------------------------------
+	/** \brief Add function to bytecode.
 
-  //---------------------------------------------------------------------------
-  /** \brief Add a bulk function to bytecode. 
+		\param a_iArgc Number of arguments, negative numbers indicate multiarg functions.
+		\param a_pFun Pointer to function callback.
+	*/
+	void ParserByteCode::AddFun(generic_fun_type a_pFun, int a_iArgc)
+	{
+		if (a_iArgc >= 0)
+		{
+			m_iStackPos = m_iStackPos - a_iArgc + 1;
+		}
+		else
+		{
+			// function with unlimited number of arguments
+			m_iStackPos = m_iStackPos + a_iArgc + 1;
+		}
+		m_iMaxStackSize = std::max(m_iMaxStackSize, (size_t)m_iStackPos);
 
-      \param a_iArgc Number of arguments, negative numbers indicate multiarg functions.
-      \param a_pFun Pointer to function callback.
-  */
-  void ParserByteCode::AddBulkFun(generic_fun_type a_pFun, int a_iArgc)
-  {
-    m_iStackPos = m_iStackPos - a_iArgc + 1; 
-    m_iMaxStackSize = std::max(m_iMaxStackSize, (size_t)m_iStackPos);
+		SToken tok;
+		tok.Cmd = cmFUNC;
+		tok.Fun.argc = a_iArgc;
+		tok.Fun.ptr = a_pFun;
+		m_vRPN.push_back(tok);
+	}
 
-    SToken tok;
-    tok.Cmd = cmFUNC_BULK;
-    tok.Fun.argc = a_iArgc;
-    tok.Fun.ptr = a_pFun;
-    m_vRPN.push_back(tok);
-  }
+	//---------------------------------------------------------------------------
+	/** \brief Add a bulk function to bytecode.
 
-  //---------------------------------------------------------------------------
-  /** \brief Add Strung function entry to the parser bytecode. 
-      \throw nothrow
+		\param a_iArgc Number of arguments, negative numbers indicate multiarg functions.
+		\param a_pFun Pointer to function callback.
+	*/
+	void ParserByteCode::AddBulkFun(generic_fun_type a_pFun, int a_iArgc)
+	{
+		m_iStackPos = m_iStackPos - a_iArgc + 1;
+		m_iMaxStackSize = std::max(m_iMaxStackSize, (size_t)m_iStackPos);
 
-      A string function entry consists of the stack position of the return value,
-      followed by a cmSTRFUNC code, the function pointer and an index into the 
-      string buffer maintained by the parser.
-  */
-  void ParserByteCode::AddStrFun(generic_fun_type a_pFun, int a_iArgc, int a_iIdx)
-  {
-    m_iStackPos = m_iStackPos - a_iArgc + 1;
+		SToken tok;
+		tok.Cmd = cmFUNC_BULK;
+		tok.Fun.argc = a_iArgc;
+		tok.Fun.ptr = a_pFun;
+		m_vRPN.push_back(tok);
+	}
 
-    SToken tok;
-    tok.Cmd = cmFUNC_STR;
-    tok.Fun.argc = a_iArgc;
-    tok.Fun.idx = a_iIdx;
-    tok.Fun.ptr = a_pFun;
-    m_vRPN.push_back(tok);
+	//---------------------------------------------------------------------------
+	/** \brief Add Strung function entry to the parser bytecode.
+		\throw nothrow
 
-    m_iMaxStackSize = std::max(m_iMaxStackSize, (size_t)m_iStackPos);
-  }
+		A string function entry consists of the stack position of the return value,
+		followed by a cmSTRFUNC code, the function pointer and an index into the
+		string buffer maintained by the parser.
+	*/
+	void ParserByteCode::AddStrFun(generic_fun_type a_pFun, int a_iArgc, int a_iIdx)
+	{
+		m_iStackPos = m_iStackPos - a_iArgc + 1;
 
-  //---------------------------------------------------------------------------
-  /** \brief Add end marker to bytecode.
-      
-      \throw nothrow 
-  */
-  void ParserByteCode::Finalize()
-  {
-    SToken tok;
-    tok.Cmd = cmEND;
-    m_vRPN.push_back(tok);
-    rpn_type(m_vRPN).swap(m_vRPN);     // shrink bytecode vector to fit
+		SToken tok;
+		tok.Cmd = cmFUNC_STR;
+		tok.Fun.argc = a_iArgc;
+		tok.Fun.idx = a_iIdx;
+		tok.Fun.ptr = a_pFun;
+		m_vRPN.push_back(tok);
 
-    // Determine the if-then-else jump offsets
-    ParserStack<int> stIf, stElse;
-    int idx;
-    for (int i=0; i<(int)m_vRPN.size(); ++i)
-    {
-      switch(m_vRPN[i].Cmd)
-      {
-      case cmIF:
-            stIf.push(i);
-            break;
+		m_iMaxStackSize = std::max(m_iMaxStackSize, (size_t)m_iStackPos);
+	}
 
-      case  cmELSE:
-            stElse.push(i);
-            idx = stIf.pop();
-            m_vRPN[idx].Oprt.offset = i - idx;
-            break;
-      
-      case cmENDIF:
-            idx = stElse.pop();
-            m_vRPN[idx].Oprt.offset = i - idx;
-            break;
+	//---------------------------------------------------------------------------
+	/** \brief Add end marker to bytecode.
 
-      default:
-            break;
-      }
-    }
-  }
+		\throw nothrow
+	*/
+	void ParserByteCode::Finalize()
+	{
+		SToken tok;
+		tok.Cmd = cmEND;
+		m_vRPN.push_back(tok);
+		rpn_type(m_vRPN).swap(m_vRPN);     // shrink bytecode vector to fit
 
-  //---------------------------------------------------------------------------
-  const SToken* ParserByteCode::GetBase() const
-  {
-    if (m_vRPN.size()==0)
-      throw ParserError(ecINTERNAL_ERROR);
-    else
-      return &m_vRPN[0];
-  }
+		// Determine the if-then-else jump offsets
+		ParserStack<int> stIf, stElse;
+		int idx;
+		for (int i = 0; i < (int)m_vRPN.size(); ++i)
+		{
+			switch (m_vRPN[i].Cmd)
+			{
+			case cmIF:
+				stIf.push(i);
+				break;
 
-  //---------------------------------------------------------------------------
-  std::size_t ParserByteCode::GetMaxStackSize() const
-  {
-    return m_iMaxStackSize+1;
-  }
+			case  cmELSE:
+				stElse.push(i);
+				idx = stIf.pop();
+				m_vRPN[idx].Oprt.offset = i - idx;
+				break;
 
-  //---------------------------------------------------------------------------
-  /** \brief Returns the number of entries in the bytecode. */
-  std::size_t ParserByteCode::GetSize() const
-  {
-    return m_vRPN.size();
-  }
+			case cmENDIF:
+				idx = stElse.pop();
+				m_vRPN[idx].Oprt.offset = i - idx;
+				break;
 
-  //---------------------------------------------------------------------------
-  /** \brief Delete the bytecode. 
-  
-      \throw nothrow
+			default:
+				break;
+			}
+		}
+	}
 
-      The name of this function is a violation of my own coding guidelines
-      but this way it's more in line with the STL functions thus more 
-      intuitive.
-  */
-  void ParserByteCode::clear()
-  {
-    m_vRPN.clear();
-    m_iStackPos = 0;
-    m_iMaxStackSize = 0;
-  }
+	//---------------------------------------------------------------------------
+	const SToken* ParserByteCode::GetBase() const
+	{
+		if (m_vRPN.size() == 0)
+			throw ParserError(ecINTERNAL_ERROR);
+		else
+			return &m_vRPN[0];
+	}
 
-  //---------------------------------------------------------------------------
-  /** \brief Dump bytecode (for debugging only!). */
-  void ParserByteCode::AsciiDump()
-  {
-    if (!m_vRPN.size()) 
-    {
-      mu::console() << _T("No bytecode available\n");
-      return;
-    }
+	//---------------------------------------------------------------------------
+	std::size_t ParserByteCode::GetMaxStackSize() const
+	{
+		return m_iMaxStackSize + 1;
+	}
 
-    mu::console() << _T("Number of RPN tokens:") << (int)m_vRPN.size() << _T("\n");
-    for (std::size_t i=0; i<m_vRPN.size() && m_vRPN[i].Cmd!=cmEND; ++i)
-    {
-      mu::console() << std::dec << i << _T(" : \t");
-      switch (m_vRPN[i].Cmd)
-      {
-      case cmVAL:   mu::console() << _T("VAL \t");
-                    mu::console() << _T("[") << m_vRPN[i].Val.data2 << _T("]\n");
-                    break;
+	//---------------------------------------------------------------------------
+	/** \brief Returns the number of entries in the bytecode. */
+	std::size_t ParserByteCode::GetSize() const
+	{
+		return m_vRPN.size();
+	}
 
-      case cmVAR:   mu::console() << _T("VAR \t");
-	                  mu::console() << _T("[ADDR: 0x") << std::hex << m_vRPN[i].Val.ptr << _T("]\n"); 
-                    break;
+	//---------------------------------------------------------------------------
+	/** \brief Delete the bytecode.
 
-      case cmVARPOW2: mu::console() << _T("VARPOW2 \t");
-	                    mu::console() << _T("[ADDR: 0x") << std::hex << m_vRPN[i].Val.ptr << _T("]\n"); 
-                      break;
+		\throw nothrow
 
-      case cmVARPOW3: mu::console() << _T("VARPOW3 \t");
-	                    mu::console() << _T("[ADDR: 0x") << std::hex << m_vRPN[i].Val.ptr << _T("]\n"); 
-                      break;
+		The name of this function is a violation of my own coding guidelines
+		but this way it's more in line with the STL functions thus more
+		intuitive.
+	*/
+	void ParserByteCode::clear()
+	{
+		m_vRPN.clear();
+		m_iStackPos = 0;
+		m_iMaxStackSize = 0;
+	}
 
-      case cmVARPOW4: mu::console() << _T("VARPOW4 \t");
-	                    mu::console() << _T("[ADDR: 0x") << std::hex << m_vRPN[i].Val.ptr << _T("]\n"); 
-                      break;
+	//---------------------------------------------------------------------------
+	/** \brief Dump bytecode (for debugging only!). */
+	void ParserByteCode::AsciiDump()
+	{
+		if (!m_vRPN.size())
+		{
+			mu::console() << _T("No bytecode available\n");
+			return;
+		}
 
-      case cmVARMUL:  mu::console() << _T("VARMUL \t");
-	                    mu::console() << _T("[ADDR: 0x") << std::hex << m_vRPN[i].Val.ptr << _T("]"); 
-                      mu::console() << _T(" * [") << m_vRPN[i].Val.data << _T("]");
-                      mu::console() << _T(" + [") << m_vRPN[i].Val.data2 << _T("]\n");
-                      break;
+		mu::console() << _T("Number of RPN tokens:") << (int)m_vRPN.size() << _T("\n");
+		for (std::size_t i = 0; i < m_vRPN.size() && m_vRPN[i].Cmd != cmEND; ++i)
+		{
+			mu::console() << std::dec << i << _T(" : \t");
+			switch (m_vRPN[i].Cmd)
+			{
+			case cmVAL:   mu::console() << _T("VAL \t");
+				mu::console() << _T("[") << m_vRPN[i].Val.data2 << _T("]\n");
+				break;
 
-      case cmFUNC:  mu::console() << _T("CALL\t");
-                    mu::console() << _T("[ARG:") << std::dec << m_vRPN[i].Fun.argc << _T("]"); 
-                    mu::console() << _T("[ADDR: 0x") << std::hex << m_vRPN[i].Fun.ptr << _T("]"); 
-                    mu::console() << _T("\n");
-                    break;
+			case cmVAR:   mu::console() << _T("VAR \t");
+				mu::console() << _T("[ADDR: 0x") << std::hex << m_vRPN[i].Val.ptr << _T("]\n");
+				break;
 
-      case cmFUNC_STR:
-                    mu::console() << _T("CALL STRFUNC\t");
-                    mu::console() << _T("[ARG:") << std::dec << m_vRPN[i].Fun.argc << _T("]");
-                    mu::console() << _T("[IDX:") << std::dec << m_vRPN[i].Fun.idx << _T("]");
-                    mu::console() << _T("[ADDR: 0x") << m_vRPN[i].Fun.ptr << _T("]\n"); 
-                    break;
+			case cmVARPOW2: mu::console() << _T("VARPOW2 \t");
+				mu::console() << _T("[ADDR: 0x") << std::hex << m_vRPN[i].Val.ptr << _T("]\n");
+				break;
 
-      case cmLT:    mu::console() << _T("LT\n");  break;
-      case cmGT:    mu::console() << _T("GT\n");  break;
-      case cmLE:    mu::console() << _T("LE\n");  break;
-      case cmGE:    mu::console() << _T("GE\n");  break;
-      case cmEQ:    mu::console() << _T("EQ\n");  break;
-      case cmNEQ:   mu::console() << _T("NEQ\n"); break;
-      case cmADD:   mu::console() << _T("ADD\n"); break;
-      case cmLAND:  mu::console() << _T("&&\n"); break;
-      case cmLOR:   mu::console() << _T("||\n"); break;
-      case cmSUB:   mu::console() << _T("SUB\n"); break;
-      case cmMUL:   mu::console() << _T("MUL\n"); break;
-      case cmDIV:   mu::console() << _T("DIV\n"); break;
-      case cmPOW:   mu::console() << _T("POW\n"); break;
+			case cmVARPOW3: mu::console() << _T("VARPOW3 \t");
+				mu::console() << _T("[ADDR: 0x") << std::hex << m_vRPN[i].Val.ptr << _T("]\n");
+				break;
 
-      case cmIF:    mu::console() << _T("IF\t");
-                    mu::console() << _T("[OFFSET:") << std::dec << m_vRPN[i].Oprt.offset << _T("]\n");
-                    break;
+			case cmVARPOW4: mu::console() << _T("VARPOW4 \t");
+				mu::console() << _T("[ADDR: 0x") << std::hex << m_vRPN[i].Val.ptr << _T("]\n");
+				break;
 
-      case cmELSE:  mu::console() << _T("ELSE\t");
-                    mu::console() << _T("[OFFSET:") << std::dec << m_vRPN[i].Oprt.offset << _T("]\n");
-                    break;
+			case cmVARMUL:  mu::console() << _T("VARMUL \t");
+				mu::console() << _T("[ADDR: 0x") << std::hex << m_vRPN[i].Val.ptr << _T("]");
+				mu::console() << _T(" * [") << m_vRPN[i].Val.data << _T("]");
+				mu::console() << _T(" + [") << m_vRPN[i].Val.data2 << _T("]\n");
+				break;
 
-      case cmENDIF: mu::console() << _T("ENDIF\n"); break;
+			case cmFUNC:  mu::console() << _T("CALL\t");
+				mu::console() << _T("[ARG:") << std::dec << m_vRPN[i].Fun.argc << _T("]");
+				mu::console() << _T("[ADDR: 0x") << std::hex << m_vRPN[i].Fun.ptr << _T("]");
+				mu::console() << _T("\n");
+				break;
 
-      case cmASSIGN: 
-                    mu::console() << _T("ASSIGN\t");
-                    mu::console() << _T("[ADDR: 0x") << m_vRPN[i].Oprt.ptr << _T("]\n"); 
-                    break; 
+			case cmFUNC_STR:
+				mu::console() << _T("CALL STRFUNC\t");
+				mu::console() << _T("[ARG:") << std::dec << m_vRPN[i].Fun.argc << _T("]");
+				mu::console() << _T("[IDX:") << std::dec << m_vRPN[i].Fun.idx << _T("]");
+				mu::console() << _T("[ADDR: 0x") << m_vRPN[i].Fun.ptr << _T("]\n");
+				break;
 
-      default:      mu::console() << _T("(unknown code: ") << m_vRPN[i].Cmd << _T(")\n"); 
-                    break;
-      } // switch cmdCode
-    } // while bytecode
+			case cmLT:    mu::console() << _T("LT\n");  break;
+			case cmGT:    mu::console() << _T("GT\n");  break;
+			case cmLE:    mu::console() << _T("LE\n");  break;
+			case cmGE:    mu::console() << _T("GE\n");  break;
+			case cmEQ:    mu::console() << _T("EQ\n");  break;
+			case cmNEQ:   mu::console() << _T("NEQ\n"); break;
+			case cmADD:   mu::console() << _T("ADD\n"); break;
+			case cmLAND:  mu::console() << _T("&&\n"); break;
+			case cmLOR:   mu::console() << _T("||\n"); break;
+			case cmSUB:   mu::console() << _T("SUB\n"); break;
+			case cmMUL:   mu::console() << _T("MUL\n"); break;
+			case cmDIV:   mu::console() << _T("DIV\n"); break;
+			case cmPOW:   mu::console() << _T("POW\n"); break;
 
-    mu::console() << _T("END") << std::endl;
-  }
+			case cmIF:    mu::console() << _T("IF\t");
+				mu::console() << _T("[OFFSET:") << std::dec << m_vRPN[i].Oprt.offset << _T("]\n");
+				break;
+
+			case cmELSE:  mu::console() << _T("ELSE\t");
+				mu::console() << _T("[OFFSET:") << std::dec << m_vRPN[i].Oprt.offset << _T("]\n");
+				break;
+
+			case cmENDIF: mu::console() << _T("ENDIF\n"); break;
+
+			case cmASSIGN:
+				mu::console() << _T("ASSIGN\t");
+				mu::console() << _T("[ADDR: 0x") << m_vRPN[i].Oprt.ptr << _T("]\n");
+				break;
+
+			default:      mu::console() << _T("(unknown code: ") << m_vRPN[i].Cmd << _T(")\n");
+				break;
+			} // switch cmdCode
+		} // while bytecode
+
+		mu::console() << _T("END") << std::endl;
+	}
 } // namespace mu
