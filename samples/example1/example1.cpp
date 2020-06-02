@@ -190,13 +190,21 @@ static void Splash()
 	mu::console() << _T("        \\/                       \\/            \\/      \\/         \n");
 	mu::console() << _T("  Version ") << Parser().GetVersion(pviFULL) << _T("\n");
 	mu::console() << _T("  (C) 2004 - 2020 Ingo Berg\n");
+	mu::console() << _T("-----------------------------------------------------------\n");
+#if defined (__GNUC__)
+	mu::console() <<  _T("  Compiled with GCC Version ") << __GNUC__ << _T(".") << __GNUC_MINOR__ << _T(".") << __GNUC_PATCHLEVEL__ << _T("\n");
+#elif defined(_MSC_VER)
+	mu::console() << _T("  Compiled with MSVC Version ") << _MSC_VER <<  _T("\n");
+#elif defined(__clang__)
+	mu::console() << _T("  Compiled with CLANG Version ") << __clang_major__ << _T(".") << __clang_minor__ << _T(".") << __clang_patchlevel__ << _T("\n");
+#endif
 }
 
 //---------------------------------------------------------------------------
 static value_type SelfTest()
 {
 	mu::console() << _T("-----------------------------------------------------------\n");
-	mu::console() << _T("Running test suite:\n\n");
+	mu::console() << _T("Running unit tests:\n\n");
 
 	// Skip the self test if the value type is set to an integer type.
 	if (mu::TypeInfo<mu::value_type>::IsInteger())
