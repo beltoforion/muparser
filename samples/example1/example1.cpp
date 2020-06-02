@@ -198,6 +198,9 @@ static void Splash()
 #elif defined(__clang__)
 	mu::console() << _T("  Compiled with CLANG Version ") << __clang_major__ << _T(".") << __clang_minor__ << _T(".") << __clang_patchlevel__ << _T("\n");
 #endif
+
+	mu::console() << _T("  IEEE 754 (IEC 559) is ") << ((std::numeric_limits<double>::is_iec559) ? "Available" : " NOT AVAILABLE") << _T("\n");
+	mu::console() << _T("  ") << sizeof(void*) * 8 << _T("-bit build\n");
 }
 
 //---------------------------------------------------------------------------
