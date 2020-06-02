@@ -57,6 +57,10 @@
 /** \brief Activate this option in order to compile with OpenMP support.
 
   OpenMP is used only in the bulk mode it may increase the performance a bit.
+
+  !!! DO NOT ACTIVATE THIS MACRO HERE IS YOU USE CMAKE FOR BUILDING !!!
+
+  use the cmake option instead!
 */
 //#define MUP_USE_OPENMP
 

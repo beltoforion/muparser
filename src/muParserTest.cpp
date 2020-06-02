@@ -162,14 +162,16 @@ namespace mu
 		//---------------------------------------------------------------------------------------------
 		int ParserTester::TestBulkMode()
 		{
+//			return 0;
+
 			int iStat = 0;
 			mu::console() << _T("testing bulkmode...");
 
 #define EQN_TEST_BULK(EXPR, R1, R2, R3, R4, PASS) \
-        { \
-          double res[] = { R1, R2, R3, R4 }; \
-          iStat += EqnTestBulk(_T(EXPR), res, (PASS)); \
-        }
+			{ \
+			  double res[] = { R1, R2, R3, R4 }; \
+			  iStat += EqnTestBulk(_T(EXPR), res, (PASS)); \
+			}
 
 			// Bulk Variables for the test:
 			// a: 1,2,3,4
@@ -177,18 +179,18 @@ namespace mu
 			// c: 3,3,3,3
 			// d: 5,4,3,2
 			EQN_TEST_BULK("a", 1, 1, 1, 1, false)
-				EQN_TEST_BULK("a", 1, 2, 3, 4, true)
-				EQN_TEST_BULK("b=a", 1, 2, 3, 4, true)
-				EQN_TEST_BULK("b=a, b*10", 10, 20, 30, 40, true)
-				EQN_TEST_BULK("b=a, b*10, a", 1, 2, 3, 4, true)
-				EQN_TEST_BULK("a+b", 3, 4, 5, 6, true)
-				EQN_TEST_BULK("c*(a+b)", 9, 12, 15, 18, true)
+			EQN_TEST_BULK("a", 1, 2, 3, 4, true)
+			EQN_TEST_BULK("b=a", 1, 2, 3, 4, true)
+			EQN_TEST_BULK("b=a, b*10", 10, 20, 30, 40, true)
+			EQN_TEST_BULK("b=a, b*10, a", 1, 2, 3, 4, true)
+			EQN_TEST_BULK("a+b", 3, 4, 5, 6, true)
+			EQN_TEST_BULK("c*(a+b)", 9, 12, 15, 18, true)
 #undef EQN_TEST_BULK
 
-				if (iStat == 0)
-					mu::console() << _T("passed") << endl;
-				else
-					mu::console() << _T("\n  failed with ") << iStat << _T(" errors") << endl;
+			if (iStat == 0)
+				mu::console() << _T("passed") << endl;
+			else
+				mu::console() << _T("\n  failed with ") << iStat << _T(" errors") << endl;
 
 			return iStat;
 		}

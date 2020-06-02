@@ -5,6 +5,7 @@
 *.opendb
 *.db-wal
 *.ipch
-.vs/CMake Overview
-.vs/ProjectSettings.json
-.vs/slnx.sqlite
+.vs/*
+build/*
+out/*
+CMakeSettings.json

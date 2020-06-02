@@ -15,12 +15,12 @@ project(muParserProject)
 # Bump versions on release
 set(MUPARSER_VERSION_MAJOR 2)
 set(MUPARSER_VERSION_MINOR 2)
-set(MUPARSER_VERSION_PATCH 6)
+set(MUPARSER_VERSION_PATCH 7)
 set(MUPARSER_VERSION ${MUPARSER_VERSION_MAJOR}.${MUPARSER_VERSION_MINOR}.${MUPARSER_VERSION_PATCH})
 
 # Build options
 option(ENABLE_SAMPLES "Build the samples" ON)
-option(ENABLE_OPENMP "Enable OpenMP for multithreading" OFF)
+option(ENABLE_OPENMP "Enable OpenMP for multithreading" ON)
 option(BUILD_SHARED_LIBS "Build shared/static libs" ON)
 
 if(ENABLE_OPENMP)
