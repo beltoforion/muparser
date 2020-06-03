@@ -28,6 +28,7 @@
 #include <string.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdint.h>
 #include <wchar.h>
 
 #include "muParserDLL.h"
@@ -125,7 +126,7 @@ muFloat_t* AddVariable(const muChar_t* a_szName, void* pUserData)
 	static muFloat_t afValBuf[PARSER_MAXVARS];  // I don't want dynamic allocation here
 	static int iVal = 0;                     // so i used this buffer
 
-	myprintf(_T("Generating new variable \"%s\" (slots left: %d; context pointer: 0x%x)\n"), a_szName, PARSER_MAXVARS - iVal, (intptr_t)pUserData);
+	myprintf(_T("Generating new variable \"%s\" (slots left: %d; context pointer: 0x%lx)\n"), a_szName, PARSER_MAXVARS - iVal, (intptr_t)pUserData);
 
 	afValBuf[iVal] = 0;
 	if (iVal >= PARSER_MAXVARS - 1)
@@ -205,7 +206,7 @@ void ListVar(muParserHandle_t a_hParser)
 		muFloat_t* pVar = 0;
 
 		mupGetVar(a_hParser, i, &szName, &pVar);
-		myprintf(_T("Name: %s    Address: [0x%x]\n"), szName, (intptr_t)pVar);
+		myprintf(_T("Name: %s    Address: [0x%lx]\n"), szName, (intptr_t)pVar);
 	}
 }
 
@@ -232,7 +233,7 @@ void ListExprVar(muParserHandle_t a_hParser)
 		muFloat_t* pVar = 0;
 
 		mupGetExprVar(a_hParser, i, &szName, &pVar);
-		myprintf(_T("Name: %s   Address: [0x%x]\n"), szName, (intptr_t)pVar);
+		myprintf(_T("Name: %s   Address: [0x%lx]\n"), szName, (intptr_t)pVar);
 	}
 }
 
