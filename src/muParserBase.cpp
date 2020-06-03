@@ -300,10 +300,6 @@ namespace mu
 			ss << _T("; OPENMP");
 #endif
 
-#if defined(MUP_MATH_EXCEPTIONS)
-			ss << _T("; MATHEXC");
-#endif
-
 			ss << _T(")");
 		}
 
@@ -1035,11 +1031,6 @@ namespace mu
 			case  cmSUB:  --sidx; Stack[sidx] -= Stack[1 + sidx]; continue;
 			case  cmMUL:  --sidx; Stack[sidx] *= Stack[1 + sidx]; continue;
 			case  cmDIV:  --sidx;
-
-#if defined(MUP_MATH_EXCEPTIONS)
-				if (Stack[1 + sidx] == 0)
-					Error(ecDIV_BY_ZERO);
-#endif
 				Stack[sidx] /= Stack[1 + sidx];
 				continue;
 

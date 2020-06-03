@@ -70,53 +70,15 @@ namespace mu
 
 	//---------------------------------------------------------------------------
 	// Logarithm functions
-
-	// Logarithm base 2
-	value_type Parser::Log2(value_type v)
-	{
-#ifdef MUP_MATH_EXCEPTIONS
-		if (v <= 0)
-			throw ParserError(ecDOMAIN_ERROR, _T("Log2"));
-#endif
-
-		return MathImpl<value_type>::Log2(v);
-	}
-
-	// Logarithm base 10
-	value_type Parser::Log10(value_type v)
-	{
-#ifdef MUP_MATH_EXCEPTIONS
-		if (v <= 0)
-			throw ParserError(ecDOMAIN_ERROR, _T("Log10"));
-#endif
-
-		return MathImpl<value_type>::Log10(v);
-	}
-
-	// Logarithm base e (natural logarithm)
-	value_type Parser::Ln(value_type v)
-	{
-#ifdef MUP_MATH_EXCEPTIONS
-		if (v <= 0)
-			throw ParserError(ecDOMAIN_ERROR, _T("Ln"));
-#endif
-
-		return MathImpl<value_type>::Log(v);
-	}
+	value_type Parser::Log2(value_type v) { return MathImpl<value_type>::Log2(v); }
+	value_type Parser::Log10(value_type v) { return MathImpl<value_type>::Log10(v); }
+	value_type Parser::Ln(value_type v)	{ return MathImpl<value_type>::Log(v); }
 
 	//---------------------------------------------------------------------------
 	//  misc
 	value_type Parser::Exp(value_type v) { return MathImpl<value_type>::Exp(v); }
 	value_type Parser::Abs(value_type v) { return MathImpl<value_type>::Abs(v); }
-	value_type Parser::Sqrt(value_type v)
-	{
-#ifdef MUP_MATH_EXCEPTIONS
-		if (v < 0)
-			throw ParserError(ecDOMAIN_ERROR, _T("sqrt"));
-#endif
-
-		return MathImpl<value_type>::Sqrt(v);
-	}
+	value_type Parser::Sqrt(value_type v) { return MathImpl<value_type>::Sqrt(v); }
 	value_type Parser::Rint(value_type v) { return MathImpl<value_type>::Rint(v); }
 	value_type Parser::Sign(value_type v) { return MathImpl<value_type>::Sign(v); }
 

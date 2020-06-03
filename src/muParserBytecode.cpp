@@ -165,12 +165,6 @@ namespace mu
 		case cmSUB:  x = x - y;  m_vRPN.pop_back();  break;
 		case cmMUL:  x = x * y;  m_vRPN.pop_back();  break;
 		case cmDIV:
-
-#if defined(MUP_MATH_EXCEPTIONS)
-			if (y == 0)
-				throw ParserError(ecDIV_BY_ZERO, _T("0"));
-#endif
-
 			x = x / y;
 			m_vRPN.pop_back();
 			break;

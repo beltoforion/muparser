@@ -1070,23 +1070,6 @@ namespace mu
 			iStat += ThrowTest(_T("a+b+c=10"), ecUNEXPECTED_OPERATOR);
 			iStat += ThrowTest(_T("a=b=3"), ecUNEXPECTED_OPERATOR);
 
-#if defined(MUP_MATH_EXCEPTIONS)
-			// divide by zero whilst constant folding
-			iStat += ThrowTest(_T("1/0"), ecDIV_BY_ZERO);
-			// square root of a negative number
-			iStat += ThrowTest(_T("sqrt(-1)"), ecDOMAIN_ERROR);
-			// logarithms of zero
-			iStat += ThrowTest(_T("ln(0)"), ecDOMAIN_ERROR);
-			iStat += ThrowTest(_T("log2(0)"), ecDOMAIN_ERROR);
-			iStat += ThrowTest(_T("log10(0)"), ecDOMAIN_ERROR);
-			iStat += ThrowTest(_T("log(0)"), ecDOMAIN_ERROR);
-			// logarithms of negative values
-			iStat += ThrowTest(_T("ln(-1)"), ecDOMAIN_ERROR);
-			iStat += ThrowTest(_T("log2(-1)"), ecDOMAIN_ERROR);
-			iStat += ThrowTest(_T("log10(-1)"), ecDOMAIN_ERROR);
-			iStat += ThrowTest(_T("log(-1)"), ecDOMAIN_ERROR);
-#endif
-
 			// functions without parameter
 			iStat += ThrowTest(_T("3+ping(2)"), ecTOO_MANY_PARAMS);
 			iStat += ThrowTest(_T("3+ping(a+2)"), ecTOO_MANY_PARAMS);

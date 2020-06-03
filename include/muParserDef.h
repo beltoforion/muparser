@@ -44,9 +44,6 @@
 
 #define MUP_CHARS _T("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
 
-/** \brief If this macro is defined mathematical exceptions (div by zero) will be thrown as exceptions. */
-//#define MUP_MATH_EXCEPTIONS
-
 /** \brief Define the base datatype for values.
 
   This datatype must be a built in value type. You can not use custom classes.
