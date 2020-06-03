@@ -7,7 +7,7 @@
 #  |  Y Y  \|  |  /|    |     / __ \_|  | \/\___ \ \  ___/ |  | \/    #
 #  |__|_|  /|____/ |____|    (____  /|__|  /____  > \___  >|__|       #
 #        \/                       \/            \/      \/            #
-#					  Fast math parser Library                        #
+#					  Fast math parser Library    #
 #                                                                     #
 #  Copyright (C) 2015 Ingo Berg                                       #
 #                                                                     #
@@ -20,6 +20,16 @@
 
 History:
 --------
+
+Rev 2.2.7: xx.xx.2020
+---------------------
+  Changes:
+   * using OpenMP is now the default settings for cmake based builds
+   * introduced a maximum length for expressions (5000 Character)
+   * introduced a maximum length for identifiers (100 Characters)
+
+  Bugfixes:
+   * Fixed an issue where the bulk mode could hang on GCC/CLANG builds when the bulk contained only few samples.
 
 Rev 2.2.5: 27.04.2015
 ---------------------
