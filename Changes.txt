@@ -6,7 +6,7 @@
         \/                       \/            \/      \/            
   Fast math parser Library
 
-  Copyright (C) 2015 Ingo Berg
+  Copyright (C) 2004 - 2020 Ingo Berg
   Web:     muparser.beltoforion.de
 
 =======================================================================
@@ -23,6 +23,7 @@ Rev 2.2.7: xx.xx.2020
 
   Bugfixes:
    * Fixed an issue where the bulk mode could hang on GCC/CLANG builds due to OpenMP chunksize dropping below 1.
+   * Added additional tests release builds to prevent segmentation faults for invalid expressions
 
 Rev 2.2.5: 27.04.2015
 ---------------------
