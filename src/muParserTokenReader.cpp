@@ -421,9 +421,6 @@ namespace mu
 			{
 				switch (i)
 				{
-					//case cmAND:
-					//case cmOR:
-					//case cmXOR:
 				case cmLAND:
 				case cmLOR:
 				case cmLT:

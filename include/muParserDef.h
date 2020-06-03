@@ -101,7 +101,7 @@
               ss << _T("Assertion \"") _T(#COND) _T("\" failed: ") \
                  << __FILE__ << _T(" line ")         \
                  << __LINE__ << _T(".");             \
-              throw ParserError( ss.str() );         \
+              throw ParserError( ecINTERNAL_ERROR, -1, ss.str());         \
             }
 #else
 #define MUP_FAIL(MSG)

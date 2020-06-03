@@ -133,9 +133,7 @@ namespace mu
 	private:
 
 		/** \brief Replace all ocuurences of a substring with another string. */
-		void ReplaceSubString(string_type& strSource,
-			const string_type& strFind,
-			const string_type& strReplaceWith);
+		void ReplaceSubString(string_type& strSource, const string_type& strFind, const string_type& strReplaceWith);
 		void Reset();
 
 	public:
@@ -143,17 +141,11 @@ namespace mu
 		ParserError();
 		explicit ParserError(EErrorCodes a_iErrc);
 		explicit ParserError(const string_type& sMsg);
-		ParserError(EErrorCodes a_iErrc,
-			const string_type& sTok,
-			const string_type& sFormula = string_type(),
-			int a_iPos = -1);
-		ParserError(EErrorCodes a_iErrc,
-			int a_iPos,
-			const string_type& sTok);
-		ParserError(const char_type* a_szMsg,
-			int a_iPos = -1,
-			const string_type& sTok = string_type());
+		ParserError(EErrorCodes a_iErrc, const string_type& sTok, const string_type& sFormula = string_type(), int a_iPos = -1);
+		ParserError(EErrorCodes a_iErrc, int a_iPos, const string_type& sTok);
+		ParserError(const char_type* a_szMsg, int a_iPos = -1, const string_type& sTok = string_type());
 		ParserError(const ParserError& a_Obj);
+
 		ParserError& operator=(const ParserError& a_Obj);
 		~ParserError();
 

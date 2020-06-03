@@ -878,20 +878,20 @@ namespace mu
 	}
 
 	//---------------------------------------------------------------------------
-	void ParserBase::ApplyIfElse(ParserStack<token_type>& a_stOpt,
-		ParserStack<token_type>& a_stVal) const
+	void ParserBase::ApplyIfElse(ParserStack<token_type>& a_stOpt, ParserStack<token_type>& a_stVal) const
 	{
 		// Check if there is an if Else clause to be calculated
 		while (a_stOpt.size() && a_stOpt.top().GetCode() == cmELSE)
 		{
 			token_type opElse = a_stOpt.pop();
-			MUP_ASSERT(a_stOpt.size() > 0);
+			if (a_stOpt.empty())
+				Error(ecINTERNAL_ERROR, m_pTokenReader->GetPos(), _T("ApplyIfElse: Operator stack is empty!"));
+
 
 			// Take the value associated with the else branch from the value stack
 			token_type vVal2 = a_stVal.pop();
-
-			MUP_ASSERT(a_stOpt.size() > 0);
-			MUP_ASSERT(a_stVal.size() >= 2);
+			if (a_stVal.size() < 2)
+				Error(ecINTERNAL_ERROR, m_pTokenReader->GetPos(), _T("ApplyIfElse: Not enough values in value stack!"));
 
 			// it then else is a ternary operator Pop all three values from the value s
 			// tack and just return the right value
@@ -901,8 +901,11 @@ namespace mu
 			a_stVal.push((vExpr.GetVal() != 0) ? vVal1 : vVal2);
 
 			token_type opIf = a_stOpt.pop();
-			MUP_ASSERT(opElse.GetCode() == cmELSE);
-			MUP_ASSERT(opIf.GetCode() == cmIF);
+			if (opElse.GetCode() != cmELSE)
+				Error(ecINTERNAL_ERROR, m_pTokenReader->GetPos(), _T("ApplyIfElse: else token not found!"));
+
+			if (opIf.GetCode() != cmIF)
+				Error(ecINTERNAL_ERROR, m_pTokenReader->GetPos(), _T("ApplyIfElse: if token not found!"));
 
 			m_vRPN.AddIfElse(cmENDIF);
 		} // while pending if-else-clause found
@@ -912,8 +915,7 @@ namespace mu
 	/** \brief Performs the necessary steps to write code for
 			   the execution of binary operators into the bytecode.
 	*/
-	void ParserBase::ApplyBinOprt(ParserStack<token_type>& a_stOpt,
-		ParserStack<token_type>& a_stVal) const
+	void ParserBase::ApplyBinOprt(ParserStack<token_type>& a_stOpt, ParserStack<token_type>& a_stVal) const
 	{
 		// is it a user defined binary operator?
 		if (a_stOpt.top().GetCode() == cmOPRT_BIN)
@@ -952,12 +954,11 @@ namespace mu
 		\param a_stOpt The operator stack
 		\param a_stVal The value stack
 	*/
-	void ParserBase::ApplyRemainingOprt(ParserStack<token_type>& stOpt,
-		ParserStack<token_type>& stVal) const
+	void ParserBase::ApplyRemainingOprt(ParserStack<token_type>& stOpt, ParserStack<token_type>& stVal) const
 	{
-		while (stOpt.size() &&
-			stOpt.top().GetCode() != cmBO &&
-			stOpt.top().GetCode() != cmIF)
+		while (	stOpt.size() && 
+				stOpt.top().GetCode() != cmBO && 
+				stOpt.top().GetCode() != cmIF)
 		{
 			token_type tok = stOpt.top();
 			switch (tok.GetCode())
@@ -1058,11 +1059,6 @@ namespace mu
 				--sidx; Stack[sidx] = *(pTok->Oprt.ptr + nOffset) = Stack[sidx + 1]; continue;
 				// original code:
 				//--sidx; Stack[sidx] = *pTok->Oprt.ptr = Stack[sidx+1]; continue;
-
-			//case  cmBO:  // unused, listed for compiler optimization purposes
-			//case  cmBC:
-			//      MUP_FAIL(INVALID_CODE_IN_BYTECODE);
-			//      continue;
 
 			case  cmIF:
 				if (Stack[sidx--] == 0)
@@ -1294,9 +1290,6 @@ namespace mu
 			//
 			// Next are the binary operator entries
 			//
-			//case cmAND:   // built in binary operators
-			//case cmOR:
-			//case cmXOR:
 			case cmIF:
 				m_nIfElseCounter++;
 				// Falls through.

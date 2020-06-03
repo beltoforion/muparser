@@ -430,6 +430,14 @@ static int CheckKeywords(const mu::char_type* a_szLine, mu::Parser& a_Parser)
 		CalcBulk();
 		return 1;
 	}
+	else if (sLine == _T("dbg"))
+	{
+		std::string dbg = "1 ? (2:3)";
+		a_Parser.SetExpr(dbg);
+		mu::console() << dbg;
+		double v =  a_Parser.Eval();
+		return 1;
+	}
 
 	return 0;
 }
