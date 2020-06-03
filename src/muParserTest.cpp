@@ -179,6 +179,16 @@ namespace mu
 			
 			// Timeout: https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=22931
 			// Not testable, prevented by adding restrictions on the length of variables and expressions
+
+			// UNKNOWN READ: https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=22922#c1
+			iStat += EqnTest(_T("1?2:0?(7:1)"), 3.33, true);
+
+			// Heap-buffer-overflow READ 8: https://oss-fuzz.com/testcase-detail/5670338645196800
+			iStat += EqnTest(_T("sum(2>3?2,4,2:4)"), 3.33, true);
+
+			// Divide by zero: https://oss-fuzz.com/testcase-detail/5750723253108736
+			iStat += EqnTest(_T("2/+0"), 3.33, true);
+			
 */
 			if (iStat == 0)
 				mu::console() << _T("passed") << endl;
@@ -951,6 +961,7 @@ namespace mu
 			iStat += ThrowTest(_T("1 : 2"), ecMISPLACED_COLON);
 			iStat += ThrowTest(_T("(1) ? 1 : 2 : 3"), ecMISPLACED_COLON);
 			iStat += ThrowTest(_T("(true) ? 1 : 2 : 3"), ecUNASSIGNABLE_TOKEN);
+			iStat += ThrowTest(_T("1 ? 2 : 0 ? (7:1)"), ecMISPLACED_COLON);
 
 			iStat += EqnTest(_T("1 ? 128 : 255"), 128, true);
 			iStat += EqnTest(_T("1<2 ? 128 : 255"), 128, true);
