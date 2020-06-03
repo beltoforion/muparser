@@ -905,7 +905,7 @@ namespace mu
 				Error(ecINTERNAL_ERROR, m_pTokenReader->GetPos(), _T("ApplyIfElse: else token not found!"));
 
 			if (opIf.GetCode() != cmIF)
-				Error(ecINTERNAL_ERROR, m_pTokenReader->GetPos(), _T("ApplyIfElse: if token not found!"));
+				Error(ecMISPLACED_COLON, m_pTokenReader->GetPos());
 
 			m_vRPN.AddIfElse(cmENDIF);
 		} // while pending if-else-clause found
