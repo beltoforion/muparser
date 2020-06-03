@@ -26,6 +26,8 @@
 	OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 #include "muParserError.h"
+#include <exception>
+
 
 
 namespace mu
@@ -86,12 +88,14 @@ namespace mu
 		m_vErrMsg[ecMISSING_ELSE_CLAUSE] = _T("If-then-else operator is missing an else clause");
 		m_vErrMsg[ecMISPLACED_COLON] = _T("Misplaced colon at position $POS$");
 		m_vErrMsg[ecUNREASONABLE_NUMBER_OF_COMPUTATIONS] = _T("Number of computations to small for bulk mode. (Vectorisation overhead too costly)");
+		m_vErrMsg[ecIdentifierTooLong] = _T("Identifier too long.");
+		m_vErrMsg[ecExpressionTooLong] = _T("Expression too long.");
 
-#if defined(_DEBUG)
 		for (int i = 0; i < ecCOUNT; ++i)
+		{
 			if (!m_vErrMsg[i].length())
-				assert(false);
-#endif
+				throw std::runtime_error("Error definitions are incomplete!");
+		}
 	}
 
 	//---------------------------------------------------------------------------

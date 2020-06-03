@@ -149,6 +149,14 @@ namespace mu
 #endif
 
 	//------------------------------------------------------------------------------
+	class ParserSetup
+	{
+	public:
+		static const int MaxLenExpression = 10000;
+		static const int MaxLenIdentifier = 255;
+	};
+
+	//------------------------------------------------------------------------------
 	/** \brief Bytecode values.
 
 		\attention The order of the operator entries must match the order in ParserBase::c_DefaultOprt!

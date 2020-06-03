@@ -192,6 +192,7 @@ namespace mu
 			int TestStrArg();
 			int TestIfThenElse();
 			int TestBulkMode();
+			int TestOssFuzzTestCases();
 
 			void Abort() const;
 
@@ -207,11 +208,7 @@ namespace mu
 
 			// Test Double Parser
 			int EqnTest(const string_type& a_str, double a_fRes, bool a_fPass);
-			int EqnTestWithVarChange(const string_type& a_str,
-				double a_fRes1,
-				double a_fVar1,
-				double a_fRes2,
-				double a_fVar2);
+			int EqnTestWithVarChange(const string_type& a_str, double a_fRes1, double a_fVar1,	double a_fRes2,	double a_fVar2);
 			int ThrowTest(const string_type& a_str, int a_iErrc, bool a_bFail = true);
 
 			// Test Int Parser

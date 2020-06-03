@@ -148,8 +148,9 @@ namespace mu
 	void ParserByteCode::ConstantFolding(ECmdCode a_Oprt)
 	{
 		std::size_t sz = m_vRPN.size();
-		value_type& x = m_vRPN[sz - 2].Val.data2,
-			& y = m_vRPN[sz - 1].Val.data2;
+		value_type& x = m_vRPN[sz - 2].Val.data2;
+		value_type& y = m_vRPN[sz - 1].Val.data2;
+
 		switch (a_Oprt)
 		{
 		case cmLAND: x = (int)x && (int)y; m_vRPN.pop_back(); break;

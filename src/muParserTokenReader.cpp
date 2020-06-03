@@ -267,17 +267,49 @@ namespace mu
 		while (szFormula[m_iPos] > 0 && szFormula[m_iPos] <= 0x20)
 			++m_iPos;
 
-		if (IsEOF(tok))        return SaveBeforeReturn(tok); // Check for end of formula
-		if (IsOprt(tok))       return SaveBeforeReturn(tok); // Check for user defined binary operator
-		if (IsFunTok(tok))     return SaveBeforeReturn(tok); // Check for function token
-		if (IsBuiltIn(tok))    return SaveBeforeReturn(tok); // Check built in operators / tokens
-		if (IsArgSep(tok))     return SaveBeforeReturn(tok); // Check for function argument separators
-		if (IsValTok(tok))     return SaveBeforeReturn(tok); // Check for values / constant tokens
-		if (IsVarTok(tok))     return SaveBeforeReturn(tok); // Check for variable tokens
-		if (IsStrVarTok(tok))  return SaveBeforeReturn(tok); // Check for string variables
-		if (IsString(tok))     return SaveBeforeReturn(tok); // Check for String tokens
-		if (IsInfixOpTok(tok)) return SaveBeforeReturn(tok); // Check for unary operators
-		if (IsPostOpTok(tok))  return SaveBeforeReturn(tok); // Check for unary operators
+		// Check for end of formula
+		if (IsEOF(tok))        
+			return SaveBeforeReturn(tok); 
+		
+		// Check for user defined binary operator
+		if (IsOprt(tok))       
+			return SaveBeforeReturn(tok); 
+		
+		// Check for function token
+		if (IsFunTok(tok))     
+			return SaveBeforeReturn(tok); 
+		
+		// Check built in operators / tokens
+		if (IsBuiltIn(tok))    
+			return SaveBeforeReturn(tok); 
+
+		// Check for function argument separators
+		if (IsArgSep(tok))     
+			return SaveBeforeReturn(tok); 
+
+		// Check for values / constant tokens
+		if (IsValTok(tok))     
+			return SaveBeforeReturn(tok); 
+
+		// Check for variable tokens
+		if (IsVarTok(tok))     
+			return SaveBeforeReturn(tok); 
+
+		// Check for string variables
+		if (IsStrVarTok(tok))  
+			return SaveBeforeReturn(tok); 
+		
+		// Check for String tokens
+		if (IsString(tok))     
+			return SaveBeforeReturn(tok); 
+
+		// Check for unary operators
+		if (IsInfixOpTok(tok)) 
+			return SaveBeforeReturn(tok); 
+		
+		// Check for unary operators
+		if (IsPostOpTok(tok))  
+			return SaveBeforeReturn(tok); 
 
 		// Check String for undefined variable token. Done only if a 
 		// flag is set indicating to ignore undefined variables.

@@ -62,6 +62,7 @@ namespace mu
 			AddTest(&ParserTester::TestException);
 			AddTest(&ParserTester::TestStrArg);
 			AddTest(&ParserTester::TestBulkMode);
+			AddTest(&ParserTester::TestOssFuzzTestCases);
 
 			ParserTester::c_iCount = 0;
 		}
@@ -160,10 +161,56 @@ namespace mu
 		}
 
 		//---------------------------------------------------------------------------------------------
+		int ParserTester::TestOssFuzzTestCases()
+		{
+			int iStat = 0;
+			mu::console() << _T("testing cases reported from oss-fuzz.com");
+
+			// https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=22947
+			// Divide-by-zero; https://oss-fuzz.com/testcase-detail/5092079045967872
+			iStat += EqnTest(_T("atanh(1)"), 3.33, true);
+			
+			// https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=22928#c3
+			iStat += EqnTest(_T("4/0+"), 3.33, true);
+
+			// https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=22938
+			iStat += EqnTest(_T("sum(0 ? 1, 0, 0 : 3)"), 3.33, true);
+			
+			// Timeout: https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=22931
+			iStat += ThrowTest(_T("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\
+aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"), ecExpressionTooLong);
+
+			if (iStat == 0)
+				mu::console() << _T("passed") << endl;
+			else
+				mu::console() << _T("\n  failed with ") << iStat << _T(" errors") << endl;
+
+			return iStat;
+		}
+
+		//---------------------------------------------------------------------------------------------
 		int ParserTester::TestBulkMode()
 		{
-//			return 0;
-
 			int iStat = 0;
 			mu::console() << _T("testing bulkmode...");
 
@@ -342,100 +389,104 @@ namespace mu
 
 			Parser p;
 
-#define PARSER_THROWCHECK(DOMAIN, FAIL, EXPR, ARG) \
-      iErr = 0;                                      \
-      ParserTester::c_iCount++;                      \
-      try                                            \
-      {                                              \
-        p.Define##DOMAIN(EXPR, ARG);                 \
-      }                                              \
-      catch(Parser::exception_type&)                 \
-      {                                              \
-        iErr = (FAIL==false) ? 0 : 1;                \
-      }                                              \
-      iStat += iErr;      
+#define PARSER_THROWCHECK(DOMAIN, FAIL, EXPR, ARG)			\
+			  iErr = 0;										\
+			  ParserTester::c_iCount++;                     \
+			  try                                           \
+			  {                                             \
+				p.Define##DOMAIN(EXPR, ARG);                \
+			  }                                             \
+			  catch(Parser::exception_type&)                \
+			  {                                             \
+				iErr = (FAIL==false) ? 0 : 1;               \
+			  }                                             \
+			  iStat += iErr;      
 
 			// constant names
 			PARSER_THROWCHECK(Const, false, _T("0a"), 1)
-				PARSER_THROWCHECK(Const, false, _T("9a"), 1)
-				PARSER_THROWCHECK(Const, false, _T("+a"), 1)
-				PARSER_THROWCHECK(Const, false, _T("-a"), 1)
-				PARSER_THROWCHECK(Const, false, _T("a-"), 1)
-				PARSER_THROWCHECK(Const, false, _T("a*"), 1)
-				PARSER_THROWCHECK(Const, false, _T("a?"), 1)
-				PARSER_THROWCHECK(Const, true, _T("a"), 1)
-				PARSER_THROWCHECK(Const, true, _T("a_min"), 1)
-				PARSER_THROWCHECK(Const, true, _T("a_min0"), 1)
-				PARSER_THROWCHECK(Const, true, _T("a_min9"), 1)
-				// variable names
-				value_type a;
+			PARSER_THROWCHECK(Const, false, _T("9a"), 1)
+			PARSER_THROWCHECK(Const, false, _T("+a"), 1)
+			PARSER_THROWCHECK(Const, false, _T("-a"), 1)
+			PARSER_THROWCHECK(Const, false, _T("a-"), 1)
+			PARSER_THROWCHECK(Const, false, _T("a*"), 1)
+			PARSER_THROWCHECK(Const, false, _T("a?"), 1)
+			PARSER_THROWCHECK(Const, true, _T("a"), 1)
+			PARSER_THROWCHECK(Const, true, _T("a_min"), 1)
+			PARSER_THROWCHECK(Const, true, _T("a_min0"), 1)
+			PARSER_THROWCHECK(Const, true, _T("a_min9"), 1)
+
+			// variable names
+			value_type a;
 			p.ClearConst();
 			PARSER_THROWCHECK(Var, false, _T("123abc"), &a)
-				PARSER_THROWCHECK(Var, false, _T("9a"), &a)
-				PARSER_THROWCHECK(Var, false, _T("0a"), &a)
-				PARSER_THROWCHECK(Var, false, _T("+a"), &a)
-				PARSER_THROWCHECK(Var, false, _T("-a"), &a)
-				PARSER_THROWCHECK(Var, false, _T("?a"), &a)
-				PARSER_THROWCHECK(Var, false, _T("!a"), &a)
-				PARSER_THROWCHECK(Var, false, _T("a+"), &a)
-				PARSER_THROWCHECK(Var, false, _T("a-"), &a)
-				PARSER_THROWCHECK(Var, false, _T("a*"), &a)
-				PARSER_THROWCHECK(Var, false, _T("a?"), &a)
-				PARSER_THROWCHECK(Var, true, _T("a"), &a)
-				PARSER_THROWCHECK(Var, true, _T("a_min"), &a)
-				PARSER_THROWCHECK(Var, true, _T("a_min0"), &a)
-				PARSER_THROWCHECK(Var, true, _T("a_min9"), &a)
-				PARSER_THROWCHECK(Var, false, _T("a_min9"), 0)
-				// Postfix operators
-				// fail
-				PARSER_THROWCHECK(PostfixOprt, false, _T("(k"), f1of1)
-				PARSER_THROWCHECK(PostfixOprt, false, _T("9+"), f1of1)
-				PARSER_THROWCHECK(PostfixOprt, false, _T("+"), 0)
-				// pass
-				PARSER_THROWCHECK(PostfixOprt, true, _T("-a"), f1of1)
-				PARSER_THROWCHECK(PostfixOprt, true, _T("?a"), f1of1)
-				PARSER_THROWCHECK(PostfixOprt, true, _T("_"), f1of1)
-				PARSER_THROWCHECK(PostfixOprt, true, _T("#"), f1of1)
-				PARSER_THROWCHECK(PostfixOprt, true, _T("&&"), f1of1)
-				PARSER_THROWCHECK(PostfixOprt, true, _T("||"), f1of1)
-				PARSER_THROWCHECK(PostfixOprt, true, _T("&"), f1of1)
-				PARSER_THROWCHECK(PostfixOprt, true, _T("|"), f1of1)
-				PARSER_THROWCHECK(PostfixOprt, true, _T("++"), f1of1)
-				PARSER_THROWCHECK(PostfixOprt, true, _T("--"), f1of1)
-				PARSER_THROWCHECK(PostfixOprt, true, _T("?>"), f1of1)
-				PARSER_THROWCHECK(PostfixOprt, true, _T("?<"), f1of1)
-				PARSER_THROWCHECK(PostfixOprt, true, _T("**"), f1of1)
-				PARSER_THROWCHECK(PostfixOprt, true, _T("xor"), f1of1)
-				PARSER_THROWCHECK(PostfixOprt, true, _T("and"), f1of1)
-				PARSER_THROWCHECK(PostfixOprt, true, _T("or"), f1of1)
-				PARSER_THROWCHECK(PostfixOprt, true, _T("not"), f1of1)
-				PARSER_THROWCHECK(PostfixOprt, true, _T("!"), f1of1)
-				// Binary operator
-				// The following must fail with builtin operators activated
-				// p.EnableBuiltInOp(true); -> this is the default
-				p.ClearPostfixOprt();
+			PARSER_THROWCHECK(Var, false, _T("9a"), &a)
+			PARSER_THROWCHECK(Var, false, _T("0a"), &a)
+			PARSER_THROWCHECK(Var, false, _T("+a"), &a)
+			PARSER_THROWCHECK(Var, false, _T("-a"), &a)
+			PARSER_THROWCHECK(Var, false, _T("?a"), &a)
+			PARSER_THROWCHECK(Var, false, _T("!a"), &a)
+			PARSER_THROWCHECK(Var, false, _T("a+"), &a)
+			PARSER_THROWCHECK(Var, false, _T("a-"), &a)
+			PARSER_THROWCHECK(Var, false, _T("a*"), &a)
+			PARSER_THROWCHECK(Var, false, _T("a?"), &a)
+			PARSER_THROWCHECK(Var, true, _T("a"), &a)
+			PARSER_THROWCHECK(Var, true, _T("a_min"), &a)
+			PARSER_THROWCHECK(Var, true, _T("a_min0"), &a)
+			PARSER_THROWCHECK(Var, true, _T("a_min9"), &a)
+			PARSER_THROWCHECK(Var, false, _T("a_min9"), 0)
+
+			// Postfix operators
+			// fail
+			PARSER_THROWCHECK(PostfixOprt, false, _T("(k"), f1of1)
+			PARSER_THROWCHECK(PostfixOprt, false, _T("9+"), f1of1)
+			PARSER_THROWCHECK(PostfixOprt, false, _T("+"), 0)
+			// pass
+			PARSER_THROWCHECK(PostfixOprt, true, _T("-a"), f1of1)
+			PARSER_THROWCHECK(PostfixOprt, true, _T("?a"), f1of1)
+			PARSER_THROWCHECK(PostfixOprt, true, _T("_"), f1of1)
+			PARSER_THROWCHECK(PostfixOprt, true, _T("#"), f1of1)
+			PARSER_THROWCHECK(PostfixOprt, true, _T("&&"), f1of1)
+			PARSER_THROWCHECK(PostfixOprt, true, _T("||"), f1of1)
+			PARSER_THROWCHECK(PostfixOprt, true, _T("&"), f1of1)
+			PARSER_THROWCHECK(PostfixOprt, true, _T("|"), f1of1)
+			PARSER_THROWCHECK(PostfixOprt, true, _T("++"), f1of1)
+			PARSER_THROWCHECK(PostfixOprt, true, _T("--"), f1of1)
+			PARSER_THROWCHECK(PostfixOprt, true, _T("?>"), f1of1)
+			PARSER_THROWCHECK(PostfixOprt, true, _T("?<"), f1of1)
+			PARSER_THROWCHECK(PostfixOprt, true, _T("**"), f1of1)
+			PARSER_THROWCHECK(PostfixOprt, true, _T("xor"), f1of1)
+			PARSER_THROWCHECK(PostfixOprt, true, _T("and"), f1of1)
+			PARSER_THROWCHECK(PostfixOprt, true, _T("or"), f1of1)
+			PARSER_THROWCHECK(PostfixOprt, true, _T("not"), f1of1)
+			PARSER_THROWCHECK(PostfixOprt, true, _T("!"), f1of1)
+
+			// Binary operator
+			// The following must fail with builtin operators activated
+			// p.EnableBuiltInOp(true); -> this is the default
+			p.ClearPostfixOprt();
 			PARSER_THROWCHECK(Oprt, false, _T("+"), f1of2)
-				PARSER_THROWCHECK(Oprt, false, _T("-"), f1of2)
-				PARSER_THROWCHECK(Oprt, false, _T("*"), f1of2)
-				PARSER_THROWCHECK(Oprt, false, _T("/"), f1of2)
-				PARSER_THROWCHECK(Oprt, false, _T("^"), f1of2)
-				PARSER_THROWCHECK(Oprt, false, _T("&&"), f1of2)
-				PARSER_THROWCHECK(Oprt, false, _T("||"), f1of2)
-				// without activated built in operators it should work
-				p.EnableBuiltInOprt(false);
+			PARSER_THROWCHECK(Oprt, false, _T("-"), f1of2)
+			PARSER_THROWCHECK(Oprt, false, _T("*"), f1of2)
+			PARSER_THROWCHECK(Oprt, false, _T("/"), f1of2)
+			PARSER_THROWCHECK(Oprt, false, _T("^"), f1of2)
+			PARSER_THROWCHECK(Oprt, false, _T("&&"), f1of2)
+			PARSER_THROWCHECK(Oprt, false, _T("||"), f1of2)
+
+			// without activated built in operators it should work
+			p.EnableBuiltInOprt(false);
 			PARSER_THROWCHECK(Oprt, true, _T("+"), f1of2)
-				PARSER_THROWCHECK(Oprt, true, _T("-"), f1of2)
-				PARSER_THROWCHECK(Oprt, true, _T("*"), f1of2)
-				PARSER_THROWCHECK(Oprt, true, _T("/"), f1of2)
-				PARSER_THROWCHECK(Oprt, true, _T("^"), f1of2)
-				PARSER_THROWCHECK(Oprt, true, _T("&&"), f1of2)
-				PARSER_THROWCHECK(Oprt, true, _T("||"), f1of2)
+			PARSER_THROWCHECK(Oprt, true, _T("-"), f1of2)
+			PARSER_THROWCHECK(Oprt, true, _T("*"), f1of2)
+			PARSER_THROWCHECK(Oprt, true, _T("/"), f1of2)
+			PARSER_THROWCHECK(Oprt, true, _T("^"), f1of2)
+			PARSER_THROWCHECK(Oprt, true, _T("&&"), f1of2)
+			PARSER_THROWCHECK(Oprt, true, _T("||"), f1of2)
 #undef PARSER_THROWCHECK
 
-				if (iStat == 0)
-					mu::console() << _T("passed") << endl;
-				else
-					mu::console() << _T("\n  failed with ") << iStat << _T(" errors") << endl;
+			if (iStat == 0)
+				mu::console() << _T("passed") << endl;
+			else
+				mu::console() << _T("\n  failed with ") << iStat << _T(" errors") << endl;
 
 			return iStat;
 		}

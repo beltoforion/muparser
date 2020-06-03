@@ -298,14 +298,10 @@ namespace mu
 
 #ifdef MUP_USE_OPENMP
 			ss << _T("; OPENMP");
-			//#else
-			//      ss << _T("; NO_OPENMP");
 #endif
 
 #if defined(MUP_MATH_EXCEPTIONS)
 			ss << _T("; MATHEXC");
-			//#else
-			//      ss << _T("; NO_MATHEXC");
 #endif
 
 			ss << _T(")");
@@ -417,6 +413,11 @@ namespace mu
 		// Check locale compatibility
 		if (m_pTokenReader->GetArgSep() == std::use_facet<numpunct<char_type> >(s_locale).decimal_point())
 			Error(ecLOCALE);
+
+		// Check maximum allowed expression length. This is just a safety measure to prevent attacks on the engine.
+		// (oss-fuzz.com will throw very long expressions at muparser) 
+		if (a_sExpr.length() >= ParserSetup::MaxLenExpression)
+			Error(ecExpressionTooLong, 0, a_sExpr);
 
 		// <ibg> 20060222: Bugfix for Borland-Kylix:
 		// adding a space to the expression will keep Borlands KYLIX from going wild
