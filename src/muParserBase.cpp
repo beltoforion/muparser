@@ -499,14 +499,12 @@ namespace mu
 	/** \brief Add a user defined operator.
 		\post Will reset the Parser to string parsing mode.
 	*/
-	void ParserBase::DefinePostfixOprt(const string_type& a_sName,
-		fun_type1 a_pFun,
-		bool a_bAllowOpt)
+	void ParserBase::DefinePostfixOprt(const string_type& a_sName, fun_type1 a_pFun, bool a_bAllowOpt)
 	{
-		AddCallback(a_sName,
-			ParserCallback(a_pFun, a_bAllowOpt, prPOSTFIX, cmOPRT_POSTFIX),
-			m_PostOprtDef,
-			ValidOprtChars());
+		if (a_sName.length() > ParserSetup::MaxLenIdentifier)
+			Error(ecIdentifierTooLong);
+
+		AddCallback(a_sName, ParserCallback(a_pFun, a_bAllowOpt, prPOSTFIX, cmOPRT_POSTFIX), m_PostOprtDef, ValidOprtChars());
 	}
 
 	//---------------------------------------------------------------------------
@@ -531,15 +529,12 @@ namespace mu
 		\param [in] a_bAllowOpt  True if operator is volatile (default=false)
 		\sa EPrec
 	*/
-	void ParserBase::DefineInfixOprt(const string_type& a_sName,
-		fun_type1 a_pFun,
-		int a_iPrec,
-		bool a_bAllowOpt)
+	void ParserBase::DefineInfixOprt(const string_type& a_sName, fun_type1 a_pFun, int a_iPrec,	bool a_bAllowOpt)
 	{
-		AddCallback(a_sName,
-			ParserCallback(a_pFun, a_bAllowOpt, a_iPrec, cmOPRT_INFIX),
-			m_InfixOprtDef,
-			ValidInfixOprtChars());
+		if (a_sName.length() > ParserSetup::MaxLenIdentifier)
+			Error(ecIdentifierTooLong);
+
+		AddCallback(a_sName, ParserCallback(a_pFun, a_bAllowOpt, a_iPrec, cmOPRT_INFIX), m_InfixOprtDef, ValidInfixOprtChars());
 	}
 
 
@@ -553,21 +548,21 @@ namespace mu
 
 		Adds a new Binary operator the the parser instance.
 	*/
-	void ParserBase::DefineOprt(const string_type& a_sName,
-		fun_type2 a_pFun,
-		unsigned a_iPrec,
-		EOprtAssociativity a_eAssociativity,
-		bool a_bAllowOpt)
+	void ParserBase::DefineOprt(const string_type& a_sName,	fun_type2 a_pFun, unsigned a_iPrec,	EOprtAssociativity a_eAssociativity, bool a_bAllowOpt)
 	{
+		if (a_sName.length() > ParserSetup::MaxLenIdentifier)
+			Error(ecIdentifierTooLong);
+
 		// Check for conflicts with built in operator names
 		for (int i = 0; m_bBuiltInOp && i < cmENDIF; ++i)
+		{
 			if (a_sName == string_type(c_DefaultOprt[i]))
+			{
 				Error(ecBUILTIN_OVERLOAD, -1, a_sName);
+			}
+		}
 
-		AddCallback(a_sName,
-			ParserCallback(a_pFun, a_bAllowOpt, a_iPrec, a_eAssociativity),
-			m_OprtDef,
-			ValidOprtChars());
+		AddCallback(a_sName, ParserCallback(a_pFun, a_bAllowOpt, a_iPrec, a_eAssociativity), m_OprtDef,	ValidOprtChars());
 	}
 
 	//---------------------------------------------------------------------------
@@ -601,6 +596,9 @@ namespace mu
 		if (a_pVar == 0)
 			Error(ecINVALID_VAR_PTR);
 
+		if (a_sName.length() > ParserSetup::MaxLenIdentifier)
+			Error(ecIdentifierTooLong);
+
 		// Test if a constant with that names already exists
 		if (m_ConstDef.find(a_sName) != m_ConstDef.end())
 			Error(ecNAME_CONFLICT);
@@ -619,6 +617,9 @@ namespace mu
 	*/
 	void ParserBase::DefineConst(const string_type& a_sName, value_type a_fVal)
 	{
+		if (a_sName.length() > ParserSetup::MaxLenIdentifier)
+			Error(ecIdentifierTooLong);
+
 		CheckName(a_sName, ValidNameChars());
 		m_ConstDef[a_sName] = a_fVal;
 		ReInit();

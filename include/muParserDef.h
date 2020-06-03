@@ -152,8 +152,8 @@ namespace mu
 	class ParserSetup
 	{
 	public:
-		static const int MaxLenExpression = 10000;
-		static const int MaxLenIdentifier = 255;
+		static const int MaxLenExpression = 5000;
+		static const int MaxLenIdentifier = 100;
 	};
 
 	//------------------------------------------------------------------------------
