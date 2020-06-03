@@ -884,14 +884,11 @@ namespace mu
 		while (a_stOpt.size() && a_stOpt.top().GetCode() == cmELSE)
 		{
 			token_type opElse = a_stOpt.pop();
-			if (a_stOpt.empty())
-				Error(ecINTERNAL_ERROR, m_pTokenReader->GetPos(), _T("ApplyIfElse: Operator stack is empty!"));
-
+			MUP_ASSERT(!a_stOpt.empty())
 
 			// Take the value associated with the else branch from the value stack
 			token_type vVal2 = a_stVal.pop();
-			if (a_stVal.size() < 2)
-				Error(ecINTERNAL_ERROR, m_pTokenReader->GetPos(), _T("ApplyIfElse: Not enough values in value stack!"));
+			MUP_ASSERT(a_stVal.size() >= 2);
 
 			// it then else is a ternary operator Pop all three values from the value s
 			// tack and just return the right value
@@ -901,8 +898,7 @@ namespace mu
 			a_stVal.push((vExpr.GetVal() != 0) ? vVal1 : vVal2);
 
 			token_type opIf = a_stOpt.pop();
-			if (opElse.GetCode() != cmELSE)
-				Error(ecINTERNAL_ERROR, m_pTokenReader->GetPos(), _T("ApplyIfElse: else token not found!"));
+			MUP_ASSERT(opElse.GetCode() == cmELSE);
 
 			if (opIf.GetCode() != cmIF)
 				Error(ecMISPLACED_COLON, m_pTokenReader->GetPos());
@@ -924,11 +920,13 @@ namespace mu
 		}
 		else
 		{
-			MUP_ASSERT(a_stVal.size() >= 2);
-			token_type valTok1 = a_stVal.pop(),
-				valTok2 = a_stVal.pop(),
-				optTok = a_stOpt.pop(),
-				resTok;
+			if (a_stVal.size() < 2)
+				Error(ecINTERNAL_ERROR, m_pTokenReader->GetPos(), _T("ApplyBinOprt: not enough values in value stack!"));
+
+			token_type valTok1 = a_stVal.pop();
+			token_type valTok2 = a_stVal.pop();
+			token_type optTok = a_stOpt.pop();
+			token_type resTok;
 
 			if (valTok1.GetType() != valTok2.GetType() ||
 				(valTok1.GetType() == tpSTR && valTok2.GetType() == tpSTR))
@@ -1131,7 +1129,8 @@ namespace mu
 
 				// The index of the string argument in the string table
 				int iIdxStack = pTok->Fun.idx;
-				MUP_ASSERT(iIdxStack >= 0 && iIdxStack < (int)m_vStringBuf.size());
+				if (iIdxStack < 0 || iIdxStack >= m_vStringBuf.size())
+					Error(ecINTERNAL_ERROR, m_pTokenReader->GetPos());
 
 				switch (pTok->Fun.argc)  // switch according to argument count
 				{

@@ -65,48 +65,42 @@
 //#define MUP_USE_OPENMP
 
 #if defined(_UNICODE)
-  /** \brief Definition of the basic parser string type. */
-#define MUP_STRING_TYPE std::wstring
+	/** \brief Definition of the basic parser string type. */
+	#define MUP_STRING_TYPE std::wstring
 
-#if !defined(_T)
-#define _T(x) L##x
-#endif // not defined _T
+	#if !defined(_T)
+		#define _T(x) L##x
+	#endif // not defined _T
 #else
-#ifndef _T
-#define _T(x) x
-#endif
+	#ifndef _T
+		#define _T(x) x
+	#endif
 
-/** \brief Definition of the basic parser string type. */
-#define MUP_STRING_TYPE std::string
+	/** \brief Definition of the basic parser string type. */
+	#define MUP_STRING_TYPE std::string
 #endif
 
 #if defined(_DEBUG)
-  /** \brief Debug macro to force an abortion of the programm with a certain message.
-  */
-#define MUP_FAIL(MSG)     \
-          {                 \
-            bool MSG=false; \
-            assert(MSG);    \
-          }
-
-  /** \brief An assertion that does not kill the program.
-
-	  This macro is neutralised in UNICODE builds. It's
-	  too difficult to translate.
-  */
-#define MUP_ASSERT(COND)                         \
-            if (!(COND))                             \
-            {                                        \
-              stringstream_type ss;                  \
-              ss << _T("Assertion \"") _T(#COND) _T("\" failed: ") \
-                 << __FILE__ << _T(" line ")         \
-                 << __LINE__ << _T(".");             \
-              throw ParserError( ecINTERNAL_ERROR, -1, ss.str());         \
-            }
+	/** \brief Debug macro to force an abortion of the programm with a certain message. */
+	#define MUP_FAIL(MSG)		\
+			  {                 \
+				bool MSG=false; \
+				assert(MSG);    \
+			  }
 #else
-#define MUP_FAIL(MSG)
-#define MUP_ASSERT(COND)
+	#define MUP_FAIL(MSG)
 #endif
+
+/** \brief An assertion that does not kill the program. */
+#define MUP_ASSERT(COND)											\
+            if (!(COND))											\
+            {														\
+              stringstream_type ss;									\
+              ss << _T("Assertion \"") _T(#COND) _T("\" failed: ")	\
+                 << __FILE__ << _T(" line ")						\
+                 << __LINE__ << _T(".");							\
+              throw ParserError( ecINTERNAL_ERROR, -1, ss.str());   \
+            }
 
 
 namespace mu
