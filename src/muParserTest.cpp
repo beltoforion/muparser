@@ -30,9 +30,6 @@
 #include <iostream>
 #include <limits>
 
-#define PARSER_CONST_PI  3.141592653589793238462643
-#define PARSER_CONST_E   2.718281828459045235360287
-
 using namespace std;
 
 /** \file
@@ -62,7 +59,6 @@ namespace mu
 			AddTest(&ParserTester::TestException);
 			AddTest(&ParserTester::TestStrArg);
 			AddTest(&ParserTester::TestBulkMode);
-			AddTest(&ParserTester::TestOssFuzzTestCases);
 
 			ParserTester::c_iCount = 0;
 		}
@@ -152,44 +148,6 @@ namespace mu
 			// string constants
 			iStat += EqnTest(_T("atof(str1)+atof(str2)"), 3.33, true);
 
-			if (iStat == 0)
-				mu::console() << _T("passed") << endl;
-			else
-				mu::console() << _T("\n  failed with ") << iStat << _T(" errors") << endl;
-
-			return iStat;
-		}
-
-		//---------------------------------------------------------------------------------------------
-		int ParserTester::TestOssFuzzTestCases()
-		{
-			int iStat = 0;
-			mu::console() << _T("testing cases reported from oss-fuzz.com");
-
-/*
-			// https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=22947
-			// Divide-by-zero; https://oss-fuzz.com/testcase-detail/5092079045967872
-			iStat += EqnTest(_T("atanh(1)"), std::numeric_limits<double>::infinity(), true);
-			
-			// https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=22928#c3
-			iStat += EqnTest(_T("4/0+"), 3.33, true);
-
-			// https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=22938
-			iStat += EqnTest(_T("sum(0 ? 1, 0, 0 : 3)"), 3.33, true);
-			
-			// Timeout: https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=22931
-			// Not testable, prevented by adding restrictions on the length of variables and expressions
-
-			// UNKNOWN READ: https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=22922#c1
-			iStat += EqnTest(_T("1?2:0?(7:1)"), 3.33, true);
-
-			// Heap-buffer-overflow READ 8: https://oss-fuzz.com/testcase-detail/5670338645196800
-			iStat += EqnTest(_T("sum(2>3?2,4,2:4)"), 3.33, true);
-
-			// Divide by zero: https://oss-fuzz.com/testcase-detail/5750723253108736
-			iStat += EqnTest(_T("2/+0"), 3.33, true);
-			
-*/
 			if (iStat == 0)
 				mu::console() << _T("passed") << endl;
 			else
@@ -756,7 +714,7 @@ namespace mu
 			iStat += EqnTest(_T("-(-1)"), 1, true);
 			iStat += EqnTest(_T("-(-1)*2"), 2, true);
 			iStat += EqnTest(_T("-(-2)*sqrt(4)"), 4, true);
-			iStat += EqnTest(_T("-_pi"), -PARSER_CONST_PI, true);
+			iStat += EqnTest(_T("-_pi"), -MathImpl<double>::CONST_PI, true);
 			iStat += EqnTest(_T("-a"), -1, true);
 			iStat += EqnTest(_T("-(a)"), -1, true);
 			iStat += EqnTest(_T("-(-a)"), 1, true);
@@ -961,7 +919,16 @@ namespace mu
 			iStat += ThrowTest(_T("1 : 2"), ecMISPLACED_COLON);
 			iStat += ThrowTest(_T("(1) ? 1 : 2 : 3"), ecMISPLACED_COLON);
 			iStat += ThrowTest(_T("(true) ? 1 : 2 : 3"), ecUNASSIGNABLE_TOKEN);
-			iStat += ThrowTest(_T("1 ? 2 : 0 ? (7:1)"), ecMISPLACED_COLON);
+
+			// from oss-fzz.com: UNKNOWN READ; https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=22922#c1
+			iStat += ThrowTest(_T("1?2:0?(7:1)"), ecMISPLACED_COLON);
+
+			// from oss-fuzz.com: https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=22938
+			iStat += ThrowTest(_T("sum(0?1,0,0:3)"), ecMISPLACED_COLON);
+			iStat += ThrowTest(_T("sum(0?(1,0,0):3)"), ecMISPLACED_COLON);
+			iStat += ThrowTest(_T("sum(2>3?2,4,2:4)"), ecMISPLACED_COLON);
+			iStat += ThrowTest(_T("sum(2>3?2,4,sin(2):4)"), ecMISPLACED_COLON);
+			iStat += ThrowTest(_T("sum(2>3?sin(2),4,2:4)"), ecMISPLACED_COLON);
 
 			iStat += EqnTest(_T("1 ? 128 : 255"), 128, true);
 			iStat += EqnTest(_T("1<2 ? 128 : 255"), 128, true);
@@ -1304,8 +1271,8 @@ namespace mu
 
 				p1.reset(new mu::Parser());
 				// Add constants
-				p1->DefineConst(_T("pi"), (value_type)PARSER_CONST_PI);
-				p1->DefineConst(_T("e"), (value_type)PARSER_CONST_E);
+				p1->DefineConst(_T("pi"), MathImpl<value_type>::CONST_PI);
+				p1->DefineConst(_T("e"), MathImpl<value_type>::CONST_E);
 				p1->DefineConst(_T("const"), 1);
 				p1->DefineConst(_T("const1"), 2);
 				p1->DefineConst(_T("const2"), 3);

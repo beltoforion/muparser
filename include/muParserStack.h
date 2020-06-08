@@ -50,7 +50,7 @@ namespace mu
 		slightly changed in order to get an error code if the stack is empty.
 		The stack is used within the Parser both as a value stack and as an operator stack.
 
-		\author (C) 2004-2011 Ingo Berg
+		\author (C) 2004-2020 Ingo Berg
 	*/
 	template <typename TValueType>
 	class ParserStack

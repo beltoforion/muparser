@@ -77,7 +77,7 @@ namespace mu
 	//------------------------------------------------------------------------------
 	/** \brief Constructor.
 		\param a_szFormula the formula to interpret.
-		\throw ParserException if a_szFormula is null.
+		\throw ParserException if a_szFormula is nullptr.
 	*/
 	ParserBase::ParserBase()
 		:m_pParseFormula(&ParserBase::ParseString)
@@ -410,18 +410,11 @@ namespace mu
 		if (m_pTokenReader->GetArgSep() == std::use_facet<numpunct<char_type> >(s_locale).decimal_point())
 			Error(ecLOCALE);
 
-		// Check maximum allowed expression length. This is just a safety measure to prevent attacks on the engine.
-		// (oss-fuzz.com will throw very long expressions at muparser) 
+		// Check maximum allowed expression length. An arbitrary value small enough so i can debug expressions sent to me
 		if (a_sExpr.length() >= ParserSetup::MaxLenExpression)
 			Error(ecExpressionTooLong, 0, a_sExpr);
 
-		// <ibg> 20060222: Bugfix for Borland-Kylix:
-		// adding a space to the expression will keep Borlands KYLIX from going wild
-		// when calling tellg on a stringstream created from the expression after 
-		// reading a value at the end of an expression. (mu::Parser::IsVal function)
-		// (tellg returns -1 otherwise causing the parser to ignore the value)
-		string_type sBuf(a_sExpr + _T(" "));
-		m_pTokenReader->SetFormula(sBuf);
+		m_pTokenReader->SetFormula(a_sExpr + _T(" "));
 		ReInit();
 	}
 
@@ -585,7 +578,7 @@ namespace mu
 		\param [in] a_sName the variable name
 		\param [in] a_pVar A pointer to the variable value.
 		\post Will reset the Parser to string parsing mode.
-		\throw ParserException in case the name contains invalid signs or a_pVar is NULL.
+		\throw ParserException in case the name contains invalid signs or a_pVar is nullptr.
 	*/
 	void ParserBase::DefineVar(const string_type& a_sName, value_type* a_pVar)
 	{
@@ -792,9 +785,7 @@ namespace mu
 		\post The function token is removed from the stack
 		\throw exception_type if Argument count does not match function requirements.
 	*/
-	void ParserBase::ApplyFunc(ParserStack<token_type>& a_stOpt,
-		ParserStack<token_type>& a_stVal,
-		int a_iArgCount) const
+	void ParserBase::ApplyFunc(ParserStack<token_type>& a_stOpt, ParserStack<token_type>& a_stVal, int a_iArgCount) const
 	{
 		assert(m_pTokenReader.get());
 
@@ -834,6 +825,9 @@ namespace mu
 		std::vector<token_type> stArg;
 		for (int i = 0; i < iArgNumerical; ++i)
 		{
+			if (a_stVal.empty())
+				Error(ecINTERNAL_ERROR, m_pTokenReader->GetPos(), funTok.GetAsString());
+
 			stArg.push_back(a_stVal.pop());
 			if (stArg.back().GetType() == tpSTR && funTok.GetType() != tpSTR)
 				Error(ecVAL_EXPECTED, m_pTokenReader->GetPos(), funTok.GetAsString());
@@ -842,6 +836,9 @@ namespace mu
 		switch (funTok.GetCode())
 		{
 		case  cmFUNC_STR:
+			if (a_stVal.empty())
+				Error(ecINTERNAL_ERROR, m_pTokenReader->GetPos(), funTok.GetAsString());
+
 			stArg.push_back(a_stVal.pop());
 
 			if (stArg.back().GetType() == tpSTR && funTok.GetType() != tpSTR)
@@ -1061,11 +1058,7 @@ namespace mu
 			case  cmENDIF:
 				continue;
 
-				//case  cmARG_SEP:
-				//      MUP_FAIL(INVALID_CODE_IN_BYTECODE);
-				//      continue;
-
-				// value and variable tokens
+			// value and variable tokens
 			case  cmVAR:    Stack[++sidx] = *(pTok->Val.ptr + nOffset);  continue;
 			case  cmVAL:    Stack[++sidx] = pTok->Val.data2;  continue;
 
@@ -1108,6 +1101,9 @@ namespace mu
 						Error(ecINTERNAL_ERROR, 1);
 
 					sidx -= -iArgCount - 1;
+					if (sidx < 0)
+						Error(ecINTERNAL_ERROR, 2);
+
 					Stack[sidx] = (*(multfun_type)pTok->Fun.ptr)(&Stack[sidx], -iArgCount);
 					continue;
 				}
@@ -1302,7 +1298,8 @@ namespace mu
 			case cmOPRT_BIN:
 
 				// A binary operator (user defined or built in) has been found. 
-				while (stOpt.size() &&
+				while (
+					stOpt.size() &&
 					stOpt.top().GetCode() != cmBO &&
 					stOpt.top().GetCode() != cmELSE &&
 					stOpt.top().GetCode() != cmIF)
@@ -1710,26 +1707,16 @@ namespace mu
 	//---------------------------------------------------------------------------
 	void ParserBase::Eval(value_type* results, int nBulkSize)
 	{
-		/* <ibg 2014-09-24/> Commented because it is making a unit test impossible
-
-			// Parallelization does not make sense for fewer than 10000 computations
-			// due to thread creation overhead. If the bulk size is below 2000
-			// computation is refused.
-			if (nBulkSize<2000)
-			{
-			  throw ParserError(ecUNREASONABLE_NUMBER_OF_COMPUTATIONS);
-			}
-		*/
 		CreateRPN();
 
 		int i = 0;
 
 #ifdef MUP_USE_OPENMP
 		//#define DEBUG_OMP_STUFF
-#ifdef DEBUG_OMP_STUFF
+		#ifdef DEBUG_OMP_STUFF
 		int* pThread = new int[nBulkSize];
 		int* pIdx = new int[nBulkSize];
-#endif
+		#endif
 
 		int nMaxThreads = std::min(omp_get_max_threads(), s_MaxNumOpenMPThreads);
 		int nThreadID = 0, ct = 0;

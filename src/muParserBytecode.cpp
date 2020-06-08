@@ -29,7 +29,6 @@
 #include "muParserBytecode.h"
 
 #include <algorithm>
-#include <cassert>
 #include <string>
 #include <stack>
 #include <vector>
@@ -138,7 +137,7 @@ namespace mu
 		// If optimization does not apply
 		SToken tok;
 		tok.Cmd = cmVAL;
-		tok.Val.ptr = NULL;
+		tok.Val.ptr = nullptr;
 		tok.Val.data = 0;
 		tok.Val.data2 = a_fVal;
 		m_vRPN.push_back(tok);
@@ -241,8 +240,8 @@ namespace mu
 						(m_vRPN[sz - 1].Cmd == cmVARMUL && m_vRPN[sz - 2].Cmd == cmVAR && m_vRPN[sz - 2].Val.ptr == m_vRPN[sz - 1].Val.ptr) ||
 						(m_vRPN[sz - 1].Cmd == cmVARMUL && m_vRPN[sz - 2].Cmd == cmVARMUL && m_vRPN[sz - 2].Val.ptr == m_vRPN[sz - 1].Val.ptr))
 					{
-						assert((m_vRPN[sz - 2].Val.ptr == NULL && m_vRPN[sz - 1].Val.ptr != NULL) ||
-							(m_vRPN[sz - 2].Val.ptr != NULL && m_vRPN[sz - 1].Val.ptr == NULL) ||
+						MUP_ASSERT((m_vRPN[sz - 2].Val.ptr == nullptr && m_vRPN[sz - 1].Val.ptr != nullptr) ||
+							(m_vRPN[sz - 2].Val.ptr != nullptr && m_vRPN[sz - 1].Val.ptr == nullptr) ||
 							(m_vRPN[sz - 2].Val.ptr == m_vRPN[sz - 1].Val.ptr));
 
 						m_vRPN[sz - 2].Cmd = cmVARMUL;
@@ -265,7 +264,8 @@ namespace mu
 						m_vRPN.pop_back();
 						bOptimized = true;
 					}
-					else if ((m_vRPN[sz - 1].Cmd == cmVAL && m_vRPN[sz - 2].Cmd == cmVARMUL) ||
+					else if (
+						(m_vRPN[sz - 1].Cmd == cmVAL && m_vRPN[sz - 2].Cmd == cmVARMUL) ||
 						(m_vRPN[sz - 1].Cmd == cmVARMUL && m_vRPN[sz - 2].Cmd == cmVAL))
 					{
 						// Optimization: 2*(3*b+1) or (3*b+1)*2 -> 6*b+2
@@ -284,7 +284,8 @@ namespace mu
 						m_vRPN.pop_back();
 						bOptimized = true;
 					}
-					else if (m_vRPN[sz - 1].Cmd == cmVAR && m_vRPN[sz - 2].Cmd == cmVAR &&
+					else if (
+						m_vRPN[sz - 1].Cmd == cmVAR && m_vRPN[sz - 2].Cmd == cmVAR &&
 						m_vRPN[sz - 1].Val.ptr == m_vRPN[sz - 2].Val.ptr)
 					{
 						// Optimization: a*a -> a^2
@@ -304,8 +305,9 @@ namespace mu
 						bOptimized = true;
 					}
 					break;
+
+				// no optimization for other opcodes
 				default:
-					// no optimization for other opcodes
 					break;
 				} // switch a_Oprt
 			}

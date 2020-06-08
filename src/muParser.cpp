@@ -33,12 +33,6 @@
 #include <algorithm>
 #include <numeric>
 
-/** \brief Pi (what else?). */
-#define PARSER_CONST_PI  3.141592653589793238462643
-
-/** \brief The Eulerian number. */
-#define PARSER_CONST_E   2.718281828459045235360287
-
 using namespace std;
 
 /** \file
@@ -282,8 +276,8 @@ namespace mu
 	*/
 	void Parser::InitConst()
 	{
-		DefineConst(_T("_pi"), (value_type)PARSER_CONST_PI);
-		DefineConst(_T("_e"), (value_type)PARSER_CONST_E);
+		DefineConst(_T("_pi"), MathImpl<value_type>::CONST_PI);
+		DefineConst(_T("_e"), MathImpl<value_type>::CONST_E);
 	}
 
 	//---------------------------------------------------------------------------
@@ -335,9 +329,7 @@ namespace mu
 
 	  http://sourceforge.net/forum/forum.php?thread_id=1994611&forum_id=462843
 	*/
-	value_type Parser::Diff(value_type* a_Var,
-		value_type  a_fPos,
-		value_type  a_fEpsilon) const
+	value_type Parser::Diff(value_type* a_Var, value_type  a_fPos, value_type  a_fEpsilon) const
 	{
 		value_type fRes(0),
 			fBuf(*a_Var),

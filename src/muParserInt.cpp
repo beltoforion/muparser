@@ -40,11 +40,7 @@ namespace mu
 {
 	value_type ParserInt::Abs(value_type v) { return (value_type)Round(fabs((double)v)); }
 	value_type ParserInt::Sign(value_type v) { return (Round(v) < 0) ? -1 : (Round(v) > 0) ? 1 : 0; }
-	value_type ParserInt::Ite(value_type v1,
-		value_type v2,
-		value_type v3) {
-		return (Round(v1) == 1) ? Round(v2) : Round(v3);
-	}
+	value_type ParserInt::Ite(value_type v1, value_type v2,	value_type v3) { return (Round(v1) == 1) ? Round(v2) : Round(v3); }
 	value_type ParserInt::Add(value_type v1, value_type v2) { return Round(v1) + Round(v2); }
 	value_type ParserInt::Sub(value_type v1, value_type v2) { return Round(v1) - Round(v2); }
 	value_type ParserInt::Mul(value_type v1, value_type v2) { return Round(v1) * Round(v2); }

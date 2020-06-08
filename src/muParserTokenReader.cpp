@@ -98,7 +98,7 @@ namespace mu
 		m_vIdentFun = a_Reader.m_vIdentFun;
 		m_pFactory = a_Reader.m_pFactory;
 		m_pFactoryData = a_Reader.m_pFactoryData;
-		m_iBrackets = a_Reader.m_iBrackets;
+		m_bracketStack = a_Reader.m_bracketStack;
 		m_cArgSep = a_Reader.m_cArgSep;
 		m_fZero = a_Reader.m_fZero;
 		m_lastTok = a_Reader.m_lastTok;
@@ -119,19 +119,19 @@ namespace mu
 		, m_iPos(0)
 		, m_iSynFlags(0)
 		, m_bIgnoreUndefVar(false)
-		, m_pFunDef(NULL)
-		, m_pPostOprtDef(NULL)
-		, m_pInfixOprtDef(NULL)
-		, m_pOprtDef(NULL)
-		, m_pConstDef(NULL)
-		, m_pStrVarDef(NULL)
-		, m_pVarDef(NULL)
-		, m_pFactory(NULL)
-		, m_pFactoryData(NULL)
+		, m_pFunDef(nullptr)
+		, m_pPostOprtDef(nullptr)
+		, m_pInfixOprtDef(nullptr)
+		, m_pOprtDef(nullptr)
+		, m_pConstDef(nullptr)
+		, m_pStrVarDef(nullptr)
+		, m_pVarDef(nullptr)
+		, m_pFactory(nullptr)
+		, m_pFactoryData(nullptr)
 		, m_vIdentFun()
 		, m_UsedVar()
 		, m_fZero(0)
-		, m_iBrackets(0)
+		, m_bracketStack()
 		, m_lastTok()
 		, m_cArgSep(',')
 	{
@@ -249,7 +249,7 @@ namespace mu
 	{
 		m_iPos = 0;
 		m_iSynFlags = sfSTART_OF_LINE;
-		m_iBrackets = 0;
+		m_bracketStack = std::stack<int>();
 		m_UsedVar.clear();
 		m_lastTok = token_type();
 	}
@@ -268,48 +268,48 @@ namespace mu
 			++m_iPos;
 
 		// Check for end of formula
-		if (IsEOF(tok))        
-			return SaveBeforeReturn(tok); 
-		
+		if (IsEOF(tok))
+			return SaveBeforeReturn(tok);
+
 		// Check for user defined binary operator
-		if (IsOprt(tok))       
-			return SaveBeforeReturn(tok); 
-		
+		if (IsOprt(tok))
+			return SaveBeforeReturn(tok);
+
 		// Check for function token
-		if (IsFunTok(tok))     
-			return SaveBeforeReturn(tok); 
-		
+		if (IsFunTok(tok))
+			return SaveBeforeReturn(tok);
+
 		// Check built in operators / tokens
-		if (IsBuiltIn(tok))    
-			return SaveBeforeReturn(tok); 
+		if (IsBuiltIn(tok))
+			return SaveBeforeReturn(tok);
 
 		// Check for function argument separators
-		if (IsArgSep(tok))     
-			return SaveBeforeReturn(tok); 
+		if (IsArgSep(tok))
+			return SaveBeforeReturn(tok);
 
 		// Check for values / constant tokens
-		if (IsValTok(tok))     
-			return SaveBeforeReturn(tok); 
+		if (IsValTok(tok))
+			return SaveBeforeReturn(tok);
 
 		// Check for variable tokens
-		if (IsVarTok(tok))     
-			return SaveBeforeReturn(tok); 
+		if (IsVarTok(tok))
+			return SaveBeforeReturn(tok);
 
 		// Check for string variables
-		if (IsStrVarTok(tok))  
-			return SaveBeforeReturn(tok); 
-		
+		if (IsStrVarTok(tok))
+			return SaveBeforeReturn(tok);
+
 		// Check for String tokens
-		if (IsString(tok))     
-			return SaveBeforeReturn(tok); 
+		if (IsString(tok))
+			return SaveBeforeReturn(tok);
 
 		// Check for unary operators
-		if (IsInfixOpTok(tok)) 
-			return SaveBeforeReturn(tok); 
-		
+		if (IsInfixOpTok(tok))
+			return SaveBeforeReturn(tok);
+
 		// Check for unary operators
-		if (IsPostOpTok(tok))  
-			return SaveBeforeReturn(tok); 
+		if (IsPostOpTok(tok))
+			return SaveBeforeReturn(tok);
 
 		// Check String for undefined variable token. Done only if a 
 		// flag is set indicating to ignore undefined variables.
@@ -380,8 +380,7 @@ namespace mu
 	  in operator tokens. To avoid this this function checks specifically
 	  for operator tokens.
 	*/
-	int ParserTokenReader::ExtractOperatorToken(string_type& a_sTok,
-		int a_iPos) const
+	int ParserTokenReader::ExtractOperatorToken(string_type& a_sTok, int a_iPos) const
 	{
 		// Changed as per Issue 6: https://code.google.com/p/muparser/issues/detail?id=6
 		int iEnd = (int)m_strFormula.find_first_not_of(m_pParser->ValidOprtChars(), a_iPos);
@@ -398,7 +397,7 @@ namespace mu
 		{
 			// There is still the chance of having to deal with an operator consisting exclusively
 			// of alphabetic characters.
-			return ExtractToken(MUP_CHARS, a_sTok, a_iPos);
+			return ExtractToken("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ", a_sTok, a_iPos);
 		}
 	}
 
@@ -466,7 +465,7 @@ namespace mu
 					else
 						m_iSynFlags = noBC | noOPT | noEND | noARG_SEP | noPOSTOP | noASSIGN | noIF | noELSE;
 
-					++m_iBrackets;
+					m_bracketStack.push(cmBO);
 					break;
 
 				case cmBC:
@@ -475,7 +474,9 @@ namespace mu
 
 					m_iSynFlags = noBO | noVAR | noVAL | noFUN | noINFIXOP | noSTR | noASSIGN;
 
-					if (--m_iBrackets < 0)
+					if (!m_bracketStack.empty())
+						m_bracketStack.pop();
+					else
 						Error(ecUNEXPECTED_PARENS, m_iPos, pOprtDef[i]);
 					break;
 
@@ -548,7 +549,7 @@ namespace mu
 			if (m_iSynFlags & noEND)
 				Error(ecUNEXPECTED_EOF, m_iPos);
 
-			if (m_iBrackets > 0)
+			if (!m_bracketStack.empty())
 				Error(ecMISSING_PARENS, m_iPos, _T(")"));
 
 			m_iSynFlags = 0;

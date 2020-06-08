@@ -83,28 +83,28 @@ namespace mu
 
 		/** \brief Syntax codes.
 
-			  The syntax codes control the syntax check done during the first time parsing of
+			The syntax codes control the syntax check done during the first time parsing of
 			the expression string. They are flags that indicate which tokens are allowed next
 			if certain tokens are identified.
 		*/
 		enum ESynCodes
 		{
-			noBO = 1 << 0,  ///< to avoid i.e. "cos(7)(" 
-			noBC = 1 << 1,  ///< to avoid i.e. "sin)" or "()"
-			noVAL = 1 << 2,  ///< to avoid i.e. "tan 2" or "sin(8)3.14"
-			noVAR = 1 << 3,  ///< to avoid i.e. "sin a" or "sin(8)a"
-			noARG_SEP = 1 << 4,  ///< to avoid i.e. ",," or "+," ...
-			noFUN = 1 << 5,  ///< to avoid i.e. "sqrt cos" or "(1)sin"	
-			noOPT = 1 << 6,  ///< to avoid i.e. "(+)"
-			noPOSTOP = 1 << 7,  ///< to avoid i.e. "(5!!)" "sin!"
-			noINFIXOP = 1 << 8,  ///< to avoid i.e. "++4" "!!4"
-			noEND = 1 << 9,  ///< to avoid unexpected end of formula
-			noSTR = 1 << 10, ///< to block numeric arguments on string functions
-			noASSIGN = 1 << 11, ///< to block assignment to constant i.e. "4=7"
+			noBO = 1 << 0,			///< to avoid i.e. "cos(7)(" 
+			noBC = 1 << 1,			///< to avoid i.e. "sin)" or "()"
+			noVAL = 1 << 2,			///< to avoid i.e. "tan 2" or "sin(8)3.14"
+			noVAR = 1 << 3,			///< to avoid i.e. "sin a" or "sin(8)a"
+			noARG_SEP = 1 << 4,		///< to avoid i.e. ",," or "+," ...
+			noFUN = 1 << 5,			///< to avoid i.e. "sqrt cos" or "(1)sin"	
+			noOPT = 1 << 6,			///< to avoid i.e. "(+)"
+			noPOSTOP = 1 << 7,		///< to avoid i.e. "(5!!)" "sin!"
+			noINFIXOP = 1 << 8,		///< to avoid i.e. "++4" "!!4"
+			noEND = 1 << 9,			///< to avoid unexpected end of formula
+			noSTR = 1 << 10,		///< to block numeric arguments on string functions
+			noASSIGN = 1 << 11,		///< to block assignment to constant i.e. "4=7"
 			noIF = 1 << 12,
 			noELSE = 1 << 13,
 			sfSTART_OF_LINE = noOPT | noBC | noPOSTOP | noASSIGN | noIF | noELSE | noARG_SEP,
-			noANY = ~0       ///< All of he above flags set
+			noANY = ~0				///< All of he above flags set
 		};
 
 		ParserTokenReader(const ParserTokenReader& a_Reader);
@@ -112,9 +112,7 @@ namespace mu
 		void Assign(const ParserTokenReader& a_Reader);
 
 		void SetParent(ParserBase* a_pParent);
-		int ExtractToken(const char_type* a_szCharSet,
-			string_type& a_strTok,
-			int a_iPos) const;
+		int ExtractToken(const char_type* a_szCharSet, string_type& a_strTok, int a_iPos) const;
 		int ExtractOperatorToken(string_type& a_sTok, int a_iPos) const;
 
 		bool IsBuiltIn(token_type& a_Tok);
@@ -129,9 +127,7 @@ namespace mu
 		bool IsStrVarTok(token_type& a_Tok);
 		bool IsUndefVarTok(token_type& a_Tok);
 		bool IsString(token_type& a_Tok);
-		void Error(EErrorCodes a_iErrc,
-			int a_iPos = -1,
-			const string_type& a_sTok = string_type()) const;
+		void Error(EErrorCodes a_iErrc, int a_iPos = -1, const string_type& a_sTok = string_type()) const;
 
 		token_type& SaveBeforeReturn(const token_type& tok);
 
@@ -147,13 +143,16 @@ namespace mu
 		const funmap_type* m_pOprtDef;
 		const valmap_type* m_pConstDef;
 		const strmap_type* m_pStrVarDef;
+
 		varmap_type* m_pVarDef;  ///< The only non const pointer to parser internals
 		facfun_type m_pFactory;
 		void* m_pFactoryData;
 		std::list<identfun_type> m_vIdentFun; ///< Value token identification function
 		varmap_type m_UsedVar;
 		value_type m_fZero;      ///< Dummy value of zero, referenced by undefined variables
-		int m_iBrackets;
+		
+		std::stack<int> m_bracketStack;
+
 		token_type m_lastTok;
 		char_type m_cArgSep;     ///< The character used for separating function arguments
 	};

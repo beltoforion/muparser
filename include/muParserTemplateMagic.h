@@ -135,6 +135,16 @@ namespace mu
 		static T Rint(T v) { return floor(v + (T)0.5); }
 		static T Sign(T v) { return (T)((v < 0) ? -1 : (v > 0) ? 1 : 0); }
 		static T Pow(T v1, T v2) { return std::pow(v1, v2); }
+
+#if defined (__GNUG__)
+		// Bei zu genauer definition von pi kann die Berechnung von
+		// sin(pi*a) mit a=1 10 x langsamer sein! 
+		static constexpr T CONST_PI = (T)3.141592653589;
+#else
+		static constexpr T CONST_PI = (T)3.141592653589793238462643;
+#endif
+
+		static constexpr T CONST_E = (T)2.718281828459045235360287;
 	};
 }
 

@@ -77,10 +77,11 @@ class ParserTag
 {
 public:
 	ParserTag(int nType)
-		:pParser((nType == muBASETYPE_FLOAT) ? (mu::ParserBase*)new mu::Parser() :
-			(nType == muBASETYPE_INT) ? (mu::ParserBase*)new mu::ParserInt() : NULL)
+		:pParser((nType == muBASETYPE_FLOAT) 
+			? (mu::ParserBase*)new mu::Parser() 
+			: (nType == muBASETYPE_INT) ? (mu::ParserBase*)new mu::ParserInt() : nullptr)
 		, exc()
-		, errHandler(NULL)
+		, errHandler(nullptr)
 		, bError(false)
 		, m_nParserType(nType)
 	{}
@@ -173,7 +174,7 @@ API_EXPORT(muParserHandle_t) mupCreate(int nBaseType)
 	{
 	case  muBASETYPE_FLOAT:   return (void*)(new ParserTag(muBASETYPE_FLOAT));
 	case  muBASETYPE_INT:     return (void*)(new ParserTag(muBASETYPE_INT));
-	default:                  return NULL;
+	default:                  return nullptr;
 	}
 }
 
@@ -223,13 +224,12 @@ API_EXPORT(muFloat_t) mupEval(muParserHandle_t a_hParser)
 API_EXPORT(muFloat_t*) mupEvalMulti(muParserHandle_t a_hParser, int* nNum)
 {
 	MU_TRY
-		assert(nNum != NULL);
-
-	muParser_t* const p(AsParser(a_hParser));
-	return p->Eval(*nNum);
+		assert(nNum != nullptr);
+		muParser_t* const p(AsParser(a_hParser));
+		return p->Eval(*nNum);
 	MU_CATCH
 
-		return 0;
+	return 0;
 }
 
 //---------------------------------------------------------------------------
@@ -237,7 +237,7 @@ API_EXPORT(void) mupEvalBulk(muParserHandle_t a_hParser, muFloat_t* a_res, int n
 {
 	MU_TRY
 		muParser_t* p(AsParser(a_hParser));
-	p->Eval(a_res, nSize);
+		p->Eval(a_res, nSize);
 	MU_CATCH
 }
 

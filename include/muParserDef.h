@@ -42,8 +42,6 @@
 #define MUP_VERSION _T("2.2.7 (Dev)")
 #define MUP_VERSION_DATE _T("20200602")
 
-#define MUP_CHARS _T("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
-
 /** \brief Define the base datatype for values.
 
   This datatype must be a built in value type. You can not use custom classes.
@@ -55,7 +53,7 @@
 
   OpenMP is used only in the bulk mode it may increase the performance a bit.
 
-  !!! DO NOT ACTIVATE THIS MACRO HERE IS YOU USE CMAKE FOR BUILDING !!!
+  !!! DO NOT ACTIVATE THIS MACRO HERE IF YOU USE CMAKE FOR BUILDING !!!
 
   use the cmake option instead!
 */
@@ -157,46 +155,46 @@ namespace mu
 		// The following are codes for built in binary operators
 		// apart from built in operators the user has the opportunity to
 		// add user defined operators.
-		cmLE = 0,   ///< Operator item:  less or equal
-		cmGE = 1,   ///< Operator item:  greater or equal
-		cmNEQ = 2,   ///< Operator item:  not equal
-		cmEQ = 3,   ///< Operator item:  equals
-		cmLT = 4,   ///< Operator item:  less than
-		cmGT = 5,   ///< Operator item:  greater than
-		cmADD = 6,   ///< Operator item:  add
-		cmSUB = 7,   ///< Operator item:  subtract
-		cmMUL = 8,   ///< Operator item:  multiply
-		cmDIV = 9,   ///< Operator item:  division
-		cmPOW = 10,  ///< Operator item:  y to the power of ...
+		cmLE = 0,			///< Operator item:  less or equal
+		cmGE = 1,			///< Operator item:  greater or equal
+		cmNEQ = 2,			///< Operator item:  not equal
+		cmEQ = 3,			///< Operator item:  equals
+		cmLT = 4,			///< Operator item:  less than
+		cmGT = 5,			///< Operator item:  greater than
+		cmADD = 6,			///< Operator item:  add
+		cmSUB = 7,			///< Operator item:  subtract
+		cmMUL = 8,			///< Operator item:  multiply
+		cmDIV = 9,			///< Operator item:  division
+		cmPOW = 10,			///< Operator item:  y to the power of ...
 		cmLAND = 11,
 		cmLOR = 12,
-		cmASSIGN = 13,  ///< Operator item:  Assignment operator
-		cmBO = 14,  ///< Operator item:  opening bracket
-		cmBC = 15,  ///< Operator item:  closing bracket
-		cmIF = 16,  ///< For use in the ternary if-then-else operator
-		cmELSE = 17,  ///< For use in the ternary if-then-else operator
-		cmENDIF = 18,  ///< For use in the ternary if-then-else operator
-		cmARG_SEP = 19,  ///< function argument separator
-		cmVAR = 20,  ///< variable item
-		cmVAL = 21,  ///< value item
+		cmASSIGN = 13,		///< Operator item:  Assignment operator
+		cmBO = 14,			///< Operator item:  opening bracket
+		cmBC = 15,			///< Operator item:  closing bracket
+		cmIF = 16,			///< For use in the ternary if-then-else operator
+		cmELSE = 17,		///< For use in the ternary if-then-else operator
+		cmENDIF = 18,		///< For use in the ternary if-then-else operator
+		cmARG_SEP = 19,		///< function argument separator
+		cmVAR = 20,			///< variable item
+		cmVAL = 21,			///< value item
 
 		// For optimization purposes
-		cmVARPOW2,
-		cmVARPOW3,
-		cmVARPOW4,
-		cmVARMUL,
-		cmPOW2,
+		cmVARPOW2 = 22,
+		cmVARPOW3 = 23,
+		cmVARPOW4 = 24,
+		cmVARMUL = 25,
+		cmPOW2 = 26,
 
 		// operators and functions
-		cmFUNC,                ///< Code for a generic function item
-		cmFUNC_STR,            ///< Code for a function with a string parameter
-		cmFUNC_BULK,           ///< Special callbacks for Bulk mode with an additional parameter for the bulk index 
-		cmSTRING,              ///< Code for a string token
-		cmOPRT_BIN,            ///< user defined binary operator
-		cmOPRT_POSTFIX,        ///< code for postfix operators
-		cmOPRT_INFIX,          ///< code for infix operators
-		cmEND,                 ///< end of formula
-		cmUNKNOWN              ///< uninitialized item
+		cmFUNC = 27,		///< Code for a generic function item
+		cmFUNC_STR,			///< Code for a function with a string parameter
+		cmFUNC_BULK,		///< Special callbacks for Bulk mode with an additional parameter for the bulk index 
+		cmSTRING,			///< Code for a string token
+		cmOPRT_BIN,			///< user defined binary operator
+		cmOPRT_POSTFIX,		///< code for postfix operators
+		cmOPRT_INFIX,		///< code for infix operators
+		cmEND,				///< end of formula
+		cmUNKNOWN			///< uninitialized item
 	};
 
 	//------------------------------------------------------------------------------
@@ -232,19 +230,20 @@ namespace mu
 		// binary operators
 		prLOR = 1,
 		prLAND = 2,
-		prLOGIC = 3,  ///< logic operators
-		prCMP = 4,  ///< comparsion operators
-		prADD_SUB = 5,  ///< addition
-		prMUL_DIV = 6,  ///< multiplication/division
-		prPOW = 7,  ///< power operator priority (highest)
+		prLOGIC = 3,	///< logic operators
+		prCMP = 4,		///< comparsion operators
+		prADD_SUB = 5,	///< addition
+		prMUL_DIV = 6,	///< multiplication/division
+		prPOW = 7,		///< power operator priority (highest)
 
 		// infix operators
-		prINFIX = 6, ///< Signs have a higher priority than ADD_SUB, but lower than power operator
-		prPOSTFIX = 6  ///< Postfix operator priority (currently unused)
+		prINFIX = 6,	///< Signs have a higher priority than ADD_SUB, but lower than power operator
+		prPOSTFIX = 6	///< Postfix operator priority (currently unused)
 	};
 
 	//------------------------------------------------------------------------------
-	// basic types
+	// Basic Types
+	//------------------------------------------------------------------------------
 
 	/** \brief The numeric datatype used by the parser.
 
@@ -265,9 +264,7 @@ namespace mu
 	typedef string_type::value_type char_type;
 
 	/** \brief Typedef for easily using stringstream that respect the parser stringtype. */
-	typedef std::basic_stringstream<char_type,
-		std::char_traits<char_type>,
-		std::allocator<char_type> > stringstream_type;
+	typedef std::basic_stringstream<char_type, std::char_traits<char_type>, std::allocator<char_type> > stringstream_type;
 
 	// Data container types
 
