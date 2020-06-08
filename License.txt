@@ -1,22 +1,20 @@
-#########################################################################
-#                                                                       #
-#               __________                                              #
-#    _____  __ _\______   \_____ _______  ______ __________             #
-#   /     \|  |  \     ___/\__  \\_  __ \/  ___// __ \_  __ \           #
-#  |  Y Y  \  |  /    |     / __ \|  | \/\___ \\  ___/|  | \/           #
-#  |__|_|  /____/|____|    (____  /__|  /____  >\___  >__|              #
-#        \/                     \/           \/     \/                  #
-#                                                                       #
-#  Copyright (C) 2004 - 2020 Ingo Berg                                  #
-#                                                                       #
-#  Web:     https://beltoforion.de/article.php?a=muparser               #
-#  SVN:     https://github.com/beltoforion/muparser                     #
-#                                                                       #
-#  This software is distributed under the terms of the                  #
-#  BSD - Clause 2 "Simplified" or "FreeBSD" Licence (BSD-2-Clause)      #
-#                                                                       #
-#########################################################################
+ 
+     _____  __ _____________ _______  ______ ___________
+    /     \|  |  \____ \__  \\_  __ \/  ___// __ \_  __ \
+   |  Y Y  \  |  /  |_> > __ \|  | \/\___ \\  ___/|  | \/
+   |__|_|  /____/|   __(____  /__|  /____  >\___  >__|
+        \/      |__|       \/           \/     \/
+   Fast math parser Library
+ 
+   Copyright (C) 2004 - 2020 Ingo Berg
+ 
+    Web:     https://muparser.beltoforion.de 
+    Git:     https://github.com/beltoforion/muparser
 
+    This software is distributed under the terms of the
+    BSD - Clause 2 "Simplified" or "FreeBSD" Licence (BSD-2-Clause)   
+
+###############################################################################################
 
 Redistribution and use in source and binary forms, with or without modification, are permitted 
 provided that the following conditions are met:

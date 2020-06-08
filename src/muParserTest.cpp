@@ -1,10 +1,12 @@
 /*
-				 __________
-	_____   __ __\______   \_____  _______  ______  ____ _______
-   /     \ |  |  \|     ___/\__  \ \_  __ \/  ___/_/ __ \\_  __ \
-  |  Y Y  \|  |  /|    |     / __ \_|  | \/\___ \ \  ___/ |  | \/
-  |__|_|  /|____/ |____|    (____  /|__|  /____  > \___  >|__|
-		\/                       \/            \/      \/
+
+	   _____  __ _____________ _______  ______ ___________
+	  /     \|  |  \____ \__  \\_  __ \/  ___// __ \_  __ \
+	 |  Y Y  \  |  /  |_> > __ \|  | \/\___ \\  ___/|  | \/
+	 |__|_|  /____/|   __(____  /__|  /____  >\___  >__|
+		   \/      |__|       \/           \/     \/
+
+
   Copyright (C) 2004 - 2020 Ingo Berg
 
 	Redistribution and use in source and binary forms, with or without modification, are permitted
@@ -25,6 +27,7 @@
 	IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
 	OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
+
 
 #include "muParserTest.h"
 
@@ -137,9 +140,9 @@ namespace mu
 			mu::console() << _T("testing string arguments...");
 
 			// from oss-fuzz: https://oss-fuzz.com/testcase-detail/5106868061208576
-			iStat += ThrowTest(_T("\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",8"), ecUNEXPECTED_STR);
+			iStat += ThrowTest(_T("\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",8"), ecSTR_RESULT);
 			// variations:
-			iStat += ThrowTest(_T("\"\",\"\",9"), ecUNEXPECTED_STR);
+			iStat += ThrowTest(_T("\"\",\"\",9"), ecSTR_RESULT);
 
 			iStat += EqnTest(_T("valueof(\"\")"), 123, true);   // empty string arguments caused a crash
 			iStat += EqnTest(_T("valueof(\"aaa\")+valueof(\"bbb\")  "), 246, true);
@@ -1068,8 +1071,8 @@ namespace mu
 			iStat += ThrowTest(_T("valueof(\"\\\"abc\\\"\")"), 999, false);
 			iStat += ThrowTest(_T("\"hello world\""), ecSTR_RESULT);
 			iStat += ThrowTest(_T("(\"hello world\")"), ecSTR_RESULT);
-			iStat += ThrowTest(_T("\"abcd\"+100"), ecOPRT_TYPE_CONFLICT);
-			iStat += ThrowTest(_T("\"a\"+\"b\""), ecOPRT_TYPE_CONFLICT);
+			iStat += ThrowTest(_T("\"abcd\"+100"), ecSTR_RESULT);
+			iStat += ThrowTest(_T("\"a\"+\"b\""), ecSTR_RESULT);
 			iStat += ThrowTest(_T("strfun1(\"100\",3)"), ecTOO_MANY_PARAMS);
 			iStat += ThrowTest(_T("strfun2(\"100\",3,5)"), ecTOO_MANY_PARAMS);
 			iStat += ThrowTest(_T("strfun3(\"100\",3,5,6)"), ecTOO_MANY_PARAMS);
@@ -1088,7 +1091,7 @@ namespace mu
 			// assignment operator
 			iStat += ThrowTest(_T("3=4"), ecUNEXPECTED_OPERATOR);
 			iStat += ThrowTest(_T("sin(8)=4"), ecUNEXPECTED_OPERATOR);
-			iStat += ThrowTest(_T("\"test\"=a"), ecUNEXPECTED_OPERATOR);
+			iStat += ThrowTest(_T("\"test\"=a"), ecSTR_RESULT);
 
 			// <ibg 20090529>
 			// this is now legal, for reference see:
