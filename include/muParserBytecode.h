@@ -85,7 +85,7 @@ namespace mu
 	values and function pointers. Those are necessary in order to calculate the result.
 	All those data items will be casted to the underlying datatype of the bytecode.
 
-	\author (C) 2004-2013 Ingo Berg
+	\author (C) 2004-2020 Ingo Berg
   */
 	class ParserByteCode
 	{

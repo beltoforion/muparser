@@ -1097,12 +1097,15 @@ namespace mu
 				case 9: sidx -= 8; Stack[sidx] = (*(fun_type9)pTok->Fun.ptr)(Stack[sidx], Stack[sidx + 1], Stack[sidx + 2], Stack[sidx + 3], Stack[sidx + 4], Stack[sidx + 5], Stack[sidx + 6], Stack[sidx + 7], Stack[sidx + 8]); continue;
 				case 10:sidx -= 9; Stack[sidx] = (*(fun_type10)pTok->Fun.ptr)(Stack[sidx], Stack[sidx + 1], Stack[sidx + 2], Stack[sidx + 3], Stack[sidx + 4], Stack[sidx + 5], Stack[sidx + 6], Stack[sidx + 7], Stack[sidx + 8], Stack[sidx + 9]); continue;
 				default:
-					if (iArgCount > 0) // function with variable arguments store the number as a negative value
-						Error(ecINTERNAL_ERROR, 1);
+					// function with variable arguments store the number as a negative value
+					if (iArgCount > 0) 
+						Error(ecINTERNAL_ERROR, -1);
 
 					sidx -= -iArgCount - 1;
+
+					// <ibg 2020-06-08/> From oss-fuzz. Happend when Multiarg functions and if-then-else are used incorrectly "sum(0?1,2,3,4,5:6)"
 					if (sidx < 0)
-						Error(ecINTERNAL_ERROR, 2);
+						Error(ecINTERNAL_ERROR, -1);
 
 					Stack[sidx] = (*(multfun_type)pTok->Fun.ptr)(&Stack[sidx], -iArgCount);
 					continue;
@@ -1218,6 +1221,9 @@ namespace mu
 
 
 			case cmARG_SEP:
+				if (!stOpt.empty() && stOpt.top().GetCode()==cmIF)
+					Error(ecUNEXPECTED_ARG_SEP, m_pTokenReader->GetPos());
+
 				if (stArgCount.empty())
 					Error(ecUNEXPECTED_ARG_SEP, m_pTokenReader->GetPos());
 

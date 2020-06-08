@@ -48,30 +48,30 @@ namespace mu
 	enum EErrorCodes
 	{
 		// Formula syntax errors
-		ecUNEXPECTED_OPERATOR = 0,  ///< Unexpected binary operator found
-		ecUNASSIGNABLE_TOKEN = 1,  ///< Token can't be identified.
-		ecUNEXPECTED_EOF = 2,  ///< Unexpected end of formula. (Example: "2+sin(")
-		ecUNEXPECTED_ARG_SEP = 3,  ///< An unexpected comma has been found. (Example: "1,23")
-		ecUNEXPECTED_ARG = 4,  ///< An unexpected argument has been found
-		ecUNEXPECTED_VAL = 5,  ///< An unexpected value token has been found
-		ecUNEXPECTED_VAR = 6,  ///< An unexpected variable token has been found
-		ecUNEXPECTED_PARENS = 7,  ///< Unexpected Parenthesis, opening or closing
-		ecUNEXPECTED_STR = 8,  ///< A string has been found at an inapropriate position
-		ecSTRING_EXPECTED = 9,  ///< A string function has been called with a different type of argument
-		ecVAL_EXPECTED = 10, ///< A numerical function has been called with a non value type of argument
-		ecMISSING_PARENS = 11, ///< Missing parens. (Example: "3*sin(3")
-		ecUNEXPECTED_FUN = 12, ///< Unexpected function found. (Example: "sin(8)cos(9)")
-		ecUNTERMINATED_STRING = 13, ///< unterminated string constant. (Example: "3*valueof("hello)")
-		ecTOO_MANY_PARAMS = 14, ///< Too many function parameters
-		ecTOO_FEW_PARAMS = 15, ///< Too few function parameters. (Example: "ite(1<2,2)")
-		ecOPRT_TYPE_CONFLICT = 16, ///< binary operators may only be applied to value items of the same type
-		ecSTR_RESULT = 17, ///< result is a string
+		ecUNEXPECTED_OPERATOR = 0,	///< Unexpected binary operator found
+		ecUNASSIGNABLE_TOKEN = 1,	///< Token can't be identified.
+		ecUNEXPECTED_EOF = 2,		///< Unexpected end of formula. (Example: "2+sin(")
+		ecUNEXPECTED_ARG_SEP = 3,	///< An unexpected comma has been found. (Example: "1,23")
+		ecUNEXPECTED_ARG = 4,		///< An unexpected argument has been found
+		ecUNEXPECTED_VAL = 5,		///< An unexpected value token has been found
+		ecUNEXPECTED_VAR = 6,		///< An unexpected variable token has been found
+		ecUNEXPECTED_PARENS = 7,	///< Unexpected Parenthesis, opening or closing
+		ecUNEXPECTED_STR = 8,		///< A string has been found at an inapropriate position
+		ecSTRING_EXPECTED = 9,		///< A string function has been called with a different type of argument
+		ecVAL_EXPECTED = 10,		///< A numerical function has been called with a non value type of argument
+		ecMISSING_PARENS = 11,		///< Missing parens. (Example: "3*sin(3")
+		ecUNEXPECTED_FUN = 12,		///< Unexpected function found. (Example: "sin(8)cos(9)")
+		ecUNTERMINATED_STRING = 13,	///< unterminated string constant. (Example: "3*valueof("hello)")
+		ecTOO_MANY_PARAMS = 14,		///< Too many function parameters
+		ecTOO_FEW_PARAMS = 15,		///< Too few function parameters. (Example: "ite(1<2,2)")
+		ecOPRT_TYPE_CONFLICT = 16,	///< binary operators may only be applied to value items of the same type
+		ecSTR_RESULT = 17,			///< result is a string
 
 		// Invalid Parser input Parameters
-		ecINVALID_NAME = 18, ///< Invalid function, variable or constant name.
-		ecINVALID_BINOP_IDENT = 19, ///< Invalid binary operator identifier
-		ecINVALID_INFIX_IDENT = 20, ///< Invalid function, variable or constant name.
-		ecINVALID_POSTFIX_IDENT = 21, ///< Invalid function, variable or constant name.
+		ecINVALID_NAME = 18,			///< Invalid function, variable or constant name.
+		ecINVALID_BINOP_IDENT = 19,		///< Invalid binary operator identifier
+		ecINVALID_INFIX_IDENT = 20,		///< Invalid function, variable or constant name.
+		ecINVALID_POSTFIX_IDENT = 21,	///< Invalid function, variable or constant name.
 
 		ecBUILTIN_OVERLOAD = 22, ///< Trying to overload builtin operator
 		ecINVALID_FUN_PTR = 23, ///< Invalid callback function pointer 
