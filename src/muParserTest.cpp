@@ -136,18 +136,26 @@ namespace mu
 			int iStat = 0;
 			mu::console() << _T("testing string arguments...");
 
+			// from oss-fuzz: https://oss-fuzz.com/testcase-detail/5106868061208576
+			iStat += ThrowTest(_T("\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",8"), ecUNEXPECTED_STR);
+			// variations:
+			iStat += ThrowTest(_T("\"\",\"\",9"), ecUNEXPECTED_STR);
+
 			iStat += EqnTest(_T("valueof(\"\")"), 123, true);   // empty string arguments caused a crash
 			iStat += EqnTest(_T("valueof(\"aaa\")+valueof(\"bbb\")  "), 246, true);
 			iStat += EqnTest(_T("2*(valueof(\"aaa\")-23)+valueof(\"bbb\")"), 323, true);
+
 			// use in expressions with variables
 			iStat += EqnTest(_T("a*(atof(\"10\")-b)"), 8, true);
 			iStat += EqnTest(_T("a-(atof(\"10\")*b)"), -19, true);
+
 			// string + numeric arguments
 			iStat += EqnTest(_T("strfun1(\"100\")"), 100, true);
 			iStat += EqnTest(_T("strfun2(\"100\",1)"), 101, true);
 			iStat += EqnTest(_T("strfun3(\"99\",1,2)"), 102, true);
 			iStat += EqnTest(_T("strfun4(\"99\",1,2,3)"), 105, true);
 			iStat += EqnTest(_T("strfun5(\"99\",1,2,3,4)"), 109, true);
+
 			// string constants
 			iStat += EqnTest(_T("atof(str1)+atof(str2)"), 3.33, true);
 

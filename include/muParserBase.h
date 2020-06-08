@@ -39,7 +39,6 @@
 
 //--- Parser includes --------------------------------------------------------------------------
 #include "muParserDef.h"
-#include "muParserStack.h"
 #include "muParserTokenReader.h"
 #include "muParserBytecode.h"
 #include "muParserError.h"
@@ -250,20 +249,12 @@ namespace mu
 			funmap_type& a_Storage,
 			const char_type* a_szCharSet);
 
-		void ApplyRemainingOprt(ParserStack<token_type>& a_stOpt,
-			ParserStack<token_type>& a_stVal) const;
-		void ApplyBinOprt(ParserStack<token_type>& a_stOpt,
-			ParserStack<token_type>& a_stVal) const;
+		void ApplyRemainingOprt(std::stack<token_type>& a_stOpt, std::stack<token_type>& a_stVal) const;
+		void ApplyBinOprt(std::stack<token_type>& a_stOpt, std::stack<token_type>& a_stVal) const;
+		void ApplyIfElse(std::stack<token_type>& a_stOpt, std::stack<token_type>& a_stVal) const;
+		void ApplyFunc(std::stack<token_type>& a_stOpt, std::stack<token_type>& a_stVal, int iArgCount) const;
 
-		void ApplyIfElse(ParserStack<token_type>& a_stOpt,
-			ParserStack<token_type>& a_stVal) const;
-
-		void ApplyFunc(ParserStack<token_type>& a_stOpt,
-			ParserStack<token_type>& a_stVal,
-			int iArgCount) const;
-
-		token_type ApplyStrFunc(const token_type& a_FunTok,
-			const std::vector<token_type>& a_vArg) const;
+		token_type ApplyStrFunc(const token_type& a_FunTok, 	const std::vector<token_type>& a_vArg) const;
 
 		int GetOprtPrecedence(const token_type& a_Tok) const;
 		EOprtAssociativity GetOprtAssociativity(const token_type& a_Tok) const;
@@ -275,12 +266,9 @@ namespace mu
 		value_type ParseCmdCodeBulk(int nOffset, int nThreadID) const;
 
 		void  CheckName(const string_type& a_strName, const string_type& a_CharSet) const;
-		void  CheckOprt(const string_type& a_sName,
-			const ParserCallback& a_Callback,
-			const string_type& a_szCharSet) const;
+		void  CheckOprt(const string_type& a_sName, const ParserCallback& a_Callback, const string_type& a_szCharSet) const;
 
-		void StackDump(const ParserStack<token_type >& a_stVal,
-			const ParserStack<token_type >& a_stOprt) const;
+		void StackDump(const std::stack<token_type >& a_stVal, const std::stack<token_type >& a_stOprt) const;
 
 		/** \brief Pointer to the parser function.
 

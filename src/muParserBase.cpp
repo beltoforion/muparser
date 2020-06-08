@@ -518,7 +518,7 @@ namespace mu
 		\param [in] a_bAllowOpt  True if operator is volatile (default=false)
 		\sa EPrec
 	*/
-	void ParserBase::DefineInfixOprt(const string_type& a_sName, fun_type1 a_pFun, int a_iPrec,	bool a_bAllowOpt)
+	void ParserBase::DefineInfixOprt(const string_type& a_sName, fun_type1 a_pFun, int a_iPrec, bool a_bAllowOpt)
 	{
 		if (a_sName.length() > ParserSetup::MaxLenIdentifier)
 			Error(ecIdentifierTooLong);
@@ -537,7 +537,7 @@ namespace mu
 
 		Adds a new Binary operator the the parser instance.
 	*/
-	void ParserBase::DefineOprt(const string_type& a_sName,	fun_type2 a_pFun, unsigned a_iPrec,	EOprtAssociativity a_eAssociativity, bool a_bAllowOpt)
+	void ParserBase::DefineOprt(const string_type& a_sName, fun_type2 a_pFun, unsigned a_iPrec, EOprtAssociativity a_eAssociativity, bool a_bAllowOpt)
 	{
 		if (a_sName.length() > ParserSetup::MaxLenIdentifier)
 			Error(ecIdentifierTooLong);
@@ -551,7 +551,7 @@ namespace mu
 			}
 		}
 
-		AddCallback(a_sName, ParserCallback(a_pFun, a_bAllowOpt, a_iPrec, a_eAssociativity), m_OprtDef,	ValidOprtChars());
+		AddCallback(a_sName, ParserCallback(a_pFun, a_bAllowOpt, a_iPrec, a_eAssociativity), m_OprtDef, ValidOprtChars());
 	}
 
 	//---------------------------------------------------------------------------
@@ -785,7 +785,7 @@ namespace mu
 		\post The function token is removed from the stack
 		\throw exception_type if Argument count does not match function requirements.
 	*/
-	void ParserBase::ApplyFunc(ParserStack<token_type>& a_stOpt, ParserStack<token_type>& a_stVal, int a_iArgCount) const
+	void ParserBase::ApplyFunc(std::stack<token_type>& a_stOpt, std::stack<token_type>& a_stVal, int a_iArgCount) const
 	{
 		assert(m_pTokenReader.get());
 
@@ -793,8 +793,9 @@ namespace mu
 		if (a_stOpt.empty() || a_stOpt.top().GetFuncAddr() == 0)
 			return;
 
-		token_type funTok = a_stOpt.pop();
-		assert(funTok.GetFuncAddr());
+		token_type funTok = a_stOpt.top();
+		a_stOpt.pop();
+		MUP_ASSERT(funTok.GetFuncAddr() != nullptr);
 
 		// Binary operators must rely on their internal operator number
 		// since counting of operators relies on commas for function arguments
@@ -828,7 +829,9 @@ namespace mu
 			if (a_stVal.empty())
 				Error(ecINTERNAL_ERROR, m_pTokenReader->GetPos(), funTok.GetAsString());
 
-			stArg.push_back(a_stVal.pop());
+			stArg.push_back(a_stVal.top());
+			a_stVal.pop();
+
 			if (stArg.back().GetType() == tpSTR && funTok.GetType() != tpSTR)
 				Error(ecVAL_EXPECTED, m_pTokenReader->GetPos(), funTok.GetAsString());
 		}
@@ -839,7 +842,8 @@ namespace mu
 			if (a_stVal.empty())
 				Error(ecINTERNAL_ERROR, m_pTokenReader->GetPos(), funTok.GetAsString());
 
-			stArg.push_back(a_stVal.pop());
+			stArg.push_back(a_stVal.top());
+			a_stVal.pop();
 
 			if (stArg.back().GetType() == tpSTR && funTok.GetType() != tpSTR)
 				Error(ecVAL_EXPECTED, m_pTokenReader->GetPos(), funTok.GetAsString());
@@ -871,26 +875,35 @@ namespace mu
 	}
 
 	//---------------------------------------------------------------------------
-	void ParserBase::ApplyIfElse(ParserStack<token_type>& a_stOpt, ParserStack<token_type>& a_stVal) const
+	void ParserBase::ApplyIfElse(std::stack<token_type>& a_stOpt, std::stack<token_type>& a_stVal) const
 	{
 		// Check if there is an if Else clause to be calculated
 		while (a_stOpt.size() && a_stOpt.top().GetCode() == cmELSE)
 		{
-			token_type opElse = a_stOpt.pop();
 			MUP_ASSERT(!a_stOpt.empty())
+				token_type opElse = a_stOpt.top();
+			a_stOpt.pop();
 
 			// Take the value associated with the else branch from the value stack
-			token_type vVal2 = a_stVal.pop();
-			MUP_ASSERT(a_stVal.size() >= 2);
+			MUP_ASSERT(!a_stVal.empty());
+			token_type vVal2 = a_stVal.top();
+			a_stVal.pop();
 
 			// it then else is a ternary operator Pop all three values from the value s
 			// tack and just return the right value
-			token_type vVal1 = a_stVal.pop();
-			token_type vExpr = a_stVal.pop();
+			MUP_ASSERT(!a_stVal.empty());
+			token_type vVal1 = a_stVal.top();
+			a_stVal.pop();
+
+			MUP_ASSERT(!a_stVal.empty());
+			token_type vExpr = a_stVal.top();
+			a_stVal.pop();
 
 			a_stVal.push((vExpr.GetVal() != 0) ? vVal1 : vVal2);
 
-			token_type opIf = a_stOpt.pop();
+			token_type opIf = a_stOpt.top();
+			a_stOpt.pop();
+
 			MUP_ASSERT(opElse.GetCode() == cmELSE);
 
 			if (opIf.GetCode() != cmIF)
@@ -904,7 +917,7 @@ namespace mu
 	/** \brief Performs the necessary steps to write code for
 			   the execution of binary operators into the bytecode.
 	*/
-	void ParserBase::ApplyBinOprt(ParserStack<token_type>& a_stOpt, ParserStack<token_type>& a_stVal) const
+	void ParserBase::ApplyBinOprt(std::stack<token_type>& a_stOpt, std::stack<token_type>& a_stVal) const
 	{
 		// is it a user defined binary operator?
 		if (a_stOpt.top().GetCode() == cmOPRT_BIN)
@@ -916,9 +929,15 @@ namespace mu
 			if (a_stVal.size() < 2)
 				Error(ecINTERNAL_ERROR, m_pTokenReader->GetPos(), _T("ApplyBinOprt: not enough values in value stack!"));
 
-			token_type valTok1 = a_stVal.pop();
-			token_type valTok2 = a_stVal.pop();
-			token_type optTok = a_stOpt.pop();
+			token_type valTok1 = a_stVal.top();
+			a_stVal.pop();
+
+			token_type valTok2 = a_stVal.top();
+			a_stVal.pop();
+
+			token_type optTok = a_stOpt.top();
+			a_stOpt.pop();
+
 			token_type resTok;
 
 			if (valTok1.GetType() != valTok2.GetType() ||
@@ -945,11 +964,11 @@ namespace mu
 		\param a_stOpt The operator stack
 		\param a_stVal The value stack
 	*/
-	void ParserBase::ApplyRemainingOprt(ParserStack<token_type>& stOpt, ParserStack<token_type>& stVal) const
+	void ParserBase::ApplyRemainingOprt(std::stack<token_type>& stOpt, std::stack<token_type>& stVal) const
 	{
-		while (	stOpt.size() && 
-				stOpt.top().GetCode() != cmBO && 
-				stOpt.top().GetCode() != cmIF)
+		while (stOpt.size() &&
+			stOpt.top().GetCode() != cmBO &&
+			stOpt.top().GetCode() != cmIF)
 		{
 			token_type tok = stOpt.top();
 			switch (tok.GetCode())
@@ -1058,7 +1077,7 @@ namespace mu
 			case  cmENDIF:
 				continue;
 
-			// value and variable tokens
+				// value and variable tokens
 			case  cmVAR:    Stack[++sidx] = *(pTok->Val.ptr + nOffset);  continue;
 			case  cmVAL:    Stack[++sidx] = pTok->Val.data2;  continue;
 
@@ -1098,7 +1117,7 @@ namespace mu
 				case 10:sidx -= 9; Stack[sidx] = (*(fun_type10)pTok->Fun.ptr)(Stack[sidx], Stack[sidx + 1], Stack[sidx + 2], Stack[sidx + 3], Stack[sidx + 4], Stack[sidx + 5], Stack[sidx + 6], Stack[sidx + 7], Stack[sidx + 8], Stack[sidx + 9]); continue;
 				default:
 					// function with variable arguments store the number as a negative value
-					if (iArgCount > 0) 
+					if (iArgCount > 0)
 						Error(ecINTERNAL_ERROR, -1);
 
 					sidx -= -iArgCount - 1;
@@ -1173,8 +1192,8 @@ namespace mu
 		if (!m_pTokenReader->GetExpr().length())
 			Error(ecUNEXPECTED_EOF, 0);
 
-		ParserStack<token_type> stOpt, stVal;
-		ParserStack<int> stArgCount;
+		std::stack<token_type> stOpt, stVal;
+		std::stack<int> stArgCount;
 		token_type opta, opt;  // for storing operators
 		token_type val, tval;  // for storing value
 
@@ -1221,7 +1240,7 @@ namespace mu
 
 
 			case cmARG_SEP:
-				if (!stOpt.empty() && stOpt.top().GetCode()==cmIF)
+				if (!stOpt.empty() && stOpt.top().GetCode() == cmIF)
 					Error(ecUNEXPECTED_ARG_SEP, m_pTokenReader->GetPos());
 
 				if (stArgCount.empty())
@@ -1255,8 +1274,9 @@ namespace mu
 					// the operator stack
 					// Check if a function is standing in front of the opening bracket, 
 					// if yes evaluate it afterwards check for infix operators
-					assert(stArgCount.size());
-					int iArgCount = stArgCount.pop();
+					MUP_ASSERT(stArgCount.size());
+					int iArgCount = stArgCount.top();
+					stArgCount.pop();
 
 					stOpt.pop(); // Take opening bracket from stack
 
@@ -1600,16 +1620,17 @@ namespace mu
 
 		This function is used for debugging only.
 	*/
-	void ParserBase::StackDump(const ParserStack<token_type>& a_stVal,
-		const ParserStack<token_type>& a_stOprt) const
+	void ParserBase::StackDump(const std::stack<token_type>& a_stVal, const std::stack<token_type>& a_stOprt) const
 	{
-		ParserStack<token_type> stOprt(a_stOprt),
-			stVal(a_stVal);
+		std::stack<token_type> stOprt(a_stOprt);
+		std::stack<token_type> stVal(a_stVal);
 
 		mu::console() << _T("\nValue stack:\n");
 		while (!stVal.empty())
 		{
-			token_type val = stVal.pop();
+			token_type val = stVal.top();
+			stVal.pop();
+
 			if (val.GetType() == tpSTR)
 				mu::console() << _T(" \"") << val.GetAsString() << _T("\" ");
 			else
@@ -1719,10 +1740,10 @@ namespace mu
 
 #ifdef MUP_USE_OPENMP
 		//#define DEBUG_OMP_STUFF
-		#ifdef DEBUG_OMP_STUFF
+#ifdef DEBUG_OMP_STUFF
 		int* pThread = new int[nBulkSize];
 		int* pIdx = new int[nBulkSize];
-		#endif
+#endif
 
 		int nMaxThreads = std::min(omp_get_max_threads(), s_MaxNumOpenMPThreads);
 		int nThreadID = 0, ct = 0;

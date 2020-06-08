@@ -37,7 +37,6 @@
 #include "muParserDef.h"
 #include "muParserError.h"
 #include "muParserToken.h"
-#include "muParserStack.h"
 #include "muParserTemplateMagic.h"
 
 
@@ -431,7 +430,7 @@ namespace mu
 		rpn_type(m_vRPN).swap(m_vRPN);     // shrink bytecode vector to fit
 
 		// Determine the if-then-else jump offsets
-		ParserStack<int> stIf, stElse;
+		std::stack<int> stIf, stElse;
 		int idx;
 		for (int i = 0; i < (int)m_vRPN.size(); ++i)
 		{
@@ -443,12 +442,14 @@ namespace mu
 
 			case  cmELSE:
 				stElse.push(i);
-				idx = stIf.pop();
+				idx = stIf.top();
+				stIf.pop();
 				m_vRPN[idx].Oprt.offset = i - idx;
 				break;
 
 			case cmENDIF:
-				idx = stElse.pop();
+				idx = stElse.top();
+				stElse.pop();
 				m_vRPN[idx].Oprt.offset = i - idx;
 				break;
 
