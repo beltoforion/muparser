@@ -108,7 +108,6 @@ install(FILES
     include/muParserFixes.h
     include/muParser.h
     include/muParserInt.h
-    include/muParserStack.h
     include/muParserTemplateMagic.h
     include/muParserTest.h
     include/muParserToken.h
