@@ -24,10 +24,12 @@ Rev 2.2.7: 08.06.2020
    * introduced a maximum length for identifiers (100 Characters)
    * removed the MUP_MATH_EXCEPTION macro and related functionality. (No more C++ exceptions for divide by zero or sqrt of a negative number)
 
+  Security Fixes: (The issues were present in all prior releases)
+   * Prevented multipla access violation for malformed expressions with if then else and functions taking multiple arguments like "sum(0?1,2,3,4:5)"
+   * Added additional runtime checks for release builds to prevent segmentation faults for invalid expressions
+
   Bugfixes:
    * Fixed an issue where the bulk mode could hang on GCC/CLANG builds due to OpenMP chunksize dropping below 1.
-   * Added additional runtime checks for release builds to prevent segmentation faults for invalid expressions
-   * Prevented access violation for malformed expressions with if then else and function taking multiple arguments "sum(0?1,2,3,4:5)"
 
 Rev 2.2.5: 27.04.2015
 ---------------------

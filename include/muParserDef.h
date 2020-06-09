@@ -43,7 +43,7 @@
 */
 
 #define MUP_VERSION _T("2.2.7 (Dev)")
-#define MUP_VERSION_DATE _T("20200602")
+#define MUP_VERSION_DATE _T("20200609")
 
 /** \brief Define the base datatype for values.
 
