@@ -91,8 +91,9 @@ namespace mu
 		m_vErrMsg[ecMISSING_ELSE_CLAUSE] = _T("If-then-else operator is missing an else clause");
 		m_vErrMsg[ecMISPLACED_COLON] = _T("Misplaced colon at position $POS$");
 		m_vErrMsg[ecUNREASONABLE_NUMBER_OF_COMPUTATIONS] = _T("Number of computations to small for bulk mode. (Vectorisation overhead too costly)");
-		m_vErrMsg[ecIdentifierTooLong] = _T("Identifier too long.");
-		m_vErrMsg[ecExpressionTooLong] = _T("Expression too long.");
+		m_vErrMsg[ecIDENTIFIER_TOO_LONG] = _T("Identifier too long.");
+		m_vErrMsg[ecEXPRESSION_TOO_LONG] = _T("Expression too long.");
+		m_vErrMsg[ecINVALID_CHARACTERS_FOUND] = _T("Invalid non printable characters found in expression/identifer!");
 
 		for (int i = 0; i < ecCOUNT; ++i)
 		{

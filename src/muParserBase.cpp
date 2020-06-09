@@ -405,13 +405,18 @@ namespace mu
 	*/
 	void ParserBase::SetExpr(const string_type& a_sExpr)
 	{
+		if (std::all_of(a_sExpr.begin(), a_sExpr.end(), [](char c) { return !std::isgraph(c); }))
+		{
+			Error(ecINVALID_CHARACTERS_FOUND);
+		}
+
 		// Check locale compatibility
 		if (m_pTokenReader->GetArgSep() == std::use_facet<numpunct<char_type> >(s_locale).decimal_point())
 			Error(ecLOCALE);
 
 		// Check maximum allowed expression length. An arbitrary value small enough so i can debug expressions sent to me
 		if (a_sExpr.length() >= ParserSetup::MaxLenExpression)
-			Error(ecExpressionTooLong, 0, a_sExpr);
+			Error(ecEXPRESSION_TOO_LONG, 0, a_sExpr);
 
 		m_pTokenReader->SetFormula(a_sExpr + _T(" "));
 		ReInit();
@@ -490,7 +495,7 @@ namespace mu
 	void ParserBase::DefinePostfixOprt(const string_type& a_sName, fun_type1 a_pFun, bool a_bAllowOpt)
 	{
 		if (a_sName.length() > ParserSetup::MaxLenIdentifier)
-			Error(ecIdentifierTooLong);
+			Error(ecIDENTIFIER_TOO_LONG);
 
 		AddCallback(a_sName, ParserCallback(a_pFun, a_bAllowOpt, prPOSTFIX, cmOPRT_POSTFIX), m_PostOprtDef, ValidOprtChars());
 	}
@@ -520,7 +525,7 @@ namespace mu
 	void ParserBase::DefineInfixOprt(const string_type& a_sName, fun_type1 a_pFun, int a_iPrec, bool a_bAllowOpt)
 	{
 		if (a_sName.length() > ParserSetup::MaxLenIdentifier)
-			Error(ecIdentifierTooLong);
+			Error(ecIDENTIFIER_TOO_LONG);
 
 		AddCallback(a_sName, ParserCallback(a_pFun, a_bAllowOpt, a_iPrec, cmOPRT_INFIX), m_InfixOprtDef, ValidInfixOprtChars());
 	}
@@ -539,7 +544,7 @@ namespace mu
 	void ParserBase::DefineOprt(const string_type& a_sName, fun_type2 a_pFun, unsigned a_iPrec, EOprtAssociativity a_eAssociativity, bool a_bAllowOpt)
 	{
 		if (a_sName.length() > ParserSetup::MaxLenIdentifier)
-			Error(ecIdentifierTooLong);
+			Error(ecIDENTIFIER_TOO_LONG);
 
 		// Check for conflicts with built in operator names
 		for (int i = 0; m_bBuiltInOp && i < cmENDIF; ++i)
@@ -585,7 +590,7 @@ namespace mu
 			Error(ecINVALID_VAR_PTR);
 
 		if (a_sName.length() > ParserSetup::MaxLenIdentifier)
-			Error(ecIdentifierTooLong);
+			Error(ecIDENTIFIER_TOO_LONG);
 
 		// Test if a constant with that names already exists
 		if (m_ConstDef.find(a_sName) != m_ConstDef.end())
@@ -606,7 +611,7 @@ namespace mu
 	void ParserBase::DefineConst(const string_type& a_sName, value_type a_fVal)
 	{
 		if (a_sName.length() > ParserSetup::MaxLenIdentifier)
-			Error(ecIdentifierTooLong);
+			Error(ecIDENTIFIER_TOO_LONG);
 
 		CheckName(a_sName, ValidNameChars());
 		m_ConstDef[a_sName] = a_fVal;

@@ -94,12 +94,14 @@ namespace mu
 
 		ecUNREASONABLE_NUMBER_OF_COMPUTATIONS = 35,
 
-		ecIdentifierTooLong = 36, ///< Thrown when an identifier with more then 255 characters is used.
+		ecIDENTIFIER_TOO_LONG = 36, ///< Thrown when an identifier with more then 255 characters is used.
 
-		ecExpressionTooLong = 37, ///< Throw an exception if the expression has more than 10000 characters. (an arbitrary limit)
+		ecEXPRESSION_TOO_LONG = 37, ///< Throw an exception if the expression has more than 10000 characters. (an arbitrary limit)
+
+		ecINVALID_CHARACTERS_FOUND = 38,///< The expression or identifier contains invalid non printable characters
 
 		// internal errors
-		ecINTERNAL_ERROR = 38,    ///< Internal error of any kind.
+		ecINTERNAL_ERROR = 39,    ///< Internal error of any kind.
 
 		// The last two are special entries 
 		ecCOUNT,                      ///< This is no error code, It just stores just the total number of error codes
