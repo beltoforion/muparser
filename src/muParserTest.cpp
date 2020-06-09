@@ -923,7 +923,7 @@ namespace mu
 			mu::console() << _T("testing if-then-else operator...");
 
 			// from oss-fuzz.com: https://oss-fuzz.com/testcase-detail/4777121158529024
-			iStat += ThrowTest(_T("3!=min(0?2>2,2>5,1:6)"), ecMISPLACED_COLON);
+			iStat += ThrowTest(_T("3!=min(0?2>2,2>5,1:6)"), ecUNEXPECTED_ARG_SEP);
 
 			// Test error detection
 			iStat += ThrowTest(_T(":3"), ecUNEXPECTED_CONDITIONAL);

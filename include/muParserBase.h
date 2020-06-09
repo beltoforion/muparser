@@ -139,11 +139,7 @@ namespace mu
 			AddCallback(a_strName, ParserCallback(a_pFun, a_bAllowOpt), m_FunDef, ValidNameChars());
 		}
 
-		void DefineOprt(const string_type& a_strName,
-			fun_type2 a_pFun,
-			unsigned a_iPri = 0,
-			EOprtAssociativity a_eAssociativity = oaLEFT,
-			bool a_bAllowOpt = false);
+		void DefineOprt(const string_type& a_strName, fun_type2 a_pFun, unsigned a_iPri = 0, EOprtAssociativity a_eAssociativity = oaLEFT, bool a_bAllowOpt = false);
 		void DefineConst(const string_type& a_sName, value_type a_fVal);
 		void DefineStrConst(const string_type& a_sName, const string_type& a_strVal);
 		void DefineVar(const string_type& a_sName, value_type* a_fVar);
@@ -246,17 +242,13 @@ namespace mu
 		void InitTokenReader();
 		void ReInit() const;
 
-		void AddCallback(const string_type& a_strName,
-			const ParserCallback& a_Callback,
-			funmap_type& a_Storage,
-			const char_type* a_szCharSet);
-
+		void AddCallback(const string_type& a_strName, const ParserCallback& a_Callback, funmap_type& a_Storage, const char_type* a_szCharSet);
 		void ApplyRemainingOprt(std::stack<token_type>& a_stOpt, std::stack<token_type>& a_stVal) const;
 		void ApplyBinOprt(std::stack<token_type>& a_stOpt, std::stack<token_type>& a_stVal) const;
 		void ApplyIfElse(std::stack<token_type>& a_stOpt, std::stack<token_type>& a_stVal) const;
 		void ApplyFunc(std::stack<token_type>& a_stOpt, std::stack<token_type>& a_stVal, int iArgCount) const;
 
-		token_type ApplyStrFunc(const token_type& a_FunTok, 	const std::vector<token_type>& a_vArg) const;
+		token_type ApplyStrFunc(const token_type& a_FunTok, const std::vector<token_type>& a_vArg) const;
 
 		int GetOprtPrecedence(const token_type& a_Tok) const;
 		EOprtAssociativity GetOprtAssociativity(const token_type& a_Tok) const;
@@ -296,8 +288,6 @@ namespace mu
 		string_type m_sNameChars;      ///< Charset for names
 		string_type m_sOprtChars;      ///< Charset for postfix/ binary operator tokens
 		string_type m_sInfixOprtChars; ///< Charset for infix operator tokens
-
-		mutable int m_nIfElseCounter;  ///< Internal counter for keeping track of nested if-then-else clauses
 
 		// items merely used for caching state information
 		mutable valbuf_type m_vStackBuffer; ///< This is merely a buffer used for the stack in the cmd parsing routine

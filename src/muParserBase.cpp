@@ -98,7 +98,6 @@ namespace mu
 		, m_sNameChars()
 		, m_sOprtChars()
 		, m_sInfixOprtChars()
-		, m_nIfElseCounter(0)
 		, m_vStackBuffer()
 		, m_nFinalResultIdx(0)
 	{
@@ -127,7 +126,6 @@ namespace mu
 		, m_sNameChars()
 		, m_sOprtChars()
 		, m_sInfixOprtChars()
-		, m_nIfElseCounter(0)
 	{
 		m_pTokenReader.reset(new token_reader_type(this));
 		Assign(a_Parser);
@@ -177,7 +175,6 @@ namespace mu
 		m_nFinalResultIdx = a_Parser.m_nFinalResultIdx;
 		m_StrVarDef = a_Parser.m_StrVarDef;
 		m_vStringVarBuf = a_Parser.m_vStringVarBuf;
-		m_nIfElseCounter = a_Parser.m_nIfElseCounter;
 		m_pTokenReader.reset(a_Parser.m_pTokenReader->Clone(this));
 
 		// Copy function and operator callbacks
@@ -257,7 +254,6 @@ namespace mu
 		m_vStringBuf.clear();
 		m_vRPN.clear();
 		m_pTokenReader->ReInit();
-		m_nIfElseCounter = 0;
 	}
 
 	//---------------------------------------------------------------------------
@@ -1039,7 +1035,7 @@ namespace mu
 		{
 			switch (pTok->Cmd)
 			{
-			// built in binary operators
+				// built in binary operators
 			case  cmLE:   --sidx; Stack[sidx] = Stack[sidx] <= Stack[sidx + 1]; continue;
 			case  cmGE:   --sidx; Stack[sidx] = Stack[sidx] >= Stack[sidx + 1]; continue;
 			case  cmNEQ:  --sidx; Stack[sidx] = Stack[sidx] != Stack[sidx + 1]; continue;
@@ -1200,6 +1196,7 @@ namespace mu
 		std::stack<int> stArgCount;
 		token_type opta, opt;  // for storing operators
 		token_type val, tval;  // for storing value
+		int ifElseCounter = 0;
 
 		ReInit();
 
@@ -1236,15 +1233,22 @@ namespace mu
 				break;
 
 			case cmELSE:
-				m_nIfElseCounter--;
-				if (m_nIfElseCounter < 0)
+				if (stArgCount.empty())
+					Error(ecMISPLACED_COLON, m_pTokenReader->GetPos());
+
+				if (stArgCount.top() > 1)
+					Error(ecUNEXPECTED_ARG_SEP, m_pTokenReader->GetPos());
+
+				stArgCount.pop();
+
+				ifElseCounter--;
+				if (ifElseCounter < 0)
 					Error(ecMISPLACED_COLON, m_pTokenReader->GetPos());
 
 				ApplyRemainingOprt(stOpt, stVal);
 				m_vRPN.AddIfElse(cmELSE);
 				stOpt.push(opt);
 				break;
-
 
 			case cmARG_SEP:
 				if (!stOpt.empty() && stOpt.top().GetCode() == cmIF)
@@ -1310,7 +1314,8 @@ namespace mu
 			// Next are the binary operator entries
 			//
 			case cmIF:
-				m_nIfElseCounter++;
+				ifElseCounter++;
+				stArgCount.push(1);
 				// Falls through.
 				// intentional (no break!)
 
@@ -1411,7 +1416,7 @@ namespace mu
 		if (ParserBase::g_DbgDumpCmdCode)
 			m_vRPN.AsciiDump();
 
-		if (m_nIfElseCounter > 0)
+		if (ifElseCounter > 0)
 			Error(ecMISSING_ELSE_CLAUSE);
 
 		// get the last value (= final result) from the stack
@@ -1659,18 +1664,32 @@ namespace mu
 				{
 				case cmVAR:   mu::console() << _T("VAR\n");  break;
 				case cmVAL:   mu::console() << _T("VAL\n");  break;
-				case cmFUNC:  mu::console() << _T("FUNC \"")
-					<< stOprt.top().GetAsString()
-					<< _T("\"\n");   break;
-				case cmFUNC_BULK:  mu::console() << _T("FUNC_BULK \"")
-					<< stOprt.top().GetAsString()
-					<< _T("\"\n");   break;
-				case cmOPRT_INFIX: mu::console() << _T("OPRT_INFIX \"")
-					<< stOprt.top().GetAsString()
-					<< _T("\"\n");      break;
-				case cmOPRT_BIN:   mu::console() << _T("OPRT_BIN \"")
-					<< stOprt.top().GetAsString()
-					<< _T("\"\n");           break;
+				case cmFUNC:
+					mu::console()
+						<< _T("FUNC \"")
+						<< stOprt.top().GetAsString()
+						<< _T("\"\n");
+					break;
+
+				case cmFUNC_BULK:
+					mu::console()
+						<< _T("FUNC_BULK \"")
+						<< stOprt.top().GetAsString()
+						<< _T("\"\n");
+					break;
+
+				case cmOPRT_INFIX:
+					mu::console() << _T("OPRT_INFIX \"")
+						<< stOprt.top().GetAsString()
+						<< _T("\"\n");
+					break;
+
+				case cmOPRT_BIN:
+					mu::console() << _T("OPRT_BIN \"")
+						<< stOprt.top().GetAsString()
+						<< _T("\"\n");
+					break;
+
 				case cmFUNC_STR: mu::console() << _T("FUNC_STR\n");       break;
 				case cmEND:      mu::console() << _T("END\n");            break;
 				case cmUNKNOWN:  mu::console() << _T("UNKNOWN\n");        break;
