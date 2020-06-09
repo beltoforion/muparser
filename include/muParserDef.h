@@ -78,17 +78,6 @@
 	#define MUP_STRING_TYPE std::string
 #endif
 
-#if defined(_DEBUG)
-	/** \brief Debug macro to force an abortion of the programm with a certain message. */
-	#define MUP_FAIL(MSG)		\
-			  {                 \
-				bool MSG=false; \
-				assert(MSG);    \
-			  }
-#else
-	#define MUP_FAIL(MSG)
-#endif
-
 /** \brief An assertion that does not kill the program. */
 #define MUP_ASSERT(COND)											\
             if (!(COND))											\
