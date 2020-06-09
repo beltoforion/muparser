@@ -308,7 +308,7 @@ namespace mu
 					}
 					break;
 
-				// no optimization for other opcodes
+					// no optimization for other opcodes
 				default:
 					break;
 				} // switch a_Oprt
@@ -362,22 +362,66 @@ namespace mu
 	*/
 	void ParserByteCode::AddFun(generic_fun_type a_pFun, int a_iArgc)
 	{
-		if (a_iArgc >= 0)
+		std::size_t sz = m_vRPN.size();
+		bool optimize = false;
+
+		// only optimize functions with fixed number of more than a single arguments
+		if (m_bEnableOptimizer && a_iArgc > 0)
 		{
-			m_iStackPos = m_iStackPos - a_iArgc + 1;
+			optimize = true;
+			for (int i = 1; i <= std::abs(a_iArgc); ++i)
+			{
+				if (m_vRPN[sz - i].Cmd != cmVAL)
+				{
+					optimize = false;
+					break;
+				}
+			}
+		}
+
+		if (optimize)
+		{
+			value_type val = 0;
+			int sidx = 0;
+			switch (a_iArgc)
+			{
+			case 1:  val = (*reinterpret_cast<fun_type1>(a_pFun))(m_vRPN[sz - 1].Val.data2);   break;
+			case 2:  val = (*reinterpret_cast<fun_type2>(a_pFun))(m_vRPN[sz - 2].Val.data2, m_vRPN[sz - 1].Val.data2); break;
+			case 3:  val = (*reinterpret_cast<fun_type3>(a_pFun))(m_vRPN[sz - 3].Val.data2, m_vRPN[sz - 2].Val.data2, m_vRPN[sz - 1].Val.data2); break;
+			case 4:  val = (*reinterpret_cast<fun_type4>(a_pFun))(m_vRPN[sz - 4].Val.data2, m_vRPN[sz - 3].Val.data2, m_vRPN[sz - 2].Val.data2, m_vRPN[sz - 1].Val.data2); break;
+			case 5:  val = (*reinterpret_cast<fun_type5>(a_pFun))(m_vRPN[sz - 5].Val.data2, m_vRPN[sz - 4].Val.data2, m_vRPN[sz - 3].Val.data2, m_vRPN[sz - 2].Val.data2, m_vRPN[sz - 1].Val.data2); break;
+			case 6:  val = (*reinterpret_cast<fun_type6>(a_pFun))(m_vRPN[sz - 6].Val.data2, m_vRPN[sz - 5].Val.data2, m_vRPN[sz - 4].Val.data2, m_vRPN[sz - 3].Val.data2, m_vRPN[sz - 2].Val.data2, m_vRPN[sz - 1].Val.data2); break;
+			case 7:  val = (*reinterpret_cast<fun_type7>(a_pFun))(m_vRPN[sz - 7].Val.data2, m_vRPN[sz - 6].Val.data2, m_vRPN[sz - 5].Val.data2, m_vRPN[sz - 4].Val.data2, m_vRPN[sz - 3].Val.data2, m_vRPN[sz - 2].Val.data2, m_vRPN[sz - 1].Val.data2); break;
+			case 8:  val = (*reinterpret_cast<fun_type8>(a_pFun))(m_vRPN[sz - 8].Val.data2, m_vRPN[sz - 7].Val.data2, m_vRPN[sz - 6].Val.data2, m_vRPN[sz - 5].Val.data2, m_vRPN[sz - 4].Val.data2, m_vRPN[sz - 3].Val.data2, m_vRPN[sz - 2].Val.data2, m_vRPN[sz - 1].Val.data2); break;
+			case 9:  val = (*reinterpret_cast<fun_type9>(a_pFun))(m_vRPN[sz - 9].Val.data2, m_vRPN[sz - 8].Val.data2, m_vRPN[sz - 7].Val.data2, m_vRPN[sz - 6].Val.data2, m_vRPN[sz - 5].Val.data2, m_vRPN[sz - 4].Val.data2, m_vRPN[sz - 3].Val.data2, m_vRPN[sz - 2].Val.data2, m_vRPN[sz - 1].Val.data2); break;
+			case 10: val = (*reinterpret_cast<fun_type10>(a_pFun))(m_vRPN[sz - 10].Val.data2, m_vRPN[sz - 9].Val.data2, m_vRPN[sz - 8].Val.data2, m_vRPN[sz - 7].Val.data2, m_vRPN[sz - 6].Val.data2, m_vRPN[sz - 5].Val.data2, m_vRPN[sz - 4].Val.data2, m_vRPN[sz - 3].Val.data2, m_vRPN[sz - 2].Val.data2, m_vRPN[sz - 1].Val.data2); break;
+			default:
+				// For now functions with unlimited number of arguments are not optimized
+				throw ParserError(ecINTERNAL_ERROR);
+			}
+
+			// remove the folded values
+			m_vRPN.erase(m_vRPN.end() - a_iArgc, m_vRPN.end());
+
+			SToken tok;
+			tok.Cmd = cmVAL;
+			tok.Val.data = 0;
+			tok.Val.data2 = val;
+			tok.Val.ptr = nullptr;
+			m_vRPN.push_back(tok);
 		}
 		else
 		{
-			// function with unlimited number of arguments
-			m_iStackPos = m_iStackPos + a_iArgc + 1;
+			SToken tok;
+			tok.Cmd = cmFUNC;
+			tok.Fun.argc = a_iArgc;
+			tok.Fun.ptr = a_pFun;
+			m_vRPN.push_back(tok);
 		}
+
+		m_iStackPos = m_iStackPos - std::abs(a_iArgc) + 1;
 		m_iMaxStackSize = std::max(m_iMaxStackSize, (size_t)m_iStackPos);
 
-		SToken tok;
-		tok.Cmd = cmFUNC;
-		tok.Fun.argc = a_iArgc;
-		tok.Fun.ptr = a_pFun;
-		m_vRPN.push_back(tok);
 	}
 
 	//---------------------------------------------------------------------------

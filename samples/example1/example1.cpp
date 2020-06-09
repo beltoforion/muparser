@@ -87,6 +87,8 @@ static value_type Rnd(value_type v) { return v * std::rand() / (value_type)(RAND
 static value_type Not(value_type v) { return v == 0; }
 static value_type Add(value_type v1, value_type v2) { return v1 + v2; }
 static value_type Mul(value_type v1, value_type v2) { return v1 * v2; }
+static value_type Arg2Of2(value_type v1, value_type v2) { return v2; }
+static value_type Arg1Of2(value_type v1, value_type v2) { return v1; }
 
 //---------------------------------------------------------------------------
 static value_type ThrowAnException(value_type)
@@ -533,6 +535,8 @@ static void Calc()
 	parser.DefineFun(_T("debug"), Debug);
 	parser.DefineFun(_T("selftest"), SelfTest);
 	parser.DefineFun(_T("help"), Help);
+	parser.DefineFun(_T("arg2of2"), Arg2Of2);
+	parser.DefineFun(_T("arg1of2"), Arg1Of2);
 
 	parser.DefinePostfixOprt(_T("{ft}"), Milli);
 	parser.DefinePostfixOprt(_T("ft"), Milli);
