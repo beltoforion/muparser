@@ -1039,7 +1039,7 @@ namespace mu
 		{
 			switch (pTok->Cmd)
 			{
-				// built in binary operators
+			// built in binary operators
 			case  cmLE:   --sidx; Stack[sidx] = Stack[sidx] <= Stack[sidx + 1]; continue;
 			case  cmGE:   --sidx; Stack[sidx] = Stack[sidx] >= Stack[sidx + 1]; continue;
 			case  cmNEQ:  --sidx; Stack[sidx] = Stack[sidx] != Stack[sidx + 1]; continue;
@@ -1126,7 +1126,8 @@ namespace mu
 					sidx -= -iArgCount - 1;
 
 					// <ibg 2020-06-08/> From oss-fuzz. Happend when Multiarg functions and if-then-else are used incorrectly "sum(0?1,2,3,4,5:6)"
-					if (sidx < 0)
+					// The final result normally lieas at position 1. If sixd is smaller there is something wrong.
+					if (sidx <= 0)
 						Error(ecINTERNAL_ERROR, -1);
 
 					Stack[sidx] = (*(multfun_type)pTok->Fun.ptr)(&Stack[sidx], -iArgCount);

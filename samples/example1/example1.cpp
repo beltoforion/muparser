@@ -435,7 +435,7 @@ static int CheckKeywords(const mu::char_type* a_szLine, mu::Parser& a_Parser)
 	}
 	else if (sLine == _T("dbg"))
 	{
-		std::string dbg = "sum(0?1,0,0:3)";
+		std::string dbg = "3!=min(0?2>2,2>5,1:6)";
 		a_Parser.SetExpr(dbg);
 		mu::console() << dbg;
 		double v =  a_Parser.Eval();

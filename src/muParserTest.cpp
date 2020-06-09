@@ -922,6 +922,9 @@ namespace mu
 			int iStat = 0;
 			mu::console() << _T("testing if-then-else operator...");
 
+			// from oss-fuzz.com: https://oss-fuzz.com/testcase-detail/4777121158529024
+			iStat += ThrowTest(_T("3!=min(0?2>2,2>5,1:6)"), ecMISPLACED_COLON);
+
 			// Test error detection
 			iStat += ThrowTest(_T(":3"), ecUNEXPECTED_CONDITIONAL);
 			iStat += ThrowTest(_T("? 1 : 2"), ecUNEXPECTED_CONDITIONAL);
@@ -933,7 +936,7 @@ namespace mu
 			iStat += ThrowTest(_T("1 : 2"), ecMISPLACED_COLON);
 			iStat += ThrowTest(_T("(1) ? 1 : 2 : 3"), ecMISPLACED_COLON);
 			iStat += ThrowTest(_T("(true) ? 1 : 2 : 3"), ecUNASSIGNABLE_TOKEN);
-
+			
 			// from oss-fzz.com: UNKNOWN READ; https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=22922#c1
 			iStat += ThrowTest(_T("1?2:0?(7:1)"), ecMISPLACED_COLON);
 
