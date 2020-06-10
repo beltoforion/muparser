@@ -4,15 +4,18 @@
 .. image:: https://ci.appveyor.com/api/projects/status/u4882uj8btuspj9x?svg=true
     :target: https://ci.appveyor.com/project/jschueller/muparser-9ib44
 
-# muparser
+
+muparser
+========
 
 Fast math parser library, see http://beltoforion.de/article.php?a=muparser
 
 See Install.txt for installation
 
-## Change Notes for Rev 2.2.7: 10.06.2020
+Change Notes for Revision 2.2.7 (10.06.2020)
+============================================
 
-  Changes:
+Changes:
    * using OpenMP is now the default settings for cmake based builds
    * introduced a maximum length for expressions (5000 Character)
    * introduced a maximum length for identifiers (100 Characters)
