@@ -135,7 +135,7 @@ namespace mu
 		void clear();
 		std::size_t GetMaxStackSize() const;
 
-		std::size_t ParserByteCode::GetSize() const
+		std::size_t GetSize() const
 		{
 			return m_vRPN.size();
 		}
