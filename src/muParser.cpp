@@ -211,15 +211,13 @@ namespace mu
 	  formula. The default value for epsilon is 0.00074 which is
 	  numeric_limits<double>::epsilon() ^ (1/5) as suggested in the muparser
 	  forum:
-
-	  http://sourceforge.net/forum/forum.php?thread_id=1994611&forum_id=462843
 	*/
 	value_type Parser::Diff(value_type* a_Var, value_type  a_fPos, value_type  a_fEpsilon) const
 	{
-		value_type fRes(0),
-			fBuf(*a_Var),
-			f[4] = { 0,0,0,0 },
-			fEpsilon(a_fEpsilon);
+		value_type fRes(0);
+		value_type fBuf(*a_Var);
+		value_type f[4] = { 0,0,0,0 };
+		value_type fEpsilon(a_fEpsilon);
 
 		// Backwards compatible calculation of epsilon inc case the user doesn't provide
 		// his own epsilon

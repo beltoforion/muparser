@@ -381,9 +381,11 @@ namespace mu
 			if ((void*)a_pFun == (void*)&MathImpl<value_type>::UnaryPlus)
 				return;
 
-			for (int i = 1; i <= std::abs(a_iArgc); ++i)
+			optimize = true;
+
+			for (int i = 0; i < std::abs(a_iArgc); ++i)
 			{
-				if (m_vRPN[sz - i].Cmd != cmVAL)
+				if (m_vRPN[sz - i - 1].Cmd != cmVAL)
 				{
 					optimize = false;
 					break;
