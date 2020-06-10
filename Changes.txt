@@ -20,11 +20,12 @@ Rev 2.2.7: 08.06.2020
 ---------------------
   Changes:
    * using OpenMP is now the default settings for cmake based builds
+   * added optimization for trivial expressions. (Expressions whose RPN only has a single entry)
    * introduced a maximum length for expressions (5000 Character)
    * introduced a maximum length for identifiers (100 Characters)
    * removed the MUP_MATH_EXCEPTION macro and related functionality. (C++ exceptions for divide by zero or sqrt of a negative number are no longer supported)
    * removed ParserStack.h (replaced with std::stack)
-   * removed macros for defining E and PI (replaced with a static class)
+   * removed macros for defining E and PI (replaced with a static constants)
    * source code is now aimed at C++17
    * the MUP_ASSERT macro is no longer removed in release builds for better protection against segmentation faults
 
@@ -34,6 +35,12 @@ Rev 2.2.7: 08.06.2020
 
   Bugfixes:
    * Fixed an issue where the bulk mode could hang on GCC/CLANG builds due to OpenMP chunksize dropping below 1.
+
+Rev 2.2.6: 04.10.2018
+---------------------
+  Changes:
+   * Build system is now based on cmake
+   * several compiler warnings fixed
 
 Rev 2.2.5: 27.04.2015
 ---------------------
