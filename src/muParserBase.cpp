@@ -83,7 +83,7 @@ namespace mu
 		\throw ParserException if a_szFormula is nullptr.
 	*/
 	ParserBase::ParserBase()
-		:m_pParseFormula(&ParserBase::ParseString)
+		: m_pParseFormula(&ParserBase::ParseString)
 		, m_vRPN()
 		, m_vStringBuf()
 		, m_pTokenReader()
@@ -111,7 +111,7 @@ namespace mu
 	  copy construction.
 	*/
 	ParserBase::ParserBase(const ParserBase& a_Parser)
-		:m_pParseFormula(&ParserBase::ParseString)
+		: m_pParseFormula(&ParserBase::ParseString)
 		, m_vRPN()
 		, m_vStringBuf()
 		, m_pTokenReader()
@@ -272,11 +272,11 @@ namespace mu
 	{
 		stringstream_type ss;
 
-		ss << MUP_VERSION;
+		ss << ParserVersion;
 
 		if (eInfo == pviFULL)
 		{
-			ss << _T(" (") << MUP_VERSION_DATE;
+			ss << _T(" (") << ParserVersionDate;
 			ss << std::dec << _T("; ") << sizeof(void*) * 8 << _T("BIT");
 
 #ifdef _DEBUG
@@ -415,7 +415,7 @@ namespace mu
 			Error(ecLOCALE);
 
 		// Check maximum allowed expression length. An arbitrary value small enough so i can debug expressions sent to me
-		if (a_sExpr.length() >= ParserSetup::MaxLenExpression)
+		if (a_sExpr.length() >= MaxLenExpression)
 			Error(ecEXPRESSION_TOO_LONG, 0, a_sExpr);
 
 		m_pTokenReader->SetFormula(a_sExpr + _T(" "));
@@ -494,7 +494,7 @@ namespace mu
 	*/
 	void ParserBase::DefinePostfixOprt(const string_type& a_sName, fun_type1 a_pFun, bool a_bAllowOpt)
 	{
-		if (a_sName.length() > ParserSetup::MaxLenIdentifier)
+		if (a_sName.length() > MaxLenIdentifier)
 			Error(ecIDENTIFIER_TOO_LONG);
 
 		AddCallback(a_sName, ParserCallback(a_pFun, a_bAllowOpt, prPOSTFIX, cmOPRT_POSTFIX), m_PostOprtDef, ValidOprtChars());
@@ -524,7 +524,7 @@ namespace mu
 	*/
 	void ParserBase::DefineInfixOprt(const string_type& a_sName, fun_type1 a_pFun, int a_iPrec, bool a_bAllowOpt)
 	{
-		if (a_sName.length() > ParserSetup::MaxLenIdentifier)
+		if (a_sName.length() > MaxLenIdentifier)
 			Error(ecIDENTIFIER_TOO_LONG);
 
 		AddCallback(a_sName, ParserCallback(a_pFun, a_bAllowOpt, a_iPrec, cmOPRT_INFIX), m_InfixOprtDef, ValidInfixOprtChars());
@@ -543,7 +543,7 @@ namespace mu
 	*/
 	void ParserBase::DefineOprt(const string_type& a_sName, fun_type2 a_pFun, unsigned a_iPrec, EOprtAssociativity a_eAssociativity, bool a_bAllowOpt)
 	{
-		if (a_sName.length() > ParserSetup::MaxLenIdentifier)
+		if (a_sName.length() > MaxLenIdentifier)
 			Error(ecIDENTIFIER_TOO_LONG);
 
 		// Check for conflicts with built in operator names
@@ -589,7 +589,7 @@ namespace mu
 		if (a_pVar == 0)
 			Error(ecINVALID_VAR_PTR);
 
-		if (a_sName.length() > ParserSetup::MaxLenIdentifier)
+		if (a_sName.length() > MaxLenIdentifier)
 			Error(ecIDENTIFIER_TOO_LONG);
 
 		// Test if a constant with that names already exists
@@ -610,7 +610,7 @@ namespace mu
 	*/
 	void ParserBase::DefineConst(const string_type& a_sName, value_type a_fVal)
 	{
-		if (a_sName.length() > ParserSetup::MaxLenIdentifier)
+		if (a_sName.length() > MaxLenIdentifier)
 			Error(ecIDENTIFIER_TOO_LONG);
 
 		CheckName(a_sName, ValidNameChars());
@@ -1020,6 +1020,56 @@ namespace mu
 	value_type ParserBase::ParseCmdCode() const
 	{
 		return ParseCmdCodeBulk(0, 0);
+	}
+
+	value_type ParserBase::ParseCmdCodeShort() const
+	{
+		const SToken *const tok = m_vRPN.GetBase();
+		const int sz = m_vRPN.GetSize();
+		value_type buf;
+		switch (sz-2)
+		{
+		case 0:
+			switch (tok->Cmd)
+			{
+			case cmVAL:
+				return tok->Val.data2;
+
+			case cmVAR:
+				return *tok->Val.ptr;
+
+			case cmVARMUL:
+				return *tok->Val.ptr * tok->Val.data + tok->Val.data2;
+
+			case  cmVARPOW2: 
+				buf = *(tok->Val.ptr);
+				return buf * buf;
+
+			case  cmVARPOW3: 				
+				buf = *(tok->Val.ptr);
+				return buf * buf * buf;
+
+			case  cmVARPOW4: 				
+				buf = *(tok->Val.ptr);
+				return buf * buf * buf * buf;
+
+			// numerical function without any argument
+			case cmFUNC:
+				return (*(fun_type0)tok->Fun.ptr)();
+
+			// String function without a numerical argument
+			case cmFUNC_STR:
+				return (*(strfun_type1)tok->Fun.ptr)(m_vStringBuf[0].c_str());
+
+			default:
+				Error(ecINTERNAL_ERROR);
+			}
+
+		case 1:
+			break;
+		default:
+			Error(ecINTERNAL_ERROR);
+		}
 	}
 
 	//---------------------------------------------------------------------------
@@ -1454,7 +1504,16 @@ namespace mu
 		try
 		{
 			CreateRPN();
-			m_pParseFormula = &ParserBase::ParseCmdCode;
+
+			if (m_vRPN.GetSize() == 2)
+			{
+				m_pParseFormula = &ParserBase::ParseCmdCodeShort;
+			}
+			else
+			{
+				m_pParseFormula = &ParserBase::ParseCmdCode;
+			}
+			
 			return (this->*m_pParseFormula)();
 		}
 		catch (ParserError& exc)
@@ -1723,7 +1782,15 @@ namespace mu
 	*/
 	value_type* ParserBase::Eval(int& nStackSize) const
 	{
-		(this->*m_pParseFormula)();
+		if (m_vRPN.GetSize() > 0)
+		{
+			ParseCmdCode();
+		}
+		else
+		{
+			ParseString();
+		}
+
 		nStackSize = m_nFinalResultIdx;
 
 		// (for historic reasons the stack starts at position 1)

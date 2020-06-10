@@ -507,25 +507,9 @@ namespace mu
 	}
 
 	//---------------------------------------------------------------------------
-	const SToken* ParserByteCode::GetBase() const
-	{
-		if (m_vRPN.size() == 0)
-			throw ParserError(ecINTERNAL_ERROR);
-		else
-			return &m_vRPN[0];
-	}
-
-	//---------------------------------------------------------------------------
 	std::size_t ParserByteCode::GetMaxStackSize() const
 	{
 		return m_iMaxStackSize + 1;
-	}
-
-	//---------------------------------------------------------------------------
-	/** \brief Returns the number of entries in the bytecode. */
-	std::size_t ParserByteCode::GetSize() const
-	{
-		return m_vRPN.size();
 	}
 
 	//---------------------------------------------------------------------------

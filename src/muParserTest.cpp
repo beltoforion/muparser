@@ -842,6 +842,8 @@ namespace mu
 
 			value_type b = 2;
 
+			iStat += EqnTest(_T("f0()"), 42, true);
+
 			// Optimization
 			iStat += EqnTest(_T("2*b*5"), 20, true);
 			iStat += EqnTest(_T("2*b*5 + 4*b"), 28, true);
@@ -1311,6 +1313,7 @@ namespace mu
 
 				// functions
 				p1->DefineFun(_T("ping"), Ping);
+				p1->DefineFun(_T("f0"), f0);        // no parameter
 				p1->DefineFun(_T("f1of1"), f1of1);  // one parameter
 				p1->DefineFun(_T("f1of2"), f1of2);  // two parameter
 				p1->DefineFun(_T("f2of2"), f2of2);

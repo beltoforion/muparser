@@ -57,6 +57,8 @@ namespace mu
 		private:
 			static int c_iCount;
 
+			static value_type f0() { return 42; };
+
 			// Multiarg callbacks
 			static value_type f1of1(value_type v) { return v; };
 

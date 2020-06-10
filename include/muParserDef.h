@@ -42,9 +42,6 @@
 	\brief This file contains standard definitions used by the parser.
 */
 
-#define MUP_VERSION _T("2.2.7 (Dev)")
-#define MUP_VERSION_DATE _T("20200609")
-
 /** \brief Define the base datatype for values.
 
   This datatype must be a built in value type. You can not use custom classes.
@@ -130,14 +127,6 @@ namespace mu
 #endif
 
 	//------------------------------------------------------------------------------
-	class ParserSetup
-	{
-	public:
-		static const int MaxLenExpression = 5000;
-		static const int MaxLenIdentifier = 100;
-	};
-
-	//------------------------------------------------------------------------------
 	/** \brief Bytecode values.
 
 		\attention The order of the operator entries must match the order in ParserBase::c_DefaultOprt!
@@ -175,10 +164,9 @@ namespace mu
 		cmVARPOW3 = 23,
 		cmVARPOW4 = 24,
 		cmVARMUL = 25,
-		cmPOW2 = 26,
 
 		// operators and functions
-		cmFUNC = 27,		///< Code for a generic function item
+		cmFUNC = 26,		///< Code for a generic function item
 		cmFUNC_STR,			///< Code for a function with a string parameter
 		cmFUNC_BULK,		///< Special callbacks for Bulk mode with an additional parameter for the bulk index 
 		cmSTRING,			///< Code for a string token
@@ -363,6 +351,11 @@ namespace mu
 
 	/** \brief Callback used for variable creation factory functions. */
 	typedef value_type* (*facfun_type)(const char_type*, void*);
+
+	static const int MaxLenExpression = 5000;
+	static const int MaxLenIdentifier = 100;
+	static const string_type ParserVersion = string_type(_T("2.2.7 (Dev)"));
+	static const string_type ParserVersionDate = string_type(_T("20200610"));
 } // end of namespace
 
 #endif
