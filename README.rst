@@ -23,7 +23,7 @@ Changes:
 * introduced a maximum length for identifiers (100 Characters)
 * removed the MUP_MATH_EXCEPTION macro and related functionality. (C++ exceptions for divide by zero or sqrt of a negative number are no longer supported)
 * removed ParserStack.h (replaced with std::stack)
-* removed macros for defining E and PI (replaced with a static class)
+* removed macros for defining E and PI 
 * source code is now aimed at C++17
 * the MUP_ASSERT macro is no longer removed in release builds for better protection against segmentation faults
 
