@@ -5,7 +5,7 @@
     :target: https://ci.appveyor.com/project/jschueller/muparser-9ib44
 
 ========
-muParser
+muparser
 ========
 
 Fast math parser library, see http://beltoforion.de/article.php?a=muparser
