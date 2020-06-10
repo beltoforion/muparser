@@ -1040,7 +1040,7 @@ namespace mu
 		{
 			switch (pTok->Cmd)
 			{
-				// built in binary operators
+			// built in binary operators
 			case  cmLE:   --sidx; Stack[sidx] = Stack[sidx] <= Stack[sidx + 1]; continue;
 			case  cmGE:   --sidx; Stack[sidx] = Stack[sidx] >= Stack[sidx + 1]; continue;
 			case  cmNEQ:  --sidx; Stack[sidx] = Stack[sidx] != Stack[sidx + 1]; continue;
@@ -1097,7 +1097,8 @@ namespace mu
 				Stack[++sidx] = buf * buf * buf * buf;
 				continue;
 
-			case  cmVARMUL:  Stack[++sidx] = *(pTok->Val.ptr + nOffset) * pTok->Val.data + pTok->Val.data2;
+			case  cmVARMUL:  
+				Stack[++sidx] = *(pTok->Val.ptr + nOffset) * pTok->Val.data + pTok->Val.data2;
 				continue;
 
 				// Next is treatment of numeric functions

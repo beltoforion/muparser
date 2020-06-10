@@ -108,9 +108,9 @@ namespace mu
 
 		virtual ~ParserBase();
 
-		value_type  Eval() const;
-		value_type* Eval(int& nStackSize) const;
-		void Eval(value_type* results, int nBulkSize);
+		inline value_type  Eval() const;
+		inline value_type* Eval(int& nStackSize) const;
+		inline void Eval(value_type* results, int nBulkSize);
 
 		int GetNumResults() const;
 
