@@ -15,6 +15,8 @@ See Install.txt for installation
 Change Notes for Revision 2.2.7 (in Development;10.06.2020)
 ===========================================================
 
+Version 2.2.7 will bring fixes for parsing in bulk mode. It will enable OpenMP by default thus allowing the parallelization of expression evaluation. It will also fix a range of issues reported by oss-fuz (https://github.com/google/oss-fuzz).
+
 Changes:
 --------
 * using OpenMP is now the default settings for cmake based builds
