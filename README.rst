@@ -18,6 +18,7 @@ Change Notes for Revision 2.2.7 (10.06.2020)
 Changes:
 --------
 * using OpenMP is now the default settings for cmake based builds
+* Added optimization for trivial expressions. (Expressions whose RPN only has a single entry)
 * introduced a maximum length for expressions (5000 Character)
 * introduced a maximum length for identifiers (100 Characters)
 * removed the MUP_MATH_EXCEPTION macro and related functionality. (C++ exceptions for divide by zero or sqrt of a negative number are no longer supported)
