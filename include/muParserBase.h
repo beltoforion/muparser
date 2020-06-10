@@ -1,10 +1,10 @@
 /*
 
-       _____  __ _____________ _______  ______ ___________
-      /     \|  |  \____ \__  \\_  __ \/  ___// __ \_  __ \
-     |  Y Y  \  |  /  |_> > __ \|  | \/\___ \\  ___/|  | \/
-     |__|_|  /____/|   __(____  /__|  /____  >\___  >__|
-           \/      |__|       \/           \/     \/
+	   _____  __ _____________ _______  ______ ___________
+	  /     \|  |  \____ \__  \\_  __ \/  ___// __ \_  __ \
+	 |  Y Y  \  |  /  |_> > __ \|  | \/\___ \\  ___/|  | \/
+	 |__|_|  /____/|   __(____  /__|  /____  >\___  >__|
+		   \/      |__|       \/           \/     \/
 
 
   Copyright (C) 2004 - 2020 Ingo Berg
@@ -108,9 +108,28 @@ namespace mu
 
 		virtual ~ParserBase();
 
-		inline value_type  Eval() const;
-		inline value_type* Eval(int& nStackSize) const;
-		inline void Eval(value_type* results, int nBulkSize);
+		/** \brief Calculate the result.
+
+		  A note on const correctness:
+		  I consider it important that Calc is a const function.
+		  Due to caching operations Calc changes only the state of internal variables with one exception
+		  m_UsedVar this is reset during string parsing and accessible from the outside. Instead of making
+		  Calc non const GetUsedVar is non const because it explicitly calls Eval() forcing this update.
+
+		  \pre A formula must be set.
+		  \pre Variables must have been set (if needed)
+
+		  \sa #m_pParseFormula
+		  \return The evaluation result
+		  \throw ParseException if no Formula is set or in case of any other error related to the formula.
+		*/
+		inline value_type Eval() const
+		{
+			return (this->*m_pParseFormula)();
+		}
+
+		value_type* Eval(int& nStackSize) const;
+		void Eval(value_type* results, int nBulkSize);
 
 		int GetNumResults() const;
 
