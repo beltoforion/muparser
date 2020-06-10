@@ -83,14 +83,12 @@ namespace mu
 
 	/** \brief Bytecode implementation of the Math Parser.
 
-	The bytecode contains the formula converted to revers polish notation stored in a continious
-	memory area. Associated with this data are operator codes, variable pointers, constant
-	values and function pointers. Those are necessary in order to calculate the result.
-	All those data items will be casted to the underlying datatype of the bytecode.
-
-	\author (C) 2004-2020 Ingo Berg
-  */
-	class ParserByteCode final
+		The bytecode contains the formula converted to revers polish notation stored in a continious
+		memory area. Associated with this data are operator codes, variable pointers, constant
+		values and function pointers. Those are necessary in order to calculate the result.
+		All those data items will be casted to the underlying datatype of the bytecode.
+	*/
+	class ParserByteCode 
 	{
 	private:
 

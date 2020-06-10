@@ -49,7 +49,7 @@ namespace mu
 	  Standard implementation of the mathematical expressions parser.
 	  Can be used as a reference implementation for subclassing the parser.
 	*/
-	class API_EXPORT_CXX Parser final : public ParserBase
+	class API_EXPORT_CXX Parser : public ParserBase
 	{
 	public:
 

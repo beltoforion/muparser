@@ -60,8 +60,6 @@ namespace mu
 		<li>infix operators</li>
 		  <li>binary operator</li>
 	  </ul>
-
-	 \author (C) 2004-2013 Ingo Berg
 	*/
 	template<typename TBase, typename TString>
 	class ParserToken

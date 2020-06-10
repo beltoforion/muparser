@@ -47,11 +47,7 @@ namespace mu
 	/** \brief Namespace for test cases. */
 	namespace Test
 	{
-		//------------------------------------------------------------------------------
-		/** \brief Test cases for unit testing.
-
-		  (C) 2004-2011 Ingo Berg
-		*/
+		/** \brief Test cases for unit testing.	*/
 		class API_EXPORT_CXX ParserTester // final
 		{
 		private:
@@ -230,5 +226,4 @@ namespace mu
 } // namespace mu
 
 #endif
-
 

@@ -16,7 +16,7 @@
 History:
 --------
 
-Rev 2.2.7: 08.06.2020
+Rev 2.3.0: 08.06.2020
 ---------------------
   Changes:
    * using OpenMP is now the default settings for cmake based builds
