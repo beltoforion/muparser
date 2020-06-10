@@ -1067,9 +1067,9 @@ namespace mu
 
 		case 1:
 			break;
-		default:
-			Error(ecINTERNAL_ERROR);
 		}
+
+		Error(ecINTERNAL_ERROR);
 	}
 
 	//---------------------------------------------------------------------------
