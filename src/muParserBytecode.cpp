@@ -215,7 +215,16 @@ namespace mu
 					// Optimization for polynomials of low order
 					if (m_vRPN[sz - 2].Cmd == cmVAR && m_vRPN[sz - 1].Cmd == cmVAL)
 					{
-						if (m_vRPN[sz - 1].Val.data2 == 2)
+						if (m_vRPN[sz - 1].Val.data2 == 0)
+						{
+							m_vRPN[sz - 2].Cmd = cmVAL;
+							m_vRPN[sz - 2].Val.ptr = nullptr;
+							m_vRPN[sz - 2].Val.data = 0;
+							m_vRPN[sz - 2].Val.data2 = 1;
+						}
+						else if (m_vRPN[sz - 1].Val.data2 == 1)
+							m_vRPN[sz - 2].Cmd = cmVAR;
+						else if (m_vRPN[sz - 1].Val.data2 == 2)
 							m_vRPN[sz - 2].Cmd = cmVARPOW2;
 						else if (m_vRPN[sz - 1].Val.data2 == 3)
 							m_vRPN[sz - 2].Cmd = cmVARPOW3;
@@ -368,7 +377,10 @@ namespace mu
 		// only optimize functions with fixed number of more than a single arguments
 		if (m_bEnableOptimizer && a_iArgc > 0)
 		{
-			optimize = true;
+			// <ibg 2020-06-10/> Unary Plus is a no-op
+			if ((void*)a_pFun == (void*)&MathImpl<value_type>::UnaryPlus)
+				return;
+
 			for (int i = 1; i <= std::abs(a_iArgc); ++i)
 			{
 				if (m_vRPN[sz - i].Cmd != cmVAL)

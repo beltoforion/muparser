@@ -139,6 +139,53 @@ namespace mu
 		static T Sign(T v) { return (T)((v < 0) ? -1 : (v > 0) ? 1 : 0); }
 		static T Pow(T v1, T v2) { return std::pow(v1, v2); }
 
+		static T UnaryMinus(T v) { return -v; }
+		static T UnaryPlus(T v) { return v; }
+
+		static T Sum(const T *a_afArg, int a_iArgc)
+		{
+			if (!a_iArgc)
+				throw ParserError(_T("too few arguments for function sum."));
+
+			T fRes = 0;
+			for (int i = 0; i < a_iArgc; ++i) fRes += a_afArg[i];
+			return fRes;
+		}
+
+		static T Avg(const T *a_afArg, int a_iArgc)
+		{
+			if (!a_iArgc)
+				throw ParserError(_T("too few arguments for function sum."));
+
+			T fRes = 0;
+			for (int i = 0; i < a_iArgc; ++i) fRes += a_afArg[i];
+			return fRes / (T)a_iArgc;
+		}
+
+		static T Min(const T *a_afArg, int a_iArgc)
+		{
+			if (!a_iArgc)
+				throw ParserError(_T("too few arguments for function min."));
+
+			T fRes = a_afArg[0];
+			for (int i = 0; i < a_iArgc; ++i)
+				fRes = std::min(fRes, a_afArg[i]);
+
+			return fRes;
+		}
+
+		static T Max(const T *a_afArg, int a_iArgc)
+		{
+			if (!a_iArgc)
+				throw ParserError(_T("too few arguments for function min."));
+
+			T fRes = a_afArg[0];
+			for (int i = 0; i < a_iArgc; ++i) fRes = std::max(fRes, a_afArg[i]);
+
+			return fRes;
+		}
+
+
 #if defined (__GNUG__)
 		// Bei zu genauer definition von pi kann die Berechnung von
 		// sin(pi*a) mit a=1 10 x langsamer sein! 

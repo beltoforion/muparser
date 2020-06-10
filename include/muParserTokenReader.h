@@ -57,7 +57,7 @@ namespace mu
 	/** \brief Token reader for the ParserBase class.
 
 	*/
-	class ParserTokenReader
+	class ParserTokenReader final
 	{
 	private:
 

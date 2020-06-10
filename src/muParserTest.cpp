@@ -843,6 +843,10 @@ namespace mu
 			value_type b = 2;
 
 			iStat += EqnTest(_T("f0()"), 42, true);
+			iStat += EqnTest(_T("b^2"), 4, true);
+			iStat += EqnTest(_T("b^1"), 2, true);
+			iStat += EqnTest(_T("b^0"), 1, true);
+			iStat += EqnTest(_T("b^-1"), 0.5, true);
 
 			// Optimization
 			iStat += EqnTest(_T("2*b*5"), 20, true);

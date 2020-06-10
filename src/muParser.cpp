@@ -47,124 +47,6 @@ using namespace std;
 /** \brief Namespace for mathematical applications. */
 namespace mu
 {
-
-
-	//---------------------------------------------------------------------------
-	// Trigonometric function
-	value_type Parser::Sin(value_type v) { return MathImpl<value_type>::Sin(v); }
-	value_type Parser::Cos(value_type v) { return MathImpl<value_type>::Cos(v); }
-	value_type Parser::Tan(value_type v) { return MathImpl<value_type>::Tan(v); }
-	value_type Parser::ASin(value_type v) { return MathImpl<value_type>::ASin(v); }
-	value_type Parser::ACos(value_type v) { return MathImpl<value_type>::ACos(v); }
-	value_type Parser::ATan(value_type v) { return MathImpl<value_type>::ATan(v); }
-	value_type Parser::ATan2(value_type v1, value_type v2) { return MathImpl<value_type>::ATan2(v1, v2); }
-	value_type Parser::Sinh(value_type v) { return MathImpl<value_type>::Sinh(v); }
-	value_type Parser::Cosh(value_type v) { return MathImpl<value_type>::Cosh(v); }
-	value_type Parser::Tanh(value_type v) { return MathImpl<value_type>::Tanh(v); }
-	value_type Parser::ASinh(value_type v) { return MathImpl<value_type>::ASinh(v); }
-	value_type Parser::ACosh(value_type v) { return MathImpl<value_type>::ACosh(v); }
-	value_type Parser::ATanh(value_type v) { return MathImpl<value_type>::ATanh(v); }
-
-	//---------------------------------------------------------------------------
-	// Logarithm functions
-	value_type Parser::Log2(value_type v) { return MathImpl<value_type>::Log2(v); }
-	value_type Parser::Log10(value_type v) { return MathImpl<value_type>::Log10(v); }
-	value_type Parser::Ln(value_type v)	{ return MathImpl<value_type>::Log(v); }
-
-	//---------------------------------------------------------------------------
-	//  misc
-	value_type Parser::Exp(value_type v) { return MathImpl<value_type>::Exp(v); }
-	value_type Parser::Abs(value_type v) { return MathImpl<value_type>::Abs(v); }
-	value_type Parser::Sqrt(value_type v) { return MathImpl<value_type>::Sqrt(v); }
-	value_type Parser::Rint(value_type v) { return MathImpl<value_type>::Rint(v); }
-	value_type Parser::Sign(value_type v) { return MathImpl<value_type>::Sign(v); }
-
-	//---------------------------------------------------------------------------
-	/** \brief Callback for the unary minus operator.
-		\param v The value to negate
-		\return -v
-	*/
-	value_type Parser::UnaryMinus(value_type v)
-	{
-		return -v;
-	}
-
-	//---------------------------------------------------------------------------
-	/** \brief Callback for the unary minus operator.
-		\param v The value to negate
-		\return -v
-	*/
-	value_type Parser::UnaryPlus(value_type v)
-	{
-		return v;
-	}
-
-	//---------------------------------------------------------------------------
-	/** \brief Callback for adding multiple values.
-		\param [in] a_afArg Vector with the function arguments
-		\param [in] a_iArgc The size of a_afArg
-	*/
-	value_type Parser::Sum(const value_type* a_afArg, int a_iArgc)
-	{
-		if (!a_iArgc)
-			throw exception_type(_T("too few arguments for function sum."));
-
-		value_type fRes = 0;
-		for (int i = 0; i < a_iArgc; ++i) fRes += a_afArg[i];
-		return fRes;
-	}
-
-	//---------------------------------------------------------------------------
-	/** \brief Callback for averaging multiple values.
-		\param [in] a_afArg Vector with the function arguments
-		\param [in] a_iArgc The size of a_afArg
-	*/
-	value_type Parser::Avg(const value_type* a_afArg, int a_iArgc)
-	{
-		if (!a_iArgc)
-			throw exception_type(_T("too few arguments for function sum."));
-
-		value_type fRes = 0;
-		for (int i = 0; i < a_iArgc; ++i) fRes += a_afArg[i];
-		return fRes / (value_type)a_iArgc;
-	}
-
-
-	//---------------------------------------------------------------------------
-	/** \brief Callback for determining the minimum value out of a vector.
-		\param [in] a_afArg Vector with the function arguments
-		\param [in] a_iArgc The size of a_afArg
-	*/
-	value_type Parser::Min(const value_type* a_afArg, int a_iArgc)
-	{
-		if (!a_iArgc)
-			throw exception_type(_T("too few arguments for function min."));
-
-		value_type fRes = a_afArg[0];
-		for (int i = 0; i < a_iArgc; ++i)
-			fRes = std::min(fRes, a_afArg[i]);
-
-		return fRes;
-	}
-
-
-	//---------------------------------------------------------------------------
-	/** \brief Callback for determining the maximum value out of a vector.
-		\param [in] a_afArg Vector with the function arguments
-		\param [in] a_iArgc The size of a_afArg
-	*/
-	value_type Parser::Max(const value_type* a_afArg, int a_iArgc)
-	{
-		if (!a_iArgc)
-			throw exception_type(_T("too few arguments for function min."));
-
-		value_type fRes = a_afArg[0];
-		for (int i = 0; i < a_iArgc; ++i) fRes = std::max(fRes, a_afArg[i]);
-
-		return fRes;
-	}
-
-
 	//---------------------------------------------------------------------------
 	/** \brief Default value recognition callback.
 		\param [in] a_szExpr Pointer to the expression
@@ -236,38 +118,38 @@ namespace mu
 		else
 		{
 			// trigonometric functions
-			DefineFun(_T("sin"), Sin);
-			DefineFun(_T("cos"), Cos);
-			DefineFun(_T("tan"), Tan);
+			DefineFun(_T("sin"), MathImpl<value_type>::Sin);
+			DefineFun(_T("cos"), MathImpl<value_type>::Cos);
+			DefineFun(_T("tan"), MathImpl<value_type>::Tan);
 			// arcus functions
-			DefineFun(_T("asin"), ASin);
-			DefineFun(_T("acos"), ACos);
-			DefineFun(_T("atan"), ATan);
-			DefineFun(_T("atan2"), ATan2);
+			DefineFun(_T("asin"), MathImpl<value_type>::ASin);
+			DefineFun(_T("acos"), MathImpl<value_type>::ACos);
+			DefineFun(_T("atan"), MathImpl<value_type>::ATan);
+			DefineFun(_T("atan2"), MathImpl<value_type>::ATan2);
 			// hyperbolic functions
-			DefineFun(_T("sinh"), Sinh);
-			DefineFun(_T("cosh"), Cosh);
-			DefineFun(_T("tanh"), Tanh);
+			DefineFun(_T("sinh"), MathImpl<value_type>::Sinh);
+			DefineFun(_T("cosh"), MathImpl<value_type>::Cosh);
+			DefineFun(_T("tanh"), MathImpl<value_type>::Tanh);
 			// arcus hyperbolic functions
-			DefineFun(_T("asinh"), ASinh);
-			DefineFun(_T("acosh"), ACosh);
-			DefineFun(_T("atanh"), ATanh);
+			DefineFun(_T("asinh"), MathImpl<value_type>::ASinh);
+			DefineFun(_T("acosh"), MathImpl<value_type>::ACosh);
+			DefineFun(_T("atanh"), MathImpl<value_type>::ATanh);
 			// Logarithm functions
-			DefineFun(_T("log2"), Log2);
-			DefineFun(_T("log10"), Log10);
-			DefineFun(_T("log"), Ln);
-			DefineFun(_T("ln"), Ln);
+			DefineFun(_T("log2"), MathImpl<value_type>::Log2);
+			DefineFun(_T("log10"), MathImpl<value_type>::Log10);
+			DefineFun(_T("log"), MathImpl<value_type>::Log);
+			DefineFun(_T("ln"), MathImpl<value_type>::Log);
 			// misc
-			DefineFun(_T("exp"), Exp);
-			DefineFun(_T("sqrt"), Sqrt);
-			DefineFun(_T("sign"), Sign);
-			DefineFun(_T("rint"), Rint);
-			DefineFun(_T("abs"), Abs);
+			DefineFun(_T("exp"), MathImpl<value_type>::Exp);
+			DefineFun(_T("sqrt"), MathImpl<value_type>::Sqrt);
+			DefineFun(_T("sign"), MathImpl<value_type>::Sign);
+			DefineFun(_T("rint"), MathImpl<value_type>::Rint);
+			DefineFun(_T("abs"), MathImpl<value_type>::Abs);
 			// Functions with variable number of arguments
-			DefineFun(_T("sum"), Sum);
-			DefineFun(_T("avg"), Avg);
-			DefineFun(_T("min"), Min);
-			DefineFun(_T("max"), Max);
+			DefineFun(_T("sum"), MathImpl<value_type>::Sum);
+			DefineFun(_T("avg"), MathImpl<value_type>::Avg);
+			DefineFun(_T("min"), MathImpl<value_type>::Min);
+			DefineFun(_T("max"), MathImpl<value_type>::Max);
 		}
 	}
 
@@ -290,8 +172,8 @@ namespace mu
 	*/
 	void Parser::InitOprt()
 	{
-		DefineInfixOprt(_T("-"), UnaryMinus);
-		DefineInfixOprt(_T("+"), UnaryPlus);
+		DefineInfixOprt(_T("-"), MathImpl<value_type>::UnaryMinus);
+		DefineInfixOprt(_T("+"), MathImpl<value_type>::UnaryPlus);
 	}
 
 	//---------------------------------------------------------------------------

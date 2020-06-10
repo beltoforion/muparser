@@ -90,7 +90,7 @@ namespace mu
 
 	\author (C) 2004-2020 Ingo Berg
   */
-	class ParserByteCode
+	class ParserByteCode final
 	{
 	private:
 
