@@ -12,8 +12,8 @@ For a detailed description of the parser go to http://beltoforion.de/article.php
 
 See Install.txt for installation
 
-Change Notes for Revision 2.2.7 (10.06.2020)
-============================================
+Change Notes for Revision 2.2.7 (in Development;10.06.2020)
+===========================================================
 
 Changes:
 --------
