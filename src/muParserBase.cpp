@@ -1070,7 +1070,7 @@ namespace mu
 			break;
 		}
 
-		Error(ecINTERNAL_ERROR);
+		throw ParserError(ecINTERNAL_ERROR);
 	}
 
 	//---------------------------------------------------------------------------
