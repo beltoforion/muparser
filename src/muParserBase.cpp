@@ -1032,13 +1032,13 @@ namespace mu
 		case 0:
 			switch (tok->Cmd)
 			{
-			case cmVAL:
+			case cmVAL:		
 				return tok->Val.data2;
 
-			case cmVAR:
+			case cmVAR:		
 				return *tok->Val.ptr;
 
-			case cmVARMUL:
+			case cmVARMUL:	
 				return *tok->Val.ptr * tok->Val.data + tok->Val.data2;
 
 			case  cmVARPOW2: 
@@ -1064,6 +1064,7 @@ namespace mu
 			default:
 				Error(ecINTERNAL_ERROR);
 			}
+			break;
 
 		case 1:
 			break;
