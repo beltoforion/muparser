@@ -17,7 +17,7 @@ Change Notes for Revision 2.3.0 (in Development;10.06.2020)
 
 Version 2.3.0 will bring fixes for parsing in bulk mode. It will enable OpenMP by default thus allowing the parallelization of expression evaluation. It will also fix a range of issues reported by oss-fuz (https://github.com/google/oss-fuzz).
 
-API and ABI Compliance Check with Version 2.2.6
+API and ABI compliance check with version 2.2.6
 -----------------------------------------------
 Version 2.3 will extend existing enumerators. New Error codes have been added. In the muparser base class protected functions for implementing basic mathematical operations such as sin,cos, sqrt,tan,... have been removed.
 
