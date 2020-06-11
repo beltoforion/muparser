@@ -622,6 +622,9 @@ namespace mu
 			int iStat = 0;
 			mu::console() << _T("testing multiarg functions...");
 
+			// from oss-fzz.com: UNKNOWN READ; https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=22922#c1
+			iStat += ThrowTest(_T("6, +, +, +, +, +, +, +, +, +, +, +, +, +, +, 1, +, +, +, +, +, +, +, +, +, +, +, +, +, +, +, +, +, +, +, +, +, +, +, +, +, +, +, +, +, +, +, +"), ecUNEXPECTED_ARG_SEP, true);
+			
 			// Compound expressions
 			iStat += EqnTest(_T("1,2,3"), 3, true);
 			iStat += EqnTest(_T("a,b,c"), 3, true);
@@ -1169,7 +1172,7 @@ namespace mu
 
 
 		//---------------------------------------------------------------------------
-		int ParserTester::ThrowTest(const string_type& a_str, int a_iErrc, bool a_bFail)
+		int ParserTester::ThrowTest(const string_type& a_str, int a_iErrc, bool a_expectedToFail)
 		{
 			ParserTester::c_iCount++;
 
@@ -1196,7 +1199,7 @@ namespace mu
 			catch (ParserError& e)
 			{
 				// output the formula in case of an failed test
-				if (a_bFail == false || (a_bFail == true && a_iErrc != e.GetCode()))
+				if (a_expectedToFail == false || (a_expectedToFail == true && a_iErrc != e.GetCode()))
 				{
 					mu::console() << _T("\n  ")
 						<< _T("Expression: ") << a_str
@@ -1207,8 +1210,8 @@ namespace mu
 				return (a_iErrc == e.GetCode()) ? 0 : 1;
 			}
 
-			// if a_bFail==false no exception is expected
-			bool bRet((a_bFail == false) ? 0 : 1);
+			// if a_expectedToFail == false no exception is expected
+			bool bRet((a_expectedToFail == false) ? 0 : 1);
 			if (bRet == 1)
 			{
 				mu::console() << _T("\n  ")
