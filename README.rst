@@ -6,6 +6,9 @@
 
 muparser - Fast Math Parser
 ===========================
+
+*Version 2.3.0 is still in Development! A new official release will follow soon*
+
 For a detailed description of the parser go to http://beltoforion.de/article.php?a=muparser.
 
 See Install.txt for installation
