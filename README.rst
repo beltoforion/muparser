@@ -29,14 +29,14 @@ Changes:
 * source code is now aimed at C++17
 * the MUP_ASSERT macro is no longer removed in release builds for better protection against segmentation faults
 
-Security Fixes: (The issues were present in all prior stable releases)
+Security Fixes: 
 ----------------------------------------------------------------------
+Fixed several issues reported by oss-fuzz. The issues were present in older releases. Most of them resulted in segmentation faults.
 
-* Fixed several issues reported by oss-fuzz. Most of them resulted in segmentation faults. List of fixed issues:
-	   * https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=23330
-	   * https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=22922
-	   * https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=22938
-	   * https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=23330
+* https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=23330
+* https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=22922
+* https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=22938
+* https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=23330
 * Added additional runtime checks for release builds to prevent segmentation faults for invalid expressions
 
 Bugfixes:
