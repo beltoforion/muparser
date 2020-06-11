@@ -32,7 +32,11 @@ Changes:
 Security Fixes: (The issues were present in all prior stable releases)
 ----------------------------------------------------------------------
 
-* Prevented multiple access violations for malformed expressions with if then else and functions taking multiple arguments like "sum(0?1,2,3,4:5)"
+* Fixed several issues reported by oss-fuzz. Most of them resulted in segmentation faults. List of fixed issues:
+	   * https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=23330
+	   * https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=22922
+	   * https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=22938
+	   * https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=23330
 * Added additional runtime checks for release builds to prevent segmentation faults for invalid expressions
 
 Bugfixes:
