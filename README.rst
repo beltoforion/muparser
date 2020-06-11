@@ -4,21 +4,17 @@
 .. image:: https://ci.appveyor.com/api/projects/status/u4882uj8btuspj9x?svg=true
     :target: https://ci.appveyor.com/project/jschueller/muparser-9ib44
 
-
-muparser - fast math parser library
-===================================
-
+# muparser - Fast Math Parser
 For a detailed description of the parser go to http://beltoforion.de/article.php?a=muparser.
 
 See Install.txt for installation
 
-Change Notes for Revision 2.3.0 (in Development;10.06.2020)
-===========================================================
+## Change Notes for Revision 2.3.0 (in Development;10.06.2020)
 
 Version 2.3.0 will bring fixes for parsing in bulk mode. It will enable OpenMP by default thus allowing the parallelization of expression evaluation. It will also fix a range of issues reported by oss-fuz (https://github.com/google/oss-fuzz).
 
-API and ABI compliance check with version 2.2.6
------------------------------------------------
+### API and ABI compliance check with version 2.2.6
+
 Version 2.3 will extend existing enumerators. New Error codes have been added. In the muparser base class protected functions for implementing basic mathematical operations such as sin,cos, sqrt,tan,... have been removed.
 
 The binary interface should be compatible with versions 2.2.6 unless the parser is used in a very weird way. I checked the compliance against the sample application compiled for 2.2.6 by exchanging the livrary with the new version 2.3. I did not see any problems. You can find a complete ABI compliance report here:
@@ -27,8 +23,8 @@ https://www.beltoforion.de/en/muparser/compat_reports/2.2.6_to_2.3.0/compat_repo
 
 I recommend replacing existing versions of 2.2.6 with version 2.3.0
 
-Changes:
---------
+### Changes:
+
 * using OpenMP is now the default settings for cmake based builds
 * added optimization for trivial expressions. (Expressions with an RPN length of 1)
 * introduced a maximum length for expressions (5000 Character)
@@ -39,8 +35,8 @@ Changes:
 * source code is now aimed at C++17
 * the MUP_ASSERT macro is no longer removed in release builds for better protection against segmentation faults
 
-Security Fixes: 
-----------------------------------------------------------------------
+### Security Fixes: 
+
 Fixed several issues reported by oss-fuzz. The issues were present in older releases. Most of them resulted in segmentation faults.
 
 * https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=23330
@@ -49,7 +45,7 @@ Fixed several issues reported by oss-fuzz. The issues were present in older rele
 * https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=23330
 * Added additional runtime checks for release builds to prevent segmentation faults for invalid expressions
 
-Bugfixes:
----------
+### Bugfixes:
+
 * Fixed an issue where the bulk mode could hang on GCC/CLANG builds due to OpenMP chunksize dropping below 1.
 
