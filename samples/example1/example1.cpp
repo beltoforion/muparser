@@ -200,14 +200,10 @@ static void Splash()
 #if defined(__clang__)
 	// Note: CLANG also identifies as GCC 4.2.1
 	mu::console() << _T("  Compiled with CLANG Version ") << __clang_major__ << _T(".") << __clang_minor__ << _T(".") << __clang_patchlevel__ << _T("\n");
-#else
-
-#if defined (__GNUC__)
+#elif defined (__GNUC__)
 	mu::console() << _T("  Compiled with GCC Version ") << __GNUC__ << _T(".") << __GNUC_MINOR__ << _T(".") << __GNUC_PATCHLEVEL__ << _T("\n");
 #elif defined(_MSC_VER)
 	mu::console() << _T("  Compiled with MSVC Version ") << _MSC_VER << _T("\n");
-#endif
-
 #endif
 
 	mu::console() << _T("  IEEE 754 (IEC 559) is ") << ((std::numeric_limits<double>::is_iec559) ? "Available" : " NOT AVAILABLE") << _T("\n");

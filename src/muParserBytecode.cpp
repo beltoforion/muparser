@@ -396,7 +396,6 @@ namespace mu
 		if (optimize)
 		{
 			value_type val = 0;
-			int sidx = 0;
 			switch (a_iArgc)
 			{
 			case 1:  val = (*reinterpret_cast<fun_type1>(a_pFun))(m_vRPN[sz - 1].Val.data2);   break;

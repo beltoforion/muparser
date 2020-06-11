@@ -48,7 +48,7 @@ namespace mu
 	namespace Test
 	{
 		/** \brief Test cases for unit testing.	*/
-		class API_EXPORT_CXX ParserTester // final
+		class API_EXPORT_CXX ParserTester final
 		{
 		private:
 			static int c_iCount;

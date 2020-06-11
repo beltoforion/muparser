@@ -50,10 +50,8 @@ namespace mu
 		and needs to be casted according to the argument count.
 		Negative argument counts indicate a parser function with a variable number
 		of arguments.
-
-		\author (C) 2004-2011 Ingo Berg
 	*/
-	class API_EXPORT_CXX ParserCallback
+	class API_EXPORT_CXX ParserCallback final
 	{
 	public:
 		ParserCallback(fun_type0  a_pFun, bool a_bAllowOpti);
@@ -116,7 +114,7 @@ namespace mu
 		bool  m_bAllowOpti;             ///< Flag indication optimizeability 
 	};
 
-	//------------------------------------------------------------------------------
+
 	/** \brief Container for Callback objects. */
 	typedef std::map<string_type, ParserCallback> funmap_type;
 

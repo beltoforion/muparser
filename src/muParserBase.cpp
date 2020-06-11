@@ -1825,7 +1825,11 @@ namespace mu
 #endif
 
 		int nMaxThreads = std::min(omp_get_max_threads(), s_MaxNumOpenMPThreads);
-		int nThreadID = 0, ct = 0;
+		int nThreadID = 0;
+
+#ifdef DEBUG_OMP_STUFF
+		int ct = 0;
+#endif
 		omp_set_num_threads(nMaxThreads);
 
 #pragma omp parallel for schedule(static, std::max(nBulkSize/nMaxThreads, 1)) private(nThreadID)
