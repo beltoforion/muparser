@@ -62,7 +62,7 @@ namespace mu
 	  </ul>
 	*/
 	template<typename TBase, typename TString>
-	class ParserToken
+	class ParserToken final
 	{
 	private:
 
@@ -77,7 +77,6 @@ namespace mu
 
 	public:
 
-		//---------------------------------------------------------------------------
 		/** \brief Constructor (default).
 
 			Sets token to an neutral state of type cmUNKNOWN.
@@ -108,7 +107,7 @@ namespace mu
 			Assign(a_Tok);
 		}
 
-		//------------------------------------------------------------------------------
+		
 		/** \brief Assignment operator.
 
 			Copy token state from another token and return this.
@@ -121,7 +120,7 @@ namespace mu
 			return *this;
 		}
 
-		//------------------------------------------------------------------------------
+
 		/** \brief Copy token information from argument.
 
 			\throw nothrow

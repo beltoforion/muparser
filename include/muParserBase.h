@@ -52,16 +52,14 @@ namespace mu
 		\brief This file contains the class definition of the muparser engine.
 	*/
 
-	//--------------------------------------------------------------------------------------------------
 	/** \brief Mathematical expressions parser (base parser engine).
-		\author (C) 2013 Ingo Berg
 
-	  This is the implementation of a bytecode based mathematical expressions parser.
-	  The formula will be parsed from string and converted into a bytecode.
-	  Future calculations will be done with the bytecode instead the formula string
-	  resulting in a significant performance increase.
-	  Complementary to a set of internally implemented functions the parser is able to handle
-	  user defined functions and variables.
+		This is the implementation of a bytecode based mathematical expressions parser.
+		The formula will be parsed from string and converted into a bytecode.
+		Future calculations will be done with the bytecode instead the formula string
+		resulting in a significant performance increase.
+		Complementary to a set of internally implemented functions the parser is able to handle
+		user defined functions and variables.
 	*/
 	class API_EXPORT_CXX ParserBase
 	{

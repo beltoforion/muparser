@@ -54,9 +54,7 @@ namespace mu
 	// Forward declaration
 	class ParserBase;
 
-	/** \brief Token reader for the ParserBase class.
-
-	*/
+	/** \brief Token reader for the ParserBase class. */
 	class ParserTokenReader final
 	{
 	private:
