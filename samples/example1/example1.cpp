@@ -73,7 +73,7 @@ static value_type BulkFun1(int nBulkIdx, int nThreadIdx, value_type v1)
 {
 	// Note: I'm just doing something with all three parameters to shut 
 	// compiler warnings up!
-	return nBulkIdx + nThreadIdx + v1;
+	return (value_type)nBulkIdx + nThreadIdx + v1;
 }
 
 
