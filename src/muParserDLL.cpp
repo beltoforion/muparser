@@ -30,6 +30,9 @@
 
 #if defined(_WIN32)
 	#define WIN32_LEAN_AND_MEAN
+	#define _CRT_SECURE_NO_WARNINGS
+	#define _CRT_SECURE_NO_DEPRECATE
+
 	#include <windows.h>
 #endif
 
@@ -40,6 +43,10 @@
 #include "muParserInt.h"
 #include "muParserError.h"
 
+#if defined(_MSC_VER)
+	#pragma warning(push)
+	#pragma warning(disable : 26812) // What the fuck is the point of this warning?
+#endif
 
 #define MU_TRY  \
 		try		\
@@ -127,7 +134,6 @@ inline ParserTag* AsParserTag(muParserHandle_t a_hParser)
 
 
 #if defined(_WIN32)
-#define _CRT_SECURE_NO_DEPRECATE
 
 BOOL APIENTRY DllMain(HANDLE /*hModule*/, DWORD ul_reason_for_call, LPVOID /*lpReserved*/)
 {
@@ -978,5 +984,9 @@ API_EXPORT(void) mupReleaseVar(muFloat_t* ptr)
 {
 	delete ptr;
 }
+
+#if defined(_MSC_VER)
+	#pragma warning(pop)
+#endif
 
 #endif      // MUPARSER_DLL

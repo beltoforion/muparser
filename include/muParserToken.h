@@ -34,6 +34,11 @@
 #include <vector>
 #include <memory>
 
+#if defined(_MSC_VER)
+	#pragma warning(push)
+	#pragma warning(disable : 26812) // What the fuck is the point of this warning?
+#endif
+
 #include "muParserError.h"
 #include "muParserCallback.h"
 
@@ -396,5 +401,9 @@ namespace mu
 		}
 	};
 } // namespace mu
+
+#if defined(_MSC_VER)
+	#pragma warning(pop)
+#endif
 
 #endif

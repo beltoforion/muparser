@@ -43,6 +43,11 @@
 #include <omp.h>
 #endif
 
+#if defined(_MSC_VER)
+	#pragma warning(push)
+	#pragma warning(disable : 26812) // What the fuck is the point of this warning?
+#endif
+
 using namespace std;
 
 /** \file
@@ -1022,7 +1027,7 @@ namespace mu
 	value_type ParserBase::ParseCmdCodeShort() const
 	{
 		const SToken *const tok = m_vRPN.GetBase();
-		const int sz = m_vRPN.GetSize();
+		const auto sz = m_vRPN.GetSize();
 		value_type buf;
 
 		switch (tok->Cmd)
@@ -1858,3 +1863,8 @@ namespace mu
 
 	}
 } // namespace mu
+
+#if defined(_MSC_VER)
+	#pragma warning(pop)
+#endif
+

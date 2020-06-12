@@ -190,11 +190,10 @@ namespace mu
 		void SetArgSep(char_type cArgSep);
 		char_type GetArgSep() const;
 
-		void  Error(EErrorCodes a_iErrc, int a_iPos = (int)mu::string_type::npos, const string_type& a_strTok = string_type()) const;
-
 	protected:
 
 		void Init();
+		void Error(EErrorCodes a_iErrc, int a_iPos = (int)mu::string_type::npos, const string_type& a_strTok = string_type()) const;
 
 		virtual void InitCharSets() = 0;
 		virtual void InitFun() = 0;

@@ -29,7 +29,10 @@
 #include "muParserError.h"
 #include <exception>
 
-
+#if defined(_MSC_VER)
+	#pragma warning(push)
+	#pragma warning(disable : 26812) // What the fuck is the point of this warning?
+#endif
 
 namespace mu
 {
@@ -326,3 +329,7 @@ namespace mu
 		return m_iErrc;
 	}
 } // namespace mu
+
+#if defined(_MSC_VER)
+	#pragma warning(pop)
+#endif

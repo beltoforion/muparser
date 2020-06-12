@@ -84,6 +84,11 @@
               throw ParserError( ecINTERNAL_ERROR, -1, ss.str());   \
             }
 
+#if defined(_MSC_VER)
+	#pragma warning(push)
+	#pragma warning(disable : 26812) // What the fuck is the point of this warning?
+#endif
+
 
 namespace mu
 {
@@ -414,6 +419,10 @@ namespace mu
 	static const string_type ParserVersion = string_type(_T("2.3.0 (Dev)"));
 	static const string_type ParserVersionDate = string_type(_T("20200610"));
 } // end of namespace
+
+#if defined(_MSC_VER)
+	#pragma warning(pop)
+#endif
 
 #endif
 

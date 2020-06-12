@@ -76,7 +76,7 @@ muFloat_t ZeroArg()
 muFloat_t BulkTest(int nBulkIdx, int nThreadIdx, muFloat_t v1)
 {
 	myprintf(_T("%d,%2.2f\n"), nBulkIdx, v1);
-	return v1 / (nBulkIdx + 1);
+	return v1 / ((muFloat_t)nBulkIdx + 1);
 }
 
 //---------------------------------------------------------------------------

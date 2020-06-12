@@ -35,6 +35,11 @@
 #include "muParserTokenReader.h"
 #include "muParserBase.h"
 
+#if defined(_MSC_VER)
+	#pragma warning(push)
+	#pragma warning(disable : 26812) // What the fuck is the point of this warning?
+#endif
+
 /** \file
 	\brief This file contains the parser token reader implementation.
 */
@@ -785,7 +790,7 @@ namespace mu
 			if ((*item)(m_strFormula.c_str() + m_iPos, &m_iPos, &fVal) == 1)
 			{
 				// 2013-11-27 Issue 2:  https://code.google.com/p/muparser/issues/detail?id=2
-				strTok.assign(m_strFormula.c_str(), iStart, m_iPos - iStart);
+				strTok.assign(m_strFormula.c_str(), iStart, (std::size_t)m_iPos - iStart);
 
 				if (m_iSynFlags & noVAL)
 					Error(ecUNEXPECTED_VAL, m_iPos - (int)strTok.length(), strTok);
@@ -927,7 +932,7 @@ namespace mu
 		if (m_strFormula[m_iPos] != '"')
 			return false;
 
-		string_type strBuf(&m_strFormula[m_iPos + 1]);
+		string_type strBuf(&m_strFormula[(std::size_t)m_iPos + 1]);
 		std::size_t iEnd(0), iSkip(0);
 
 		// parser over escaped '\"' end replace them with '"'
@@ -983,3 +988,6 @@ namespace mu
 	}
 } // namespace mu
 
+#if defined(_MSC_VER)
+	#pragma warning(pop)
+#endif
