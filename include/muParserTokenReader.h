@@ -111,7 +111,7 @@ namespace mu
 
 		void SetParent(ParserBase* a_pParent);
 		int ExtractToken(const char_type* a_szCharSet, string_type& a_strTok, int a_iPos) const;
-		int ExtractOperatorToken(string_type& a_sTok, int a_iPos) const;
+		int ExtractOperatorToken(string_type& a_sTok, std::size_t a_iPos) const;
 
 		bool IsBuiltIn(token_type& a_Tok);
 		bool IsArgSep(token_type& a_Tok);

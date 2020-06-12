@@ -378,7 +378,7 @@ namespace mu
 	  in operator tokens. To avoid this this function checks specifically
 	  for operator tokens.
 	*/
-	int ParserTokenReader::ExtractOperatorToken(string_type& a_sTok, int a_iPos) const
+	int ParserTokenReader::ExtractOperatorToken(string_type& a_sTok, std::size_t a_iPos) const
 	{
 		// Changed as per Issue 6: https://code.google.com/p/muparser/issues/detail?id=6
 		auto iEnd = m_strFormula.find_first_not_of(m_pParser->ValidOprtChars(), a_iPos);
@@ -643,7 +643,7 @@ namespace mu
 		const char_type* const szExpr = m_strFormula.c_str();
 		string_type strTok;
 
-		auto iEnd = ExtractOperatorToken(strTok, m_iPos);
+		auto iEnd = ExtractOperatorToken(strTok, (std::size_t)m_iPos);
 		if (iEnd == m_iPos)
 			return false;
 
