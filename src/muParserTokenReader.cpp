@@ -643,7 +643,7 @@ namespace mu
 		const char_type* const szExpr = m_strFormula.c_str();
 		string_type strTok;
 
-		int iEnd = ExtractOperatorToken(strTok, m_iPos);
+		auto iEnd = ExtractOperatorToken(strTok, m_iPos);
 		if (iEnd == m_iPos)
 			return false;
 
@@ -745,23 +745,22 @@ namespace mu
 
 	/** \brief Check whether the token at a given position is a value token.
 
-	  Value tokens are either values or constants.
+		Value tokens are either values or constants.
 
-	  \param a_Tok [out] If a value token is found it will be placed here.
-	  \return true if a value token has been found.
+		\param a_Tok [out] If a value token is found it will be placed here.
+		\return true if a value token has been found.
 	*/
 	bool ParserTokenReader::IsValTok(token_type& a_Tok)
 	{
-		assert(m_pConstDef);
-		assert(m_pParser);
+		MUP_ASSERT(m_pConstDef != nullptr);
+		MUP_ASSERT(m_pParser != nullptr);
 
 		string_type strTok;
 		value_type fVal(0);
-		int iEnd(0);
 
 		// 2.) Check for user defined constant
 		// Read everything that could be a constant name
-		iEnd = ExtractToken(m_pParser->ValidNameChars(), strTok, m_iPos);
+		auto iEnd = ExtractToken(m_pParser->ValidNameChars(), strTok, m_iPos);
 		if (iEnd != m_iPos)
 		{
 			valmap_type::const_iterator item = m_pConstDef->find(strTok);
