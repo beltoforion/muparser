@@ -26,7 +26,6 @@
 	OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#include <cassert>
 #include <cstdio>
 #include <cstring>
 #include <map>
@@ -135,7 +134,7 @@ namespace mu
 		, m_lastTok()
 		, m_cArgSep(',')
 	{
-		assert(m_pParser);
+		MUP_ASSERT(m_pParser != nullptr);
 		SetParent(m_pParser);
 	}
 
@@ -258,7 +257,7 @@ namespace mu
 	/** \brief Read the next token from the string. */
 	ParserTokenReader::token_type ParserTokenReader::ReadNextToken()
 	{
-		assert(m_pParser);
+		MUP_ASSERT(m_pParser != nullptr);
 
 		const char_type* szFormula = m_strFormula.c_str();
 		token_type tok;

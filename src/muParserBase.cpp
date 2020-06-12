@@ -30,7 +30,6 @@
 #include "muParserTemplateMagic.h"
 
 //--- Standard includes ------------------------------------------------------------------------
-#include <cassert>
 #include <algorithm>
 #include <cmath>
 #include <memory>
@@ -38,6 +37,7 @@
 #include <deque>
 #include <sstream>
 #include <locale>
+#include <cassert>
 
 #ifdef MUP_USE_OPENMP
 #include <omp.h>
@@ -461,7 +461,7 @@ namespace mu
 	*/
 	const char_type* ParserBase::ValidNameChars() const
 	{
-		assert(m_sNameChars.size());
+		MUP_ASSERT(m_sNameChars.size());
 		return m_sNameChars.c_str();
 	}
 
@@ -471,7 +471,7 @@ namespace mu
 	*/
 	const char_type* ParserBase::ValidOprtChars() const
 	{
-		assert(m_sOprtChars.size());
+		MUP_ASSERT(m_sOprtChars.size());
 		return m_sOprtChars.c_str();
 	}
 
@@ -481,7 +481,7 @@ namespace mu
 	*/
 	const char_type* ParserBase::ValidInfixOprtChars() const
 	{
-		assert(m_sInfixOprtChars.size());
+		MUP_ASSERT(m_sInfixOprtChars.size());
 		return m_sInfixOprtChars.c_str();
 	}
 
@@ -752,7 +752,7 @@ namespace mu
 
 		token_type  valTok;
 		generic_fun_type pFunc = a_FunTok.GetFuncAddr();
-		assert(pFunc);
+		MUP_ASSERT(pFunc);
 
 		try
 		{
@@ -788,7 +788,7 @@ namespace mu
 	*/
 	void ParserBase::ApplyFunc(std::stack<token_type>& a_stOpt, std::stack<token_type>& a_stVal, int a_iArgCount) const
 	{
-		assert(m_pTokenReader.get());
+		MUP_ASSERT(m_pTokenReader.get());
 
 		// Operator stack empty or does not contain tokens with callback functions
 		if (a_stOpt.empty() || a_stOpt.top().GetFuncAddr() == 0)

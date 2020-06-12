@@ -29,7 +29,6 @@
 #ifndef MU_PARSER_ERROR_H
 #define MU_PARSER_ERROR_H
 
-#include <cassert>
 #include <stdexcept>
 #include <string>
 #include <sstream>

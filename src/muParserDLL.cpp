@@ -29,9 +29,11 @@
 #if defined(MUPARSER_DLL) 
 
 #if defined(_WIN32)
-#define WIN32_LEAN_AND_MEAN
-#include <windows.h>
+	#define WIN32_LEAN_AND_MEAN
+	#include <windows.h>
 #endif
+
+#include <cassert>
 
 #include "muParserDLL.h"
 #include "muParser.h"
@@ -40,46 +42,43 @@
 
 
 #define MU_TRY  \
-    try     \
+		try		\
         {
 
-#define MU_CATCH                                                 \
-        }                                                        \
-        catch (muError_t &e)                                      \
-        {                                                        \
-        ParserTag *pTag = static_cast<ParserTag*>(a_hParser);  \
-        pTag->exc = e;                                         \
-        pTag->bError = true;                                   \
-if (pTag->errHandler)                                  \
-    (pTag->errHandler)(a_hParser);                       \
-        }                                                        \
-        catch (...)                                               \
-        {                                                        \
-        ParserTag *pTag = static_cast<ParserTag*>(a_hParser);  \
-        pTag->exc = muError_t(mu::ecINTERNAL_ERROR);           \
-        pTag->bError = true;                                   \
-if (pTag->errHandler)                                  \
-    (pTag->errHandler)(a_hParser);                       \
+#define MU_CATCH							                       \
+        }								                           \
+        catch (muError_t &e)		                               \
+        {						                                   \
+	        ParserTag *pTag = static_cast<ParserTag*>(a_hParser);  \
+			pTag->exc = e;                                         \
+			pTag->bError = true;                                   \
+			if (pTag->errHandler)                                  \
+				(pTag->errHandler)(a_hParser);                     \
+        }					                                       \
+        catch (...)		                                           \
+        {		                                                   \
+	        ParserTag *pTag = static_cast<ParserTag*>(a_hParser);  \
+	        pTag->exc = muError_t(mu::ecINTERNAL_ERROR);           \
+	        pTag->bError = true;                                   \
+			if (pTag->errHandler)                                  \
+				(pTag->errHandler)(a_hParser);                     \
         }
 
 /** \file
 	\brief This file contains the implementation of the DLL interface of muparser.
-	*/
+*/
 
-	//---------------------------------------------------------------------------
-	// private types
 typedef mu::ParserBase::exception_type muError_t;
 typedef mu::ParserBase muParser_t;
-
 int g_nBulkSize;
 
-//---------------------------------------------------------------------------
+
 class ParserTag
 {
 public:
 	ParserTag(int nType)
-		:pParser((nType == muBASETYPE_FLOAT) 
-			? (mu::ParserBase*)new mu::Parser() 
+		: pParser((nType == muBASETYPE_FLOAT)
+			? (mu::ParserBase*)new mu::Parser()
 			: (nType == muBASETYPE_INT) ? (mu::ParserBase*)new mu::ParserInt() : nullptr)
 		, exc()
 		, errHandler(nullptr)
@@ -114,25 +113,23 @@ static muChar_t s_tmpOutBuf[2048];
 //
 //---------------------------------------------------------------------------
 
-//---------------------------------------------------------------------------
+
 inline muParser_t* AsParser(muParserHandle_t a_hParser)
 {
 	return static_cast<ParserTag*>(a_hParser)->pParser;
 }
 
-//---------------------------------------------------------------------------
+
 inline ParserTag* AsParserTag(muParserHandle_t a_hParser)
 {
 	return static_cast<ParserTag*>(a_hParser);
 }
 
-//---------------------------------------------------------------------------
+
 #if defined(_WIN32)
 #define _CRT_SECURE_NO_DEPRECATE
 
-BOOL APIENTRY DllMain(HANDLE /*hModule*/,
-	DWORD ul_reason_for_call,
-	LPVOID /*lpReserved*/)
+BOOL APIENTRY DllMain(HANDLE /*hModule*/, DWORD ul_reason_for_call, LPVOID /*lpReserved*/)
 {
 	switch (ul_reason_for_call)
 	{
@@ -162,13 +159,12 @@ API_EXPORT(void) mupSetVarFactory(muParserHandle_t a_hParser, muFacFun_t a_pFact
 {
 	MU_TRY
 		muParser_t* p(AsParser(a_hParser));
-	p->SetVarFactory(a_pFactory, pUserData);
+		p->SetVarFactory(a_pFactory, pUserData);
 	MU_CATCH
 }
 
-//---------------------------------------------------------------------------
-/** \brief Create a new Parser instance and return its handle.
-*/
+
+/** \brief Create a new Parser instance and return its handle. */
 API_EXPORT(muParserHandle_t) mupCreate(int nBaseType)
 {
 	switch (nBaseType)
@@ -179,49 +175,45 @@ API_EXPORT(muParserHandle_t) mupCreate(int nBaseType)
 	}
 }
 
-//---------------------------------------------------------------------------
-/** \brief Release the parser instance related with a parser handle.
-*/
+
+/** \brief Release the parser instance related with a parser handle. */
 API_EXPORT(void) mupRelease(muParserHandle_t a_hParser)
 {
 	MU_TRY
 		ParserTag* p = static_cast<ParserTag*>(a_hParser);
-	delete p;
+		delete p;
 	MU_CATCH
 }
 
-//---------------------------------------------------------------------------
+
 API_EXPORT(const muChar_t*) mupGetVersion(muParserHandle_t a_hParser)
 {
 	MU_TRY
 		muParser_t* const p(AsParser(a_hParser));
 
 #ifndef _UNICODE
-	sprintf(s_tmpOutBuf, "%s", p->GetVersion().c_str());
+		sprintf(s_tmpOutBuf, "%s", p->GetVersion().c_str());
 #else
-	wsprintf(s_tmpOutBuf, _T("%s"), p->GetVersion().c_str());
+		wsprintf(s_tmpOutBuf, _T("%s"), p->GetVersion().c_str());
 #endif
 
-	return s_tmpOutBuf;
+		return s_tmpOutBuf;
 	MU_CATCH
-
-		return _T("");
+	return _T("");
 }
 
-//---------------------------------------------------------------------------
-/** \brief Evaluate the expression.
-*/
+
+/** \brief Evaluate the expression. */
 API_EXPORT(muFloat_t) mupEval(muParserHandle_t a_hParser)
 {
 	MU_TRY
 		muParser_t* const p(AsParser(a_hParser));
-	return p->Eval();
+		return p->Eval();
 	MU_CATCH
-
-		return 0;
+	return 0;
 }
 
-//---------------------------------------------------------------------------
+
 API_EXPORT(muFloat_t*) mupEvalMulti(muParserHandle_t a_hParser, int* nNum)
 {
 	MU_TRY
@@ -229,11 +221,10 @@ API_EXPORT(muFloat_t*) mupEvalMulti(muParserHandle_t a_hParser, int* nNum)
 		muParser_t* const p(AsParser(a_hParser));
 		return p->Eval(*nNum);
 	MU_CATCH
-
 	return 0;
 }
 
-//---------------------------------------------------------------------------
+
 API_EXPORT(void) mupEvalBulk(muParserHandle_t a_hParser, muFloat_t* a_res, int nSize)
 {
 	MU_TRY
@@ -242,70 +233,70 @@ API_EXPORT(void) mupEvalBulk(muParserHandle_t a_hParser, muFloat_t* a_res, int n
 	MU_CATCH
 }
 
-//---------------------------------------------------------------------------
+
 API_EXPORT(void) mupSetExpr(muParserHandle_t a_hParser, const muChar_t* a_szExpr)
 {
 	MU_TRY
 		muParser_t* const p(AsParser(a_hParser));
-	p->SetExpr(a_szExpr);
+		p->SetExpr(a_szExpr);
 	MU_CATCH
 }
 
-//---------------------------------------------------------------------------
+
 API_EXPORT(void) mupRemoveVar(muParserHandle_t a_hParser, const muChar_t* a_szName)
 {
 	MU_TRY
 		muParser_t* const p(AsParser(a_hParser));
-	p->RemoveVar(a_szName);
+		p->RemoveVar(a_szName);
 	MU_CATCH
 }
 
-//---------------------------------------------------------------------------
+
 /** \brief Release all parser variables.
 	\param a_hParser Handle to the parser instance.
-	*/
+*/
 API_EXPORT(void) mupClearVar(muParserHandle_t a_hParser)
 {
 	MU_TRY
 		muParser_t* const p(AsParser(a_hParser));
-	p->ClearVar();
+		p->ClearVar();
 	MU_CATCH
 }
 
-//---------------------------------------------------------------------------
+
 /** \brief Release all parser variables.
 	\param a_hParser Handle to the parser instance.
-	*/
+*/
 API_EXPORT(void) mupClearConst(muParserHandle_t a_hParser)
 {
 	MU_TRY
 		muParser_t* const p(AsParser(a_hParser));
-	p->ClearConst();
+		p->ClearConst();
 	MU_CATCH
 }
 
-//---------------------------------------------------------------------------
+
 /** \brief Clear all user defined operators.
 	\param a_hParser Handle to the parser instance.
-	*/
+*/
 API_EXPORT(void) mupClearOprt(muParserHandle_t a_hParser)
 {
 	MU_TRY
 		muParser_t* const p(AsParser(a_hParser));
-	p->ClearOprt();
+		p->ClearOprt();
 	MU_CATCH
 }
 
-//---------------------------------------------------------------------------
+
 API_EXPORT(void) mupClearFun(muParserHandle_t a_hParser)
 {
 	MU_TRY
 		muParser_t* const p(AsParser(a_hParser));
-	p->ClearFun();
+		p->ClearFun();
 	MU_CATCH
 }
 
-//---------------------------------------------------------------------------
+
 API_EXPORT(void) mupDefineFun0(muParserHandle_t a_hParser,
 	const muChar_t* a_szName,
 	muFun0_t a_pFun,
@@ -313,446 +304,357 @@ API_EXPORT(void) mupDefineFun0(muParserHandle_t a_hParser,
 {
 	MU_TRY
 		muParser_t* const p(AsParser(a_hParser));
-	p->DefineFun(a_szName, a_pFun, a_bAllowOpt != 0);
+		p->DefineFun(a_szName, a_pFun, a_bAllowOpt != 0);
 	MU_CATCH
 }
 
-//---------------------------------------------------------------------------
-API_EXPORT(void) mupDefineFun1(muParserHandle_t a_hParser,
-	const muChar_t* a_szName,
-	muFun1_t a_pFun,
-	muBool_t a_bAllowOpt)
+
+API_EXPORT(void) mupDefineFun1(muParserHandle_t a_hParser,	const muChar_t* a_szName, muFun1_t a_pFun, muBool_t a_bAllowOpt)
 {
 	MU_TRY
 		muParser_t* const p(AsParser(a_hParser));
-	p->DefineFun(a_szName, a_pFun, a_bAllowOpt != 0);
+		p->DefineFun(a_szName, a_pFun, a_bAllowOpt != 0);
 	MU_CATCH
 }
 
-//---------------------------------------------------------------------------
-API_EXPORT(void) mupDefineFun2(muParserHandle_t a_hParser,
-	const muChar_t* a_szName,
-	muFun2_t a_pFun,
-	muBool_t a_bAllowOpt)
+
+API_EXPORT(void) mupDefineFun2(muParserHandle_t a_hParser, const muChar_t* a_szName, muFun2_t a_pFun, muBool_t a_bAllowOpt)
 {
 	MU_TRY
 		muParser_t* const p(AsParser(a_hParser));
-	p->DefineFun(a_szName, a_pFun, a_bAllowOpt != 0);
+		p->DefineFun(a_szName, a_pFun, a_bAllowOpt != 0);
 	MU_CATCH
 }
 
-//---------------------------------------------------------------------------
-API_EXPORT(void) mupDefineFun3(muParserHandle_t a_hParser,
-	const muChar_t* a_szName,
-	muFun3_t a_pFun,
-	muBool_t a_bAllowOpt)
+
+API_EXPORT(void) mupDefineFun3(muParserHandle_t a_hParser, const muChar_t* a_szName, muFun3_t a_pFun, muBool_t a_bAllowOpt)
 {
 	MU_TRY
 		muParser_t* const p(AsParser(a_hParser));
-	p->DefineFun(a_szName, a_pFun, a_bAllowOpt != 0);
+		p->DefineFun(a_szName, a_pFun, a_bAllowOpt != 0);
 	MU_CATCH
 }
 
-//---------------------------------------------------------------------------
-API_EXPORT(void) mupDefineFun4(muParserHandle_t a_hParser,
-	const muChar_t* a_szName,
-	muFun4_t a_pFun,
-	muBool_t a_bAllowOpt)
+
+API_EXPORT(void) mupDefineFun4(muParserHandle_t a_hParser, const muChar_t* a_szName, muFun4_t a_pFun, muBool_t a_bAllowOpt)
 {
 	MU_TRY
 		muParser_t* const p(AsParser(a_hParser));
-	p->DefineFun(a_szName, a_pFun, a_bAllowOpt != 0);
+		p->DefineFun(a_szName, a_pFun, a_bAllowOpt != 0);
 	MU_CATCH
 }
 
-//---------------------------------------------------------------------------
-API_EXPORT(void) mupDefineFun5(muParserHandle_t a_hParser,
-	const muChar_t* a_szName,
-	muFun5_t a_pFun,
-	muBool_t a_bAllowOpt)
+
+API_EXPORT(void) mupDefineFun5(muParserHandle_t a_hParser, const muChar_t* a_szName, muFun5_t a_pFun, muBool_t a_bAllowOpt)
 {
 	MU_TRY
 		muParser_t* const p(AsParser(a_hParser));
-	p->DefineFun(a_szName, a_pFun, a_bAllowOpt != 0);
+		p->DefineFun(a_szName, a_pFun, a_bAllowOpt != 0);
 	MU_CATCH
 }
 
-//---------------------------------------------------------------------------
-API_EXPORT(void) mupDefineFun6(muParserHandle_t a_hParser,
-	const muChar_t* a_szName,
-	muFun6_t a_pFun,
-	muBool_t a_bAllowOpt)
+
+API_EXPORT(void) mupDefineFun6(muParserHandle_t a_hParser, const muChar_t* a_szName, muFun6_t a_pFun, muBool_t a_bAllowOpt)
 {
 	MU_TRY
 		muParser_t* const p(AsParser(a_hParser));
-	p->DefineFun(a_szName, a_pFun, a_bAllowOpt != 0);
+		p->DefineFun(a_szName, a_pFun, a_bAllowOpt != 0);
 	MU_CATCH
 }
 
-//---------------------------------------------------------------------------
-API_EXPORT(void) mupDefineFun7(muParserHandle_t a_hParser,
-	const muChar_t* a_szName,
-	muFun7_t a_pFun,
-	muBool_t a_bAllowOpt)
+
+API_EXPORT(void) mupDefineFun7(muParserHandle_t a_hParser, const muChar_t* a_szName, muFun7_t a_pFun, muBool_t a_bAllowOpt)
 {
 	MU_TRY
 		muParser_t* const p(AsParser(a_hParser));
-	p->DefineFun(a_szName, a_pFun, a_bAllowOpt != 0);
+		p->DefineFun(a_szName, a_pFun, a_bAllowOpt != 0);
 	MU_CATCH
 }
 
-//---------------------------------------------------------------------------
-API_EXPORT(void) mupDefineFun8(muParserHandle_t a_hParser,
-	const muChar_t* a_szName,
-	muFun8_t a_pFun,
-	muBool_t a_bAllowOpt)
+
+API_EXPORT(void) mupDefineFun8(muParserHandle_t a_hParser, const muChar_t* a_szName, muFun8_t a_pFun, muBool_t a_bAllowOpt)
 {
 	MU_TRY
 		muParser_t* const p(AsParser(a_hParser));
-	p->DefineFun(a_szName, a_pFun, a_bAllowOpt != 0);
+		p->DefineFun(a_szName, a_pFun, a_bAllowOpt != 0);
 	MU_CATCH
 }
 
-//---------------------------------------------------------------------------
-API_EXPORT(void) mupDefineFun9(muParserHandle_t a_hParser,
-	const muChar_t* a_szName,
-	muFun9_t a_pFun,
-	muBool_t a_bAllowOpt)
+
+API_EXPORT(void) mupDefineFun9(muParserHandle_t a_hParser, const muChar_t* a_szName, muFun9_t a_pFun, muBool_t a_bAllowOpt)
 {
 	MU_TRY
 		muParser_t* const p(AsParser(a_hParser));
-	p->DefineFun(a_szName, a_pFun, a_bAllowOpt != 0);
+		p->DefineFun(a_szName, a_pFun, a_bAllowOpt != 0);
 	MU_CATCH
 }
 
-//---------------------------------------------------------------------------
-API_EXPORT(void) mupDefineFun10(muParserHandle_t a_hParser,
-	const muChar_t* a_szName,
-	muFun10_t a_pFun,
-	muBool_t a_bAllowOpt)
+
+API_EXPORT(void) mupDefineFun10(muParserHandle_t a_hParser, const muChar_t* a_szName, muFun10_t a_pFun, muBool_t a_bAllowOpt)
 {
 	MU_TRY
 		muParser_t* const p(AsParser(a_hParser));
-	p->DefineFun(a_szName, a_pFun, a_bAllowOpt != 0);
+		p->DefineFun(a_szName, a_pFun, a_bAllowOpt != 0);
 	MU_CATCH
 }
 
-//---------------------------------------------------------------------------
-API_EXPORT(void) mupDefineBulkFun0(muParserHandle_t a_hParser,
-	const muChar_t* a_szName,
-	muBulkFun0_t a_pFun)
+
+API_EXPORT(void) mupDefineBulkFun0(muParserHandle_t a_hParser, const muChar_t* a_szName, muBulkFun0_t a_pFun)
 {
 	MU_TRY
 		muParser_t* const p(AsParser(a_hParser));
-	p->DefineFun(a_szName, a_pFun, false);
+		p->DefineFun(a_szName, a_pFun, false);
 	MU_CATCH
 }
 
-//---------------------------------------------------------------------------
-API_EXPORT(void) mupDefineBulkFun1(muParserHandle_t a_hParser,
-	const muChar_t* a_szName,
-	muBulkFun1_t a_pFun)
+
+API_EXPORT(void) mupDefineBulkFun1(muParserHandle_t a_hParser, const muChar_t* a_szName, muBulkFun1_t a_pFun)
 {
 	MU_TRY
 		muParser_t* const p(AsParser(a_hParser));
-	p->DefineFun(a_szName, a_pFun, false);
+		p->DefineFun(a_szName, a_pFun, false);
 	MU_CATCH
 }
 
-//---------------------------------------------------------------------------
-API_EXPORT(void) mupDefineBulkFun2(muParserHandle_t a_hParser,
-	const muChar_t* a_szName,
-	muBulkFun2_t a_pFun)
+
+API_EXPORT(void) mupDefineBulkFun2(muParserHandle_t a_hParser, const muChar_t* a_szName, muBulkFun2_t a_pFun)
 {
 	MU_TRY
 		muParser_t* const p(AsParser(a_hParser));
-	p->DefineFun(a_szName, a_pFun, false);
+		p->DefineFun(a_szName, a_pFun, false);
 	MU_CATCH
 }
 
-//---------------------------------------------------------------------------
-API_EXPORT(void) mupDefineBulkFun3(muParserHandle_t a_hParser,
-	const muChar_t* a_szName,
-	muBulkFun3_t a_pFun)
+
+API_EXPORT(void) mupDefineBulkFun3(muParserHandle_t a_hParser, const muChar_t* a_szName, muBulkFun3_t a_pFun)
 {
 	MU_TRY
 		muParser_t* const p(AsParser(a_hParser));
-	p->DefineFun(a_szName, a_pFun, false);
+		p->DefineFun(a_szName, a_pFun, false);
 	MU_CATCH
 }
 
-//---------------------------------------------------------------------------
-API_EXPORT(void) mupDefineBulkFun4(muParserHandle_t a_hParser,
-	const muChar_t* a_szName,
-	muBulkFun4_t a_pFun)
+
+API_EXPORT(void) mupDefineBulkFun4(muParserHandle_t a_hParser, const muChar_t* a_szName, muBulkFun4_t a_pFun)
 {
 	MU_TRY
 		muParser_t* const p(AsParser(a_hParser));
-	p->DefineFun(a_szName, a_pFun, false);
+		p->DefineFun(a_szName, a_pFun, false);
 	MU_CATCH
 }
 
-//---------------------------------------------------------------------------
-API_EXPORT(void) mupDefineBulkFun5(muParserHandle_t a_hParser,
-	const muChar_t* a_szName,
-	muBulkFun5_t a_pFun)
+
+API_EXPORT(void) mupDefineBulkFun5(muParserHandle_t a_hParser, const muChar_t* a_szName, muBulkFun5_t a_pFun)
 {
 	MU_TRY
 		muParser_t* const p(AsParser(a_hParser));
-	p->DefineFun(a_szName, a_pFun, false);
+		p->DefineFun(a_szName, a_pFun, false);
 	MU_CATCH
 }
 
-//---------------------------------------------------------------------------
-API_EXPORT(void) mupDefineBulkFun6(muParserHandle_t a_hParser,
-	const muChar_t* a_szName,
-	muBulkFun6_t a_pFun)
+
+API_EXPORT(void) mupDefineBulkFun6(muParserHandle_t a_hParser, const muChar_t* a_szName, muBulkFun6_t a_pFun)
 {
 	MU_TRY
 		muParser_t* const p(AsParser(a_hParser));
-	p->DefineFun(a_szName, a_pFun, false);
+		p->DefineFun(a_szName, a_pFun, false);
 	MU_CATCH
 }
 
-//---------------------------------------------------------------------------
-API_EXPORT(void) mupDefineBulkFun7(muParserHandle_t a_hParser,
-	const muChar_t* a_szName,
-	muBulkFun7_t a_pFun)
+
+API_EXPORT(void) mupDefineBulkFun7(muParserHandle_t a_hParser, const muChar_t* a_szName, muBulkFun7_t a_pFun)
 {
 	MU_TRY
 		muParser_t* const p(AsParser(a_hParser));
-	p->DefineFun(a_szName, a_pFun, false);
+		p->DefineFun(a_szName, a_pFun, false);
 	MU_CATCH
 }
 
-//---------------------------------------------------------------------------
-API_EXPORT(void) mupDefineBulkFun8(muParserHandle_t a_hParser,
-	const muChar_t* a_szName,
-	muBulkFun8_t a_pFun)
+
+API_EXPORT(void) mupDefineBulkFun8(muParserHandle_t a_hParser, const muChar_t* a_szName, muBulkFun8_t a_pFun)
 {
 	MU_TRY
 		muParser_t* const p(AsParser(a_hParser));
-	p->DefineFun(a_szName, a_pFun, false);
+		p->DefineFun(a_szName, a_pFun, false);
 	MU_CATCH
 }
 
-//---------------------------------------------------------------------------
-API_EXPORT(void) mupDefineBulkFun9(muParserHandle_t a_hParser,
-	const muChar_t* a_szName,
-	muBulkFun9_t a_pFun)
+
+API_EXPORT(void) mupDefineBulkFun9(muParserHandle_t a_hParser, const muChar_t* a_szName, muBulkFun9_t a_pFun)
 {
 	MU_TRY
 		muParser_t* const p(AsParser(a_hParser));
-	p->DefineFun(a_szName, a_pFun, false);
+		p->DefineFun(a_szName, a_pFun, false);
 	MU_CATCH
 }
 
-//---------------------------------------------------------------------------
-API_EXPORT(void) mupDefineBulkFun10(muParserHandle_t a_hParser,
-	const muChar_t* a_szName,
-	muBulkFun10_t a_pFun)
+
+API_EXPORT(void) mupDefineBulkFun10(muParserHandle_t a_hParser, const muChar_t* a_szName, muBulkFun10_t a_pFun)
 {
 	MU_TRY
 		muParser_t* const p(AsParser(a_hParser));
-	p->DefineFun(a_szName, a_pFun, false);
+		p->DefineFun(a_szName, a_pFun, false);
 	MU_CATCH
 }
 
-//---------------------------------------------------------------------------
-API_EXPORT(void) mupDefineStrFun1(muParserHandle_t a_hParser,
-	const muChar_t* a_szName,
-	muStrFun1_t a_pFun)
+
+API_EXPORT(void) mupDefineStrFun1(muParserHandle_t a_hParser, const muChar_t* a_szName, muStrFun1_t a_pFun)
 {
 	MU_TRY
 		muParser_t* const p(AsParser(a_hParser));
-	p->DefineFun(a_szName, a_pFun, false);
+		p->DefineFun(a_szName, a_pFun, false);
 	MU_CATCH
 }
 
-//---------------------------------------------------------------------------
-API_EXPORT(void) mupDefineStrFun2(muParserHandle_t a_hParser,
-	const muChar_t* a_szName,
-	muStrFun2_t a_pFun)
+
+API_EXPORT(void) mupDefineStrFun2(muParserHandle_t a_hParser, const muChar_t* a_szName, muStrFun2_t a_pFun)
 {
 	MU_TRY
 		muParser_t* const p(AsParser(a_hParser));
-	p->DefineFun(a_szName, a_pFun, false);
+		p->DefineFun(a_szName, a_pFun, false);
 	MU_CATCH
 }
 
-//---------------------------------------------------------------------------
-API_EXPORT(void) mupDefineStrFun3(muParserHandle_t a_hParser,
-	const muChar_t* a_szName,
-	muStrFun3_t a_pFun)
+
+API_EXPORT(void) mupDefineStrFun3(muParserHandle_t a_hParser, const muChar_t* a_szName, muStrFun3_t a_pFun)
 {
 	MU_TRY
 		muParser_t* const p(AsParser(a_hParser));
-	p->DefineFun(a_szName, a_pFun, false);
+		p->DefineFun(a_szName, a_pFun, false);
 	MU_CATCH
 }
 
-//---------------------------------------------------------------------------
-API_EXPORT(void) mupDefineMultFun(muParserHandle_t a_hParser,
-	const muChar_t* a_szName,
-	muMultFun_t a_pFun,
-	muBool_t a_bAllowOpt)
+
+API_EXPORT(void) mupDefineMultFun(muParserHandle_t a_hParser, const muChar_t* a_szName, muMultFun_t a_pFun,	muBool_t a_bAllowOpt)
 {
 	MU_TRY
 		muParser_t* const p(AsParser(a_hParser));
-	p->DefineFun(a_szName, a_pFun, a_bAllowOpt != 0);
+		p->DefineFun(a_szName, a_pFun, a_bAllowOpt != 0);
 	MU_CATCH
 }
 
-//---------------------------------------------------------------------------
-API_EXPORT(void) mupDefineOprt(muParserHandle_t a_hParser,
-	const muChar_t* a_szName,
-	muFun2_t a_pFun,
-	muInt_t a_nPrec,
-	muInt_t a_nOprtAsct,
-	muBool_t a_bAllowOpt)
+
+API_EXPORT(void) mupDefineOprt(muParserHandle_t a_hParser, const muChar_t* a_szName, muFun2_t a_pFun, muInt_t a_nPrec, muInt_t a_nOprtAsct, muBool_t a_bAllowOpt)
 {
 	MU_TRY
 		muParser_t* const p(AsParser(a_hParser));
-	p->DefineOprt(a_szName,
-		a_pFun,
-		a_nPrec,
-		(mu::EOprtAssociativity)a_nOprtAsct,
-		a_bAllowOpt != 0);
+		p->DefineOprt(a_szName, a_pFun,	a_nPrec, (mu::EOprtAssociativity)a_nOprtAsct, a_bAllowOpt != 0);
 	MU_CATCH
 }
 
-//---------------------------------------------------------------------------
-API_EXPORT(void) mupDefineVar(muParserHandle_t a_hParser,
-	const muChar_t* a_szName,
-	muFloat_t* a_pVar)
+
+API_EXPORT(void) mupDefineVar(muParserHandle_t a_hParser, const muChar_t* a_szName,	muFloat_t* a_pVar)
 {
 	MU_TRY
 		muParser_t* const p(AsParser(a_hParser));
-	p->DefineVar(a_szName, a_pVar);
+		p->DefineVar(a_szName, a_pVar);
 	MU_CATCH
 }
 
-//---------------------------------------------------------------------------
-API_EXPORT(void) mupDefineBulkVar(muParserHandle_t a_hParser,
-	const muChar_t* a_szName,
-	muFloat_t* a_pVar)
+
+API_EXPORT(void) mupDefineBulkVar(muParserHandle_t a_hParser, const muChar_t* a_szName,	muFloat_t* a_pVar)
 {
 	MU_TRY
 		muParser_t* const p(AsParser(a_hParser));
-	p->DefineVar(a_szName, a_pVar);
+		p->DefineVar(a_szName, a_pVar);
 	MU_CATCH
 }
 
-//---------------------------------------------------------------------------
-API_EXPORT(void) mupDefineConst(muParserHandle_t a_hParser,
-	const muChar_t* a_szName,
-	muFloat_t a_fVal)
+
+API_EXPORT(void) mupDefineConst(muParserHandle_t a_hParser,	const muChar_t* a_szName, muFloat_t a_fVal)
 {
 	MU_TRY
 		muParser_t* const p(AsParser(a_hParser));
-	p->DefineConst(a_szName, a_fVal);
+		p->DefineConst(a_szName, a_fVal);
 	MU_CATCH
 }
 
-//---------------------------------------------------------------------------
-API_EXPORT(void) mupDefineStrConst(muParserHandle_t a_hParser,
-	const muChar_t* a_szName,
-	const muChar_t* a_szVal)
+
+API_EXPORT(void) mupDefineStrConst(muParserHandle_t a_hParser, const muChar_t* a_szName, const muChar_t* a_szVal)
 {
 	MU_TRY
 		muParser_t* const p(AsParser(a_hParser));
-	p->DefineStrConst(a_szName, a_szVal);
+		p->DefineStrConst(a_szName, a_szVal);
 	MU_CATCH
 }
 
-//---------------------------------------------------------------------------
+
 API_EXPORT(const muChar_t*) mupGetExpr(muParserHandle_t a_hParser)
 {
 	MU_TRY
 		muParser_t* const p(AsParser(a_hParser));
 
-	// C# explodes when pMsg is returned directly. For some reason it can't access
-	// the memory where the message lies directly.
+		// C# explodes when pMsg is returned directly. For some reason it can't access
+		// the memory where the message lies directly.
 #ifndef _UNICODE
-	sprintf(s_tmpOutBuf, "%s", p->GetExpr().c_str());
+		sprintf(s_tmpOutBuf, "%s", p->GetExpr().c_str());
 #else
-	wsprintf(s_tmpOutBuf, _T("%s"), p->GetExpr().c_str());
+		wsprintf(s_tmpOutBuf, _T("%s"), p->GetExpr().c_str());
 #endif
 
-	return s_tmpOutBuf;
-
+		return s_tmpOutBuf;
 	MU_CATCH
 
-		return _T("");
+	return _T("");
 }
 
-//---------------------------------------------------------------------------
-API_EXPORT(void) mupDefinePostfixOprt(muParserHandle_t a_hParser,
-	const muChar_t* a_szName,
-	muFun1_t a_pOprt,
-	muBool_t a_bAllowOpt)
+
+API_EXPORT(void) mupDefinePostfixOprt(muParserHandle_t a_hParser, const muChar_t* a_szName, muFun1_t a_pOprt, muBool_t a_bAllowOpt)
 {
 	MU_TRY
 		muParser_t* const p(AsParser(a_hParser));
-	p->DefinePostfixOprt(a_szName, a_pOprt, a_bAllowOpt != 0);
+		p->DefinePostfixOprt(a_szName, a_pOprt, a_bAllowOpt != 0);
 	MU_CATCH
 }
 
-//---------------------------------------------------------------------------
-API_EXPORT(void) mupDefineInfixOprt(muParserHandle_t a_hParser,
-	const muChar_t* a_szName,
-	muFun1_t a_pOprt,
-	muBool_t a_bAllowOpt)
+
+API_EXPORT(void) mupDefineInfixOprt(muParserHandle_t a_hParser, const muChar_t* a_szName, muFun1_t a_pOprt,	muBool_t a_bAllowOpt)
 {
 	MU_TRY
 		muParser_t* const p(AsParser(a_hParser));
-	p->DefineInfixOprt(a_szName, a_pOprt, a_bAllowOpt != 0);
+		p->DefineInfixOprt(a_szName, a_pOprt, a_bAllowOpt != 0);
 	MU_CATCH
 }
 
 // Define character sets for identifiers
-//---------------------------------------------------------------------------
-API_EXPORT(void) mupDefineNameChars(muParserHandle_t a_hParser,
-	const muChar_t* a_szCharset)
+API_EXPORT(void) mupDefineNameChars(muParserHandle_t a_hParser, const muChar_t* a_szCharset)
 {
 	muParser_t* const p(AsParser(a_hParser));
 	p->DefineNameChars(a_szCharset);
 }
 
-//---------------------------------------------------------------------------
-API_EXPORT(void) mupDefineOprtChars(muParserHandle_t a_hParser,
-	const muChar_t* a_szCharset)
+
+API_EXPORT(void) mupDefineOprtChars(muParserHandle_t a_hParser,	const muChar_t* a_szCharset)
 {
 	muParser_t* const p(AsParser(a_hParser));
 	p->DefineOprtChars(a_szCharset);
 }
 
-//---------------------------------------------------------------------------
-API_EXPORT(void) mupDefineInfixOprtChars(muParserHandle_t a_hParser,
-	const muChar_t* a_szCharset)
+
+API_EXPORT(void) mupDefineInfixOprtChars(muParserHandle_t a_hParser, const muChar_t* a_szCharset)
 {
 	muParser_t* const p(AsParser(a_hParser));
 	p->DefineInfixOprtChars(a_szCharset);
 }
 
-//---------------------------------------------------------------------------
+
 /** \brief Get the number of variables defined in the parser.
 	\param a_hParser [in] Must be a valid parser handle.
 	\return The number of used variables.
 	\sa mupGetExprVar
-	*/
+*/
 API_EXPORT(int) mupGetVarNum(muParserHandle_t a_hParser)
 {
 	MU_TRY
 		muParser_t* const p(AsParser(a_hParser));
-	const mu::varmap_type VarMap = p->GetVar();
-	return (int)VarMap.size();
+		const mu::varmap_type VarMap = p->GetVar();
+		return (int)VarMap.size();
 	MU_CATCH
 
-		return 0; // never reached
+	return 0; // never reached
 }
 
-//---------------------------------------------------------------------------
+
 /** \brief Return a variable that is used in an expression.
 	\param a_hParser [in] A valid parser handle.
 	\param a_iVar [in] The index of the variable to return.
@@ -767,11 +669,8 @@ API_EXPORT(int) mupGetVarNum(muParserHandle_t a_hParser)
 	expression undefined variables will be set to zero during this calculation.
 	During the calculation user defined callback functions present in the expression
 	will be called, this is unavoidable.
-	*/
-API_EXPORT(void) mupGetVar(muParserHandle_t a_hParser,
-	unsigned a_iVar,
-	const muChar_t** a_szName,
-	muFloat_t** a_pVar)
+*/
+API_EXPORT(void) mupGetVar(muParserHandle_t a_hParser, unsigned a_iVar, const muChar_t** a_szName, muFloat_t** a_pVar)
 {
 	// A static buffer is needed for the name since i can't return the
 	// pointer from the map.
@@ -779,39 +678,38 @@ API_EXPORT(void) mupGetVar(muParserHandle_t a_hParser,
 
 	MU_TRY
 		muParser_t* const p(AsParser(a_hParser));
-	const mu::varmap_type VarMap = p->GetVar();
+		const mu::varmap_type VarMap = p->GetVar();
 
-	if (a_iVar >= VarMap.size())
-	{
-		*a_szName = 0;
-		*a_pVar = 0;
-		return;
-	}
-	mu::varmap_type::const_iterator item;
+		if (a_iVar >= VarMap.size())
+		{
+			*a_szName = 0;
+			*a_pVar = 0;
+			return;
+		}
+		mu::varmap_type::const_iterator item;
 
-	item = VarMap.begin();
-	for (unsigned i = 0; i < a_iVar; ++i)
-		++item;
+		item = VarMap.begin();
+		for (unsigned i = 0; i < a_iVar; ++i)
+			++item;
 
 #ifndef _UNICODE
-	strncpy(szName, item->first.c_str(), sizeof(szName));
+		strncpy(szName, item->first.c_str(), sizeof(szName));
 #else
-	wcsncpy(szName, item->first.c_str(), sizeof(szName));
+		wcsncpy(szName, item->first.c_str(), sizeof(szName));
 #endif
 
-	szName[sizeof(szName) - 1] = 0;
+		szName[sizeof(szName) - 1] = 0;
 
-	*a_szName = &szName[0];
-	*a_pVar = item->second;
-	return;
-
+		*a_szName = &szName[0];
+		*a_pVar = item->second;
+		return;
 	MU_CATCH
 
-		* a_szName = 0;
+	* a_szName = 0;
 	*a_pVar = 0;
 }
 
-//---------------------------------------------------------------------------
+
 /** \brief Get the number of variables used in the expression currently set in the parser.
 	\param a_hParser [in] Must be a valid parser handle.
 	\return The number of used variables.
@@ -821,14 +719,14 @@ API_EXPORT(int) mupGetExprVarNum(muParserHandle_t a_hParser)
 {
 	MU_TRY
 		muParser_t* const p(AsParser(a_hParser));
-	const mu::varmap_type VarMap = p->GetUsedVar();
-	return (int)VarMap.size();
+		const mu::varmap_type VarMap = p->GetUsedVar();
+		return (int)VarMap.size();
 	MU_CATCH
 
-		return 0; // never reached
+	return 0; // never reached
 }
 
-//---------------------------------------------------------------------------
+
 /** \brief Return a variable that is used in an expression.
 
 	Prior to calling this function call mupGetExprVarNum in order to get the
@@ -844,11 +742,8 @@ API_EXPORT(int) mupGetExprVarNum(muParserHandle_t a_hParser)
 	\param a_szName [out] Pointer to the variable name.
 	\param a_pVar [out] Pointer to the variable.
 	\throw nothrow
-	*/
-API_EXPORT(void) mupGetExprVar(muParserHandle_t a_hParser,
-	unsigned a_iVar,
-	const muChar_t** a_szName,
-	muFloat_t** a_pVar)
+*/
+API_EXPORT(void) mupGetExprVar(muParserHandle_t a_hParser, unsigned a_iVar, const muChar_t** a_szName, muFloat_t** a_pVar)
 {
 	// A static buffer is needed for the name since i can't return the
 	// pointer from the map.
@@ -856,70 +751,69 @@ API_EXPORT(void) mupGetExprVar(muParserHandle_t a_hParser,
 
 	MU_TRY
 		muParser_t* const p(AsParser(a_hParser));
-	const mu::varmap_type VarMap = p->GetUsedVar();
+		const mu::varmap_type VarMap = p->GetUsedVar();
 
-	if (a_iVar >= VarMap.size())
-	{
-		*a_szName = 0;
-		*a_pVar = 0;
-		return;
-	}
-	mu::varmap_type::const_iterator item;
+		if (a_iVar >= VarMap.size())
+		{
+			*a_szName = 0;
+			*a_pVar = 0;
+			return;
+		}
+		mu::varmap_type::const_iterator item;
 
-	item = VarMap.begin();
-	for (unsigned i = 0; i < a_iVar; ++i)
-		++item;
+		item = VarMap.begin();
+		for (unsigned i = 0; i < a_iVar; ++i)
+			++item;
 
 #ifndef _UNICODE
-	strncpy(szName, item->first.c_str(), sizeof(szName));
+		strncpy(szName, item->first.c_str(), sizeof(szName));
 #else
-	wcsncpy(szName, item->first.c_str(), sizeof(szName));
+		wcsncpy(szName, item->first.c_str(), sizeof(szName));
 #endif
 
-	szName[sizeof(szName) - 1] = 0;
+		szName[sizeof(szName) - 1] = 0;
 
-	*a_szName = &szName[0];
-	*a_pVar = item->second;
-	return;
-
+		*a_szName = &szName[0];
+		*a_pVar = item->second;
+		return;
 	MU_CATCH
 
-		* a_szName = 0;
+	* a_szName = 0;
 	*a_pVar = 0;
 }
 
-//---------------------------------------------------------------------------
+
 /** \brief Return the number of constants defined in a parser. */
 API_EXPORT(int) mupGetConstNum(muParserHandle_t a_hParser)
 {
 	MU_TRY
 		muParser_t* const p(AsParser(a_hParser));
-	const mu::valmap_type ValMap = p->GetConst();
-	return (int)ValMap.size();
+		const mu::valmap_type ValMap = p->GetConst();
+		return (int)ValMap.size();
 	MU_CATCH
 
-		return 0; // never reached
+	return 0; // never reached
 }
 
-//-----------------------------------------------------------------------------------------------------
+
 API_EXPORT(void) mupSetArgSep(muParserHandle_t a_hParser, const muChar_t cArgSep)
 {
 	MU_TRY
 		muParser_t* const p(AsParser(a_hParser));
-	p->SetArgSep(cArgSep);
+		p->SetArgSep(cArgSep);
 	MU_CATCH
 }
 
-//-----------------------------------------------------------------------------------------------------
+
 API_EXPORT(void) mupResetLocale(muParserHandle_t a_hParser)
 {
 	MU_TRY
 		muParser_t* const p(AsParser(a_hParser));
-	p->ResetLocale();
+		p->ResetLocale();
 	MU_CATCH
 }
 
-//-----------------------------------------------------------------------------------------------------
+
 API_EXPORT(void) mupSetDecSep(muParserHandle_t a_hParser, const muChar_t cDecSep)
 {
 	MU_TRY
@@ -928,12 +822,12 @@ API_EXPORT(void) mupSetDecSep(muParserHandle_t a_hParser, const muChar_t cDecSep
 	MU_CATCH
 }
 
-//-----------------------------------------------------------------------------------------------------
+
 API_EXPORT(void) mupSetThousandsSep(muParserHandle_t a_hParser, const muChar_t cThousandsSep)
 {
 	MU_TRY
 		muParser_t* const p(AsParser(a_hParser));
-	p->SetThousandsSep(cThousandsSep);
+		p->SetThousandsSep(cThousandsSep);
 	MU_CATCH
 }
 
@@ -944,10 +838,7 @@ API_EXPORT(void) mupSetThousandsSep(muParserHandle_t a_hParser, const muChar_t c
 	\param a_pszName [out] pointer to a null terminated string with the constant name
 	\param [out] The constant value
 	*/
-API_EXPORT(void) mupGetConst(muParserHandle_t a_hParser,
-	unsigned a_iVar,
-	const muChar_t** a_pszName,
-	muFloat_t* a_fVal)
+API_EXPORT(void) mupGetConst(muParserHandle_t a_hParser, unsigned a_iVar, const muChar_t** a_pszName, muFloat_t* a_fVal)
 {
 	// A static buffer is needed for the name since i can't return the
 	// pointer from the map.
@@ -955,56 +846,54 @@ API_EXPORT(void) mupGetConst(muParserHandle_t a_hParser,
 
 	MU_TRY
 		muParser_t* const p(AsParser(a_hParser));
-	const mu::valmap_type ValMap = p->GetConst();
+		const mu::valmap_type ValMap = p->GetConst();
 
-	if (a_iVar >= ValMap.size())
-	{
-		*a_pszName = 0;
-		*a_fVal = 0;
-		return;
-	}
+		if (a_iVar >= ValMap.size())
+		{
+			*a_pszName = 0;
+			*a_fVal = 0;
+			return;
+		}
 
-	mu::valmap_type::const_iterator item;
-	item = ValMap.begin();
-	for (unsigned i = 0; i < a_iVar; ++i)
-		++item;
+		mu::valmap_type::const_iterator item;
+		item = ValMap.begin();
+		for (unsigned i = 0; i < a_iVar; ++i)
+			++item;
 
 #ifndef _UNICODE
-	strncpy(szName, item->first.c_str(), sizeof(szName));
+		strncpy(szName, item->first.c_str(), sizeof(szName));
 #else
-	wcsncpy(szName, item->first.c_str(), sizeof(szName));
+		wcsncpy(szName, item->first.c_str(), sizeof(szName));
 #endif
 
-	szName[sizeof(szName) - 1] = 0;
+		szName[sizeof(szName) - 1] = 0;
 
-	*a_pszName = &szName[0];
-	*a_fVal = item->second;
-	return;
+		*a_pszName = &szName[0];
+		*a_fVal = item->second;
+		return;
 
 	MU_CATCH
 
-		* a_pszName = 0;
+	* a_pszName = 0;
 	*a_fVal = 0;
 }
 
-//---------------------------------------------------------------------------
-/** \brief Add a custom value recognition function.
-*/
-API_EXPORT(void) mupAddValIdent(muParserHandle_t a_hParser,
-	muIdentFun_t a_pFun)
+
+/** \brief Add a custom value recognition function. */
+API_EXPORT(void) mupAddValIdent(muParserHandle_t a_hParser,	muIdentFun_t a_pFun)
 {
 	MU_TRY
 		muParser_t* p(AsParser(a_hParser));
-	p->AddValIdent(a_pFun);
+		p->AddValIdent(a_pFun);
 	MU_CATCH
 }
 
-//---------------------------------------------------------------------------
+
 /** \brief Query if an error occurred.
 
 	After querying the internal error bit will be reset. So a consecutive call
 	will return false.
-	*/
+*/
 API_EXPORT(muBool_t) mupError(muParserHandle_t a_hParser)
 {
 	bool bError(AsParserTag(a_hParser)->bError);
@@ -1012,23 +901,21 @@ API_EXPORT(muBool_t) mupError(muParserHandle_t a_hParser)
 	return bError;
 }
 
-//---------------------------------------------------------------------------
-/** \brief Reset the internal error flag.
-*/
+
+/** \brief Reset the internal error flag. */
 API_EXPORT(void) mupErrorReset(muParserHandle_t a_hParser)
 {
 	AsParserTag(a_hParser)->bError = false;
 }
 
-//---------------------------------------------------------------------------
+
 API_EXPORT(void) mupSetErrorHandler(muParserHandle_t a_hParser, muErrorHandler_t a_pHandler)
 {
 	AsParserTag(a_hParser)->errHandler = a_pHandler;
 }
 
-//---------------------------------------------------------------------------
-/** \brief Return the message associated with the last error.
-*/
+
+/** \brief Return the message associated with the last error. */
 API_EXPORT(const muChar_t*) mupGetErrorMsg(muParserHandle_t a_hParser)
 {
 	ParserTag* const p(AsParserTag(a_hParser));
@@ -1045,9 +932,8 @@ API_EXPORT(const muChar_t*) mupGetErrorMsg(muParserHandle_t a_hParser)
 	return s_tmpOutBuf;
 }
 
-//---------------------------------------------------------------------------
-/** \brief Return the message associated with the last error.
-*/
+
+/** \brief Return the message associated with the last error. */
 API_EXPORT(const muChar_t*) mupGetErrorToken(muParserHandle_t a_hParser)
 {
 	ParserTag* const p(AsParserTag(a_hParser));
@@ -1064,7 +950,7 @@ API_EXPORT(const muChar_t*) mupGetErrorToken(muParserHandle_t a_hParser)
 	return s_tmpOutBuf;
 }
 
-//---------------------------------------------------------------------------
+
 /** \brief Return the code associated with the last error.
 */
 API_EXPORT(int) mupGetErrorCode(muParserHandle_t a_hParser)
@@ -1072,26 +958,20 @@ API_EXPORT(int) mupGetErrorCode(muParserHandle_t a_hParser)
 	return AsParserTag(a_hParser)->exc.GetCode();
 }
 
-//---------------------------------------------------------------------------
+
 /** \brief Return the position associated with the last error. */
 API_EXPORT(int) mupGetErrorPos(muParserHandle_t a_hParser)
 {
 	return (int)AsParserTag(a_hParser)->exc.GetPos();
 }
 
-////-----------------------------------------------------------------------------------------------------
-//API_EXPORT(const muChar_t*) mupGetErrorExpr(muParserHandle_t a_hParser)
-//{
-//  return AsParserTag(a_hParser)->exc.GetExpr().c_str();
-//}
 
-//-----------------------------------------------------------------------------------------------------
 API_EXPORT(muFloat_t*) mupCreateVar()
 {
 	return new muFloat_t(0);
 }
 
-//-----------------------------------------------------------------------------------------------------
+
 API_EXPORT(void) mupReleaseVar(muFloat_t* ptr)
 {
 	delete ptr;

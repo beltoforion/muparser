@@ -29,7 +29,6 @@
 #ifndef MU_PARSER_TOKEN_READER_H
 #define MU_PARSER_TOKEN_READER_H
 
-#include <cassert>
 #include <cstdio>
 #include <cstring>
 #include <list>

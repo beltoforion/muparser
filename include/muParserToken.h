@@ -29,7 +29,6 @@
 #ifndef MU_PARSER_TOKEN_H
 #define MU_PARSER_TOKEN_H
 
-#include <cassert>
 #include <string>
 #include <stack>
 #include <vector>
@@ -149,9 +148,9 @@ namespace mu
 		ParserToken& Set(ECmdCode a_iType, const TString& a_strTok = TString())
 		{
 			// The following types can't be set this way, they have special Set functions
-			assert(a_iType != cmVAR);
-			assert(a_iType != cmVAL);
-			assert(a_iType != cmFUNC);
+			MUP_ASSERT(a_iType != cmVAR);
+			MUP_ASSERT(a_iType != cmVAL);
+			MUP_ASSERT(a_iType != cmFUNC);
 
 			m_iCode = a_iType;
 			m_iType = tpVOID;
@@ -166,7 +165,7 @@ namespace mu
 		/** \brief Set Callback type. */
 		ParserToken& Set(const ParserCallback& a_pCallback, const TString& a_sTok)
 		{
-			assert(a_pCallback.GetAddr());
+			MUP_ASSERT(a_pCallback.GetAddr());
 
 			m_iCode = a_pCallback.GetCode();
 			m_iType = tpVOID;
@@ -374,7 +373,7 @@ namespace mu
 		*/
 		int GetArgCount() const
 		{
-			assert(m_pCallback.get());
+			MUP_ASSERT(m_pCallback.get());
 
 			if (!m_pCallback->GetAddr())
 				throw ParserError(ecINTERNAL_ERROR);

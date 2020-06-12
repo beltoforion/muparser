@@ -29,7 +29,6 @@
 #ifndef MU_PARSER_BYTECODE_H
 #define MU_PARSER_BYTECODE_H
 
-#include <cassert>
 #include <string>
 #include <stack>
 #include <vector>
