@@ -28,13 +28,6 @@
 
 #include "muParserTest.h"
 
-#if defined(_WIN32) && defined(_DEBUG)
-#define _CRTDBG_MAP_ALLOC
-#include <stdlib.h>
-#include <crtdbg.h>
-#define CREATE_LEAKAGE_REPORT
-#endif
-
 #if defined( USINGDLL ) && defined( _WIN32 )
 #error This sample can be used only with STATIC builds of muParser (on win32)
 #endif
@@ -87,13 +80,13 @@ static value_type Mul(value_type v1, value_type v2) { return v1 * v2; }
 static value_type Arg2Of2(value_type /* v1 */, value_type v2) { return v2; }
 static value_type Arg1Of2(value_type v1, value_type /* v2 */) { return v1; }
 
-//---------------------------------------------------------------------------
+
 static value_type ThrowAnException(value_type)
 {
 	throw std::runtime_error("This function does throw an exception.");
 }
 
-//---------------------------------------------------------------------------
+
 static value_type BulkFun1(int nBulkIdx, int nThreadIdx, value_type v1)
 {
 	// Note: I'm just doing something with all three parameters to shut 
@@ -101,14 +94,14 @@ static value_type BulkFun1(int nBulkIdx, int nThreadIdx, value_type v1)
 	return nBulkIdx + nThreadIdx + v1;
 }
 
-//---------------------------------------------------------------------------
+
 static value_type Ping()
 {
 	mu::console() << "ping\n";
 	return 0;
 }
 
-//---------------------------------------------------------------------------
+
 static value_type StrFun0(const char_type* szMsg)
 {
 	if (szMsg)
@@ -117,14 +110,14 @@ static value_type StrFun0(const char_type* szMsg)
 	return 999;
 }
 
-//---------------------------------------------------------------------------
+
 static value_type StrFun2(const char_type* v1, value_type v2, value_type v3)
 {
 	mu::console() << v1 << std::endl;
 	return v2 + v3;
 }
 
-//---------------------------------------------------------------------------
+
 static value_type Debug(mu::value_type v1, mu::value_type v2)
 {
 	ParserBase::EnableDebugDump(v1 != 0, v2 != 0);
@@ -132,7 +125,7 @@ static value_type Debug(mu::value_type v1, mu::value_type v2)
 	return 1;
 }
 
-//---------------------------------------------------------------------------
+
 // Factory function for creating new parser variables
 // This could as well be a function performing database queries.
 static value_type* AddVariable(const char_type* a_szName, void* a_pUserData)
@@ -181,7 +174,7 @@ static int IsHexValue(const char_type* a_szExpr, int* a_iPos, value_type* a_fVal
 	return 1;
 }
 
-//---------------------------------------------------------------------------
+
 static void Splash()
 {
 	mu::console() << _T("                 __________                                       \n");
@@ -207,7 +200,7 @@ static void Splash()
 	mu::console() << _T("  ") << sizeof(void*) * 8 << _T("-bit build\n");
 }
 
-//---------------------------------------------------------------------------
+
 static value_type SelfTest()
 {
 	mu::console() << _T("-----------------------------------------------------------\n");
@@ -227,7 +220,7 @@ static value_type SelfTest()
 	return 0;
 }
 
-//---------------------------------------------------------------------------
+
 static value_type Help()
 {
 	mu::console() << _T("-----------------------------------------------------------\n");
@@ -249,56 +242,7 @@ static value_type Help()
 	return 0;
 }
 
-//---------------------------------------------------------------------------
-/*
-static void CheckLocale()
-{
-  // Local names:
-  // "C" - the classic C locale
-  // "de_DE" - not for Windows?
-  // "en_US" - not for Windows?
-  // "German_germany" - For MSVC8
-  try
-  {
-	std::locale loc("German_germany");
-	console() << _T("Locale settings:\n");
-	console() << _T("  Decimal point:  '") << std::use_facet<numpunct<char_type> >(loc).decimal_point() << _T("'\n");
-	console() << _T("  Thousands sep:  '") << std::use_facet<numpunct<char_type> >(loc).thousands_sep() << _T("'\n");
-	console() << _T("  Grouping:       '") << std::use_facet<numpunct<char_type> >(loc).grouping()  << _T("'\n");
-	console() << _T("  True is named:  '") << std::use_facet<numpunct<char_type> >(loc).truename()  << _T("'\n");
-	console() << _T("  False is named: '") << std::use_facet<numpunct<char_type> >(loc).falsename() << _T("'\n");
-	console() << _T("-----------------------------------------------------------\n");
-  }
-  catch(...)
-  {
-	console() << _T("Locale settings:\n");
-	console() << _T("  invalid locale name\n");
-	console() << _T("-----------------------------------------------------------\n");
-  }
-}
 
-//---------------------------------------------------------------------------
-static void CheckDiff()
-{
-  mu::Parser  parser;
-  value_type x = 1,
-			 v1,
-			 v2,
-			 v3,
-			 eps(pow(std::numeric_limits<value_type>::epsilon(), 0.2));
-  parser.DefineVar(_T("x"), &x);
-  parser.SetExpr(_T("_e^-x*sin(x)"));
-
-  v1 = parser.Diff(&x, 1),
-  v2 = parser.Diff(&x, 1, eps);
-  v3 = cos((value_type)1.0)/exp((value_type)1) - sin((value_type)1.0)/exp((value_type)1); //-0.110793765307;
-  mu::console() << parser.GetExpr() << _T("\n");
-  mu::console() << _T("v1 = ") << v1 << _T("; v1-v3 = ") << v1-v3 << _T("\n");
-  mu::console() << _T("v2 = ") << v2 << _T("; v2-v3 = ") << v2-v3 << _T("\n");
-}
-*/
-
-//---------------------------------------------------------------------------
 static void ListVar(const mu::ParserBase& parser)
 {
 	// Query the used variables (must be done after calc)
@@ -314,7 +258,7 @@ static void ListVar(const mu::ParserBase& parser)
 		mu::console() << _T("Name: ") << item->first << _T("   Address: [0x") << item->second << _T("]\n");
 }
 
-//---------------------------------------------------------------------------
+
 static void ListConst(const mu::ParserBase& parser)
 {
 	mu::console() << _T("\nParser constants:\n");
@@ -333,7 +277,7 @@ static void ListConst(const mu::ParserBase& parser)
 	}
 }
 
-//---------------------------------------------------------------------------
+
 static void ListExprVar(const mu::ParserBase& parser)
 {
 	string_type sExpr = parser.GetExpr();
@@ -362,7 +306,7 @@ static void ListExprVar(const mu::ParserBase& parser)
 	}
 }
 
-//---------------------------------------------------------------------------
+
 /** \brief Check for external keywords.
 */
 static int CheckKeywords(const mu::char_type* a_szLine, mu::Parser& a_Parser)
@@ -435,7 +379,7 @@ static int CheckKeywords(const mu::char_type* a_szLine, mu::Parser& a_Parser)
 		mu::console() << dbg;
 
 		int stackSize;
-		double *v =  a_Parser.Eval(stackSize);
+		double* v = a_Parser.Eval(stackSize);
 		mu::console() << *v << std::endl;
 		return 1;
 	}
@@ -443,7 +387,7 @@ static int CheckKeywords(const mu::char_type* a_szLine, mu::Parser& a_Parser)
 	return 0;
 }
 
-//---------------------------------------------------------------------------
+
 void CalcBulk()
 {
 	const int nBulkSize = 200;
@@ -483,7 +427,7 @@ void CalcBulk()
 	delete[] result;
 }
 
-//---------------------------------------------------------------------------
+
 static void Calc()
 {
 	mu::Parser  parser;
@@ -598,15 +542,12 @@ static void Calc()
 	} // while running
 }
 
-//---------------------------------------------------------------------------
+
 int main(int, char**)
 {
 	Splash();
 	SelfTest();
 	Help();
-
-	//  CheckLocale();
-	//  CheckDiff();
 
 	mu::console() << _T("Enter an expression or a command:\n");
 
