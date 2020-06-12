@@ -46,17 +46,17 @@ namespace mu
 {
 	/** \brief Encapsulation of the data for a single formula token.
 
-	  Formula token implementation. Part of the Math Parser Package.
-	  Formula tokens can be either one of the following:
-	  <ul>
-		<li>value</li>
-		<li>variable</li>
-		<li>function with numerical arguments</li>
-		<li>functions with a string as argument</li>
-		<li>prefix operators</li>
-		<li>infix operators</li>
-		  <li>binary operator</li>
-	  </ul>
+		Formula token implementation. Part of the Math Parser Package.
+		Formula tokens can be either one of the following:
+		<ul>
+			<li>value</li>
+			<li>variable</li>
+			<li>function with numerical arguments</li>
+			<li>functions with a string as argument</li>
+			<li>prefix operators</li>
+			<li>infix operators</li>
+			<li>binary operator</li>
+		</ul>
 	*/
 	template<typename TBase, typename TString>
 	class ParserToken final

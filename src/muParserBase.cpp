@@ -1024,47 +1024,37 @@ namespace mu
 		const SToken *const tok = m_vRPN.GetBase();
 		const int sz = m_vRPN.GetSize();
 		value_type buf;
-		switch (sz-2)
+
+		switch (tok->Cmd)
 		{
-		case 0:
-			switch (tok->Cmd)
-			{
-			case cmVAL:		
-				return tok->Val.data2;
+		case cmVAL:		
+			return tok->Val.data2;
 
-			case cmVAR:		
-				return *tok->Val.ptr;
+		case cmVAR:		
+			return *tok->Val.ptr;
 
-			case cmVARMUL:	
-				return *tok->Val.ptr * tok->Val.data + tok->Val.data2;
+		case cmVARMUL:	
+			return *tok->Val.ptr * tok->Val.data + tok->Val.data2;
 
-			case  cmVARPOW2: 
-				buf = *(tok->Val.ptr);
-				return buf * buf;
+		case  cmVARPOW2: 
+			buf = *(tok->Val.ptr);
+			return buf * buf;
 
-			case  cmVARPOW3: 				
-				buf = *(tok->Val.ptr);
-				return buf * buf * buf;
+		case  cmVARPOW3: 				
+			buf = *(tok->Val.ptr);
+			return buf * buf * buf;
 
-			case  cmVARPOW4: 				
-				buf = *(tok->Val.ptr);
-				return buf * buf * buf * buf;
+		case  cmVARPOW4: 				
+			buf = *(tok->Val.ptr);
+			return buf * buf * buf * buf;
 
-			// numerical function without any argument
-			case cmFUNC:
-				return (*(fun_type0)tok->Fun.ptr)();
+		// numerical function without any argument
+		case cmFUNC:
+			return (*(fun_type0)tok->Fun.ptr)();
 
-			// String function without a numerical argument
-			case cmFUNC_STR:
-				return (*(strfun_type1)tok->Fun.ptr)(m_vStringBuf[0].c_str());
-
-			default:
-				Error(ecINTERNAL_ERROR);
-			}
-			break;
-
-		case 1:
-			break;
+		// String function without a numerical argument
+		case cmFUNC_STR:
+			return (*(strfun_type1)tok->Fun.ptr)(m_vStringBuf[0].c_str());
 		}
 
 		throw ParserError(ecINTERNAL_ERROR);

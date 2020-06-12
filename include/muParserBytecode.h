@@ -48,7 +48,6 @@ namespace mu
 	struct SToken
 	{
 		ECmdCode Cmd;
-		int StackPos;
 
 		union
 		{
