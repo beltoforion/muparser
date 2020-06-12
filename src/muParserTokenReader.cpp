@@ -47,7 +47,6 @@ namespace mu
 	// Forward declaration
 	class ParserBase;
 
-	//---------------------------------------------------------------------------
 	/** \brief Copy constructor.
 
 		\sa Assign
@@ -58,7 +57,7 @@ namespace mu
 		Assign(a_Reader);
 	}
 
-	//---------------------------------------------------------------------------
+
 	/** \brief Assignment operator.
 
 		Self assignment will be suppressed otherwise #Assign is called.
@@ -74,7 +73,7 @@ namespace mu
 		return *this;
 	}
 
-	//---------------------------------------------------------------------------
+
 	/** \brief Assign state of a token reader to this token reader.
 
 		\param a_Reader Object from which the state should be copied.
@@ -105,7 +104,7 @@ namespace mu
 		m_lastTok = a_Reader.m_lastTok;
 	}
 
-	//---------------------------------------------------------------------------
+
 	/** \brief Constructor.
 
 		Create a Token reader and bind it to a parser object.
@@ -140,7 +139,7 @@ namespace mu
 		SetParent(m_pParser);
 	}
 
-	//---------------------------------------------------------------------------
+
 	/** \brief Create instance of a ParserTokenReader identical with this
 				and return its pointer.
 
@@ -156,14 +155,14 @@ namespace mu
 		return ptr.release();
 	}
 
-	//---------------------------------------------------------------------------
+
 	ParserTokenReader::token_type& ParserTokenReader::SaveBeforeReturn(const token_type& tok)
 	{
 		m_lastTok = tok;
 		return m_lastTok;
 	}
 
-	//---------------------------------------------------------------------------
+
 	void ParserTokenReader::AddValIdent(identfun_type a_pCallback)
 	{
 		// Use push_front is used to give user defined callbacks a higher priority than
@@ -175,14 +174,14 @@ namespace mu
 		m_vIdentFun.push_front(a_pCallback);
 	}
 
-	//---------------------------------------------------------------------------
+
 	void ParserTokenReader::SetVarCreator(facfun_type a_pFactory, void* pUserData)
 	{
 		m_pFactory = a_pFactory;
 		m_pFactoryData = pUserData;
 	}
 
-	//---------------------------------------------------------------------------
+
 	/** \brief Return the current position of the token reader in the formula string.
 
 		\return #m_iPos
@@ -193,7 +192,7 @@ namespace mu
 		return m_iPos;
 	}
 
-	//---------------------------------------------------------------------------
+
 	/** \brief Return a reference to the formula.
 
 		\return #m_strFormula
@@ -204,14 +203,14 @@ namespace mu
 		return m_strFormula;
 	}
 
-	//---------------------------------------------------------------------------
+
 	/** \brief Return a map containing the used variables only. */
 	varmap_type& ParserTokenReader::GetUsedVar()
 	{
 		return m_UsedVar;
 	}
 
-	//---------------------------------------------------------------------------
+
 	/** \brief Initialize the token Reader.
 
 		Sets the formula position index to zero and set Syntax flags to default for initial formula parsing.
@@ -223,7 +222,7 @@ namespace mu
 		ReInit();
 	}
 
-	//---------------------------------------------------------------------------
+
 	/** \brief Set Flag that controls behaviour in case of undefined variables being found.
 
 	  If true, the parser does not throw an exception if an undefined variable is found.
@@ -237,7 +236,7 @@ namespace mu
 		m_bIgnoreUndefVar = bIgnore;
 	}
 
-	//---------------------------------------------------------------------------
+
 	/** \brief Reset the token reader to the start of the formula.
 
 		The syntax flags will be reset to a value appropriate for the
@@ -255,7 +254,7 @@ namespace mu
 		m_lastTok = token_type();
 	}
 
-	//---------------------------------------------------------------------------
+
 	/** \brief Read the next token from the string. */
 	ParserTokenReader::token_type ParserTokenReader::ReadNextToken()
 	{
@@ -335,7 +334,7 @@ namespace mu
 		return token_type(); // never reached
 	}
 
-	//---------------------------------------------------------------------------
+
 	void ParserTokenReader::SetParent(ParserBase* a_pParent)
 	{
 		m_pParser = a_pParent;
@@ -348,23 +347,21 @@ namespace mu
 		m_pConstDef = &a_pParent->m_ConstDef;
 	}
 
-	//---------------------------------------------------------------------------
+
 	/** \brief Extract all characters that belong to a certain charset.
 
-	  \param a_szCharSet [in] Const char array of the characters allowed in the token.
-	  \param a_strTok [out]  The string that consists entirely of characters listed in a_szCharSet.
-	  \param a_iPos [in] Position in the string from where to start reading.
-	  \return The Position of the first character not listed in a_szCharSet.
-	  \throw nothrow
+		\param a_szCharSet [in] Const char array of the characters allowed in the token.
+		\param a_strTok [out]  The string that consists entirely of characters listed in a_szCharSet.
+		\param a_iPos [in] Position in the string from where to start reading.
+		\return The Position of the first character not listed in a_szCharSet.
+		\throw nothrow
 	*/
-	int ParserTokenReader::ExtractToken(const char_type* a_szCharSet,
-		string_type& a_sTok,
-		int a_iPos) const
+	int ParserTokenReader::ExtractToken(const char_type* a_szCharSet, string_type& a_sTok, int a_iPos) const
 	{
-		int iEnd = (int)m_strFormula.find_first_not_of(a_szCharSet, a_iPos);
+		auto iEnd = m_strFormula.find_first_not_of(a_szCharSet, a_iPos);
 
-		if (iEnd == (int)string_type::npos)
-			iEnd = (int)m_strFormula.length();
+		if (iEnd == string_type::npos)
+			iEnd = m_strFormula.length();
 
 		// Assign token string if there was something found
 		if (a_iPos != iEnd)
@@ -373,7 +370,7 @@ namespace mu
 		return iEnd;
 	}
 
-	//---------------------------------------------------------------------------
+
 	/** \brief Check Expression for the presence of a binary operator token.
 
 	  Userdefined binary operator "++" gives inconsistent parsing result for
@@ -384,9 +381,9 @@ namespace mu
 	int ParserTokenReader::ExtractOperatorToken(string_type& a_sTok, int a_iPos) const
 	{
 		// Changed as per Issue 6: https://code.google.com/p/muparser/issues/detail?id=6
-		int iEnd = (int)m_strFormula.find_first_not_of(m_pParser->ValidOprtChars(), a_iPos);
-		if (iEnd == (int)string_type::npos)
-			iEnd = (int)m_strFormula.length();
+		auto iEnd = m_strFormula.find_first_not_of(m_pParser->ValidOprtChars(), a_iPos);
+		if (iEnd == string_type::npos)
+			iEnd = m_strFormula.length();
 
 		// Assign token string if there was something found
 		if (a_iPos != iEnd)
@@ -402,7 +399,7 @@ namespace mu
 		}
 	}
 
-	//---------------------------------------------------------------------------
+
 	/** \brief Check if a built in operator or other token can be found
 		\param a_Tok  [out] Operator token if one is found. This can either be a binary operator or an infix operator token.
 		\return true if an operator token has been found.
@@ -508,7 +505,7 @@ namespace mu
 		return false;
 	}
 
-	//---------------------------------------------------------------------------
+
 	bool ParserTokenReader::IsArgSep(token_type& a_Tok)
 	{
 		const char_type* szFormula = m_strFormula.c_str();
@@ -532,7 +529,7 @@ namespace mu
 		return false;
 	}
 
-	//---------------------------------------------------------------------------
+
 	/** \brief Check for End of Formula.
 
 		\return true if an end of formula is found false otherwise.
@@ -561,7 +558,7 @@ namespace mu
 		return false;
 	}
 
-	//---------------------------------------------------------------------------
+
 	/** \brief Check if a string position contains a unary infix operator.
 		\return true if a function token has been found false otherwise.
 	*/
@@ -603,7 +600,7 @@ namespace mu
 		*/
 	}
 
-	//---------------------------------------------------------------------------
+
 	/** \brief Check whether the token at a given position is a function token.
 		\param a_Tok [out] If a value token is found it will be placed here.
 		\throw ParserException if Syntaxflags do not allow a function at a_iPos
@@ -636,7 +633,7 @@ namespace mu
 		return true;
 	}
 
-	//---------------------------------------------------------------------------
+
 	/** \brief Check if a string position contains a binary operator.
 		\param a_Tok  [out] Operator token if one is found. This can either be a binary operator or an infix operator token.
 		\return true if an operator token has been found.
@@ -699,7 +696,7 @@ namespace mu
 		return false;
 	}
 
-	//---------------------------------------------------------------------------
+
 	/** \brief Check if a string position contains a unary post value operator. */
 	bool ParserTokenReader::IsPostOpTok(token_type& a_Tok)
 	{
@@ -745,7 +742,7 @@ namespace mu
 		return false;
 	}
 
-	//---------------------------------------------------------------------------
+
 	/** \brief Check whether the token at a given position is a value token.
 
 	  Value tokens are either values or constants.
@@ -804,7 +801,7 @@ namespace mu
 		return false;
 	}
 
-	//---------------------------------------------------------------------------
+
 	/** \brief Check wheter a token at a given position is a variable token.
 		\param a_Tok [out] If a variable token has been found it will be placed here.
 		  \return true if a variable token has been found.
@@ -839,7 +836,7 @@ namespace mu
 		return true;
 	}
 
-	//---------------------------------------------------------------------------
+
 	bool ParserTokenReader::IsStrVarTok(token_type& a_Tok)
 	{
 		if (!m_pStrVarDef || m_pStrVarDef->empty())
@@ -868,7 +865,7 @@ namespace mu
 	}
 
 
-	//---------------------------------------------------------------------------
+
 	/** \brief Check wheter a token at a given position is an undefined variable.
 
 		\param a_Tok [out] If a variable tom_pParser->m_vStringBufken has been found it will be placed here.
@@ -920,7 +917,7 @@ namespace mu
 	}
 
 
-	//---------------------------------------------------------------------------
+
 	/** \brief Check wheter a token at a given position is a string.
 		\param a_Tok [out] If a variable token has been found it will be placed here.
 		\return true if a string token has been found.
@@ -960,7 +957,7 @@ namespace mu
 		return true;
 	}
 
-	//---------------------------------------------------------------------------
+
 	/** \brief Create an error containing the parse error position.
 
 	  This function will create an Parser Exception object containing the error text and its position.
@@ -970,20 +967,18 @@ namespace mu
 	  \param a_strTok [in] The token string representation associated with the error.
 	  \throw ParserException always throws thats the only purpose of this function.
 	*/
-	void  ParserTokenReader::Error(EErrorCodes a_iErrc,
-		int a_iPos,
-		const string_type& a_sTok) const
+	void  ParserTokenReader::Error(EErrorCodes a_iErrc,	int a_iPos,	const string_type& a_sTok) const
 	{
 		m_pParser->Error(a_iErrc, a_iPos, a_sTok);
 	}
 
-	//---------------------------------------------------------------------------
+
 	void ParserTokenReader::SetArgSep(char_type cArgSep)
 	{
 		m_cArgSep = cArgSep;
 	}
 
-	//---------------------------------------------------------------------------
+
 	char_type ParserTokenReader::GetArgSep() const
 	{
 		return m_cArgSep;
