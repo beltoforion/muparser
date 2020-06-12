@@ -1195,7 +1195,7 @@ namespace mu
 
 				// The index of the string argument in the string table
 				int iIdxStack = pTok->Fun.idx;
-				if (iIdxStack < 0 || iIdxStack >= m_vStringBuf.size())
+				if (iIdxStack < 0 || iIdxStack >= (int)m_vStringBuf.size())
 					Error(ecINTERNAL_ERROR, m_pTokenReader->GetPos());
 
 				switch (pTok->Fun.argc)  // switch according to argument count
