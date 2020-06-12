@@ -1,13 +1,11 @@
 /*
 
-	   _____  __ _____________ _______  ______ ___________
-	  /     \|  |  \____ \__  \\_  __ \/  ___// __ \_  __ \
-	 |  Y Y  \  |  /  |_> > __ \|  | \/\___ \\  ___/|  | \/
-	 |__|_|  /____/|   __(____  /__|  /____  >\___  >__|
-		   \/      |__|       \/           \/     \/
-
-
-  Copyright (C) 2004 - 2020 Ingo Berg
+	 _____  __ _____________ _______  ______ ___________
+	/     \|  |  \____ \__  \\_  __ \/  ___// __ \_  __ \
+   |  Y Y  \  |  /  |_> > __ \|  | \/\___ \\  ___/|  | \/
+   |__|_|  /____/|   __(____  /__|  /____  >\___  >__|
+		 \/      |__|       \/           \/     \/
+   Copyright (C) 2004 - 2020 Ingo Berg
 
 	Redistribution and use in source and binary forms, with or without modification, are permitted
 	provided that the following conditions are met:
@@ -207,10 +205,9 @@ namespace mu
 		\param [in] a_fPos Position at which the differentiation should take place.
 		\param [in] a_fEpsilon Epsilon used for the numerical differentiation.
 
-	  Numerical differentiation uses a 5 point operator yielding a 4th order
-	  formula. The default value for epsilon is 0.00074 which is
-	  numeric_limits<double>::epsilon() ^ (1/5) as suggested in the muparser
-	  forum:
+		Numerical differentiation uses a 5 point operator yielding a 4th order
+		formula. The default value for epsilon is 0.00074 which is
+		numeric_limits<double>::epsilon() ^ (1/5).
 	*/
 	value_type Parser::Diff(value_type* a_Var, value_type  a_fPos, value_type  a_fEpsilon) const
 	{

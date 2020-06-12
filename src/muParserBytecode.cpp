@@ -1,13 +1,11 @@
 /*
 
-	   _____  __ _____________ _______  ______ ___________
-	  /     \|  |  \____ \__  \\_  __ \/  ___// __ \_  __ \
-	 |  Y Y  \  |  /  |_> > __ \|  | \/\___ \\  ___/|  | \/
-	 |__|_|  /____/|   __(____  /__|  /____  >\___  >__|
-		   \/      |__|       \/           \/     \/
-
-
-  Copyright (C) 2004 - 2020 Ingo Berg
+	 _____  __ _____________ _______  ______ ___________
+	/     \|  |  \____ \__  \\_  __ \/  ___// __ \_  __ \
+   |  Y Y  \  |  /  |_> > __ \|  | \/\___ \\  ___/|  | \/
+   |__|_|  /____/|   __(____  /__|  /____  >\___  >__|
+		 \/      |__|       \/           \/     \/
+   Copyright (C) 2004 - 2020 Ingo Berg
 
 	Redistribution and use in source and binary forms, with or without modification, are permitted
 	provided that the following conditions are met:
@@ -28,7 +26,6 @@
 	OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-
 #include "muParserBytecode.h"
 
 #include <algorithm>
@@ -45,7 +42,6 @@
 
 namespace mu
 {
-	//---------------------------------------------------------------------------
 	/** \brief Bytecode default constructor. */
 	ParserByteCode::ParserByteCode()
 		:m_iStackPos(0)
@@ -56,7 +52,7 @@ namespace mu
 		m_vRPN.reserve(50);
 	}
 
-	//---------------------------------------------------------------------------
+
 	/** \brief Copy constructor.
 
 		Implemented in Terms of Assign(const ParserByteCode &a_ByteCode)
@@ -66,7 +62,7 @@ namespace mu
 		Assign(a_ByteCode);
 	}
 
-	//---------------------------------------------------------------------------
+
 	/** \brief Assignment operator.
 
 		Implemented in Terms of Assign(const ParserByteCode &a_ByteCode)
@@ -77,13 +73,13 @@ namespace mu
 		return *this;
 	}
 
-	//---------------------------------------------------------------------------
+
 	void ParserByteCode::EnableOptimizer(bool bStat)
 	{
 		m_bEnableOptimizer = bStat;
 	}
 
-	//---------------------------------------------------------------------------
+
 	/** \brief Copy state of another object to this.
 
 		\throw nowthrow
@@ -99,7 +95,7 @@ namespace mu
 		m_bEnableOptimizer = a_ByteCode.m_bEnableOptimizer;
 	}
 
-	//---------------------------------------------------------------------------
+
 	/** \brief Add a Variable pointer to bytecode.
 		\param a_pVar Pointer to be added.
 		\throw nothrow
@@ -118,7 +114,7 @@ namespace mu
 		m_vRPN.push_back(tok);
 	}
 
-	//---------------------------------------------------------------------------
+
 	/** \brief Add a Variable pointer to bytecode.
 
 		Value entries in byte code consist of:
@@ -145,7 +141,7 @@ namespace mu
 		m_vRPN.push_back(tok);
 	}
 
-	//---------------------------------------------------------------------------
+
 	void ParserByteCode::ConstantFolding(ECmdCode a_Oprt)
 	{
 		std::size_t sz = m_vRPN.size();
@@ -179,7 +175,7 @@ namespace mu
 		} // switch opcode
 	}
 
-	//---------------------------------------------------------------------------
+
 	/** \brief Add an operator identifier to bytecode.
 
 		Operator entries in byte code consist of:
@@ -334,7 +330,7 @@ namespace mu
 		}
 	}
 
-	//---------------------------------------------------------------------------
+
 	void ParserByteCode::AddIfElse(ECmdCode a_Oprt)
 	{
 		SToken tok;
@@ -342,7 +338,7 @@ namespace mu
 		m_vRPN.push_back(tok);
 	}
 
-	//---------------------------------------------------------------------------
+
 	/** \brief Add an assignment operator
 
 		Operator entries in byte code consist of:
@@ -363,7 +359,7 @@ namespace mu
 		m_vRPN.push_back(tok);
 	}
 
-	//---------------------------------------------------------------------------
+
 	/** \brief Add function to bytecode.
 
 		\param a_iArgc Number of arguments, negative numbers indicate multiarg functions.
@@ -437,7 +433,7 @@ namespace mu
 
 	}
 
-	//---------------------------------------------------------------------------
+
 	/** \brief Add a bulk function to bytecode.
 
 		\param a_iArgc Number of arguments, negative numbers indicate multiarg functions.
@@ -455,7 +451,7 @@ namespace mu
 		m_vRPN.push_back(tok);
 	}
 
-	//---------------------------------------------------------------------------
+
 	/** \brief Add Strung function entry to the parser bytecode.
 		\throw nothrow
 
@@ -477,7 +473,7 @@ namespace mu
 		m_iMaxStackSize = std::max(m_iMaxStackSize, (size_t)m_iStackPos);
 	}
 
-	//---------------------------------------------------------------------------
+
 	/** \brief Add end marker to bytecode.
 
 		\throw nothrow
@@ -519,13 +515,13 @@ namespace mu
 		}
 	}
 
-	//---------------------------------------------------------------------------
+
 	std::size_t ParserByteCode::GetMaxStackSize() const
 	{
 		return m_iMaxStackSize + 1;
 	}
 
-	//---------------------------------------------------------------------------
+
 	/** \brief Delete the bytecode.
 
 		\throw nothrow
@@ -541,7 +537,7 @@ namespace mu
 		m_iMaxStackSize = 0;
 	}
 
-	//---------------------------------------------------------------------------
+
 	/** \brief Dump bytecode (for debugging only!). */
 	void ParserByteCode::AsciiDump()
 	{
@@ -585,7 +581,7 @@ namespace mu
 
 			case cmFUNC:  mu::console() << _T("CALL\t");
 				mu::console() << _T("[ARG:") << std::dec << m_vRPN[i].Fun.argc << _T("]");
-				mu::console() << _T("[ADDR: 0x") << std::hex << m_vRPN[i].Fun.ptr << _T("]");
+				mu::console() << _T("[ADDR: 0x") << std::hex << reinterpret_cast<void*>(m_vRPN[i].Fun.ptr) << _T("]");
 				mu::console() << _T("\n");
 				break;
 
@@ -593,7 +589,7 @@ namespace mu
 				mu::console() << _T("CALL STRFUNC\t");
 				mu::console() << _T("[ARG:") << std::dec << m_vRPN[i].Fun.argc << _T("]");
 				mu::console() << _T("[IDX:") << std::dec << m_vRPN[i].Fun.idx << _T("]");
-				mu::console() << _T("[ADDR: 0x") << m_vRPN[i].Fun.ptr << _T("]\n");
+				mu::console() << _T("[ADDR: 0x") << reinterpret_cast<void*>(m_vRPN[i].Fun.ptr) << _T("]\n");
 				break;
 
 			case cmLT:    mu::console() << _T("LT\n");  break;

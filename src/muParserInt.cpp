@@ -1,13 +1,11 @@
 /*
 
-	   _____  __ _____________ _______  ______ ___________
-	  /     \|  |  \____ \__  \\_  __ \/  ___// __ \_  __ \
-	 |  Y Y  \  |  /  |_> > __ \|  | \/\___ \\  ___/|  | \/
-	 |__|_|  /____/|   __(____  /__|  /____  >\___  >__|
-		   \/      |__|       \/           \/     \/
-
-
-  Copyright (C) 2004 - 2020 Ingo Berg
+	 _____  __ _____________ _______  ______ ___________
+	/     \|  |  \____ \__  \\_  __ \/  ___// __ \_  __ \
+   |  Y Y  \  |  /  |_> > __ \|  | \/\___ \\  ___/|  | \/
+   |__|_|  /____/|   __(____  /__|  /____  >\___  >__|
+		 \/      |__|       \/           \/     \/
+   Copyright (C) 2004 - 2020 Ingo Berg
 
 	Redistribution and use in source and binary forms, with or without modification, are permitted
 	provided that the following conditions are met:
@@ -27,7 +25,6 @@
 	IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
 	OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-
 
 #include "muParserInt.h"
 
@@ -71,14 +68,13 @@ namespace mu
 		return std::pow((double)Round(v1), (double)Round(v2));
 	}
 
-	//---------------------------------------------------------------------------
-	// Unary operator Callbacks: Infix operators
+
 	value_type ParserInt::UnaryMinus(value_type v)
 	{
 		return -Round(v);
 	}
 
-	//---------------------------------------------------------------------------
+
 	value_type ParserInt::Sum(const value_type* a_afArg, int a_iArgc)
 	{
 		if (!a_iArgc)
@@ -91,7 +87,7 @@ namespace mu
 		return fRes;
 	}
 
-	//---------------------------------------------------------------------------
+
 	value_type ParserInt::Min(const value_type* a_afArg, int a_iArgc)
 	{
 		if (!a_iArgc)
@@ -104,7 +100,7 @@ namespace mu
 		return fRes;
 	}
 
-	//---------------------------------------------------------------------------
+
 	value_type ParserInt::Max(const value_type* a_afArg, int a_iArgc)
 	{
 		if (!a_iArgc)
@@ -117,8 +113,7 @@ namespace mu
 		return fRes;
 	}
 
-	//---------------------------------------------------------------------------
-	// Default value recognition callback
+
 	int ParserInt::IsVal(const char_type* a_szExpr, int* a_iPos, value_type* a_fVal)
 	{
 		string_type buf(a_szExpr);
@@ -146,7 +141,7 @@ namespace mu
 		return 1;
 	}
 
-	//---------------------------------------------------------------------------
+
 	/** \brief Check a given position in the expression for the presence of
 			   a hex value.
 		\param a_szExpr Pointer to the expression string
@@ -177,7 +172,7 @@ namespace mu
 		return 1;
 	}
 
-	//---------------------------------------------------------------------------
+
 	int ParserInt::IsBinVal(const char_type* a_szExpr, int* a_iPos, value_type* a_fVal)
 	{
 		if (a_szExpr[0] != '#')
@@ -202,10 +197,10 @@ namespace mu
 		return 1;
 	}
 
-	//---------------------------------------------------------------------------
+
 	/** \brief Constructor.
 
-	  Call ParserBase class constructor and trigger Function, Operator and Constant initialization.
+		Call ParserBase class constructor and trigger Function, Operator and Constant initialization.
 	*/
 	ParserInt::ParserInt()
 		:ParserBase()
@@ -219,12 +214,12 @@ namespace mu
 		InitOprt();
 	}
 
-	//---------------------------------------------------------------------------
+
 	void ParserInt::InitConst()
 	{
 	}
 
-	//---------------------------------------------------------------------------
+
 	void ParserInt::InitCharSets()
 	{
 		DefineNameChars(_T("0123456789_abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"));
@@ -232,7 +227,7 @@ namespace mu
 		DefineInfixOprtChars(_T("/+-*^?<>=!%&|~'_"));
 	}
 
-	//---------------------------------------------------------------------------
+
 	/** \brief Initialize the default functions. */
 	void ParserInt::InitFun()
 	{
@@ -244,7 +239,7 @@ namespace mu
 		DefineFun(_T("max"), Max);
 	}
 
-	//---------------------------------------------------------------------------
+
 	/** \brief Initialize operators. */
 	void ParserInt::InitOprt()
 	{

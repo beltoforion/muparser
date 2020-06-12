@@ -1,13 +1,11 @@
 /*
 
-	   _____  __ _____________ _______  ______ ___________
-	  /     \|  |  \____ \__  \\_  __ \/  ___// __ \_  __ \
-	 |  Y Y  \  |  /  |_> > __ \|  | \/\___ \\  ___/|  | \/
-	 |__|_|  /____/|   __(____  /__|  /____  >\___  >__|
-		   \/      |__|       \/           \/     \/
-
-
-  Copyright (C) 2004 - 2020 Ingo Berg
+	 _____  __ _____________ _______  ______ ___________
+	/     \|  |  \____ \__  \\_  __ \/  ___// __ \_  __ \
+   |  Y Y  \  |  /  |_> > __ \|  | \/\___ \\  ___/|  | \/
+   |__|_|  /____/|   __(____  /__|  /____  >\___  >__|
+		 \/      |__|       \/           \/     \/
+   Copyright (C) 2004 - 2020 Ingo Berg
 
 	Redistribution and use in source and binary forms, with or without modification, are permitted
 	provided that the following conditions are met:
@@ -27,7 +25,6 @@
 	IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
 	OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
-
 
 #include "muParserTest.h"
 
@@ -87,8 +84,8 @@ static value_type Rnd(value_type v) { return v * std::rand() / (value_type)(RAND
 static value_type Not(value_type v) { return v == 0; }
 static value_type Add(value_type v1, value_type v2) { return v1 + v2; }
 static value_type Mul(value_type v1, value_type v2) { return v1 * v2; }
-static value_type Arg2Of2(value_type v1, value_type v2) { return v2; }
-static value_type Arg1Of2(value_type v1, value_type v2) { return v1; }
+static value_type Arg2Of2(value_type /* v1 */, value_type v2) { return v2; }
+static value_type Arg1Of2(value_type v1, value_type /* v2 */) { return v1; }
 
 //---------------------------------------------------------------------------
 static value_type ThrowAnException(value_type)
