@@ -326,7 +326,7 @@ namespace mu
 		// !!! From this point on there is no exit without an exception possible...
 		// 
 		string_type strTok;
-		auto iEnd = ExtractToken(m_pParser->ValidNameChars(), strTok, m_iPos);
+		auto iEnd = ExtractToken(m_pParser->ValidNameChars(), strTok, (std::size_t)m_iPos);
 		if (iEnd != m_iPos)
 			Error(ecUNASSIGNABLE_TOKEN, m_iPos, strTok);
 
@@ -356,7 +356,7 @@ namespace mu
 		\return The Position of the first character not listed in a_szCharSet.
 		\throw nothrow
 	*/
-	int ParserTokenReader::ExtractToken(const char_type* a_szCharSet, string_type& a_sTok, int a_iPos) const
+	int ParserTokenReader::ExtractToken(const char_type* a_szCharSet, string_type& a_sTok, std::size_t a_iPos) const
 	{
 		auto iEnd = m_strFormula.find_first_not_of(a_szCharSet, a_iPos);
 
@@ -395,7 +395,7 @@ namespace mu
 		{
 			// There is still the chance of having to deal with an operator consisting exclusively
 			// of alphabetic characters.
-			return ExtractToken("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ", a_sTok, a_iPos);
+			return ExtractToken("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ", a_sTok, (std::size_t)a_iPos);
 		}
 	}
 
@@ -565,7 +565,7 @@ namespace mu
 	bool ParserTokenReader::IsInfixOpTok(token_type& a_Tok)
 	{
 		string_type sTok;
-		auto iEnd = ExtractToken(m_pParser->ValidInfixOprtChars(), sTok, m_iPos);
+		auto iEnd = ExtractToken(m_pParser->ValidInfixOprtChars(), sTok, (std::size_t)m_iPos);
 		if (iEnd == m_iPos)
 			return false;
 
@@ -610,7 +610,7 @@ namespace mu
 	bool ParserTokenReader::IsFunTok(token_type& a_Tok)
 	{
 		string_type strTok;
-		auto iEnd = ExtractToken(m_pParser->ValidNameChars(), strTok, m_iPos);
+		auto iEnd = ExtractToken(m_pParser->ValidNameChars(), strTok, (std::size_t)m_iPos);
 		if (iEnd == m_iPos)
 			return false;
 
@@ -721,7 +721,7 @@ namespace mu
 
 		// Test if there could be a postfix operator
 		string_type sTok;
-		auto iEnd = ExtractToken(m_pParser->ValidOprtChars(), sTok, m_iPos);
+		auto iEnd = ExtractToken(m_pParser->ValidOprtChars(), sTok, (std::size_t)m_iPos);
 		if (iEnd == m_iPos)
 			return false;
 
@@ -760,7 +760,7 @@ namespace mu
 
 		// 2.) Check for user defined constant
 		// Read everything that could be a constant name
-		auto iEnd = ExtractToken(m_pParser->ValidNameChars(), strTok, m_iPos);
+		auto iEnd = ExtractToken(m_pParser->ValidNameChars(), strTok, (std::size_t)m_iPos);
 		if (iEnd != m_iPos)
 		{
 			valmap_type::const_iterator item = m_pConstDef->find(strTok);
@@ -811,7 +811,7 @@ namespace mu
 			return false;
 
 		string_type strTok;
-		auto iEnd = ExtractToken(m_pParser->ValidNameChars(), strTok, m_iPos);
+		auto iEnd = ExtractToken(m_pParser->ValidNameChars(), strTok, (std::size_t)m_iPos);
 		if (iEnd == m_iPos)
 			return false;
 
@@ -842,7 +842,7 @@ namespace mu
 			return false;
 
 		string_type strTok;
-		auto iEnd = ExtractToken(m_pParser->ValidNameChars(), strTok, m_iPos);
+		auto iEnd = ExtractToken(m_pParser->ValidNameChars(), strTok, (std::size_t)m_iPos);
 		if (iEnd == m_iPos)
 			return false;
 
@@ -874,7 +874,7 @@ namespace mu
 	bool ParserTokenReader::IsUndefVarTok(token_type& a_Tok)
 	{
 		string_type strTok;
-		auto iEnd(ExtractToken(m_pParser->ValidNameChars(), strTok, m_iPos));
+		auto iEnd(ExtractToken(m_pParser->ValidNameChars(), strTok, (std::size_t)m_iPos));
 		if (iEnd == m_iPos)
 			return false;
 
