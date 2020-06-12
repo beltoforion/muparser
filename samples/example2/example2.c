@@ -31,6 +31,7 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <wchar.h>
+#include <inttypes.h>
 
 #include "muParserDLL.h"
 
@@ -39,17 +40,17 @@
 #define PARSER_MAXVARS		10
 
 #ifndef _UNICODE
-#define _T(x) x
-#define myprintf printf
-#define mystrlen strlen
-#define myfgets fgets
-#define mystrcmp strcmp
+	#define _T(x) x
+	#define myprintf printf
+	#define mystrlen strlen
+	#define myfgets fgets
+	#define mystrcmp strcmp
 #else
-#define _T(x) L ##x
-#define myprintf wprintf
-#define mystrlen wcslen
-#define myfgets fgetws
-#define mystrcmp wcscmp
+	#define _T(x) L ##x
+	#define myprintf wprintf
+	#define mystrlen wcslen
+	#define myfgets fgetws
+	#define mystrcmp wcscmp
 #endif
 
 extern void CalcBulk();
@@ -207,7 +208,7 @@ void ListVar(muParserHandle_t a_hParser)
 		muFloat_t* pVar = 0;
 
 		mupGetVar(a_hParser, i, &szName, &pVar);
-		myprintf(_T("Name: %s    Address: [0x%llx]\n"), szName, (uintptr_t)pVar);
+		myprintf(_T("Name: %s    Address: [%") _T(PRIxPTR) _T("]\n"), szName, (uintptr_t)pVar);
 	}
 }
 
@@ -234,7 +235,7 @@ void ListExprVar(muParserHandle_t a_hParser)
 		muFloat_t* pVar = 0;
 
 		mupGetExprVar(a_hParser, i, &szName, &pVar);
-		myprintf(_T("Name: %s   Address: [0x%llx]\n"), szName, (intptr_t)pVar);
+		myprintf(_T("Name: %s   Address: [%") _T(PRIxPTR) _T("]\n"), szName, (intptr_t)pVar);
 	}
 }
 
