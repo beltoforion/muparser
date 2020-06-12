@@ -36,7 +36,7 @@
 
 #if defined(_MSC_VER)
 	#pragma warning(push)
-	#pragma warning(disable : 26812) // What the fuck is the point of this warning?
+	#pragma warning(disable : 26812) 
 #endif
 
 #include "muParserError.h"
