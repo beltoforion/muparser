@@ -126,9 +126,9 @@ muFloat_t Mul(muFloat_t v1, muFloat_t v2)
 muFloat_t* AddVariable(const muChar_t* a_szName, void* pUserData)
 {
 	static muFloat_t afValBuf[PARSER_MAXVARS];  // I don't want dynamic allocation here
-	static int iVal = 0;                     // so i used this buffer
+	static int iVal = 0;						// so i used this buffer
 
-	myprintf(_T("Generating new variable \"%s\" (slots left: %d; context pointer: 0x%llx)\n"), a_szName, PARSER_MAXVARS - iVal, (intptr_t)pUserData);
+	myprintf(_T("Generating new variable \"%s\" (slots left: %d; context pointer: %") _T(PRIxPTR) _T(")\n"), a_szName, PARSER_MAXVARS - iVal, (intptr_t)pUserData);
 
 	afValBuf[iVal] = 0;
 	if (iVal >= PARSER_MAXVARS - 1)
