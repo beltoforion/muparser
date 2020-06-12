@@ -271,7 +271,7 @@ namespace mu
 	}
 
 	//------------------------------------------------------------------------------
-	/** \brief Reset the erro object. */
+	/** \brief Reset the error object. */
 	void ParserError::Reset()
 	{
 		m_strMsg = _T("");

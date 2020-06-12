@@ -326,7 +326,7 @@ namespace mu
 		// !!! From this point on there is no exit without an exception possible...
 		// 
 		string_type strTok;
-		int iEnd = ExtractToken(m_pParser->ValidNameChars(), strTok, m_iPos);
+		auto iEnd = ExtractToken(m_pParser->ValidNameChars(), strTok, m_iPos);
 		if (iEnd != m_iPos)
 			Error(ecUNASSIGNABLE_TOKEN, m_iPos, strTok);
 
@@ -565,7 +565,7 @@ namespace mu
 	bool ParserTokenReader::IsInfixOpTok(token_type& a_Tok)
 	{
 		string_type sTok;
-		int iEnd = ExtractToken(m_pParser->ValidInfixOprtChars(), sTok, m_iPos);
+		auto iEnd = ExtractToken(m_pParser->ValidInfixOprtChars(), sTok, m_iPos);
 		if (iEnd == m_iPos)
 			return false;
 
@@ -610,7 +610,7 @@ namespace mu
 	bool ParserTokenReader::IsFunTok(token_type& a_Tok)
 	{
 		string_type strTok;
-		int iEnd = ExtractToken(m_pParser->ValidNameChars(), strTok, m_iPos);
+		auto iEnd = ExtractToken(m_pParser->ValidNameChars(), strTok, m_iPos);
 		if (iEnd == m_iPos)
 			return false;
 
@@ -721,7 +721,7 @@ namespace mu
 
 		// Test if there could be a postfix operator
 		string_type sTok;
-		int iEnd = ExtractToken(m_pParser->ValidOprtChars(), sTok, m_iPos);
+		auto iEnd = ExtractToken(m_pParser->ValidOprtChars(), sTok, m_iPos);
 		if (iEnd == m_iPos)
 			return false;
 
@@ -812,7 +812,7 @@ namespace mu
 			return false;
 
 		string_type strTok;
-		int iEnd = ExtractToken(m_pParser->ValidNameChars(), strTok, m_iPos);
+		auto iEnd = ExtractToken(m_pParser->ValidNameChars(), strTok, m_iPos);
 		if (iEnd == m_iPos)
 			return false;
 
@@ -843,7 +843,7 @@ namespace mu
 			return false;
 
 		string_type strTok;
-		int iEnd = ExtractToken(m_pParser->ValidNameChars(), strTok, m_iPos);
+		auto iEnd = ExtractToken(m_pParser->ValidNameChars(), strTok, m_iPos);
 		if (iEnd == m_iPos)
 			return false;
 
@@ -875,7 +875,7 @@ namespace mu
 	bool ParserTokenReader::IsUndefVarTok(token_type& a_Tok)
 	{
 		string_type strTok;
-		int iEnd(ExtractToken(m_pParser->ValidNameChars(), strTok, m_iPos));
+		auto iEnd(ExtractToken(m_pParser->ValidNameChars(), strTok, m_iPos));
 		if (iEnd == m_iPos)
 			return false;
 
