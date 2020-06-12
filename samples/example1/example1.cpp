@@ -28,10 +28,6 @@
 
 #include "muParserTest.h"
 
-#if defined( USINGDLL ) && defined( _WIN32 )
-	#error This sample can be used only with STATIC builds of muParser (on win32)
-#endif
-
 #include <cstdlib>
 #include <cstring>
 #include <cmath>
@@ -121,11 +117,13 @@ static value_type* AddVariable(const char_type* a_szName, void* a_pUserData)
 
 	++iVal;
 
-	mu::console() << _T("Generating new variable \"")
+	mu::console()
+		<< _T("Generating new variable \"")
 		<< a_szName << std::dec << _T("\" (slots left: ")
 		<< 99 - iVal << _T(")")
 		<< _T(" User data pointer is:")
 		<< std::hex << a_pUserData << endl;
+
 	afValBuf[iVal] = 0;
 
 	if (iVal >= 99)

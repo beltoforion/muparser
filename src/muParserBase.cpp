@@ -1027,7 +1027,6 @@ namespace mu
 	value_type ParserBase::ParseCmdCodeShort() const
 	{
 		const SToken *const tok = m_vRPN.GetBase();
-		const auto sz = m_vRPN.GetSize();
 		value_type buf;
 
 		switch (tok->Cmd)

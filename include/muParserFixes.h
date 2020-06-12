@@ -62,15 +62,19 @@
 */
 
 #ifndef MUPARSER_STATIC /* defined if muParser is compiled as a DLL */
+
 	#ifdef MUPARSERLIB_EXPORTS /* defined if we are building the muParser DLL (instead of using it) */
 		#define API_EXPORT_CXX MUPARSER_HELPER_DLL_EXPORT
 	#else
 		#define API_EXPORT_CXX MUPARSER_HELPER_DLL_IMPORT
 	#endif /* MUPARSER_DLL_EXPORTS */
 	#define MUPARSER_LOCAL MUPARSER_HELPER_DLL_LOCAL
+
 #else /* MUPARSER_STATIC is defined: this means muParser is a static lib. */
+
 	#define API_EXPORT_CXX
 	#define MUPARSER_LOCAL
+
 #endif /* !MUPARSER_STATIC */
 
 
