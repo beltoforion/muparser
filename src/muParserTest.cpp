@@ -771,8 +771,8 @@ namespace mu
 			iStat += EqnTest(_T("3+$3^2"), 12, true);
 
 			// infix operators sharing the first few characters
-			iStat += EqnTest(_T("~ 123"), 123 + 2, true);
-			iStat += EqnTest(_T("~~ 123"), 123 + 2, true);
+			iStat += EqnTest(_T("~ 123"), (value_type)123.0 + 2, true);
+			iStat += EqnTest(_T("~~ 123"), (value_type)123.0 + 2, true);
 
 			if (iStat == 0)
 				mu::console() << _T("passed") << endl;

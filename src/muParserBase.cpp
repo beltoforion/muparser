@@ -1036,7 +1036,7 @@ namespace mu
 		case cmVARMUL:	
 			return *tok->Val.ptr * tok->Val.data + tok->Val.data2;
 
-		case  cmVARPOW2: 
+		case cmVARPOW2: 
 			buf = *(tok->Val.ptr);
 			return buf * buf;
 
@@ -1055,9 +1055,10 @@ namespace mu
 		// String function without a numerical argument
 		case cmFUNC_STR:
 			return (*(strfun_type1)tok->Fun.ptr)(m_vStringBuf[0].c_str());
-		}
 
-		throw ParserError(ecINTERNAL_ERROR);
+		default:
+			throw ParserError(ecINTERNAL_ERROR);
+		}
 	}
 
 	//---------------------------------------------------------------------------

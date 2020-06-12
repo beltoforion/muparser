@@ -217,7 +217,9 @@ API_EXPORT(muFloat_t) mupEval(muParserHandle_t a_hParser)
 API_EXPORT(muFloat_t*) mupEvalMulti(muParserHandle_t a_hParser, int* nNum)
 {
 	MU_TRY
-		assert(nNum != nullptr);
+		if (nNum == nullptr)
+			throw std::runtime_error("Argument is null!"); 
+
 		muParser_t* const p(AsParser(a_hParser));
 		return p->Eval(*nNum);
 	MU_CATCH
