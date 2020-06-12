@@ -29,11 +29,8 @@
 #include "muParserTest.h"
 
 #if defined( USINGDLL ) && defined( _WIN32 )
-#error This sample can be used only with STATIC builds of muParser (on win32)
+	#error This sample can be used only with STATIC builds of muParser (on win32)
 #endif
-
-/** \brief This macro will enable mathematical constants like M_PI. */
-#define _USE_MATH_DEFINES		
 
 #include <cstdlib>
 #include <cstring>
@@ -51,21 +48,6 @@
 using namespace std;
 using namespace mu;
 
-
-#if defined(CREATE_LEAKAGE_REPORT)
-
-// Dumping memory leaks in the destructor of the static guard
-// guarantees i won't get false positives from the ParserErrorMsg 
-// class which is a singleton with a static instance.
-struct DumpLeaks
-{
-	~DumpLeaks()
-	{
-		_CrtDumpMemoryLeaks();
-	}
-} static LeakDumper;
-
-#endif
 
 // Forward declarations
 void CalcBulk();
@@ -177,14 +159,15 @@ static int IsHexValue(const char_type* a_szExpr, int* a_iPos, value_type* a_fVal
 
 static void Splash()
 {
-	mu::console() << _T("                 __________                                       \n");
-	mu::console() << _T("    _____   __ __\\______   \\_____  _______  ______  ____ _______\n");
-	mu::console() << _T("   /     \\ |  |  \\|     ___/\\__  \\ \\_  __ \\/  ___/_/ __ \\\\_  __ \\ \n");
-	mu::console() << _T("  |  Y Y  \\|  |  /|    |     / __ \\_|  | \\/\\___ \\ \\  ___/ |  | \\/ \n");
-	mu::console() << _T("  |__|_|  /|____/ |____|    (____  /|__|  /____  > \\___  >|__|    \n");
-	mu::console() << _T("        \\/                       \\/            \\/      \\/         \n");
+	mu::console() << _T("\n");
+	mu::console() << _T(R"(   _____  __ _____________ ________  _____ ____________  )") << _T("\n");
+	mu::console() << _T(R"(  /     \|  |  \____ \__   \\_  __ \/ ___// __  \_  __ \ )") << _T("\n");
+	mu::console() << _T(R"( |  Y Y  \  |  /  |_> > ___ \|  | \/\___\\  ___/ |  | \/ )") << _T("\n");
+	mu::console() << _T(R"( |__|_|  /____/|   __(____  /___|  /___  >\___  >|__|    )") << _T("\n");
+	mu::console() << _T(R"(       \/      |__|       \/           \/     \/        )") << _T("\n");
 	mu::console() << _T("  Version ") << Parser().GetVersion(pviFULL) << _T("\n");
 	mu::console() << _T("  (C) 2004 - 2020 Ingo Berg\n");
+	mu::console() << _T("\n");
 	mu::console() << _T("-----------------------------------------------------------\n");
 
 #if defined(__clang__)
@@ -432,23 +415,7 @@ static void Calc()
 {
 	mu::Parser  parser;
 
-	// Change locale settings if necessary
-	// function argument separator:   sum(2;3;4) vs. sum(2,3,4)
-	// decimal separator:             3,14       vs. 3.14
-	// thousands separator:           1000000    vs 1.000.000
-  //#define USE_GERMAN_LOCALE
-#ifdef  USE_GERMAN_LOCALE
-	parser.SetArgSep(';');
-	parser.SetDecSep(',');
-	parser.SetThousandsSep('.');
-#else
-  // this is the default, so i it's commented:
-  //parser.SetArgSep(',');
-  //parser.SetDecSep('.');
-  //parser.SetThousandsSep('');
-#endif
-
-  // Add some variables
+	// Add some variables
 	value_type  vVarVal[] = { 1, 2 }; // Values of the parser variables
 	parser.DefineVar(_T("a"), &vVarVal[0]);  // Assign Variable names and bind them to the C++ variables
 	parser.DefineVar(_T("b"), &vVarVal[1]);
@@ -467,7 +434,6 @@ static void Calc()
 	parser.DefineFun(_T("rnd"), Rnd);     // Add an unoptimizeable function
 	parser.DefineFun(_T("throw"), ThrowAnException);
 
-
 	parser.DefineOprt(_T("add"), Add, 0);
 	parser.DefineOprt(_T("mul"), Mul, 1);
 
@@ -480,11 +446,8 @@ static void Calc()
 
 	parser.DefinePostfixOprt(_T("{ft}"), Milli);
 	parser.DefinePostfixOprt(_T("ft"), Milli);
-#ifdef _DEBUG
-	//  parser.EnableDebugDump(1, 0);
-#endif
 
-  // Define the variable factory
+	// Define the variable factory
 	parser.SetVarFactory(AddVariable, &parser);
 
 	for (;;)
@@ -567,7 +530,7 @@ int main(int, char**)
 	catch (std::exception& /*exc*/)
 	{
 		// there is no unicode compliant way to query exc.what()
-		// so i'll leave it for this example.
+		// i'll leave it for this example.
 		console() << _T("aborting...\n");
 	}
 

@@ -117,7 +117,7 @@ namespace mu
 
 			static value_type RndWithString(const char_type*)
 			{
-				return (value_type)(1 + (1000.0f * std::rand() / (RAND_MAX + 1.0)));
+				return (value_type)(1 + (1000.0 * std::rand() / (RAND_MAX + 1.0)));
 			}
 
 			static value_type Ping()
