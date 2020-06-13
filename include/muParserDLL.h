@@ -54,7 +54,7 @@ extern "C"
 	typedef double muFloat_t;           // floating point type
 
 	// function types for calculation
-	typedef muFloat_t(*muFun0_t)();
+	typedef muFloat_t(*muFun0_t)(void);
 	typedef muFloat_t(*muFun1_t)(muFloat_t);
 	typedef muFloat_t(*muFun2_t)(muFloat_t, muFloat_t);
 	typedef muFloat_t(*muFun3_t)(muFloat_t, muFloat_t, muFloat_t);
@@ -226,7 +226,7 @@ extern "C"
 
 	// This is used for .NET only. It creates a new variable allowing the dll to
 	// manage the variable rather than the .NET garbage collector.
-	API_EXPORT(muFloat_t*) mupCreateVar();
+	API_EXPORT(muFloat_t*) mupCreateVar(void);
 	API_EXPORT(void) mupReleaseVar(muFloat_t*);
 
 #ifdef __cplusplus

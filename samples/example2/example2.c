@@ -53,27 +53,27 @@
 	#define mystrcmp wcscmp
 #endif
 
-extern void CalcBulk();
+static void CalcBulk(void);
 
 //---------------------------------------------------------------------------
 // Callbacks for postfix operators
-muFloat_t Mega(muFloat_t a_fVal)
+static muFloat_t Mega(muFloat_t a_fVal)
 {
 	return a_fVal * 1.0e6;
 }
 
-muFloat_t Milli(muFloat_t a_fVal)
+static muFloat_t Milli(muFloat_t a_fVal)
 {
 	return a_fVal / 1.0e3;
 }
 
-muFloat_t ZeroArg()
+static muFloat_t ZeroArg(void)
 {
 	myprintf(_T("i'm a function without arguments.\n"));
 	return 123;
 }
 
-muFloat_t BulkTest(int nBulkIdx, int nThreadIdx, muFloat_t v1)
+static muFloat_t BulkTest(int nBulkIdx, int nThreadIdx, muFloat_t v1)
 {
 	myprintf(_T("%d,%2.2f\n"), nBulkIdx, v1);
 	return v1 / ((muFloat_t)nBulkIdx + 1);
@@ -81,23 +81,13 @@ muFloat_t BulkTest(int nBulkIdx, int nThreadIdx, muFloat_t v1)
 
 //---------------------------------------------------------------------------
 // Callbacks for infix operators
-muFloat_t Not(muFloat_t v) { return v == 0; }
+static muFloat_t Not(muFloat_t v) { return v == 0; }
 
 //---------------------------------------------------------------------------
 // Function callbacks
-muFloat_t Rnd(muFloat_t v) { return v * rand() / (muFloat_t)(RAND_MAX + 1.0); }
+static muFloat_t Rnd(muFloat_t v) { return v * rand() / (muFloat_t)(RAND_MAX + 1.0); }
 
-muFloat_t SampleQuery(const muChar_t* szMsg)
-{
-	if (szMsg)
-	{
-		myprintf(_T("%s\n"), szMsg);
-	}
-
-	return 999;
-}
-
-muFloat_t Sum(const muFloat_t* a_afArg, int a_iArgc)
+static muFloat_t Sum(const muFloat_t* a_afArg, int a_iArgc)
 {
 	muFloat_t fRes = 0;
 	int i = 0;
@@ -110,12 +100,12 @@ muFloat_t Sum(const muFloat_t* a_afArg, int a_iArgc)
 
 //---------------------------------------------------------------------------
 // Binarty operator callbacks
-muFloat_t Add(muFloat_t v1, muFloat_t v2)
+static muFloat_t Add(muFloat_t v1, muFloat_t v2)
 {
 	return v1 + v2;
 }
 
-muFloat_t Mul(muFloat_t v1, muFloat_t v2)
+static muFloat_t Mul(muFloat_t v1, muFloat_t v2)
 {
 	return v1 * v2;
 }
@@ -123,7 +113,7 @@ muFloat_t Mul(muFloat_t v1, muFloat_t v2)
 //---------------------------------------------------------------------------
 // Factory function for creating new parser variables
 // This could as well be a function performing database queries.
-muFloat_t* AddVariable(const muChar_t* a_szName, void* pUserData)
+static muFloat_t* AddVariable(const muChar_t* a_szName, void* pUserData)
 {
 	static muFloat_t afValBuf[PARSER_MAXVARS];  // I don't want dynamic allocation here
 	static int iVal = 0;						// so i used this buffer
@@ -141,7 +131,7 @@ muFloat_t* AddVariable(const muChar_t* a_szName, void* pUserData)
 }
 
 //---------------------------------------------------------------------------
-void Intro(muParserHandle_t hParser)
+static void Intro(muParserHandle_t hParser)
 {
 	myprintf(_T("                 __________                                       \n"));
 	myprintf(_T("    _____   __ __\\______   \\_____  _______  ______  ____ _______\n"));
@@ -176,7 +166,7 @@ void Intro(muParserHandle_t hParser)
 
 //---------------------------------------------------------------------------
 // Callback function for parser errors
-void OnError(muParserHandle_t hParser)
+static void OnError(muParserHandle_t hParser)
 {
 	myprintf(_T("\nError:\n"));
 	myprintf(_T("------\n"));
@@ -187,7 +177,7 @@ void OnError(muParserHandle_t hParser)
 }
 
 //---------------------------------------------------------------------------
-void ListVar(muParserHandle_t a_hParser)
+static void ListVar(muParserHandle_t a_hParser)
 {
 	int iNumVar = mupGetVarNum(a_hParser);
 	int i = 0;
@@ -213,7 +203,7 @@ void ListVar(muParserHandle_t a_hParser)
 }
 
 //---------------------------------------------------------------------------
-void ListExprVar(muParserHandle_t a_hParser)
+static void ListExprVar(muParserHandle_t a_hParser)
 {
 	muInt_t iNumVar = mupGetExprVarNum(a_hParser),
 		i = 0;
@@ -240,7 +230,7 @@ void ListExprVar(muParserHandle_t a_hParser)
 }
 
 //---------------------------------------------------------------------------
-void ListConst(muParserHandle_t a_hParser)
+static void ListConst(muParserHandle_t a_hParser)
 {
 	muInt_t iNumVar = mupGetConstNum(a_hParser),
 		i = 0;
@@ -268,7 +258,7 @@ void ListConst(muParserHandle_t a_hParser)
 //---------------------------------------------------------------------------
 /** \brief Check for external keywords.
 */
-int CheckKeywords(const muChar_t* a_szLine, muParserHandle_t a_hParser)
+static int CheckKeywords(const muChar_t* a_szLine, muParserHandle_t a_hParser)
 {
 	if (!mystrcmp(a_szLine, _T("quit")))
 	{
@@ -322,7 +312,7 @@ int CheckKeywords(const muChar_t* a_szLine, muParserHandle_t a_hParser)
 }
 
 //---------------------------------------------------------------------------
-void CalcBulk()
+static void CalcBulk(void)
 {
 	int nBulkSize = 200, i;
 	muFloat_t* x = (muFloat_t*)malloc(nBulkSize * sizeof(muFloat_t));
@@ -367,7 +357,7 @@ void CalcBulk()
 }
 
 //---------------------------------------------------------------------------
-void Calc()
+static void Calc(void)
 {
 	muChar_t szLine[100];
 	muFloat_t fVal = 0,

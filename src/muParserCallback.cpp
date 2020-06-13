@@ -404,6 +404,20 @@ namespace mu
 		m_eOprtAsct = ref.m_eOprtAsct;
 	}
 
+  ParserCallback & ParserCallback::operator=(const ParserCallback & ref)
+  {
+    if (this != &ref)
+    {
+      m_pFun = ref.m_pFun;
+      m_iArgc = ref.m_iArgc;
+      m_bAllowOpti = ref.m_bAllowOpti;
+      m_iCode = ref.m_iCode;
+      m_iType = ref.m_iType;
+      m_iPri = ref.m_iPri;
+      m_eOprtAsct = ref.m_eOprtAsct;
+    }
+    return *this;
+  }
 
 	/** \brief Clone this instance and return a pointer to the new instance. */
 	ParserCallback* ParserCallback::Clone() const
