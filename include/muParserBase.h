@@ -105,26 +105,7 @@ namespace mu
 
 		virtual ~ParserBase();
 
-		/** \brief Calculate the result.
-
-		  A note on const correctness:
-		  I consider it important that Calc is a const function.
-		  Due to caching operations Calc changes only the state of internal variables with one exception
-		  m_UsedVar this is reset during string parsing and accessible from the outside. Instead of making
-		  Calc non const GetUsedVar is non const because it explicitly calls Eval() forcing this update.
-
-		  \pre A formula must be set.
-		  \pre Variables must have been set (if needed)
-
-		  \sa #m_pParseFormula
-		  \return The evaluation result
-		  \throw ParseException if no Formula is set or in case of any other error related to the formula.
-		*/
-		inline value_type Eval() const
-		{
-			return (this->*m_pParseFormula)();
-		}
-
+		value_type Eval() const;
 		value_type* Eval(int& nStackSize) const;
 		void Eval(value_type* results, int nBulkSize);
 
