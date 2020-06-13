@@ -38,6 +38,7 @@
 #include <sstream>
 #include <locale>
 #include <cassert>
+#include <cctype>
 
 #ifdef MUP_USE_OPENMP
 #include <omp.h>
