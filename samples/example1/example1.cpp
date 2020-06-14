@@ -132,6 +132,30 @@ static value_type* AddVariable(const char_type* a_szName, void* a_pUserData)
 		return &afValBuf[iVal];
 }
 
+int IsBinValue(const char_type* a_szExpr, int* a_iPos, value_type* a_fVal)
+{
+	if (a_szExpr[0] != 0 && a_szExpr[1] != 'b')
+		return 0;
+
+	unsigned iVal = 0;
+	unsigned iBits = sizeof(iVal) * 8;
+	unsigned i = 0;
+
+	for (i = 0; (a_szExpr[i + 2] == '0' || a_szExpr[i + 2] == '1') && i < iBits; ++i)
+		iVal |= (int)(a_szExpr[i + 2] == '1') << ((iBits - 1) - i);
+
+	if (i == 0)
+		return 0;
+
+	if (i == iBits)
+		throw mu::Parser::exception_type(_T("Binary to integer conversion error (overflow)."));
+
+	*a_fVal = (unsigned)(iVal >> (iBits - i));
+	*a_iPos += i + 2;
+
+	return 1;
+}
+
 static int IsHexValue(const char_type* a_szExpr, int* a_iPos, value_type* a_fVal)
 {
 	if (a_szExpr[1] == 0 || (a_szExpr[0] != '0' || a_szExpr[1] != 'x'))
@@ -421,6 +445,7 @@ static void Calc()
 	parser.DefineStrConst(_T("sVar1"), _T("Sample string 1"));
 	parser.DefineStrConst(_T("sVar2"), _T("Sample string 2"));
 	parser.AddValIdent(IsHexValue);
+	parser.AddValIdent(IsBinValue);
 
 	// Add user defined unary operators
 	parser.DefinePostfixOprt(_T("M"), Mega);
