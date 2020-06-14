@@ -28,11 +28,11 @@ API and ABI compliance check with version 2.2.6
 
 Version 2.3 will extend existing enumerators. New Error codes have been added. In the muparser base class protected functions for implementing basic mathematical operations such as sin,cos, sqrt,tan,... have been removed.
 
-The binary interface should be compatible with versions 2.2.6 unless the parser is used in a very weird way. I checked the compliance against the sample application compiled for 2.2.6 by exchanging the library with the new version 2.3. I did not see any problems. You can find a complete ABI compliance report here:
+The binary interface should be compatible with versions 2.2.6 unless the parser is used in ways that i did not forsee. I checked the compliance against the sample application compiled for 2.2.6 by exchanging the library with the new version 2.3. I did not see any problems. You can find a complete ABI compliance report here:
 
 https://www.beltoforion.de/en/muparser/compat_reports/2.2.6_to_2.3.0/compat_report.html
 
-I recommend replacing existing versions of 2.2.6 with version 2.3.0
+I recommend replacing existing versions of 2.2.6 with version 2.3.0. Please report all incompatibilities that you find (API and ABI). I will try to fix them before the final release (if reasonable)
 
 Changes:
 ------------
