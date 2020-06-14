@@ -11,6 +11,13 @@ For a detailed description of the parser go to http://beltoforion.de/article.php
 
 See Install.txt for installation
 
+Change Notes for Revision 2.3.1
+------------
+Security Fixes: 
+------------
+* https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=23410
+
+
 Change Notes for Revision 2.3.0
 ------------
 
