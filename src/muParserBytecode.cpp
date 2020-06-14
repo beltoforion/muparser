@@ -247,7 +247,8 @@ namespace mu
 						(m_vRPN[sz - 1].Cmd == cmVARMUL && m_vRPN[sz - 2].Cmd == cmVAR && m_vRPN[sz - 2].Val.ptr == m_vRPN[sz - 1].Val.ptr) ||
 						(m_vRPN[sz - 1].Cmd == cmVARMUL && m_vRPN[sz - 2].Cmd == cmVARMUL && m_vRPN[sz - 2].Val.ptr == m_vRPN[sz - 1].Val.ptr))
 					{
-						MUP_ASSERT((m_vRPN[sz - 2].Val.ptr == nullptr && m_vRPN[sz - 1].Val.ptr != nullptr) ||
+						MUP_ASSERT(
+							(m_vRPN[sz - 2].Val.ptr == nullptr && m_vRPN[sz - 1].Val.ptr != nullptr) ||
 							(m_vRPN[sz - 2].Val.ptr != nullptr && m_vRPN[sz - 1].Val.ptr == nullptr) ||
 							(m_vRPN[sz - 2].Val.ptr == m_vRPN[sz - 1].Val.ptr));
 
@@ -496,7 +497,7 @@ namespace mu
 				stIf.push(i);
 				break;
 
-			case  cmELSE:
+			case cmELSE:
 				stElse.push(i);
 				idx = stIf.top();
 				stIf.pop();

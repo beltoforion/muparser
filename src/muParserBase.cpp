@@ -1115,7 +1115,10 @@ namespace mu
 
 			case  cmIF:
 				if (Stack[sidx--] == 0)
+				{
+					MUP_ASSERT(sidx >= 0);
 					pTok += pTok->Oprt.offset;
+				}
 				continue;
 
 			case  cmELSE:
@@ -1461,6 +1464,9 @@ namespace mu
 				StackDump(stVal, stOpt);
 				m_vRPN.AsciiDump();
 			}
+
+//			if (ParserBase::g_DbgDumpCmdCode)
+				//m_vRPN.AsciiDump();
 		} // while (true)
 
 		if (ParserBase::g_DbgDumpCmdCode)

@@ -486,14 +486,14 @@ namespace mu
 					if (m_iSynFlags & noELSE)
 						Error(ecUNEXPECTED_CONDITIONAL, m_iPos, pOprtDef[i]);
 
-					m_iSynFlags = noBC | noPOSTOP | noEND | noOPT | noIF | noELSE;
+					m_iSynFlags = noBC | noPOSTOP | noEND | noOPT | noIF | noELSE | noSTR;
 					break;
 
 				case cmIF:
 					if (m_iSynFlags & noIF)
 						Error(ecUNEXPECTED_CONDITIONAL, m_iPos, pOprtDef[i]);
 
-					m_iSynFlags = noBC | noPOSTOP | noEND | noOPT | noIF | noELSE;
+					m_iSynFlags = noBC | noPOSTOP | noEND | noOPT | noIF | noELSE | noSTR;
 					break;
 
 				default:      // The operator is listed in c_DefaultOprt, but not here. This is a bad thing...

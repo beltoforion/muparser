@@ -136,10 +136,18 @@ namespace mu
 			int iStat = 0;
 			mu::console() << _T("testing string arguments...");
 
-			// from oss-fuzz: https://oss-fuzz.com/testcase-detail/5106868061208576
-			iStat += ThrowTest(_T("\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",\"\",8"), ecSTR_RESULT);
+
+			// from oss-fuzz: https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=23410
+			iStat += ThrowTest(_T(R"(6 - 6 ? 4 : "", ? 4 : "", ? 4 : "")"), ecUNEXPECTED_STR,  true);
 			// variations:
-			iStat += ThrowTest(_T("\"\",\"\",9"), ecSTR_RESULT);
+			iStat += ThrowTest(_T(R"(1 ? 4 : "")"), ecUNEXPECTED_STR, true);
+			iStat += ThrowTest(_T(R"(1 ? "" : 4)"), ecUNEXPECTED_STR, true);
+			iStat += ThrowTest(_T(R"(1 ? "" : "")"), ecUNEXPECTED_STR, true);
+
+			// from oss-fuzz: https://oss-fuzz.com/testcase-detail/5106868061208576
+			iStat += ThrowTest(_T(R"("","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",8)"), ecSTR_RESULT);
+			// variations:
+			iStat += ThrowTest(_T(R"("","",9)"), ecSTR_RESULT);
 
 			iStat += EqnTest(_T("valueof(\"\")"), 123, true);   // empty string arguments caused a crash
 			iStat += EqnTest(_T("valueof(\"aaa\")+valueof(\"bbb\")  "), 246, true);
@@ -1191,6 +1199,7 @@ namespace mu
 				p.DefineFun(_T("strfun4"), StrFun4);
 				p.DefineFun(_T("strfun5"), StrFun5);
 				p.SetExpr(a_str);
+//				p.EnableDebugDump(1, 0);
 				p.Eval();
 			}
 			catch (ParserError& e)

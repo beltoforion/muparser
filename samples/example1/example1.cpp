@@ -355,7 +355,7 @@ static int CheckKeywords(const mu::char_type* a_szLine, mu::Parser& a_Parser)
 	}
 	else if (sLine == _T("dbg"))
 	{
-		std::string dbg = "strfun2(\"100\", 1)";
+		std::string dbg = R"(6 - 6 ? 4 : "", ? 4 : "", ? 4 : ""), 1)";
 		a_Parser.SetExpr(dbg);
 		mu::console() << dbg;
 
