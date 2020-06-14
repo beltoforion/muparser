@@ -13,7 +13,13 @@
 History:
 --------
 
-Rev 2.3.0: 08.06.2020
+Rev 2.3.1: 14.06.2020
+---------------------
+  Security Fixes: (The issues were present in all prior stable releases)
+   * Prevented multiple access violations for malformed expressions with if then else and functions taking multiple arguments like "sum(0?1,2,3,4:5)"
+	   * https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=23410
+
+Rev 2.3.0: 13.06.2020
 ---------------------
   Changes:
    * using OpenMP is now the default settings for cmake based builds
