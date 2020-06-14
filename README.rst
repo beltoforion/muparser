@@ -4,7 +4,7 @@
 .. image:: https://ci.appveyor.com/api/projects/status/u4882uj8btuspj9x?svg=true
     :target: https://ci.appveyor.com/project/jschueller/muparser-9ib44
 
-muparser - Fast Math Parser
+muparser - Fast Math Parser 2.3.1 (Dev)
 ===========================
 
 For a detailed description of the parser go to http://beltoforion.de/article.php?a=muparser.
