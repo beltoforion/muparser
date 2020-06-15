@@ -19,7 +19,9 @@ Changes:
 
 Security Fixes: 
 ------------
-* https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=23410
+The following issue was present in all older releases.
+
+* https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=23410 (Heap-buffer-overflow)
 
 
 Change Notes for Revision 2.3.0
