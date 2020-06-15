@@ -15,7 +15,7 @@ Change Notes for Revision 2.3.1
 ------------
 Changes:
 ------------
-* removed "final" keyword from Parser class since this was breaking existing applications
+* removed "final" keyword from Parser class since this API change broke multiple client applications
 
 Security Fixes: 
 ------------
