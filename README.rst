@@ -4,7 +4,7 @@
 .. image:: https://ci.appveyor.com/api/projects/status/u4882uj8btuspj9x?svg=true
     :target: https://ci.appveyor.com/project/jschueller/muparser-9ib44
 
-muparser - Fast Math Parser 2.3.1 (Dev)
+muparser - Fast Math Parser 2.3.1
 ===========================
 
 For a detailed description of the parser go to http://beltoforion.de/article.php?a=muparser.
@@ -13,9 +13,15 @@ See Install.txt for installation
 
 Change Notes for Revision 2.3.1
 ------------
+Changes:
+------------
+* removed "final" keyword from Parser class since this API change broke multiple client applications
+
 Security Fixes: 
 ------------
-* https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=23410
+The following issue was present in all older releases.
+
+* https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=23410 (Heap-buffer-overflow)
 
 
 Change Notes for Revision 2.3.0
