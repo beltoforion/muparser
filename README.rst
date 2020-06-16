@@ -27,6 +27,8 @@ The following issue was present in all older releases.
 Change Notes for Revision 2.3.1
 ------------
 No changes, only prereleases exist. Version 2.3.2 replaced them.
+
+
 Change Notes for Revision 2.3.0
 ------------
 
