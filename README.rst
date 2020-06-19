@@ -4,6 +4,12 @@
 .. image:: https://ci.appveyor.com/api/projects/status/u4882uj8btuspj9x?svg=true
     :target: https://ci.appveyor.com/project/jschueller/muparser-9ib44
 
+.. image:: https://img.shields.io/github/issues/beltoforion/muparser.svg?maxAge=360
+    :target: https://github.com/beltoforion/muparser/issues
+
+.. image:: https://img.shields.io/github/release/beltoforion/muparser.svg?maxAge=360
+    :target: https://rgithub.com/beltoforion/muparser/master/CHANGELOG
+
 muparser - Fast Math Parser 2.3.2
 ===========================
 .. image:: http://beltoforion.de/en/muparser/images/title.jpg
