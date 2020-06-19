@@ -10,6 +10,9 @@
 .. image:: https://img.shields.io/github/release/beltoforion/muparser.svg?maxAge=360
     :target: https://github.com/beltoforion/muparser/blob/master/CHANGELOG
 
+.. image:: https://repology.org/badge/tiny-repos/muparserx.svg
+    :target: https://repology.org/project/muparserx/versions
+
 muparser - Fast Math Parser 2.3.2
 ===========================
 .. image:: http://beltoforion.de/en/muparser/images/title.jpg
