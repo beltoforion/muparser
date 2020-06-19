@@ -8,7 +8,7 @@
     :target: https://github.com/beltoforion/muparser/issues
 
 .. image:: https://img.shields.io/github/release/beltoforion/muparser.svg?maxAge=360
-    :target: https://github.com/beltoforion/muparser/master/CHANGELOG
+    :target: https://github.com/beltoforion/muparser/blob/master/CHANGELOG
 
 muparser - Fast Math Parser 2.3.2
 ===========================
