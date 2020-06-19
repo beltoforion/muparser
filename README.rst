@@ -34,7 +34,7 @@ The binary interface should be compatible with versions 2.2.6 unless the parser 
 
 https://www.beltoforion.de/en/muparser/compat_reports/2.2.6_to_2.3.2/compat_report.html
 
-I recommend replacing existing versions of 2.2.6 with version 2.3.2. Please report all incompatibilities that you find (API and ABI). I will try to fix them before the final release (if reasonable)
+I recommend replacing existing versions of 2.2.6 with version 2.3.2. Please report all incompatibilities that you find (API and ABI). I will try to fix them (if reasonable)
 
 
 Change Notes for Revision 2.3.1
