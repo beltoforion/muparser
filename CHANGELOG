@@ -43,8 +43,8 @@ Rev 2.3.2: 17.06.2020
    * Fixed an issue where the bulk mode could hang on GCC/CLANG builds due to OpenMP chunksize dropping below 1.
 
 Rev 2.3.0 - 2.3.1:
-----------
-Short lived releases or prereleases that were replaced by 2.3.2 almost instantly due to API breaking changes. Version 2.3.2 is the successor of 2.2.6
+------------------
+Short lived releases or prereleases that were replaced by 2.3.2 almost instantly due to API breaking changes. Version 2.3.2 is the successor to version 2.2.6
 
 Rev 2.2.6: 04.10.2018
 ---------------------
