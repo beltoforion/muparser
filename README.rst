@@ -6,10 +6,10 @@
 
 .. image:: https://img.shields.io/github/issues/beltoforion/muparser.svg?maxAge=360
     :target: https://github.com/beltoforion/muparser/issues
-
+ 
 .. image:: https://img.shields.io/github/release/beltoforion/muparser.svg?maxAge=360
     :target: https://github.com/beltoforion/muparser/blob/master/CHANGELOG
-
+ 
 .. image:: https://repology.org/badge/tiny-repos/muparser.svg
     :target: https://repology.org/project/muparser/versions
 
