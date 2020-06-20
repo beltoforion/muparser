@@ -41,7 +41,9 @@
 #include <cctype>
 
 #ifdef MUP_USE_OPENMP
+
 #include <omp.h>
+
 #endif
 
 #if defined(_MSC_VER)
@@ -1842,7 +1844,7 @@ namespace mu
 #endif
 
 		int nMaxThreads = std::min(omp_get_max_threads(), s_MaxNumOpenMPThreads);
-		int nThreadID = 0;
+		int nThreadID;
 
 #ifdef DEBUG_OMP_STUFF
 		int ct = 0;

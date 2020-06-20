@@ -39,6 +39,11 @@
 #include "muParserToken.h"
 #include "muParserTemplateMagic.h"
 
+#if defined(_MSC_VER)
+	#pragma warning(push)
+	#pragma warning(disable : 26812) 
+#endif
+
 
 namespace mu
 {
@@ -630,3 +635,7 @@ namespace mu
 		mu::console() << _T("END") << std::endl;
 	}
 } // namespace mu
+
+#if defined(_MSC_VER)
+	#pragma warning(pop)
+#endif
