@@ -649,11 +649,11 @@ namespace mu
 		case cmDIV:      return  prMUL_DIV;
 		case cmPOW:      return  prPOW;
 
-			// user defined binary operators
+		// user defined binary operators
 		case cmOPRT_INFIX:
 		case cmOPRT_BIN: return a_Tok.GetPri();
-		default:  Error(ecINTERNAL_ERROR, 5);
-			return 999;
+		default:  
+			throw exception_type(ecINTERNAL_ERROR, 5, _T(""));
 		}
 	}
 
@@ -1225,14 +1225,12 @@ namespace mu
 				case 9: sidx -= 8; Stack[sidx] = (*(bulkfun_type9)pTok->Fun.ptr)(nOffset, nThreadID, Stack[sidx], Stack[sidx + 1], Stack[sidx + 2], Stack[sidx + 3], Stack[sidx + 4], Stack[sidx + 5], Stack[sidx + 6], Stack[sidx + 7], Stack[sidx + 8]); continue;
 				case 10:sidx -= 9; Stack[sidx] = (*(bulkfun_type10)pTok->Fun.ptr)(nOffset, nThreadID, Stack[sidx], Stack[sidx + 1], Stack[sidx + 2], Stack[sidx + 3], Stack[sidx + 4], Stack[sidx + 5], Stack[sidx + 6], Stack[sidx + 7], Stack[sidx + 8], Stack[sidx + 9]); continue;
 				default:
-					Error(ecINTERNAL_ERROR, 2);
-					continue;
+					throw exception_type(ecINTERNAL_ERROR, 2, "");
 				}
 			}
 
 			default:
-				Error(ecINTERNAL_ERROR, 3);
-				return 0;
+				throw exception_type(ecINTERNAL_ERROR, 3, "");
 			} // switch CmdCode
 		} // for all bytecode tokens
 
