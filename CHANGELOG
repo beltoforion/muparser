@@ -7,7 +7,7 @@
     Copyright (C) 2004 - 2020 Ingo Berg
 
 =======================================================================
-    https://muparser.beltoforion.de
+    https://beltoforion.de/en/muparser
 =======================================================================
 
 History:
@@ -15,20 +15,9 @@ History:
 
 Rev 2.3.2: 17.06.2020
 ---------------------
-  API-Changes:
+  API-Change Revertion (to 2.3.0):
    * removed final keyword from Parser class (added in 2.3.0) as this was breaking existing Applications
 
-  Security Fixes: (The issues were present in all prior stable releases)
-   * Prevented multiple access violations for malformed expressions with if then else and functions taking multiple arguments like "sum(0?1,2,3,4:5)"
-	   * https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=23410
-
-Rev 2.3.1:
-----------
-Only prerelease with the version number exist Version 2.3.2 replaced it.
-
-
-Rev 2.3.0: 13.06.2020
----------------------
   Changes:
    * made Parser class final
    * using OpenMP is now the default settings for cmake based builds
@@ -43,14 +32,19 @@ Rev 2.3.0: 13.06.2020
 
   Security Fixes: (The issues were present in all prior stable releases)
    * Prevented multiple access violations for malformed expressions with if then else and functions taking multiple arguments like "sum(0?1,2,3,4:5)"
-	   * https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=23330
+   	   * https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=23330
 	   * https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=22922
 	   * https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=22938
 	   * https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=23330
+	   * https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=23410
    * Added additional runtime checks for release builds to prevent segmentation faults for invalid expressions
 
   Bugfixes:
    * Fixed an issue where the bulk mode could hang on GCC/CLANG builds due to OpenMP chunksize dropping below 1.
+
+Rev 2.3.0 - 2.3.1:
+------------------
+Short lived releases or prereleases that were replaced by 2.3.2 almost instantly due to API breaking changes. Version 2.3.2 is the successor to version 2.2.6
 
 Rev 2.2.6: 04.10.2018
 ---------------------

@@ -4,10 +4,22 @@
 .. image:: https://ci.appveyor.com/api/projects/status/u4882uj8btuspj9x?svg=true
     :target: https://ci.appveyor.com/project/jschueller/muparser-9ib44
 
+.. image:: https://img.shields.io/github/issues/beltoforion/muparser.svg?maxAge=360
+    :target: https://github.com/beltoforion/muparser/issues
+ 
+.. image:: https://img.shields.io/github/release/beltoforion/muparser.svg?maxAge=360
+    :target: https://github.com/beltoforion/muparser/blob/master/CHANGELOG
+ 
+.. image:: https://repology.org/badge/tiny-repos/muparser.svg
+    :target: https://repology.org/project/muparser/versions
+
+
 muparser - Fast Math Parser 2.3.2
 ===========================
+.. image:: http://beltoforion.de/en/muparser/images/title.jpg
 
-For a detailed description of the parser go to http://beltoforion.de/article.php?a=muparser.
+
+For a detailed description of the parser go to http://beltoforion.de/en/muparser.
 
 See Install.txt for installation
 
@@ -32,7 +44,7 @@ The binary interface should be compatible with versions 2.2.6 unless the parser 
 
 https://www.beltoforion.de/en/muparser/compat_reports/2.2.6_to_2.3.2/compat_report.html
 
-I recommend replacing existing versions of 2.2.6 with version 2.3.2. Please report all incompatibilities that you find (API and ABI). I will try to fix them before the final release (if reasonable)
+I recommend replacing existing versions of 2.2.6 with version 2.3.2. Please report all incompatibilities that you find (API and ABI). I will try to fix them (if reasonable)
 
 
 Change Notes for Revision 2.3.1
