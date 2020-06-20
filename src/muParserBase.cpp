@@ -408,7 +408,7 @@ namespace mu
 	*/
 	void ParserBase::SetExpr(const string_type& a_sExpr)
 	{
-		if (std::all_of(a_sExpr.begin(), a_sExpr.end(), [](char c) { return !std::isgraph(c); }))
+		if (std::all_of(a_sExpr.begin(), a_sExpr.end(), [](char_type c) { return !std::isgraph(c); }))
 		{
 			Error(ecINVALID_CHARACTERS_FOUND);
 		}
