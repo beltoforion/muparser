@@ -21,7 +21,7 @@ GitHub Master
    * Disabled compiler warning 4251 (... needs to have dll-interface to be used by clients of class ...)
      When the build system was changed to CMake Linux and Windows builds were unified. Each dynamic library contains the 
      class interface as well as the C-interface. Before the linux shared library was using the class interface and the 
-	 windows dll was using the C-interface.
+     windows dll was using the C-interface.
     
      Only the C-Interface is safe to use when you intent to bring an executable to another linux distribution or windows version. 
      This is up to the client software. I cannot change this because on linux the shared library was always using the class 
