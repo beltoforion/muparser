@@ -13,6 +13,22 @@
 History:
 --------
 
+GitHub Master
+---------------------
+  Build System Changes (Visual Studio):
+   * Disabled compiler warning 26812 (Prefer 'enum class' over 'enum')
+     I consider this a bogus warning. Use of plain old enums has not been deprecated and only MSVC is complaining. 
+   * Disabled compiler warning 4251 (... needs to have dll-interface to be used by clients of class ...)
+     When the build system was changed Linux and Windows builds were unified. Each dynamic library contains the 
+     class interface as well as the C-interface. Only the C-Interface is safe to use when you intent to bring an executable
+     to another linux distribution or version or windows version. This is up to the client software. I cannot change this 
+     because on linux the shared library was always using the class interface. Usually this is not a problem since 
+     distributions compile all applications from scratch. 
+
+     If you use the class interface you can not take for granted that your software will run with a muparser 
+     version compiled for another operating system or linux distribution! You must use the C-Interface if you 
+     want this!
+
 Rev 2.3.2: 17.06.2020
 ---------------------
   API-Change Revertion (to 2.3.0):
