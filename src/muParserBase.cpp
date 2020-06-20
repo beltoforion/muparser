@@ -1844,7 +1844,7 @@ namespace mu
 #endif
 
 		int nMaxThreads = std::min(omp_get_max_threads(), s_MaxNumOpenMPThreads);
-		int nThreadID;
+		int nThreadID = 0;
 
 #ifdef DEBUG_OMP_STUFF
 		int ct = 0;
