@@ -44,6 +44,11 @@
 #include "muParserBytecode.h"
 #include "muParserError.h"
 
+#if defined(_MSC_VER)
+	#pragma warning(push)
+	#pragma warning(disable : 4251)  // ...needs to have dll-interface to be used by clients of class ...
+#endif
+
 
 namespace mu
 {
@@ -290,5 +295,9 @@ namespace mu
 	};
 
 } // namespace mu
+
+#if defined(_MSC_VER)
+	#pragma warning(pop)
+#endif
 
 #endif
