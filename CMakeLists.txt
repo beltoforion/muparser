@@ -21,7 +21,9 @@ set(MUPARSER_VERSION ${MUPARSER_VERSION_MAJOR}.${MUPARSER_VERSION_MINOR}.${MUPAR
 # Build options
 option(ENABLE_SAMPLES "Build the samples" ON)
 option(ENABLE_OPENMP "Enable OpenMP for multithreading" ON)
+option(ENABLE_WIDE_CHAR "Enable wide character support" OFF)
 option(BUILD_SHARED_LIBS "Build shared/static libs" ON)
+
 
 if(ENABLE_OPENMP)
     find_package(OpenMP REQUIRED)
@@ -72,6 +74,11 @@ endif ()
 if(ENABLE_OPENMP)
   target_compile_definitions(muparser PRIVATE MUP_USE_OPENMP)
 endif()
+
+if(ENABLE_WIDE_CHAR)
+  target_compile_definitions(muparser PUBLIC _UNICODE)
+endif()
+
 set_target_properties(muparser PROPERTIES
     VERSION ${MUPARSER_VERSION}
     SOVERSION ${MUPARSER_VERSION_MAJOR}

@@ -1227,12 +1227,12 @@ namespace mu
 				case 9: sidx -= 8; Stack[sidx] = (*(bulkfun_type9)pTok->Fun.ptr)(nOffset, nThreadID, Stack[sidx], Stack[sidx + 1], Stack[sidx + 2], Stack[sidx + 3], Stack[sidx + 4], Stack[sidx + 5], Stack[sidx + 6], Stack[sidx + 7], Stack[sidx + 8]); continue;
 				case 10:sidx -= 9; Stack[sidx] = (*(bulkfun_type10)pTok->Fun.ptr)(nOffset, nThreadID, Stack[sidx], Stack[sidx + 1], Stack[sidx + 2], Stack[sidx + 3], Stack[sidx + 4], Stack[sidx + 5], Stack[sidx + 6], Stack[sidx + 7], Stack[sidx + 8], Stack[sidx + 9]); continue;
 				default:
-					throw exception_type(ecINTERNAL_ERROR, 2, "");
+					throw exception_type(ecINTERNAL_ERROR, 2, _T(""));
 				}
 			}
 
 			default:
-				throw exception_type(ecINTERNAL_ERROR, 3, "");
+				throw exception_type(ecINTERNAL_ERROR, 3, _T(""));
 			} // switch CmdCode
 		} // for all bytecode tokens
 

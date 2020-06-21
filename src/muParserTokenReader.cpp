@@ -399,7 +399,7 @@ namespace mu
 		{
 			// There is still the chance of having to deal with an operator consisting exclusively
 			// of alphabetic characters.
-			return ExtractToken("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ", a_sTok, (std::size_t)a_iPos);
+			return ExtractToken(_T("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"), a_sTok, (std::size_t)a_iPos);
 		}
 	}
 

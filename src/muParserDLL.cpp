@@ -43,6 +43,10 @@
 #include "muParserInt.h"
 #include "muParserError.h"
 
+#if _UNICODE
+	#include <wchar.h>
+#endif
+
 #if defined(_MSC_VER)
 	#pragma warning(push)
 	#pragma warning(disable : 26812) 
@@ -111,6 +115,12 @@ private:
 };
 
 static muChar_t s_tmpOutBuf[2048];
+
+template <typename T>
+constexpr std::size_t count_of(const T& array) 
+{
+	return (sizeof(array) / sizeof(array[0]));
+}
 
 //---------------------------------------------------------------------------
 //
@@ -200,7 +210,8 @@ API_EXPORT(const muChar_t*) mupGetVersion(muParserHandle_t a_hParser)
 #ifndef _UNICODE
 		sprintf(s_tmpOutBuf, "%s", p->GetVersion().c_str());
 #else
-		wsprintf(s_tmpOutBuf, _T("%s"), p->GetVersion().c_str());
+//		wsprintf(s_tmpOutBuf, _T("%s"), p->GetVersion().c_str());
+		swprintf(s_tmpOutBuf, count_of(s_tmpOutBuf), _T("%s"), p->GetVersion().c_str());
 #endif
 
 		return s_tmpOutBuf;
@@ -597,7 +608,8 @@ API_EXPORT(const muChar_t*) mupGetExpr(muParserHandle_t a_hParser)
 #ifndef _UNICODE
 		sprintf(s_tmpOutBuf, "%s", p->GetExpr().c_str());
 #else
-		wsprintf(s_tmpOutBuf, _T("%s"), p->GetExpr().c_str());
+//		wsprintf(s_tmpOutBuf, _T("%s"), p->GetExpr().c_str());
+		swprintf(s_tmpOutBuf, count_of(s_tmpOutBuf), _T("%s"), p->GetExpr().c_str());
 #endif
 
 		return s_tmpOutBuf;
@@ -701,12 +713,12 @@ API_EXPORT(void) mupGetVar(muParserHandle_t a_hParser, unsigned a_iVar, const mu
 			++item;
 
 #ifndef _UNICODE
-		strncpy(szName, item->first.c_str(), sizeof(szName));
+		strncpy(szName, item->first.c_str(), count_of(szName));
 #else
-		wcsncpy(szName, item->first.c_str(), sizeof(szName));
+		wcsncpy(szName, item->first.c_str(), count_of(szName));
 #endif
 
-		szName[sizeof(szName) - 1] = 0;
+		szName[count_of(szName) - 1] = 0;
 
 		*a_szName = &szName[0];
 		*a_pVar = item->second;
@@ -774,12 +786,12 @@ API_EXPORT(void) mupGetExprVar(muParserHandle_t a_hParser, unsigned a_iVar, cons
 			++item;
 
 #ifndef _UNICODE
-		strncpy(szName, item->first.c_str(), sizeof(szName));
+		strncpy(szName, item->first.c_str(), count_of(szName));
 #else
-		wcsncpy(szName, item->first.c_str(), sizeof(szName));
+		wcsncpy(szName, item->first.c_str(), count_of(szName));
 #endif
 
-		szName[sizeof(szName) - 1] = 0;
+		szName[count_of(szName) - 1] = 0;
 
 		*a_szName = &szName[0];
 		*a_pVar = item->second;
@@ -869,12 +881,12 @@ API_EXPORT(void) mupGetConst(muParserHandle_t a_hParser, unsigned a_iVar, const 
 			++item;
 
 #ifndef _UNICODE
-		strncpy(szName, item->first.c_str(), sizeof(szName));
+		strncpy(szName, item->first.c_str(), count_of(szName));
 #else
-		wcsncpy(szName, item->first.c_str(), sizeof(szName));
+		wcsncpy(szName, item->first.c_str(), count_of(szName));
 #endif
 
-		szName[sizeof(szName) - 1] = 0;
+		szName[count_of(szName) - 1] = 0;
 
 		*a_pszName = &szName[0];
 		*a_fVal = item->second;
@@ -934,7 +946,8 @@ API_EXPORT(const muChar_t*) mupGetErrorMsg(muParserHandle_t a_hParser)
 #ifndef _UNICODE
 	sprintf(s_tmpOutBuf, "%s", pMsg);
 #else
-	wsprintf(s_tmpOutBuf, _T("%s"), pMsg);
+	//wsprintf(s_tmpOutBuf, _T("%s"), pMsg);
+	swprintf(s_tmpOutBuf, count_of(s_tmpOutBuf), _T("%s"), pMsg);
 #endif
 
 	return s_tmpOutBuf;
@@ -952,7 +965,8 @@ API_EXPORT(const muChar_t*) mupGetErrorToken(muParserHandle_t a_hParser)
 #ifndef _UNICODE
 	sprintf(s_tmpOutBuf, "%s", pToken);
 #else
-	wsprintf(s_tmpOutBuf, _T("%s"), pToken);
+	//wsprintf(s_tmpOutBuf, _T("%s"), pToken);
+	swprintf(s_tmpOutBuf, count_of(s_tmpOutBuf), _T("%s"), pToken);
 #endif
 
 	return s_tmpOutBuf;

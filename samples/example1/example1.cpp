@@ -26,8 +26,6 @@
 	OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 */
 
-#include "muParserTest.h"
-
 #include <cstdlib>
 #include <cstring>
 #include <cmath>
@@ -39,6 +37,7 @@
 #include <iomanip>
 #include <numeric>
 
+#include "muParserTest.h"
 #include "muParser.h"
 
 using namespace std;
@@ -132,6 +131,7 @@ static value_type* AddVariable(const char_type* a_szName, void* a_pUserData)
 		return &afValBuf[iVal];
 }
 
+
 int IsBinValue(const char_type* a_szExpr, int* a_iPos, value_type* a_fVal)
 {
 	if (a_szExpr[0] != 0 && a_szExpr[1] != 'b')
@@ -155,6 +155,7 @@ int IsBinValue(const char_type* a_szExpr, int* a_iPos, value_type* a_fVal)
 
 	return 1;
 }
+
 
 static int IsHexValue(const char_type* a_szExpr, int* a_iPos, value_type* a_fVal)
 {
@@ -379,7 +380,7 @@ static int CheckKeywords(const mu::char_type* a_szLine, mu::Parser& a_Parser)
 	}
 	else if (sLine == _T("dbg"))
 	{
-		std::string dbg = R"(6 - 6 ? 4 : "", ? 4 : "", ? 4 : ""), 1)";
+		string_type dbg = _T(R"(6 - 6 ? 4 : "", ? 4 : "", ? 4 : ""), 1)");
 		a_Parser.SetExpr(dbg);
 		mu::console() << dbg;
 
