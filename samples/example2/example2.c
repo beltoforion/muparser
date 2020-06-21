@@ -153,7 +153,7 @@ static void Intro(muParserHandle_t hParser)
 	myprintf(_T("  Compiled with MSVC Version %d\n"), _MSC_VER);
 #endif
 
-	myprintf(_T("  %d-bit build\n"), sizeof(void*) * 8);
+	myprintf(_T("  %ld-bit build\n"), sizeof(void*) * 8);
 	myprintf(_T("-----------------------------------------------------------\n"));
 	myprintf(_T("Commands:\n"));
 	myprintf(_T("  list var     - list parser variables\n"));
