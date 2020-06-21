@@ -17,7 +17,7 @@
  and then, from a terminal, typing:
 
    cd [path to muParser]
-   cmake . [-DENABLE_SAMPLES=ON/OFF] [-DENABLE_OPENMP=OFF/ON]
+   cmake . [-DENABLE_SAMPLES=ON/OFF] [-DENABLE_OPENMP=OFF/ON] [-DENABLE_WIDE_CHAR=OFF/ON]
            [-DBUILD_SHARED_LIBS=ON/OFF]
    make
    [sudo*] make install

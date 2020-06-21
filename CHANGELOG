@@ -15,6 +15,9 @@ History:
 
 GitHub Master
 ---------------------
+  Build System Changes (CMake):
+   * Added a new option "-DENABLE_WIDE_CHAR" to CMake in order to build muparser with wide character support
+   
   Build System Changes (Visual Studio):
    * Disabled compiler warning 26812 (Prefer 'enum class' over 'enum')
      I consider this a bogus warning. Use of plain old enums has not been deprecated and only MSVC is complaining. 
@@ -30,6 +33,11 @@ GitHub Master
      If you use the class interface you can not take for granted that your software will run with a muparser 
      version compiled for another operating system or linux distribution! You must either use the C-Interface if you 
      want this or use a static library build of muparser!
+
+  Bugfixes:
+    * fixed a couple of issues for building the C-Interface (muParserDLL.cpp/.h) with wide character support. 
+  	  The issues are irrelevant for 2.3.2 and 2.2.6 because neither of those versions could be built with wide 
+	  character support anyway.
 
 Rev 2.3.2: 17.06.2020
 ---------------------
