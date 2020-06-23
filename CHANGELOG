@@ -16,7 +16,7 @@ History:
 GitHub Master
 ---------------------
   Build System Changes (CMake):
-   * Added a new option "-DENABLE_WIDE_CHAR" to CMake in order to build muparser with wide character support
+   * Added a new option "-DENABLE_WIDE_CHAR" to CMake for building muparser with wide character support
    
   Build System Changes (Visual Studio):
    * Disabled compiler warning 26812 (Prefer 'enum class' over 'enum')
