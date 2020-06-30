@@ -14,7 +14,7 @@
     :target: https://repology.org/project/muparser/versions
 
 
-muparser - Fast Math Parser 2.3.2
+muparser - Fast Math Parser 2.3.2 
 ===========================
 .. image:: http://beltoforion.de/en/muparser/images/title.jpg
 
@@ -29,7 +29,7 @@ Changes:
 ------------
 * removed "final" keyword from Parser class since this API change broke multiple client applications
 
-Security Fixes: 
+Security Fixes:  
 ------------
 The following issue was present in all older releases.
 
