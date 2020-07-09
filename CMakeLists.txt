@@ -56,7 +56,11 @@ add_library(muparser
     src/muParserTest.cpp
     src/muParserTokenReader.cpp
 )
-target_include_directories(muparser PUBLIC include)
+# use the headers in the build-tree or the installed ones
+target_include_directories(muparser PUBLIC
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    $<INSTALL_INTERFACE:include>
+)
 
 # this compiles the "DLL" interface (C API)
 target_compile_definitions(muparser PRIVATE MUPARSER_DLL)
@@ -84,9 +88,6 @@ set_target_properties(muparser PROPERTIES
     SOVERSION ${MUPARSER_VERSION_MAJOR}
 )
 
-# Install the export set for use with the install-tree
-export(TARGETS muparser FILE "${CMAKE_BINARY_DIR}/muparser-targets.cmake")
-
 if(ENABLE_SAMPLES)
   add_executable(example1 samples/example1/example1.cpp)
   target_link_libraries(example1 muparser)
@@ -98,8 +99,10 @@ endif()
 # The GNUInstallDirs defines ${CMAKE_INSTALL_DATAROOTDIR}
 # See https://cmake.org/cmake/help/latest/module/GNUInstallDirs.html
 include (GNUInstallDirs)
+set(INSTALL_CONFIGDIR ${CMAKE_INSTALL_LIBDIR}/cmake/muparser)
 
 install(TARGETS muparser
+    EXPORT muparser-export
     LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT RuntimeLibraries
     ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR} COMPONENT Development
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} COMPONENT RuntimeLibraries
@@ -120,6 +123,35 @@ install(FILES
     include/muParserToken.h
     include/muParserTokenReader.h
     DESTINATION include
+    COMPONENT Development
+)
+
+# Export the target under the build-tree (no need to install)
+export(EXPORT muparser-export
+    FILE "${CMAKE_BINARY_DIR}/muparser-targets.cmake"
+    NAMESPACE muparser::
+)
+
+# Export the installed target (typically for packaging)
+include(CMakePackageConfigHelpers)
+write_basic_package_version_file(
+    "${CMAKE_CURRENT_BINARY_DIR}/muparserConfigVersion.cmake"
+    VERSION ${MUPARSER_VERSION}
+    COMPATIBILITY AnyNewerVersion
+)
+configure_file(muparserConfig.cmake.in
+    "${CMAKE_CURRENT_BINARY_DIR}/muparserConfig.cmake"
+    COPYONLY
+)
+install(EXPORT muparser-export
+    FILE muparser-targets.cmake
+    NAMESPACE muparser::
+    DESTINATION ${INSTALL_CONFIGDIR}
+)
+install(FILES
+    ${CMAKE_CURRENT_BINARY_DIR}/muparserConfig.cmake
+    ${CMAKE_CURRENT_BINARY_DIR}/muparserConfigVersion.cmake
+    DESTINATION ${INSTALL_CONFIGDIR}
     COMPONENT Development
 )
 
