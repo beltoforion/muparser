@@ -27,8 +27,8 @@ Change Notes for Master
 ===========================
 Build System (CMake):
 ------------
-   * Added a new option "-DENABLE_WIDE_CHAR" to CMake for building muparser with wide character support
-   * export muparser targets, such that client projects can import it using find_package() (https://github.com/beltoforion/muparser/pull/81#event-3528671228)
+* Added a new option "-DENABLE_WIDE_CHAR" to CMake for building muparser with wide character support
+* export muparser targets, such that client projects can import it using find_package() (https://github.com/beltoforion/muparser/pull/81#event-3528671228)
 
 Bugfixes:
 -----------
