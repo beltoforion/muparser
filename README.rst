@@ -75,9 +75,8 @@ Changes:
 * removed macros for defining E and PI 
 * the MUP_ASSERT macro is no longer removed in release builds for better protection against segmentation faults
 
-Security Fixes: 
+Bugfixes:
 ------------
-
 Fixed several issues reported by oss-fuzz. The issues were present in older releases. Most of them resulted in segmentation faults.
 
 * https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=23330
@@ -85,9 +84,5 @@ Fixed several issues reported by oss-fuzz. The issues were present in older rele
 * https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=22938
 * https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=23330
 * Added additional runtime checks for release builds to prevent segmentation faults for invalid expressions
-
-Bugfixes:
-------------
-
 * Fixed an issue where the bulk mode could hang on GCC/CLANG builds due to OpenMP chunksize dropping below 1.
 
