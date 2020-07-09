@@ -24,13 +24,13 @@ To read the full documentation please go to: http://beltoforion.de/en/muparser.
 See Install.txt for installation
 
 Change Notes for Master
-------------
+===========================
 Build System:
 ------------
 * export muparser targets, such that client projects can import it using find_package() (https://github.com/beltoforion/muparser/pull/81#event-3528671228)
 
 Change Notes for Revision 2.3.2
-------------
+===========================
 Changes:
 ------------
 * removed "final" keyword from Parser class since this API change broke multiple client applications
@@ -54,12 +54,12 @@ I recommend replacing existing versions of 2.2.6 with version 2.3.2. Please repo
 
 
 Change Notes for Revision 2.3.1
-------------
+===========================
 No changes, only prereleases exist. Version 2.3.2 replaced them.
 
 
 Change Notes for Revision 2.3.0
-------------
+===========================
 
 Version 2.3.0 will bring fixes for parsing in bulk mode. It will enable OpenMP by default thus allowing the parallelization of expression evaluation. It will also fix a range of issues reported by oss-fuz (https://github.com/google/oss-fuzz).
 
