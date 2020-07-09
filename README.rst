@@ -23,6 +23,12 @@ To read the full documentation please go to: http://beltoforion.de/en/muparser.
 
 See Install.txt for installation
 
+Change Notes for Master
+------------
+Build System:
+------------
+* export muparser targets, such that client projects can import it using find_package() (https://github.com/beltoforion/muparser/pull/81#event-3528671228)
+
 Change Notes for Revision 2.3.2
 ------------
 Changes:
