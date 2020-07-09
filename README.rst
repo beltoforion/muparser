@@ -32,13 +32,9 @@ Build System (CMake):
 
 Bugfixes:
 -----------
-   * Compiler Warnings disabled (Visual Studio): Disabled compiler warning 26812 (Prefer 'enum class' over 'enum')
-     I consider this a bogus warning. Use of plain old enums has not been deprecated and only MSVC is complaining. 
-   * Compiler Warnings disabled (Visual Studio): Disabled compiler warning 4251 (... needs to have dll-interface to be used by clients of class ...) 
-     For technical reason the DLL contains the class API and the DLL API. Just do not use the class API if you intent to share the dll accross windows versions. (The same is true for Linux but distributions do compile each application againt their own library version anyway)
-     
-    * fixed a couple of issues for building the C-Interface (muParserDLL.cpp/.h) with wide character support.
-
+* Compiler Warnings disabled (Visual Studio): Disabled compiler warning 26812 (Prefer 'enum class' over 'enum') I consider this a bogus warning. Use of plain old enums has not been deprecated and only MSVC is complaining. 
+* Compiler Warnings disabled (Visual Studio): Disabled compiler warning 4251 (... needs to have dll-interface to be used by clients of class ...)  For technical reason the DLL contains the class API and the DLL API. Just do not use the class API if you intent to share the dll accross windows versions. (The same is true for Linux but distributions do compile each application againt their own library version anyway)
+* fixed a couple of issues for building the C-Interface (muParserDLL.cpp/.h) with wide character support.
 
 Change Notes for Revision 2.3.2
 ===========================
