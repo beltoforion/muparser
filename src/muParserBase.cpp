@@ -890,18 +890,24 @@ namespace mu
 		while (a_stOpt.size() && a_stOpt.top().GetCode() == cmELSE)
 		{
 			MUP_ASSERT(!a_stOpt.empty())
-				token_type opElse = a_stOpt.top();
+			token_type opElse = a_stOpt.top();
 			a_stOpt.pop();
 
 			// Take the value associated with the else branch from the value stack
 			MUP_ASSERT(!a_stVal.empty());
 			token_type vVal2 = a_stVal.top();
+			if (vVal2.GetType() != tpDBL)
+				Error(ecUNEXPECTED_STR, m_pTokenReader->GetPos());
+			
 			a_stVal.pop();
 
 			// it then else is a ternary operator Pop all three values from the value s
 			// tack and just return the right value
 			MUP_ASSERT(!a_stVal.empty());
 			token_type vVal1 = a_stVal.top();
+			if (vVal1.GetType() != tpDBL)
+				Error(ecUNEXPECTED_STR, m_pTokenReader->GetPos());
+
 			a_stVal.pop();
 
 			MUP_ASSERT(!a_stVal.empty());

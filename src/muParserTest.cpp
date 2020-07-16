@@ -139,13 +139,13 @@ namespace mu
 			// from oss-fuzz: https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=23410
 			iStat += ThrowTest(_T(R"(6 - 6 ? 4 : "", ? 4 : "", ? 4 : "")"), ecUNEXPECTED_STR,  true);
 			// variations:
-			iStat += ThrowTest(_T(R"(avg(0?4:(""),1))"), ecVAL_EXPECTED);
-			iStat += ThrowTest(_T(R"(1 ? 4 : "")"), ecUNEXPECTED_STR, true);
-			iStat += ThrowTest(_T(R"(1 ? "" : 4)"), ecUNEXPECTED_STR, true);
-			iStat += ThrowTest(_T(R"(1 ? "" : "")"), ecUNEXPECTED_STR, true);
-			iStat += ThrowTest(_T(R"(0 ? 4 : "")"), ecUNEXPECTED_STR, true);
-			iStat += ThrowTest(_T(R"(0 ? 4 : (""))"), ecSTR_RESULT, true);
-			iStat += ThrowTest(_T(R"(1 ? 4 : "")"), ecUNEXPECTED_STR, true);
+			iStat += ThrowTest(_T(R"(avg(0?4:(""),1))"), ecUNEXPECTED_STR);
+			iStat += ThrowTest(_T(R"(1 ? 4 : "")"), ecUNEXPECTED_STR);
+			iStat += ThrowTest(_T(R"(1 ? "" : 4)"), ecUNEXPECTED_STR);
+			iStat += ThrowTest(_T(R"(1 ? "" : "")"), ecUNEXPECTED_STR);
+			iStat += ThrowTest(_T(R"(0 ? 4 : "")"), ecUNEXPECTED_STR);
+			iStat += ThrowTest(_T(R"(0 ? 4 : (""))"), ecUNEXPECTED_STR);
+			iStat += ThrowTest(_T(R"(1 ? 4 : "")"), ecUNEXPECTED_STR);
 
 			// from oss-fuzz: https://oss-fuzz.com/testcase-detail/5106868061208576
 			iStat += ThrowTest(_T(R"("","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",8)"), ecSTR_RESULT);
@@ -634,8 +634,8 @@ namespace mu
 			iStat += ThrowTest(_T("6, +, +, +, +, +, +, +, +, +, +, +, +, +, +, 1, +, +, +, +, +, +, +, +, +, +, +, +, +, +, +, +, +, +, +, +, +, +, +, +, +, +, +, +, +, +, +, +"), ecUNEXPECTED_ARG_SEP, true);
 
 			// misplaced string argument			
-			iStat += ThrowTest(_T(R"(sin(0?4:("")))"), ecVAL_EXPECTED);
-			iStat += ThrowTest(_T(R"(avg(0?4:(""),1))"), ecVAL_EXPECTED);
+			iStat += ThrowTest(_T(R"(sin(0?4:("")))"), ecUNEXPECTED_STR);
+			iStat += ThrowTest(_T(R"(avg(0?4:(""),1))"), ecUNEXPECTED_STR);
 
 			// Compound expressions
 			iStat += EqnTest(_T("1,2,3"), 3, true);
@@ -944,9 +944,15 @@ namespace mu
 			mu::console() << _T("testing if-then-else operator...");
 
 			// from oss-fuzz.com: https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=24167
-//			iStat += ThrowTest(_T(R"(avg(0?(""):4,1))"), ecVAL_EXPECTED);
-//			iStat += ThrowTest(_T("avg(0>3?4:(\"\"),0^3?4:(\"\"))"), ecUNEXPECTED_ARG_SEP);
-//			iStat += ThrowTest(_T("0^3^avg(0>3?4:(\"\"),0^3?4:(\"\"))"), ecUNEXPECTED_ARG_SEP);
+			iStat += ThrowTest(_T(R"(0^3^avg(0>3?4:(""),0^3?4:("")))"), ecUNEXPECTED_STR);
+			// derivatives
+			iStat += ThrowTest(_T(R"(avg(0?(""):4,1))"), ecUNEXPECTED_STR);
+			iStat += ThrowTest(_T(R"(avg(0>3?4:(""),0^3?4:("")))"), ecUNEXPECTED_STR);
+
+			iStat += ThrowTest(_T(R"(0?4:(""))"), ecUNEXPECTED_STR);
+			iStat += ThrowTest(_T(R"((0)?4:(""))"), ecUNEXPECTED_STR);
+			iStat += ThrowTest(_T(R"((0>3)?4:(""))"), ecUNEXPECTED_STR);
+			iStat += ThrowTest(_T(R"(0>3?4:(""))"), ecUNEXPECTED_STR);
 
 			// from oss-fuzz.com: https://oss-fuzz.com/testcase-detail/4777121158529024
 			iStat += ThrowTest(_T("3!=min(0?2>2,2>5,1:6)"), ecUNEXPECTED_ARG_SEP);

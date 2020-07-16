@@ -26,7 +26,7 @@ GitHub Master
      class interface as well as the C-interface. Before the linux shared library was using the class interface and the 
      windows dll was using the C-interface.
     
-     Only the C-Interface is safe to use when you intent to bring an executable to another linux distribution or windows version. 
+     Only the C-Interface is safe to use when you intent to bring an executable to another linux distribution or windows version! 
      This is up to the client software. I cannot change this because on linux the shared library was always using the class 
      interface. Usually this is not a problem since distributions compile all applications from scratch. 
 
@@ -34,8 +34,11 @@ GitHub Master
      version compiled for another operating system or linux distribution! You must either use the C-Interface if you 
      want this or use a static library build of muparser!
 
+  Security Fixes: (The issues were present in all prior stable releases)
+   * https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=24167 
+
   Bugfixes:
-    * fixed a couple of issues for building the C-Interface (muParserDLL.cpp/.h) with wide character support.
+   * fixed a couple of issues for building the C-Interface (muParserDLL.cpp/.h) with wide character support.
 
 Rev 2.3.2: 17.06.2020
 ---------------------
