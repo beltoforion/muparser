@@ -32,7 +32,7 @@ Build System (CMake):
 
 Security Fixes:  
 ------------
-The following issue was present in all older releases.
+The following issue was newly discovered and is present in previous releases.
 
 * https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=24167 (Abrt)
 
