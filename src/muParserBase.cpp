@@ -1176,10 +1176,15 @@ namespace mu
 
 					sidx -= -iArgCount - 1;
 
-					// <ibg 2020-06-08/> From oss-fuzz. Happend when Multiarg functions and if-then-else are used incorrectly "sum(0?1,2,3,4,5:6)"
+					// <ibg 2020-06-08> From oss-fuzz. Happend when Multiarg functions and if-then-else are used incorrectly.
+					// Expressions where this was observed:
+					//		sum(0?1,2,3,4,5:6)			-> fixed
+					//		avg(0>3?4:(""),0^3?4:(""))
+					//
 					// The final result normally lieas at position 1. If sixd is smaller there is something wrong.
 					if (sidx <= 0)
 						Error(ecINTERNAL_ERROR, -1);
+					// </ibg>
 
 					Stack[sidx] = (*(multfun_type)pTok->Fun.ptr)(&Stack[sidx], -iArgCount);
 					continue;
