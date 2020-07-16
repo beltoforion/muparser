@@ -30,6 +30,12 @@ Build System (CMake):
 * Added a new option "-DENABLE_WIDE_CHAR" to CMake for building muparser with wide character support
 * export muparser targets, such that client projects can import it using find_package() (https://github.com/beltoforion/muparser/pull/81#event-3528671228)
 
+Security Fixes:  
+------------
+The following issue was present in all older releases.
+
+* https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=24167 (Abrt)
+
 Bugfixes:
 -----------
 * Visual Studio: Disabled compiler warning 26812 (Prefer 'enum class' over 'enum') Use of plain old enums has not been deprecated and only MSVC is complaining. 
