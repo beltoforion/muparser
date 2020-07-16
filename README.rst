@@ -25,11 +25,6 @@ See Install.txt for installation
 
 Change Notes for Master
 ===========================
-Build System (CMake):
-------------
-* Added a new option "-DENABLE_WIDE_CHAR" to CMake for building muparser with wide character support
-* export muparser targets, such that client projects can import it using find_package() (https://github.com/beltoforion/muparser/pull/81#event-3528671228)
-
 Security Fixes:  
 ------------
 The following issue was newly discovered and is present in previous releases.
@@ -44,6 +39,11 @@ Fixed Compiler Warnings:
 -----------
 * Visual Studio: Disabled compiler warning 26812 (Prefer 'enum class' over 'enum') Use of plain old enums has not been deprecated and only MSVC is complaining. 
 * Visual Studio: Disabled compiler warning 4251 (... needs to have dll-interface to be used by clients of class ...)  For technical reason the DLL contains the class API and the DLL API. Just do not use the class API if you intent to share the dll accross windows versions. (The same is true for Linux but distributions do compile each application against their own library version anyway)
+
+Changes:
+------------
+* Added a new option "-DENABLE_WIDE_CHAR" to CMake for building muparser with wide character support
+* export muparser targets, such that client projects can import it using find_package() (https://github.com/beltoforion/muparser/pull/81#event-3528671228)
 
 Change Notes for Revision 2.3.2
 ===========================
