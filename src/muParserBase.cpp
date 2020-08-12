@@ -384,13 +384,11 @@ namespace mu
 		}
 	}
 
-	//---------------------------------------------------------------------------
-	/** \brief Check if a name contains invalid characters.
 
+	/** \brief Check if a name contains invalid characters.
 		\throw ParserException if the name contains invalid characters.
 	*/
-	void ParserBase::CheckName(const string_type& a_sName,
-		const string_type& a_szCharSet) const
+	void ParserBase::CheckName(const string_type& a_sName, const string_type& a_szCharSet) const
 	{
 		if (!a_sName.length() ||
 			(a_sName.find_first_not_of(a_szCharSet) != string_type::npos) ||
@@ -400,7 +398,6 @@ namespace mu
 		}
 	}
 
-	//---------------------------------------------------------------------------
 	/** \brief Set the formula.
 		\param a_strFormula Formula as string_type
 		\throw ParserException in case of syntax errors.
@@ -410,11 +407,6 @@ namespace mu
 	*/
 	void ParserBase::SetExpr(const string_type& a_sExpr)
 	{
-		if (std::all_of(a_sExpr.begin(), a_sExpr.end(), [](char_type c) { return !std::isgraph(c); }))
-		{
-			Error(ecINVALID_CHARACTERS_FOUND);
-		}
-
 		// Check locale compatibility
 		if (m_pTokenReader->GetArgSep() == std::use_facet<numpunct<char_type> >(s_locale).decimal_point())
 			Error(ecLOCALE);
