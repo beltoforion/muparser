@@ -179,7 +179,7 @@ namespace mu
 	protected:
 
 		void Init();
-		void Error(EErrorCodes a_iErrc, int a_iPos = (int)mu::string_type::npos, const string_type& a_strTok = string_type()) const;
+		void Error(EErrorCodes a_iErrc, int a_iPos = static_cast<int>(mu::string_type::npos), const string_type& a_strTok = string_type()) const;
 
 		virtual void InitCharSets() = 0;
 		virtual void InitFun() = 0;
