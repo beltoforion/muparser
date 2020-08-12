@@ -380,7 +380,6 @@ static int CheckKeywords(const mu::char_type* a_szLine, mu::Parser& a_Parser)
 	}
 	else if (sLine == _T("dbg"))
 	{
-//		string_type dbg = _T(R"(avg(0>3?4:(""),0^3?4:("")))");
 		string_type dbg = _T(R"(avg(0>3?4:(""),0^3?4:("")))");
 		a_Parser.SetExpr(dbg);
 		mu::console() << dbg;
