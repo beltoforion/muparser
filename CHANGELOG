@@ -36,7 +36,8 @@ GitHub Master
 
   Security Fixes: (The issues were present in all prior stable releases)
    * https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=24167 
-
+   * https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=24355
+   
   Bugfixes:
    * fixed a couple of issues for building the C-Interface (muParserDLL.cpp/.h) with wide character support.
 
