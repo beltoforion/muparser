@@ -170,8 +170,6 @@ install(
 include(CTest)
 
 if (BUILD_TESTING)
-    enable_testing()
-
     add_executable (t_ParserTest test/t_ParserTest.cpp)
     target_link_libraries(t_ParserTest muparser)
     add_test (NAME ParserTest COMMAND t_ParserTest)
