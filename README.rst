@@ -23,7 +23,7 @@ To read the full documentation please go to: http://beltoforion.de/en/muparser.
 
 See Install.txt for installation
 
-Change Notes for Revision 2.3.3  (Development Snapshot)
+Change Notes for Revision 2.3.3  (Prerelease; Still under Development!)
 ===========================
 Security Fixes:  
 ------------
