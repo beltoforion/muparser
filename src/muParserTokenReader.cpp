@@ -443,9 +443,6 @@ namespace mu
 				case cmDIV:
 				case cmPOW:
 				case cmASSIGN:
-					//if (len!=sTok.length())
-					//  continue;
-
 					// The assignment operator need special treatment
 					if (i == cmASSIGN && m_iSynFlags & noASSIGN)
 						Error(ecUNEXPECTED_OPERATOR, m_iPos, pOprtDef[i]);

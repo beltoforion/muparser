@@ -149,6 +149,16 @@ namespace mu
 
 			// from oss-fuzz: https://oss-fuzz.com/testcase-detail/5106868061208576
 			iStat += ThrowTest(_T(R"("","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",8)"), ecSTR_RESULT);
+			
+			// derived from oss-fuzz: https://oss-fuzz.com/testcase-detail/5758791700971520
+			iStat += ThrowTest(_T("(\"\"), 7"), ecSTR_RESULT);
+			iStat += ThrowTest(_T("((\"\")), 7"), ecSTR_RESULT);
+			//iStat += ThrowTest(_T("(\"\"),(\" \"), 7, (3)"), ecSTR_RESULT);
+			//iStat += ThrowTest(_T("(\"\"),(\"\"), 7, (3)"), ecSTR_RESULT);
+			//iStat += ThrowTest(_T("(\"\"),(\"\"), (3)"), ecSTR_RESULT);
+			//iStat += ThrowTest(_T("(\"\"),(\"\"), 7"), ecSTR_RESULT);
+
+			
 			// variations:
 			iStat += ThrowTest(_T(R"("","",9)"), ecSTR_RESULT);
 

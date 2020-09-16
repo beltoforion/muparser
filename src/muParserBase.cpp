@@ -1487,8 +1487,16 @@ namespace mu
 		if (stVal.size() == 0)
 			Error(ecEMPTY_EXPRESSION);
 
-		if (stVal.top().GetType() != tpDBL)
-			Error(ecSTR_RESULT);
+		// 2020-09-17; fix for https://oss-fuzz.com/testcase-detail/5758791700971520
+		// I don't need the value stack any more. Destructively check if all values in the value 
+		// stack represent floating point values
+		while (stVal.size())
+		{
+			if (stVal.top().GetType() != tpDBL)
+				Error(ecSTR_RESULT);
+
+			stVal.pop();
+		}
 
 		m_vStackBuffer.resize(m_vRPN.GetMaxStackSize() * s_MaxNumOpenMPThreads);
 	}
