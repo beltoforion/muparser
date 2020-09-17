@@ -17,7 +17,7 @@
 muparser - Fast Math Parser 2.3.3 
 ===========================
 .. image:: http://beltoforion.de/en/muparser/images/title.jpg
-
+ 
 
 To read the full documentation please go to: http://beltoforion.de/en/muparser.
 
