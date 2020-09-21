@@ -27,7 +27,7 @@ Change Notes for Revision 2.3.3  (Prerelease; Still under Development!)
 ===========================
 Security Fixes:  
 ------------
-The following issue was newly discovered and is present in previous releases.
+The following issue was newly discovered y oss-fuzz and are present in the last releases.
 
 * https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=24167 (Abrt)
 * https://bugs.chromium.org/p/oss-fuzz/issues/detail?id=24355 (Heap-buffer-overflow READ 8)
