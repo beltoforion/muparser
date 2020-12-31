@@ -67,8 +67,10 @@ target_compile_definitions(muparser PRIVATE MUPARSER_DLL)
 
 if (BUILD_SHARED_LIBS)
   target_compile_definitions(muparser PRIVATE MUPARSERLIB_EXPORTS)
+  add_definitions( -DMUPARSERLIB_EXPORTS )
 else ()
   target_compile_definitions(muparser PUBLIC MUPARSER_STATIC)
+  add_definitions( -DMUPARSER_STATIC )
 endif()
 
 if (CMAKE_BUILD_TYPE STREQUAL Debug)
