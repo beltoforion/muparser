@@ -35,7 +35,7 @@ The following new issues, discovered by oss-fuzz are fixed:
 
 Bugfixes:
 -----------
-* fixed a couple of issues for building the C-Interface (muParserDLL.cpp/.h) with wide character support.
+* Fixed a couple of issues for building the C-Interface (muParserDLL.cpp/.h) with wide character support.
 
 Fixed Compiler Warnings:
 -----------
@@ -44,6 +44,7 @@ Fixed Compiler Warnings:
 
 Changes:
 ------------
+* Adding missing overrides
 * Added a new option "-DENABLE_WIDE_CHAR" to CMake for building muparser with wide character support
 * export muparser targets, such that client projects can import it using find_package() (https://github.com/beltoforion/muparser/pull/81#event-3528671228)
 
