@@ -41,24 +41,16 @@ elseif(CMAKE_COMPILER_IS_GNUCC OR CMAKE_COMPILER_IS_GNUCXX)
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wno-long-long -pedantic")
 endif()
 
-add_library(muparser
-    src/muParserBase.cpp
-    src/muParserBytecode.cpp
-    src/muParserCallback.cpp
-    src/muParser.cpp
-    src/muParserDLL.cpp
-    src/muParserError.cpp
-    src/muParserInt.cpp
-    src/muParserTest.cpp
-    src/muParserTokenReader.cpp
-)
-# use the headers in the build-tree or the installed ones
+FILE(GLOB_RECURSE MUPARSER_SOURCES "${CMAKE_CURRENT_SOURCE_DIR}/src/*.cpp") #all .cpp
+add_library(muparser ${MUPARSER_SOURCES})
+
+# Use the headers in the build-tree or the installed ones
 target_include_directories(muparser PUBLIC
     $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
     $<INSTALL_INTERFACE:include>
 )
 
-# this compiles the "DLL" interface (C API)
+# This compiles the "DLL" interface (C API)
 target_compile_definitions(muparser PRIVATE MUPARSER_DLL)
 
 if (BUILD_SHARED_LIBS)
@@ -106,20 +98,9 @@ install(TARGETS muparser
     RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR} COMPONENT RuntimeLibraries
 )
 
+FILE(GLOB_RECURSE MUPARSER_HEADERS "${CMAKE_CURRENT_SOURCE_DIR}/include/*.h") #all .h
 install(FILES
-    include/muParserBase.h
-    include/muParserBytecode.h
-    include/muParserCallback.h
-    include/muParserDef.h
-    include/muParserDLL.h
-    include/muParserError.h
-    include/muParserFixes.h
-    include/muParser.h
-    include/muParserInt.h
-    include/muParserTemplateMagic.h
-    include/muParserTest.h
-    include/muParserToken.h
-    include/muParserTokenReader.h
+    ${MUPARSER_HEADERS}
     DESTINATION include
     COMPONENT Development
 )
