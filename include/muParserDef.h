@@ -416,8 +416,8 @@ namespace mu
 
 	static const int MaxLenExpression = 5000;
 	static const int MaxLenIdentifier = 100;
-	static const string_type ParserVersion = string_type(_T("2.3.3 (Unstable Development Build!)"));
-	static const string_type ParserVersionDate = string_type(_T("20200917"));
+	static const string_type ParserVersion = string_type(_T("2.3.3 (Development Build)"));
+	static const string_type ParserVersionDate = string_type(_T("20210328"));
 } // end of namespace
 
 #if defined(_MSC_VER)

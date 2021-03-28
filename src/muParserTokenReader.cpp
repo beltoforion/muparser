@@ -378,7 +378,7 @@ namespace mu
 		if (a_iPos != iEnd)
 			a_sTok = string_type(m_strFormula.begin() + a_iPos, m_strFormula.begin() + iEnd);
 
-		return iEnd;
+		return static_cast<int>(iEnd);
 	}
 
 
@@ -400,7 +400,7 @@ namespace mu
 		if (a_iPos != iEnd)
 		{
 			a_sTok = string_type(m_strFormula.begin() + a_iPos, m_strFormula.begin() + iEnd);
-			return iEnd;
+			return static_cast<int>(iEnd);
 		}
 		else
 		{
