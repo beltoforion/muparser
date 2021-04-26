@@ -86,6 +86,7 @@ namespace mu
 		ParserCallback();
 		ParserCallback(const ParserCallback& a_Fun);
 		ParserCallback & operator=(const ParserCallback& a_Fun);
+		~ParserCallback();
 
 		ParserCallback* Clone() const;
 

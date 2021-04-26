@@ -419,6 +419,10 @@ namespace mu
 		return *this;
 	}
 
+
+	ParserCallback::~ParserCallback() = default;
+
+
 	/** \brief Clone this instance and return a pointer to the new instance. */
 	ParserCallback* ParserCallback::Clone() const
 	{
