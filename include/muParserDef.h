@@ -321,8 +321,8 @@ namespace mu
 
 	// Parser callbacks
 
-	/** \brief Callback type used for functions without arguments. */
-	typedef value_type(*generic_fun_type)();
+	/** \brief Function type used to erase type.  Voluntarily needs explicit cast with all other *fun_type*. */
+	typedef void(*erased_fun_type)();
 
 	/** \brief Callback type used for functions without arguments. */
 	typedef value_type(*fun_type0)();

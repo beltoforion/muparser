@@ -751,7 +751,7 @@ namespace mu
 			Error(ecSTRING_EXPECTED, m_pTokenReader->GetPos(), a_FunTok.GetAsString());
 
 		token_type  valTok;
-		generic_fun_type pFunc = a_FunTok.GetFuncAddr();
+		generic_callable_type pFunc = a_FunTok.GetFuncAddr();
 		MUP_ASSERT(pFunc);
 
 		try
@@ -1055,11 +1055,11 @@ namespace mu
 
 		// numerical function without any argument
 		case cmFUNC:
-			return (*(fun_type0)tok->Fun.ptr)();
+			return tok->Fun.cb.call_fun<0>();
 
 		// String function without a numerical argument
 		case cmFUNC_STR:
-			return (*(strfun_type1)tok->Fun.ptr)(m_vStringBuf[0].c_str());
+			return tok->Fun.cb.call_strfun<1>(m_vStringBuf[0].c_str());
 
 		default:
 			throw ParserError(ecINTERNAL_ERROR);
@@ -1156,17 +1156,17 @@ namespace mu
 				// switch according to argument count
 				switch (iArgCount)
 				{
-				case 0: sidx += 1; Stack[sidx] = (*(fun_type0)pTok->Fun.ptr)(); continue;
-				case 1:            Stack[sidx] = (*(fun_type1)pTok->Fun.ptr)(Stack[sidx]);   continue;
-				case 2: sidx -= 1; Stack[sidx] = (*(fun_type2)pTok->Fun.ptr)(Stack[sidx], Stack[sidx + 1]); continue;
-				case 3: sidx -= 2; Stack[sidx] = (*(fun_type3)pTok->Fun.ptr)(Stack[sidx], Stack[sidx + 1], Stack[sidx + 2]); continue;
-				case 4: sidx -= 3; Stack[sidx] = (*(fun_type4)pTok->Fun.ptr)(Stack[sidx], Stack[sidx + 1], Stack[sidx + 2], Stack[sidx + 3]); continue;
-				case 5: sidx -= 4; Stack[sidx] = (*(fun_type5)pTok->Fun.ptr)(Stack[sidx], Stack[sidx + 1], Stack[sidx + 2], Stack[sidx + 3], Stack[sidx + 4]); continue;
-				case 6: sidx -= 5; Stack[sidx] = (*(fun_type6)pTok->Fun.ptr)(Stack[sidx], Stack[sidx + 1], Stack[sidx + 2], Stack[sidx + 3], Stack[sidx + 4], Stack[sidx + 5]); continue;
-				case 7: sidx -= 6; Stack[sidx] = (*(fun_type7)pTok->Fun.ptr)(Stack[sidx], Stack[sidx + 1], Stack[sidx + 2], Stack[sidx + 3], Stack[sidx + 4], Stack[sidx + 5], Stack[sidx + 6]); continue;
-				case 8: sidx -= 7; Stack[sidx] = (*(fun_type8)pTok->Fun.ptr)(Stack[sidx], Stack[sidx + 1], Stack[sidx + 2], Stack[sidx + 3], Stack[sidx + 4], Stack[sidx + 5], Stack[sidx + 6], Stack[sidx + 7]); continue;
-				case 9: sidx -= 8; Stack[sidx] = (*(fun_type9)pTok->Fun.ptr)(Stack[sidx], Stack[sidx + 1], Stack[sidx + 2], Stack[sidx + 3], Stack[sidx + 4], Stack[sidx + 5], Stack[sidx + 6], Stack[sidx + 7], Stack[sidx + 8]); continue;
-				case 10:sidx -= 9; Stack[sidx] = (*(fun_type10)pTok->Fun.ptr)(Stack[sidx], Stack[sidx + 1], Stack[sidx + 2], Stack[sidx + 3], Stack[sidx + 4], Stack[sidx + 5], Stack[sidx + 6], Stack[sidx + 7], Stack[sidx + 8], Stack[sidx + 9]); continue;
+				case 0: sidx += 1; Stack[sidx] = pTok->Fun.cb.call_fun<0>(); continue;
+				case 1:            Stack[sidx] = pTok->Fun.cb.call_fun<1>(Stack[sidx]);   continue;
+				case 2: sidx -= 1; Stack[sidx] = pTok->Fun.cb.call_fun<2>(Stack[sidx], Stack[sidx + 1]); continue;
+				case 3: sidx -= 2; Stack[sidx] = pTok->Fun.cb.call_fun<3>(Stack[sidx], Stack[sidx + 1], Stack[sidx + 2]); continue;
+				case 4: sidx -= 3; Stack[sidx] = pTok->Fun.cb.call_fun<4>(Stack[sidx], Stack[sidx + 1], Stack[sidx + 2], Stack[sidx + 3]); continue;
+				case 5: sidx -= 4; Stack[sidx] = pTok->Fun.cb.call_fun<5>(Stack[sidx], Stack[sidx + 1], Stack[sidx + 2], Stack[sidx + 3], Stack[sidx + 4]); continue;
+				case 6: sidx -= 5; Stack[sidx] = pTok->Fun.cb.call_fun<6>(Stack[sidx], Stack[sidx + 1], Stack[sidx + 2], Stack[sidx + 3], Stack[sidx + 4], Stack[sidx + 5]); continue;
+				case 7: sidx -= 6; Stack[sidx] = pTok->Fun.cb.call_fun<7>(Stack[sidx], Stack[sidx + 1], Stack[sidx + 2], Stack[sidx + 3], Stack[sidx + 4], Stack[sidx + 5], Stack[sidx + 6]); continue;
+				case 8: sidx -= 7; Stack[sidx] = pTok->Fun.cb.call_fun<8>(Stack[sidx], Stack[sidx + 1], Stack[sidx + 2], Stack[sidx + 3], Stack[sidx + 4], Stack[sidx + 5], Stack[sidx + 6], Stack[sidx + 7]); continue;
+				case 9: sidx -= 8; Stack[sidx] = pTok->Fun.cb.call_fun<9>(Stack[sidx], Stack[sidx + 1], Stack[sidx + 2], Stack[sidx + 3], Stack[sidx + 4], Stack[sidx + 5], Stack[sidx + 6], Stack[sidx + 7], Stack[sidx + 8]); continue;
+				case 10:sidx -= 9; Stack[sidx] = pTok->Fun.cb.call_fun<10>(Stack[sidx], Stack[sidx + 1], Stack[sidx + 2], Stack[sidx + 3], Stack[sidx + 4], Stack[sidx + 5], Stack[sidx + 6], Stack[sidx + 7], Stack[sidx + 8], Stack[sidx + 9]); continue;
 				default:
 					// function with variable arguments store the number as a negative value
 					if (iArgCount > 0)
@@ -1184,7 +1184,7 @@ namespace mu
 						Error(ecINTERNAL_ERROR, -1);
 					// </ibg>
 
-					Stack[sidx] = (*(multfun_type)pTok->Fun.ptr)(&Stack[sidx], -iArgCount);
+					Stack[sidx] = pTok->Fun.cb.call_multfun(&Stack[sidx], -iArgCount);
 					continue;
 				}
 			}
@@ -1201,11 +1201,11 @@ namespace mu
 
 				switch (pTok->Fun.argc)  // switch according to argument count
 				{
-				case 0: Stack[sidx] = (*(strfun_type1)pTok->Fun.ptr)(m_vStringBuf[iIdxStack].c_str()); continue;
-				case 1: Stack[sidx] = (*(strfun_type2)pTok->Fun.ptr)(m_vStringBuf[iIdxStack].c_str(), Stack[sidx]); continue;
-				case 2: Stack[sidx] = (*(strfun_type3)pTok->Fun.ptr)(m_vStringBuf[iIdxStack].c_str(), Stack[sidx], Stack[sidx + 1]); continue;
-				case 3: Stack[sidx] = (*(strfun_type4)pTok->Fun.ptr)(m_vStringBuf[iIdxStack].c_str(), Stack[sidx], Stack[sidx + 1], Stack[sidx + 2]); continue;
-				case 4: Stack[sidx] = (*(strfun_type5)pTok->Fun.ptr)(m_vStringBuf[iIdxStack].c_str(), Stack[sidx], Stack[sidx + 1], Stack[sidx + 2], Stack[sidx + 3]); continue;
+				case 0: Stack[sidx] = pTok->Fun.cb.call_strfun<1>(m_vStringBuf[iIdxStack].c_str()); continue;
+				case 1: Stack[sidx] = pTok->Fun.cb.call_strfun<2>(m_vStringBuf[iIdxStack].c_str(), Stack[sidx]); continue;
+				case 2: Stack[sidx] = pTok->Fun.cb.call_strfun<3>(m_vStringBuf[iIdxStack].c_str(), Stack[sidx], Stack[sidx + 1]); continue;
+				case 3: Stack[sidx] = pTok->Fun.cb.call_strfun<4>(m_vStringBuf[iIdxStack].c_str(), Stack[sidx], Stack[sidx + 1], Stack[sidx + 2]); continue;
+				case 4: Stack[sidx] = pTok->Fun.cb.call_strfun<5>(m_vStringBuf[iIdxStack].c_str(), Stack[sidx], Stack[sidx + 1], Stack[sidx + 2], Stack[sidx + 3]); continue;
 				}
 
 				continue;
@@ -1218,17 +1218,17 @@ namespace mu
 				// switch according to argument count
 				switch (iArgCount)
 				{
-				case 0: sidx += 1; Stack[sidx] = (*(bulkfun_type0)pTok->Fun.ptr)(nOffset, nThreadID); continue;
-				case 1:            Stack[sidx] = (*(bulkfun_type1)pTok->Fun.ptr)(nOffset, nThreadID, Stack[sidx]); continue;
-				case 2: sidx -= 1; Stack[sidx] = (*(bulkfun_type2)pTok->Fun.ptr)(nOffset, nThreadID, Stack[sidx], Stack[sidx + 1]); continue;
-				case 3: sidx -= 2; Stack[sidx] = (*(bulkfun_type3)pTok->Fun.ptr)(nOffset, nThreadID, Stack[sidx], Stack[sidx + 1], Stack[sidx + 2]); continue;
-				case 4: sidx -= 3; Stack[sidx] = (*(bulkfun_type4)pTok->Fun.ptr)(nOffset, nThreadID, Stack[sidx], Stack[sidx + 1], Stack[sidx + 2], Stack[sidx + 3]); continue;
-				case 5: sidx -= 4; Stack[sidx] = (*(bulkfun_type5)pTok->Fun.ptr)(nOffset, nThreadID, Stack[sidx], Stack[sidx + 1], Stack[sidx + 2], Stack[sidx + 3], Stack[sidx + 4]); continue;
-				case 6: sidx -= 5; Stack[sidx] = (*(bulkfun_type6)pTok->Fun.ptr)(nOffset, nThreadID, Stack[sidx], Stack[sidx + 1], Stack[sidx + 2], Stack[sidx + 3], Stack[sidx + 4], Stack[sidx + 5]); continue;
-				case 7: sidx -= 6; Stack[sidx] = (*(bulkfun_type7)pTok->Fun.ptr)(nOffset, nThreadID, Stack[sidx], Stack[sidx + 1], Stack[sidx + 2], Stack[sidx + 3], Stack[sidx + 4], Stack[sidx + 5], Stack[sidx + 6]); continue;
-				case 8: sidx -= 7; Stack[sidx] = (*(bulkfun_type8)pTok->Fun.ptr)(nOffset, nThreadID, Stack[sidx], Stack[sidx + 1], Stack[sidx + 2], Stack[sidx + 3], Stack[sidx + 4], Stack[sidx + 5], Stack[sidx + 6], Stack[sidx + 7]); continue;
-				case 9: sidx -= 8; Stack[sidx] = (*(bulkfun_type9)pTok->Fun.ptr)(nOffset, nThreadID, Stack[sidx], Stack[sidx + 1], Stack[sidx + 2], Stack[sidx + 3], Stack[sidx + 4], Stack[sidx + 5], Stack[sidx + 6], Stack[sidx + 7], Stack[sidx + 8]); continue;
-				case 10:sidx -= 9; Stack[sidx] = (*(bulkfun_type10)pTok->Fun.ptr)(nOffset, nThreadID, Stack[sidx], Stack[sidx + 1], Stack[sidx + 2], Stack[sidx + 3], Stack[sidx + 4], Stack[sidx + 5], Stack[sidx + 6], Stack[sidx + 7], Stack[sidx + 8], Stack[sidx + 9]); continue;
+				case 0: sidx += 1; Stack[sidx] = pTok->Fun.cb.call_bulkfun<0>(nOffset, nThreadID); continue;
+				case 1:            Stack[sidx] = pTok->Fun.cb.call_bulkfun<1>(nOffset, nThreadID, Stack[sidx]); continue;
+				case 2: sidx -= 1; Stack[sidx] = pTok->Fun.cb.call_bulkfun<2>(nOffset, nThreadID, Stack[sidx], Stack[sidx + 1]); continue;
+				case 3: sidx -= 2; Stack[sidx] = pTok->Fun.cb.call_bulkfun<3>(nOffset, nThreadID, Stack[sidx], Stack[sidx + 1], Stack[sidx + 2]); continue;
+				case 4: sidx -= 3; Stack[sidx] = pTok->Fun.cb.call_bulkfun<4>(nOffset, nThreadID, Stack[sidx], Stack[sidx + 1], Stack[sidx + 2], Stack[sidx + 3]); continue;
+				case 5: sidx -= 4; Stack[sidx] = pTok->Fun.cb.call_bulkfun<5>(nOffset, nThreadID, Stack[sidx], Stack[sidx + 1], Stack[sidx + 2], Stack[sidx + 3], Stack[sidx + 4]); continue;
+				case 6: sidx -= 5; Stack[sidx] = pTok->Fun.cb.call_bulkfun<6>(nOffset, nThreadID, Stack[sidx], Stack[sidx + 1], Stack[sidx + 2], Stack[sidx + 3], Stack[sidx + 4], Stack[sidx + 5]); continue;
+				case 7: sidx -= 6; Stack[sidx] = pTok->Fun.cb.call_bulkfun<7>(nOffset, nThreadID, Stack[sidx], Stack[sidx + 1], Stack[sidx + 2], Stack[sidx + 3], Stack[sidx + 4], Stack[sidx + 5], Stack[sidx + 6]); continue;
+				case 8: sidx -= 7; Stack[sidx] = pTok->Fun.cb.call_bulkfun<8>(nOffset, nThreadID, Stack[sidx], Stack[sidx + 1], Stack[sidx + 2], Stack[sidx + 3], Stack[sidx + 4], Stack[sidx + 5], Stack[sidx + 6], Stack[sidx + 7]); continue;
+				case 9: sidx -= 8; Stack[sidx] = pTok->Fun.cb.call_bulkfun<9>(nOffset, nThreadID, Stack[sidx], Stack[sidx + 1], Stack[sidx + 2], Stack[sidx + 3], Stack[sidx + 4], Stack[sidx + 5], Stack[sidx + 6], Stack[sidx + 7], Stack[sidx + 8]); continue;
+				case 10:sidx -= 9; Stack[sidx] = pTok->Fun.cb.call_bulkfun<10>(nOffset, nThreadID, Stack[sidx], Stack[sidx + 1], Stack[sidx + 2], Stack[sidx + 3], Stack[sidx + 4], Stack[sidx + 5], Stack[sidx + 6], Stack[sidx + 7], Stack[sidx + 8], Stack[sidx + 9]); continue;
 				default:
 					throw exception_type(ecINTERNAL_ERROR, 2, _T(""));
 				}
