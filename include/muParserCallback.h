@@ -104,12 +104,7 @@ namespace mu
 
 		void* m_pFun;                   ///< Pointer to the callback function, casted to void
 
-		/** \brief Number of numeric function arguments
-
-			This number is negative for functions with variable number of arguments. in this cases
-			they represent the actual number of arguments found.
-		*/
-		int   m_iArgc;
+		int   m_iArgc;                  ///< Internal representation of number of numeric function arguments
 		int   m_iPri;                   ///< Valid only for binary and infix operators; Operator precedence.
 		EOprtAssociativity m_eOprtAsct; ///< Operator associativity; Valid only for binary operators 
 		ECmdCode  m_iCode;

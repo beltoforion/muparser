@@ -40,6 +40,10 @@
 
 namespace mu
 {
+	static constexpr int CALLBACK_INTERNAL_VAR_ARGS         = 1 << 14;
+	static constexpr int CALLBACK_INTERNAL_FIXED_ARGS_MASK  = 0xf;
+
+
 	ParserCallback::ParserCallback(fun_type0 a_pFun, bool a_bAllowOpti)
 		:m_pFun((void*)a_pFun)
 		, m_iArgc(0)
@@ -312,7 +316,7 @@ namespace mu
 
 	ParserCallback::ParserCallback(multfun_type a_pFun, bool a_bAllowOpti)
 		:m_pFun((void*)a_pFun)
-		, m_iArgc(-1)
+		, m_iArgc(CALLBACK_INTERNAL_VAR_ARGS)
 		, m_iPri(-1)
 		, m_eOprtAsct(oaNONE)
 		, m_iCode(cmFUNC)
@@ -505,10 +509,13 @@ namespace mu
 	}
 
 
-	/** \brief Returns the number of function Arguments. */
+	/** \brief Returns the number of numeric function Arguments.
+
+	   This number is negative for functions with variable number of arguments.
+	*/
 	int ParserCallback::GetArgc() const
 	{
-		return m_iArgc;
+		return (m_iArgc & CALLBACK_INTERNAL_VAR_ARGS) ? -1 : (m_iArgc & CALLBACK_INTERNAL_FIXED_ARGS_MASK);
 	}
 } // namespace mu
 
