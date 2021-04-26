@@ -85,7 +85,7 @@ namespace mu
 		ParserCallback(strfun_type5 a_pFun, bool a_bAllowOpti);
 		ParserCallback();
 		ParserCallback(const ParserCallback& a_Fun);
-    ParserCallback & operator=(const ParserCallback& a_Fun);
+		ParserCallback & operator=(const ParserCallback& a_Fun);
 
 		ParserCallback* Clone() const;
 
