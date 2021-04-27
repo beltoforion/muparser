@@ -83,6 +83,8 @@ extern "C"
 	typedef muFloat_t(*muStrFun1_t)(const muChar_t*);
 	typedef muFloat_t(*muStrFun2_t)(const muChar_t*, muFloat_t);
 	typedef muFloat_t(*muStrFun3_t)(const muChar_t*, muFloat_t, muFloat_t);
+	typedef muFloat_t(*muStrFun4_t)(const muChar_t*, muFloat_t, muFloat_t, muFloat_t);
+	typedef muFloat_t(*muStrFun5_t)(const muChar_t*, muFloat_t, muFloat_t, muFloat_t, muFloat_t);
 
 	// Functions for parser management
 	typedef void (*muErrorHandler_t)(muParserHandle_t a_hParser);           // [optional] callback to an error handler
@@ -147,6 +149,8 @@ extern "C"
 	API_EXPORT(void) mupDefineStrFun1(muParserHandle_t a_hParser, const muChar_t* a_szName, muStrFun1_t a_pFun);
 	API_EXPORT(void) mupDefineStrFun2(muParserHandle_t a_hParser, const muChar_t* a_szName, muStrFun2_t a_pFun);
 	API_EXPORT(void) mupDefineStrFun3(muParserHandle_t a_hParser, const muChar_t* a_szName, muStrFun3_t a_pFun);
+	API_EXPORT(void) mupDefineStrFun4(muParserHandle_t a_hParser, const muChar_t* a_szName, muStrFun4_t a_pFun);
+	API_EXPORT(void) mupDefineStrFun5(muParserHandle_t a_hParser, const muChar_t* a_szName, muStrFun5_t a_pFun);
 
 	API_EXPORT(void) mupDefineMultFun(muParserHandle_t a_hParser,
 		const muChar_t* a_szName,

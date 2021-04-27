@@ -544,6 +544,24 @@ API_EXPORT(void) mupDefineStrFun3(muParserHandle_t a_hParser, const muChar_t* a_
 }
 
 
+API_EXPORT(void) mupDefineStrFun4(muParserHandle_t a_hParser, const muChar_t* a_szName, muStrFun4_t a_pFun)
+{
+	MU_TRY
+		muParser_t* const p(AsParser(a_hParser));
+		p->DefineFun(a_szName, a_pFun, false);
+	MU_CATCH
+}
+
+
+API_EXPORT(void) mupDefineStrFun5(muParserHandle_t a_hParser, const muChar_t* a_szName, muStrFun5_t a_pFun)
+{
+	MU_TRY
+		muParser_t* const p(AsParser(a_hParser));
+		p->DefineFun(a_szName, a_pFun, false);
+	MU_CATCH
+}
+
+
 API_EXPORT(void) mupDefineMultFun(muParserHandle_t a_hParser, const muChar_t* a_szName, muMultFun_t a_pFun,	muBool_t a_bAllowOpt)
 {
 	MU_TRY
