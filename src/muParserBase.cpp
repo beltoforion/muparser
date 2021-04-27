@@ -339,7 +339,7 @@ namespace mu
 		funmap_type& a_Storage,
 		const char_type* a_szCharSet)
 	{
-		if (a_Callback.GetAddr() == 0)
+		if (!a_Callback.IsValid())
 			Error(ecINVALID_FUN_PTR);
 
 		const funmap_type* pFunMap = &a_Storage;

@@ -455,6 +455,17 @@ namespace mu
 	}
 
 
+	/** \brief Check that the callback looks valid
+		\throw nothrow
+
+		Check that the function pointer is not null.
+	*/
+	bool ParserCallback::IsValid() const
+	{
+		return m_pFun != nullptr;
+	}
+
+
 	/** \brief Return the callback code. */
 	ECmdCode  ParserCallback::GetCode() const
 	{

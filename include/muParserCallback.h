@@ -91,6 +91,7 @@ namespace mu
 		ParserCallback* Clone() const;
 
 		bool  IsOptimizable() const;
+		bool  IsValid() const;
 		void* GetAddr() const;
 		ECmdCode  GetCode() const;
 		ETypeCode GetType() const;
