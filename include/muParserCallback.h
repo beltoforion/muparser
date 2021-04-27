@@ -100,6 +100,8 @@ namespace mu
 		int GetArgc() const;
 
 	private:
+		void Assign(const ParserCallback& ref);
+
 		void* m_pFun;                   ///< Pointer to the callback function, casted to void
 
 		/** \brief Number of numeric function arguments
