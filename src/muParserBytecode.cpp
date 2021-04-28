@@ -380,7 +380,7 @@ namespace mu
 		if (m_bEnableOptimizer && a_iArgc > 0)
 		{
 			// <ibg 2020-06-10/> Unary Plus is a no-op
-			if (a_pFun == generic_callable_type{(erased_fun_type)&MathImpl<value_type>::UnaryPlus})
+			if (a_pFun == generic_callable_type{(erased_fun_type)&MathImpl<value_type>::UnaryPlus, nullptr})
 				return;
 
 			optimize = true;
@@ -588,6 +588,7 @@ namespace mu
 			case cmFUNC:  mu::console() << _T("CALL\t");
 				mu::console() << _T("[ARG:") << std::dec << m_vRPN[i].Fun.argc << _T("]");
 				mu::console() << _T("[ADDR: 0x") << std::hex << reinterpret_cast<void*>(m_vRPN[i].Fun.cb.pRawFun_) << _T("]");
+				mu::console() << _T("[USERDATA: 0x") << std::hex << reinterpret_cast<void*>(m_vRPN[i].Fun.cb.pUserData_) << _T("]");
 				mu::console() << _T("\n");
 				break;
 
@@ -595,7 +596,9 @@ namespace mu
 				mu::console() << _T("CALL STRFUNC\t");
 				mu::console() << _T("[ARG:") << std::dec << m_vRPN[i].Fun.argc << _T("]");
 				mu::console() << _T("[IDX:") << std::dec << m_vRPN[i].Fun.idx << _T("]");
-				mu::console() << _T("[ADDR: 0x") << reinterpret_cast<void*>(m_vRPN[i].Fun.cb.pRawFun_) << _T("]\n");
+				mu::console() << _T("[ADDR: 0x") << std::hex << reinterpret_cast<void*>(m_vRPN[i].Fun.cb.pRawFun_) << _T("]");
+				mu::console() << _T("[USERDATA: 0x") << std::hex << reinterpret_cast<void*>(m_vRPN[i].Fun.cb.pUserData_) << _T("]");
+				mu::console() << _T("\n");
 				break;
 
 			case cmLT:    mu::console() << _T("LT\n");  break;
