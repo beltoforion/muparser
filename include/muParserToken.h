@@ -122,7 +122,7 @@ namespace mu
 		}
 
 		bool operator==(generic_callable_type other) const { return pRawFun_ == other.pRawFun_ && pUserData_ == other.pUserData_; }
-		explicit operator bool() const { return static_cast<bool>(pRawFun_); }
+		explicit operator bool() const { return pRawFun_ != nullptr; }
 		bool operator==(std::nullptr_t) const { return pRawFun_ == nullptr; }
 		bool operator!=(std::nullptr_t) const { return pRawFun_ != nullptr; }
 	};
