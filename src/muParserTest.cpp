@@ -180,6 +180,9 @@ namespace mu
 			// string constants
 			iStat += EqnTest(_T("atof(str1)+atof(str2)"), 3.33, true);
 
+			// user data
+			iStat += EqnTest(_T("strfunud3_10(\"99\",1,2)"), 112, true);
+
 			if (iStat == 0)
 				mu::console() << _T("passed") << endl;
 			else
@@ -726,6 +729,18 @@ namespace mu
 			iStat += EqnTest(_T("sum(,)"), 0, false);
 			iStat += EqnTest(_T("sum(1,2,)"), 0, false);
 			iStat += EqnTest(_T("sum(,1,2)"), 0, false);
+
+			// user data
+			iStat += EqnTest(_T("funud0_8()"), 8, true);
+			iStat += EqnTest(_T("funud1_16(10)"), 26, true);
+			iStat += EqnTest(_T("funud2_24(10, 100)"), 134, true);
+			iStat += EqnTest(_T("funud10_32(1,2,3,4,5,6,7,8,9,10)"), 87, true);
+			iStat += EqnTest(_T("funud0_9()"), 9, true);
+			iStat += EqnTest(_T("funud1_17(10)"), 27, true);
+			iStat += EqnTest(_T("funud2_25(10, 100)"), 135, true);
+			iStat += EqnTest(_T("funud10_33(1,2,3,4,5,6,7,8,9,10)"), 88, true);
+			iStat += EqnTest(_T("sumud_100(1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,2)"), 124, true);
+			iStat += EqnTest(_T("sumud_100()"), 0, false);
 
 			if (iStat == 0)
 				mu::console() << _T("passed") << endl;
@@ -1390,6 +1405,18 @@ namespace mu
 				p1->DefineFun(_T("lastArg"), LastArg);
 				p1->DefineFun(_T("firstArg"), FirstArg);
 				p1->DefineFun(_T("order"), FirstArg);
+
+				// functions with user data
+				p1->DefineFunUserData(_T("funud0_8"), FunUd0, reinterpret_cast<void*>(8));
+				p1->DefineFunUserData(_T("funud1_16"), FunUd1, reinterpret_cast<void*>(16));
+				p1->DefineFunUserData(_T("funud2_24"), FunUd2, reinterpret_cast<void*>(24));
+				p1->DefineFunUserData(_T("funud10_32"), FunUd10, reinterpret_cast<void*>(32));
+				p1->DefineFunUserData(_T("funud0_9"), FunUd0, reinterpret_cast<void*>(9));
+				p1->DefineFunUserData(_T("funud1_17"), FunUd1, reinterpret_cast<void*>(17));
+				p1->DefineFunUserData(_T("funud2_25"), FunUd2, reinterpret_cast<void*>(25));
+				p1->DefineFunUserData(_T("funud10_33"), FunUd10, reinterpret_cast<void*>(33));
+				p1->DefineFunUserData(_T("strfunud3_10"), StrFunUd3, reinterpret_cast<void*>(10));
+				p1->DefineFunUserData(_T("sumud_100"), SumUd, reinterpret_cast<void*>(100));
 
 				// infix / postfix operator
 				// Note: Identifiers used here do not have any meaning 

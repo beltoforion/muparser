@@ -141,6 +141,19 @@ namespace mu
 			AddCallback(a_strName, ParserCallback(a_pFun, a_bAllowOpt), m_FunDef, ValidNameChars());
 		}
 
+		/** \fn void mu::ParserBase::DefineFunUserData
+			\brief Define a parser function with user data (not null).
+			\param a_strName Name of the function
+			\param a_pFun Pointer to the callback function
+			\param a_pUserData Pointer that will be passed back to callback (shall not be nullptr)
+			\param a_bAllowOpt A flag indicating this function may be optimized
+		*/
+		template<typename T>
+		void DefineFunUserData(const string_type& a_strName, T a_pFun, void* a_pUserData, bool a_bAllowOpt = true)
+		{
+			AddCallback(a_strName, ParserCallback(a_pFun, a_pUserData, a_bAllowOpt), m_FunDef, ValidNameChars());
+		}
+
 		void DefineOprt(const string_type& a_strName, fun_type2 a_pFun, unsigned a_iPri = 0, EOprtAssociativity a_eAssociativity = oaLEFT, bool a_bAllowOpt = false);
 		void DefineConst(const string_type& a_sName, value_type a_fVal);
 		void DefineStrConst(const string_type& a_sName, const string_type& a_strVal);

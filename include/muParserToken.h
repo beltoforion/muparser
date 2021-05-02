@@ -33,6 +33,9 @@
 #include <stack>
 #include <vector>
 #include <memory>
+#include <utility>
+#include <type_traits>
+#include <cstddef>
 
 #if defined(_MSC_VER)
 	#pragma warning(push)
@@ -48,6 +51,85 @@
 
 namespace mu
 {
+	template <std::size_t NbParams> struct TplCallType;
+	template <> struct TplCallType<0> { using fun_type = fun_type0; using fun_userdata_type = fun_userdata_type0; using bulkfun_type = bulkfun_type0; using bulkfun_userdata_type = bulkfun_userdata_type0; };
+	template <> struct TplCallType<1> { using fun_type = fun_type1; using fun_userdata_type = fun_userdata_type1; using bulkfun_type = bulkfun_type1; using bulkfun_userdata_type = bulkfun_userdata_type1; using strfun_type = strfun_type1; using strfun_userdata_type = strfun_userdata_type1; };
+	template <> struct TplCallType<2> { using fun_type = fun_type2; using fun_userdata_type = fun_userdata_type2; using bulkfun_type = bulkfun_type2; using bulkfun_userdata_type = bulkfun_userdata_type2; using strfun_type = strfun_type2; using strfun_userdata_type = strfun_userdata_type2; };
+	template <> struct TplCallType<3> { using fun_type = fun_type3; using fun_userdata_type = fun_userdata_type3; using bulkfun_type = bulkfun_type3; using bulkfun_userdata_type = bulkfun_userdata_type3; using strfun_type = strfun_type3; using strfun_userdata_type = strfun_userdata_type3; };
+	template <> struct TplCallType<4> { using fun_type = fun_type4; using fun_userdata_type = fun_userdata_type4; using bulkfun_type = bulkfun_type4; using bulkfun_userdata_type = bulkfun_userdata_type4; using strfun_type = strfun_type4; using strfun_userdata_type = strfun_userdata_type4; };
+	template <> struct TplCallType<5> { using fun_type = fun_type5; using fun_userdata_type = fun_userdata_type5; using bulkfun_type = bulkfun_type5; using bulkfun_userdata_type = bulkfun_userdata_type5; using strfun_type = strfun_type5; using strfun_userdata_type = strfun_userdata_type5; };
+	template <> struct TplCallType<6> { using fun_type = fun_type6; using fun_userdata_type = fun_userdata_type6; using bulkfun_type = bulkfun_type6; using bulkfun_userdata_type = bulkfun_userdata_type6; };
+	template <> struct TplCallType<7> { using fun_type = fun_type7; using fun_userdata_type = fun_userdata_type7; using bulkfun_type = bulkfun_type7; using bulkfun_userdata_type = bulkfun_userdata_type7; };
+	template <> struct TplCallType<8> { using fun_type = fun_type8; using fun_userdata_type = fun_userdata_type8; using bulkfun_type = bulkfun_type8; using bulkfun_userdata_type = bulkfun_userdata_type8; };
+	template <> struct TplCallType<9> { using fun_type = fun_type9; using fun_userdata_type = fun_userdata_type9; using bulkfun_type = bulkfun_type9; using bulkfun_userdata_type = bulkfun_userdata_type9; };
+	template <> struct TplCallType<10> { using fun_type = fun_type10; using fun_userdata_type = fun_userdata_type10; using bulkfun_type = bulkfun_type10; using bulkfun_userdata_type = bulkfun_userdata_type10; };
+
+	struct generic_callable_type
+	{
+		// Note: we keep generic_callable_type a pod for the purpose of layout
+
+		erased_fun_type pRawFun_;
+		void*           pUserData_;
+
+		template <std::size_t NbParams, typename... Args>
+		value_type call_fun(Args&&... args) const
+		{
+			static_assert(NbParams == sizeof...(Args), "mismatch between NbParams and Args");
+			if (pUserData_ == nullptr) {
+				auto fun_typed_ptr = reinterpret_cast<typename TplCallType<NbParams>::fun_type>(pRawFun_);
+				return (*fun_typed_ptr)(std::forward<Args>(args)...);
+			} else {
+				auto fun_userdata_typed_ptr = reinterpret_cast<typename TplCallType<NbParams>::fun_userdata_type>(pRawFun_);
+				return (*fun_userdata_typed_ptr)(pUserData_, std::forward<Args>(args)...);
+			}
+		}
+
+		template <std::size_t NbParams, typename... Args>
+		value_type call_bulkfun(Args&&... args) const
+		{
+			static_assert(NbParams == sizeof...(Args) - 2, "mismatch between NbParams and Args");
+			if (pUserData_ == nullptr) {
+				auto bulkfun_typed_ptr = reinterpret_cast<typename TplCallType<NbParams>::bulkfun_type>(pRawFun_);
+				return (*bulkfun_typed_ptr)(std::forward<Args>(args)...);
+			} else {
+				auto bulkfun_userdata_typed_ptr = reinterpret_cast<typename TplCallType<NbParams>::bulkfun_userdata_type>(pRawFun_);
+				return (*bulkfun_userdata_typed_ptr)(pUserData_, std::forward<Args>(args)...);
+			}
+		}
+
+		value_type call_multfun(const value_type* a_afArg, int a_iArgc) const
+		{
+			if (pUserData_ == nullptr) {
+				auto multfun_typed_ptr = reinterpret_cast<multfun_type>(pRawFun_);
+				return (*multfun_typed_ptr)(a_afArg, a_iArgc);
+			} else {
+				auto multfun_userdata_typed_ptr = reinterpret_cast<multfun_userdata_type>(pRawFun_);
+				return (*multfun_userdata_typed_ptr)(pUserData_, a_afArg, a_iArgc);
+			}
+		}
+
+		template <std::size_t NbParams, typename... Args>
+		value_type call_strfun(Args&&... args) const
+		{
+			static_assert(NbParams == sizeof...(Args), "mismatch between NbParams and Args");
+			if (pUserData_ == nullptr) {
+				auto strfun_typed_ptr = reinterpret_cast<typename TplCallType<NbParams>::strfun_type>(pRawFun_);
+				return (*strfun_typed_ptr)(std::forward<Args>(args)...);
+			} else {
+				auto strfun_userdata_typed_ptr = reinterpret_cast<typename TplCallType<NbParams>::strfun_userdata_type>(pRawFun_);
+				return (*strfun_userdata_typed_ptr)(pUserData_, std::forward<Args>(args)...);
+			}
+		}
+
+		bool operator==(generic_callable_type other) const { return pRawFun_ == other.pRawFun_ && pUserData_ == other.pUserData_; }
+		explicit operator bool() const { return pRawFun_ != nullptr; }
+		bool operator==(std::nullptr_t) const { return pRawFun_ == nullptr; }
+		bool operator!=(std::nullptr_t) const { return pRawFun_ != nullptr; }
+	};
+	static_assert(std::is_trivial<generic_callable_type>::value, "generic_callable_type shall be trivial");
+	static_assert(std::is_standard_layout<generic_callable_type>::value, "generic_callable_type shall have standard layout");
+	// C++17: static_assert(std::is_aggregate<generic_callable_type>::value, "generic_callable_type shall be an aggregate");
+
 	/** \brief Encapsulation of the data for a single formula token.
 
 		Formula token implementation. Part of the Math Parser Package.
@@ -336,9 +418,12 @@ namespace mu
 				   </ul>
 			\sa ECmdCode
 		*/
-		generic_fun_type GetFuncAddr() const
+		generic_callable_type GetFuncAddr() const
 		{
-			return (m_pCallback.get()) ? (generic_fun_type)m_pCallback->GetAddr() : 0;
+			return (m_pCallback.get())
+				? generic_callable_type{(erased_fun_type)m_pCallback->GetAddr(),
+				                        m_pCallback->GetUserData()}
+				: generic_callable_type{};
 		}
 
 		//------------------------------------------------------------------------------
