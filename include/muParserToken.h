@@ -170,7 +170,7 @@ namespace mu
 		/** \brief Set Callback type. */
 		ParserToken& Set(const ParserCallback& a_pCallback, const TString& a_sTok)
 		{
-			MUP_ASSERT(a_pCallback.GetAddr());
+			MUP_ASSERT(a_pCallback.IsValid());
 
 			m_iCode = a_pCallback.GetCode();
 			m_iType = tpVOID;
@@ -380,7 +380,7 @@ namespace mu
 		{
 			MUP_ASSERT(m_pCallback.get());
 
-			if (!m_pCallback->GetAddr())
+			if (!m_pCallback->IsValid())
 				throw ParserError(ecINTERNAL_ERROR);
 
 			return m_pCallback->GetArgc();

@@ -85,11 +85,13 @@ namespace mu
 		ParserCallback(strfun_type5 a_pFun, bool a_bAllowOpti);
 		ParserCallback();
 		ParserCallback(const ParserCallback& a_Fun);
-    ParserCallback & operator=(const ParserCallback& a_Fun);
+		ParserCallback & operator=(const ParserCallback& a_Fun);
+		~ParserCallback();
 
 		ParserCallback* Clone() const;
 
 		bool  IsOptimizable() const;
+		bool  IsValid() const;
 		void* GetAddr() const;
 		ECmdCode  GetCode() const;
 		ETypeCode GetType() const;
@@ -98,6 +100,8 @@ namespace mu
 		int GetArgc() const;
 
 	private:
+		void Assign(const ParserCallback& ref);
+
 		void* m_pFun;                   ///< Pointer to the callback function, casted to void
 
 		/** \brief Number of numeric function arguments
