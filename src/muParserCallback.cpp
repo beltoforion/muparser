@@ -73,6 +73,10 @@ namespace mu
 	{}
 
 
+	ParserCallback::ParserCallback(fun_type1 a_pFun, bool a_bAllowOpti)
+		: ParserCallback(a_pFun, a_bAllowOpti, -1, cmFUNC)
+	{}
+
 	
 	/** \brief Constructor for constructing function callbacks taking two arguments.
 		\throw nothrow
