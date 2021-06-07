@@ -5,7 +5,7 @@
    |  Y Y  \  |  /  |_> > __ \|  | \/\___ \\  ___/|  | \/
    |__|_|  /____/|   __(____  /__|  /____  >\___  >__|
 		 \/      |__|       \/           \/     \/
-   Copyright (C) 2004 - 2020 Ingo Berg
+   Copyright (C) 2004 - 2021 Ingo Berg
 
 	Redistribution and use in source and binary forms, with or without modification, are permitted
 	provided that the following conditions are met:
@@ -266,6 +266,14 @@ namespace mu
 	{}
 
 	//---------------------------------------------------------------------------
+	/** \brief Returns the bytecode of the current expression.
+	*/
+	const ParserByteCode& ParserBase::GetByteCode() const
+	{
+		return m_vRPN;
+	}
+
+	//---------------------------------------------------------------------------
 	/** \brief Returns the version of muparser.
 		\param eInfo A flag indicating whether the full version info should be
 					 returned or not.
@@ -334,7 +342,8 @@ namespace mu
 
 	//---------------------------------------------------------------------------
 	/** \brief Add a function or operator callback to the parser. */
-	void ParserBase::AddCallback(const string_type& a_strName,
+	void ParserBase::AddCallback(
+		const string_type& a_strName,
 		const ParserCallback& a_Callback,
 		funmap_type& a_Storage,
 		const char_type* a_szCharSet)
@@ -744,7 +753,8 @@ namespace mu
 		\param a_FunTok Function token.
 		\throw exception_type If the function token is not a string function
 	*/
-	ParserBase::token_type ParserBase::ApplyStrFunc(const token_type& a_FunTok,
+	ParserBase::token_type ParserBase::ApplyStrFunc(
+		const token_type& a_FunTok,
 		const std::vector<token_type>& a_vArg) const
 	{
 		if (a_vArg.back().GetCode() != cmSTRING)

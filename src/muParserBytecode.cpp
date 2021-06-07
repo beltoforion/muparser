@@ -5,7 +5,7 @@
    |  Y Y  \  |  /  |_> > __ \|  | \/\___ \\  ___/|  | \/
    |__|_|  /____/|   __(____  /__|  /____  >\___  >__|
 		 \/      |__|       \/           \/     \/
-   Copyright (C) 2004 - 2020 Ingo Berg
+   Copyright (C) 2004 - 2021 Ingo Berg
 
 	Redistribution and use in source and binary forms, with or without modification, are permitted
 	provided that the following conditions are met:
@@ -587,8 +587,8 @@ namespace mu
 
 			case cmFUNC:  mu::console() << _T("CALL\t");
 				mu::console() << _T("[ARG:") << std::dec << m_vRPN[i].Fun.argc << _T("]");
-				mu::console() << _T("[ADDR: 0x") << std::hex << reinterpret_cast<void*>(m_vRPN[i].Fun.cb.pRawFun_) << _T("]");
-				mu::console() << _T("[USERDATA: 0x") << std::hex << reinterpret_cast<void*>(m_vRPN[i].Fun.cb.pUserData_) << _T("]");
+				mu::console() << _T("[ADDR: 0x") << std::hex << reinterpret_cast<void*>(m_vRPN[i].Fun.cb._pRawFun) << _T("]");
+				mu::console() << _T("[USERDATA: 0x") << std::hex << reinterpret_cast<void*>(m_vRPN[i].Fun.cb._pUserData) << _T("]");
 				mu::console() << _T("\n");
 				break;
 
@@ -596,8 +596,8 @@ namespace mu
 				mu::console() << _T("CALL STRFUNC\t");
 				mu::console() << _T("[ARG:") << std::dec << m_vRPN[i].Fun.argc << _T("]");
 				mu::console() << _T("[IDX:") << std::dec << m_vRPN[i].Fun.idx << _T("]");
-				mu::console() << _T("[ADDR: 0x") << std::hex << reinterpret_cast<void*>(m_vRPN[i].Fun.cb.pRawFun_) << _T("]");
-				mu::console() << _T("[USERDATA: 0x") << std::hex << reinterpret_cast<void*>(m_vRPN[i].Fun.cb.pUserData_) << _T("]");
+				mu::console() << _T("[ADDR: 0x") << std::hex << reinterpret_cast<void*>(m_vRPN[i].Fun.cb._pRawFun) << _T("]");
+				mu::console() << _T("[USERDATA: 0x") << std::hex << reinterpret_cast<void*>(m_vRPN[i].Fun.cb._pUserData) << _T("]");
 				mu::console() << _T("\n");
 				break;
 

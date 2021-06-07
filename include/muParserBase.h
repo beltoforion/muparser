@@ -5,7 +5,7 @@
    |  Y Y  \  |  /  |_> > __ \|  | \/\___ \\  ___/|  | \/
    |__|_|  /____/|   __(____  /__|  /____  >\___  >__|
 		 \/      |__|       \/           \/     \/
-   Copyright (C) 2004 - 2020 Ingo Berg
+   Copyright (C) 2004 - 2021 Ingo Berg
 
 	Redistribution and use in source and binary forms, with or without modification, are permitted
 	provided that the following conditions are met:
@@ -176,6 +176,7 @@ namespace mu
 		const string_type& GetExpr() const;
 		const funmap_type& GetFunDef() const;
 		string_type GetVersion(EParserVersionInfo eInfo = pviFULL) const;
+		const ParserByteCode& GetByteCode() const;
 
 		const char_type** GetOprtDef() const;
 		void DefineNameChars(const char_type* a_szCharset);
@@ -214,9 +215,9 @@ namespace mu
 
 			explicit change_dec_sep(char_type cDecSep, char_type cThousandsSep = 0, int nGroup = 3)
 				:std::numpunct<TChar>()
-				, m_nGroup(nGroup)
-				, m_cDecPoint(cDecSep)
-				, m_cThousandsSep(cThousandsSep)
+				,m_nGroup(nGroup)
+				,m_cDecPoint(cDecSep)
+				,m_cThousandsSep(cThousandsSep)
 			{}
 
 		protected:

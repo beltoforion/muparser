@@ -5,7 +5,7 @@
    |  Y Y  \  |  /  |_> > __ \|  | \/\___ \\  ___/|  | \/
    |__|_|  /____/|   __(____  /__|  /____  >\___  >__|
 		 \/      |__|       \/           \/     \/
-   Copyright (C) 2004 - 2020 Ingo Berg
+   Copyright (C) 2004 - 2021 Ingo Berg
 
 	Redistribution and use in source and binary forms, with or without modification, are permitted
 	provided that the following conditions are met:
@@ -455,7 +455,7 @@ static void Calc()
 	parser.DefineFun(_T("strfun0"), StrFun0);
 	parser.DefineFun(_T("strfun2"), StrFun2);
 	parser.DefineFun(_T("ping"), Ping);
-	parser.DefineFun(_T("rnd"), Rnd);     // Add an unoptimizeable function
+	parser.DefineFun(_T("rnd"), Rnd, false);     // Add an unoptimizeable function
 	parser.DefineFun(_T("throw"), ThrowAnException);
 
 	parser.DefineOprt(_T("add"), Add, 0);
@@ -466,7 +466,7 @@ static void Calc()
 	parser.DefineFun(_T("selftest"), SelfTest);
 	parser.DefineFun(_T("help"), Help);
 	parser.DefineFun(_T("arg2of2"), Arg2Of2);
-	parser.DefineFun(_T("arg1of2"), Arg1Of2);
+	parser.DefineFun(_T("arg1of2"), Arg1Of2, false);
 
 	parser.DefinePostfixOprt(_T("{ft}"), Milli);
 	parser.DefinePostfixOprt(_T("ft"), Milli);

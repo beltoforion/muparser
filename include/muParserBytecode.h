@@ -5,7 +5,7 @@
    |  Y Y  \  |  /  |_> > __ \|  | \/\___ \\  ___/|  | \/
    |__|_|  /____/|   __(____  /__|  /____  >\___  >__|
 		 \/      |__|       \/           \/     \/
-   Copyright (C) 2004 - 2020 Ingo Berg
+   Copyright (C) 2004 - 2021 Ingo Berg
 
 	Redistribution and use in source and binary forms, with or without modification, are permitted
 	provided that the following conditions are met:
@@ -50,14 +50,14 @@ namespace mu
 
 		union
 		{
-			struct //SValData
+			struct // SValData
 			{
 				value_type* ptr;
 				value_type  data;
 				value_type  data2;
 			} Val;
 
-			struct //SFunData
+			struct // SFunData
 			{
 				// Note: the type is erased in generic_callable_type and the signature of the
 				//       function to call is tracked elsewhere in regard with the number of
@@ -68,7 +68,7 @@ namespace mu
 				int   idx;
 			} Fun;
 
-			struct //SOprtData
+			struct // SOprtData
 			{
 				value_type* ptr;
 				int offset;
