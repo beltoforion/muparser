@@ -141,19 +141,36 @@ namespace mu
 			Parser p;
 			try
 			{
-				p.DefineFun(_T("unoptimizable"), f1of1, false);
-				p.SetExpr(_T("unoptimizable(1)"));
-				p.Eval();
-
 				// test for #93 (https://github.com/beltoforion/muparser/issues/93)
 				// expected bytecode is:
-				// FUN, VAL, END
-				auto& bc = p.GetByteCode();
-				const SToken* tok = bc.GetBase();
-				if (tok->Cmd != cmFUNC)
+				// VAL, FUN
 				{
-					mu::console() << _T("#93 an unoptimizable expression was optimized!") << endl;
-					iStat += 1;
+					p.DefineFun(_T("unoptimizable"), f1of1, false);
+					p.SetExpr(_T("unoptimizable(1)"));
+					p.Eval();
+
+					auto& bc = p.GetByteCode();
+					const SToken* tok = bc.GetBase();
+					if (bc.GetSize() != 2 && tok[1].Cmd != cmFUNC)
+					{
+						mu::console() << _T("#93 an unoptimizable expression was optimized!") << endl;
+						iStat += 1;
+					}
+				}
+
+				{
+					p.ClearFun();
+					p.DefineFun(_T("unoptimizable"), f1of1, true);
+					p.SetExpr(_T("unoptimizable(1)"));
+					p.Eval();
+
+					auto& bc = p.GetByteCode();
+					const SToken* tok = bc.GetBase();
+					if (bc.GetSize() != 1 && tok[0].Cmd != cmVAL)
+					{
+						mu::console() << _T("#93 optimizer error") << endl;
+						iStat += 1;
+					}
 				}
 			}
 			catch (...)

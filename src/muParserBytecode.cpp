@@ -371,13 +371,13 @@ namespace mu
 		\param a_iArgc Number of arguments, negative numbers indicate multiarg functions.
 		\param a_pFun Pointer to function callback.
 	*/
-	void ParserByteCode::AddFun(generic_callable_type a_pFun, int a_iArgc)
+	void ParserByteCode::AddFun(generic_callable_type a_pFun, int a_iArgc, bool isFunctionOptimizable)
 	{
 		std::size_t sz = m_vRPN.size();
 		bool optimize = false;
 
 		// only optimize functions with fixed number of more than a single arguments
-		if (m_bEnableOptimizer && a_iArgc > 0)
+		if (isFunctionOptimizable && m_bEnableOptimizer && a_iArgc > 0)
 		{
 			// <ibg 2020-06-10/> Unary Plus is a no-op
 			if (a_pFun == generic_callable_type{(erased_fun_type)&MathImpl<value_type>::UnaryPlus, nullptr})

@@ -494,6 +494,14 @@ namespace mu
 		}
 
 		//------------------------------------------------------------------------------
+		/** \brief Return true if the token is a function token that can be optimized.
+		*/
+		bool IsOptimizable() const
+		{
+			return m_pCallback->IsValid() && m_pCallback->IsOptimizable();
+		}
+
+		//------------------------------------------------------------------------------
 		/** \brief Return the token identifier.
 
 			If #m_iType is cmSTRING the token identifier is the value of the string argument
