@@ -37,6 +37,7 @@ Bugfixes:
 -----------
 * Fixed a couple of issues for building the C-Interface (muParserDLL.cpp/.h) with wide character support.
 * fix for #93 (https://github.com/beltoforion/muparser/issues/93)
+* fix for #94 (https://github.com/beltoforion/muparser/issues/94)
 
 Fixed Compiler Warnings:
 -----------
