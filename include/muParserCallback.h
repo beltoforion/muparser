@@ -53,7 +53,8 @@ namespace mu
 	{
 	public:
 		ParserCallback(fun_type0  a_pFun, bool a_bAllowOpti);
-		ParserCallback(fun_type1  a_pFun, bool a_bAllowOpti, int a_iPrec = -1, ECmdCode a_iCode = cmFUNC);
+		ParserCallback(fun_type1  a_pFun, bool a_bAllowOpti, int a_iPrec, ECmdCode a_iCode);
+		ParserCallback(fun_type1  a_pFun, bool a_bAllowOpti);
 		ParserCallback(fun_type2  a_pFun, bool a_bAllowOpti, int a_iPrec, EOprtAssociativity a_eAssociativity);
 		ParserCallback(fun_type2  a_pFun, bool a_bAllowOpti);
 		ParserCallback(fun_type3  a_pFun, bool a_bAllowOpti);
