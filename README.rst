@@ -36,6 +36,7 @@ The following new issues, discovered by oss-fuzz are fixed:
 Bugfixes:
 -----------
 * Fixed a couple of issues for building the C-Interface (muParserDLL.cpp/.h) with wide character support.
+* fix for #93
 
 Fixed Compiler Warnings:
 -----------
