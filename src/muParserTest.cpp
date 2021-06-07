@@ -265,18 +265,18 @@ namespace mu
 			// c: 3,3,3,3
 			// d: 5,4,3,2
 			EQN_TEST_BULK("a", 1, 1, 1, 1, false)
-				EQN_TEST_BULK("a", 1, 2, 3, 4, true)
-				EQN_TEST_BULK("b=a", 1, 2, 3, 4, true)
-				EQN_TEST_BULK("b=a, b*10", 10, 20, 30, 40, true)
-				EQN_TEST_BULK("b=a, b*10, a", 1, 2, 3, 4, true)
-				EQN_TEST_BULK("a+b", 3, 4, 5, 6, true)
-				EQN_TEST_BULK("c*(a+b)", 9, 12, 15, 18, true)
+			EQN_TEST_BULK("a", 1, 2, 3, 4, true)
+			EQN_TEST_BULK("b=a", 1, 2, 3, 4, true)
+			EQN_TEST_BULK("b=a, b*10", 10, 20, 30, 40, true)
+			EQN_TEST_BULK("b=a, b*10, a", 1, 2, 3, 4, true)
+			EQN_TEST_BULK("a+b", 3, 4, 5, 6, true)
+			EQN_TEST_BULK("c*(a+b)", 9, 12, 15, 18, true)
 #undef EQN_TEST_BULK
 
-				if (iStat == 0)
-					mu::console() << _T("passed") << endl;
-				else
-					mu::console() << _T("\n  failed with ") << iStat << _T(" errors") << endl;
+			if (iStat == 0)
+				mu::console() << _T("passed") << endl;
+			else
+				mu::console() << _T("\n  failed with ") << iStat << _T(" errors") << endl;
 
 			return iStat;
 		}
@@ -1391,7 +1391,7 @@ namespace mu
 		{
 			ParserTester::c_iCount++;
 			int iRet(0);
-			value_type fVal[5] = { -999, -998, -997, -996, -995 }; // initially should be different
+			value_type fVal[6] = { -999, -998, -997, -996, -995, -994 }; // initially should be different
 
 			try
 			{
@@ -1505,7 +1505,7 @@ namespace mu
 
 					// destroy the originals from p2
 					vParser.clear();              // delete the vector
-					p1.reset(0);
+					p1.reset(nullptr);
 
 					fVal[2] = p4.Eval();
 
@@ -1519,8 +1519,13 @@ namespace mu
 					// Test Eval function for multiple return values
 					// use p2 since it has the optimizer enabled!
 					int nNum;
+					p4.SetExpr(a_str); // reset bytecode to trigger #94 (https://github.com/beltoforion/muparser/issues/94)
 					value_type* v = p4.Eval(nNum);
 					fVal[4] = v[nNum - 1];
+
+					v = p4.Eval(nNum);
+					fVal[5] = v[nNum - 1];
+
 				}
 				catch (std::exception& e)
 				{
@@ -1560,7 +1565,8 @@ namespace mu
 						<< fVal[1] << _T(",")
 						<< fVal[2] << _T(",")
 						<< fVal[3] << _T(",")
-						<< fVal[4] << _T(").");
+						<< fVal[4] << _T(",")
+						<< fVal[5] << _T(").");
 				}
 			}
 			catch (Parser::exception_type& e)
