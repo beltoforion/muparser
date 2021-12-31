@@ -14,7 +14,7 @@
     :target: https://repology.org/project/muparser/versions
 
 
-muparser - Fast Math Parser 2.3.3 
+muparser - Fast Math Parser 2.3.3 (Prerelease)
 ===========================
 .. image:: http://beltoforion.de/en/muparser/images/title.jpg
  
@@ -23,7 +23,7 @@ To read the full documentation please go to: http://beltoforion.de/en/muparser.
 
 See Install.txt for installation
 
-Change Notes for Revision 2.3.3  (Prerelease)
+Change Notes for Revision 2.3.3  
 ===========================
 Security Fixes:  
 ------------
