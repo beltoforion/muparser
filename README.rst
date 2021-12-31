@@ -14,7 +14,7 @@
     :target: https://repology.org/project/muparser/versions
 
 
-muparser - Fast Math Parser 2.3.3 
+muparser - Fast Math Parser 2.3.3 (Prerelease)
 ===========================
 .. image:: http://beltoforion.de/en/muparser/images/title.jpg
  
@@ -23,7 +23,7 @@ To read the full documentation please go to: http://beltoforion.de/en/muparser.
 
 See Install.txt for installation
 
-Change Notes for Revision 2.3.3  (Prerelease)
+Change Notes for Revision 2.3.3  
 ===========================
 Security Fixes:  
 ------------
@@ -38,6 +38,7 @@ Bugfixes:
 * Fixed a couple of issues for building the C-Interface (muParserDLL.cpp/.h) with wide character support.
 * fix for #93 (https://github.com/beltoforion/muparser/issues/93)
 * fix for #94 (https://github.com/beltoforion/muparser/issues/94)
+* fix for #110 (https://github.com/beltoforion/muparser/issues/110); new expression size limit is 20000
 
 Fixed Compiler Warnings:
 -----------
@@ -46,7 +47,6 @@ Fixed Compiler Warnings:
 
 Changes:
 ------------
-* fix for #110; Expression size limit increased to 20000 (https://github.com/beltoforion/muparser/issues/110)
 * Adding manual definitions to avoid potential issues with MSVC
 * Adding missing overrides
 * Added a new option "-DENABLE_WIDE_CHAR" to CMake for building muparser with wide character support
