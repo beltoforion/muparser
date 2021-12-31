@@ -498,7 +498,7 @@ namespace mu
 	/** \brief Callback used for variable creation factory functions. */
 	typedef value_type* (*facfun_type)(const char_type*, void*);
 
-	static const int MaxLenExpression = 10000;
+	static const int MaxLenExpression = 20000;
 	static const int MaxLenIdentifier = 100;
 	static const string_type ParserVersion = string_type(_T("2.3.3 (Development Build)"));
 	static const string_type ParserVersionDate = string_type(_T("20211231"));
