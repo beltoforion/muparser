@@ -5,7 +5,7 @@
    |  Y Y  \  |  /  |_> > __ \|  | \/\___ \\  ___/|  | \/
    |__|_|  /____/|   __(____  /__|  /____  >\___  >__|
 		 \/      |__|       \/           \/     \/
-   Copyright (C) 2004 - 2021 Ingo Berg
+   Copyright (C) 2022 Ingo Berg
 
 	Redistribution and use in source and binary forms, with or without modification, are permitted
 	provided that the following conditions are met:
@@ -85,6 +85,7 @@ namespace mu
 		ParserCallback(strfun_type3 a_pFun, bool a_bAllowOpti);
 		ParserCallback(strfun_type4 a_pFun, bool a_bAllowOpti);
 		ParserCallback(strfun_type5 a_pFun, bool a_bAllowOpti);
+		ParserCallback(strfun_type6 a_pFun, bool a_bAllowOpti);
 
 		// note: a_pUserData shall not be nullptr
 		ParserCallback(fun_userdata_type0  a_pFun, void* a_pUserData, bool a_bAllowOpti);
@@ -118,6 +119,7 @@ namespace mu
 		ParserCallback(strfun_userdata_type3 a_pFun, void* a_pUserData, bool a_bAllowOpti);
 		ParserCallback(strfun_userdata_type4 a_pFun, void* a_pUserData, bool a_bAllowOpti);
 		ParserCallback(strfun_userdata_type5 a_pFun, void* a_pUserData, bool a_bAllowOpti);
+		ParserCallback(strfun_userdata_type6 a_pFun, void* a_pUserData, bool a_bAllowOpti);
 
 		ParserCallback();
 		ParserCallback(const ParserCallback& a_Fun);

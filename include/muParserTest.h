@@ -171,6 +171,13 @@ namespace mu
 				return val + v2 + v3 + v4 + v5;
 			}
 
+			static value_type StrFun6(const char_type* v1, value_type v2, value_type v3, value_type v4, value_type v5, value_type v6)
+			{
+				int val(0);
+				stringstream_type(v1) >> val;
+				return val + v2 + v3 + v4 + v5 + v6;
+			}
+
 			static value_type StrToFloat(const char_type* a_szMsg)
 			{
 				value_type val(0);

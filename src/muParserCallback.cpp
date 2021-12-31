@@ -5,7 +5,7 @@
    |  Y Y  \  |  /  |_> > __ \|  | \/\___ \\  ___/|  | \/
    |__|_|  /____/|   __(____  /__|  /____  >\___  >__|
 		 \/      |__|       \/           \/     \/
-   Copyright (C) 2004 - 2021 Ingo Berg
+   Copyright (C) 2022 Ingo Berg
 
 	Redistribution and use in source and binary forms, with or without modification, are permitted
 	provided that the following conditions are met:
@@ -643,6 +643,16 @@ namespace mu
 		, m_bAllowOpti(a_bAllowOpti)
 	{}
 
+	ParserCallback::ParserCallback(strfun_type6 a_pFun, bool a_bAllowOpti)
+		:m_pFun((void*)a_pFun)
+		, m_iArgc(5)
+		, m_iPri(-1)
+		, m_eOprtAsct(oaNONE)
+		, m_iCode(cmFUNC_STR)
+		, m_iType(tpSTR)
+		, m_bAllowOpti(a_bAllowOpti)
+	{}
+
 
 	ParserCallback::ParserCallback(strfun_userdata_type1 a_pFun, void* a_pUserData, bool a_bAllowOpti)
 		:m_pFun(new CbWithUserData{reinterpret_cast<void*>(a_pFun), a_pUserData})
@@ -698,6 +708,16 @@ namespace mu
 		, m_bAllowOpti(a_bAllowOpti)
 	{}
 
+
+	ParserCallback::ParserCallback(strfun_userdata_type6 a_pFun, void* a_pUserData, bool a_bAllowOpti)
+		:m_pFun(new CbWithUserData{ reinterpret_cast<void*>(a_pFun), a_pUserData })
+		, m_iArgc(5 | CALLBACK_INTERNAL_WITH_USER_DATA)
+		, m_iPri(-1)
+		, m_eOprtAsct(oaNONE)
+		, m_iCode(cmFUNC_STR)
+		, m_iType(tpSTR)
+		, m_bAllowOpti(a_bAllowOpti)
+	{}
 
 	/** \brief Default constructor.
 		\throw nothrow

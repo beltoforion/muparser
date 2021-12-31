@@ -5,7 +5,7 @@
    |  Y Y  \  |  /  |_> > __ \|  | \/\___ \\  ___/|  | \/
    |__|_|  /____/|   __(____  /__|  /____  >\___  >__|
 		 \/      |__|       \/           \/     \/
-   Copyright (C) 2004 - 2021 Ingo Berg
+   Copyright (C) 2022 Ingo Berg
 
 	Redistribution and use in source and binary forms, with or without modification, are permitted
 	provided that the following conditions are met:
@@ -232,6 +232,7 @@ namespace mu
 			iStat += EqnTest(_T("strfun3(\"99\",1,2)"), 102, true);
 			iStat += EqnTest(_T("strfun4(\"99\",1,2,3)"), 105, true);
 			iStat += EqnTest(_T("strfun5(\"99\",1,2,3,4)"), 109, true);
+			iStat += EqnTest(_T("strfun6(\"99\",1,2,3,4,5)"), 114, true);
 
 			// string constants
 			iStat += EqnTest(_T("atof(str1)+atof(str2)"), 3.33, true);
@@ -1297,6 +1298,7 @@ namespace mu
 				p.DefineFun(_T("strfun3"), StrFun3);
 				p.DefineFun(_T("strfun4"), StrFun4);
 				p.DefineFun(_T("strfun5"), StrFun5);
+				p.DefineFun(_T("strfun6"), StrFun6);
 				p.SetExpr(a_str);
 				//				p.EnableDebugDump(1, 0);
 				p.Eval();
@@ -1458,6 +1460,7 @@ namespace mu
 				p1->DefineFun(_T("strfun3"), StrFun3);
 				p1->DefineFun(_T("strfun4"), StrFun4);
 				p1->DefineFun(_T("strfun5"), StrFun5);
+				p1->DefineFun(_T("strfun6"), StrFun6);
 				p1->DefineFun(_T("lastArg"), LastArg);
 				p1->DefineFun(_T("firstArg"), FirstArg);
 				p1->DefineFun(_T("order"), FirstArg);
