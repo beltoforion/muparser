@@ -136,6 +136,9 @@ install(FILES
 
 # Define variables for the pkg-config file
 set(PACKAGE_NAME muparser)
+if(ENABLE_WIDE_CHAR)
+  set(PKG_CONFIG_FLAGS "-D_UNICODE")
+endif(ENABLE_WIDE_CHAR)
 configure_file(
     muparser.pc.in
     ${CMAKE_BINARY_DIR}/muparser.pc
