@@ -67,6 +67,7 @@ endif ()
 
 if(ENABLE_OPENMP)
   target_compile_definitions(muparser PRIVATE MUP_USE_OPENMP)
+  target_link_libraries(muparser PRIVATE OpenMP::OpenMP_CXX)
 endif()
 
 if(ENABLE_WIDE_CHAR)
