@@ -109,6 +109,7 @@ export(EXPORT muparser-export
     FILE "${CMAKE_BINARY_DIR}/muparser-targets.cmake"
     NAMESPACE muparser::
 )
+add_library(muparser::muparser ALIAS muparser)
 
 # Export the installed target (typically for packaging)
 include(CMakePackageConfigHelpers)
