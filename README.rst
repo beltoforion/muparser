@@ -17,7 +17,11 @@
 muparser - Fast Math Parser 2.3.4 
 ===========================
 
-Maintainance Release
+Upcoming Maintainance Release  updating the cmake build system
+
+Build System:  
+------------
+- cmake is using OpenMP target and setting _UNICODE preprocessor definition
 
 muparser - Fast Math Parser 2.3.3 
 ===========================
