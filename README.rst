@@ -18,7 +18,7 @@
 muparser - Fast Math Parser 2.3.4 (Pre-Release)
 ===========================
 
-Upcoming Maintainance Release  updating the cmake build system
+Upcoming Maintainance Release with updates of the cmake build system
 
 Change Notes for Revision 2.3.3  
 ===========================
