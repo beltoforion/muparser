@@ -15,7 +15,7 @@
 
 .. image:: http://beltoforion.de/en/muparser/images/title.webp 
 
-muparser - Fast Math Parser 2.3.4 
+muparser - Fast Math Parser 2.3.4 (Pre-Release)
 ===========================
 
 Upcoming Maintainance Release  updating the cmake build system
