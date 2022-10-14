@@ -14,6 +14,11 @@
     :target: https://repology.org/project/muparser/versions
 
 
+muparser - Fast Math Parser 2.3.4 
+===========================
+
+Maintainance Release
+
 muparser - Fast Math Parser 2.3.3 
 ===========================
 .. image:: http://beltoforion.de/en/muparser/images/title.jpg
