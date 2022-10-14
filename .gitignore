@@ -9,3 +9,17 @@
 build/*
 out/*
 CMakeSettings.json
+CMakeFiles/*
+libmuparser.so*
+CMakeCache.txt
+Makefile
+muparser-targets.cmake
+muparser.pc
+muparserConfig.cmake
+muparserConfigVersion.cmake
+t_ParserTest
+example1
+example2
+DartConfiguration.tcl
+cmake_install.cmake
+CTestTestfile.cmake
