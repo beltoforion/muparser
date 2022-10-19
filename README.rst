@@ -13,28 +13,26 @@
 .. image:: https://repology.org/badge/tiny-repos/muparser.svg
     :target: https://repology.org/project/muparser/versions
 
+muparser - fast math parser library
+===================================
+
 .. image:: http://beltoforion.de/en/muparser/images/title.webp 
 
-muparser - Fast Math Parser 2.3.4 (Pre-Release)
+Change Notes for Revision 2.3.4  
 ===========================
 
-Upcoming Maintainance Release  updating the cmake build system
+Upcoming Maintainance Release with updates of the cmake build system
 
-Change Notes for Revision 2.3.3  
-===========================
 Build System:  
 ------------
 - cmake is using OpenMP target and setting _UNICODE preprocessor definition
 
-muparser - Fast Math Parser 2.3.3 
+Change Notes for Revision 2.3.3  
 ===========================
-
 To read the full documentation please go to: http://beltoforion.de/en/muparser.
 
 See Install.txt for installation
 
-Change Notes for Revision 2.3.3  
-===========================
 Security Fixes:  
 ------------
 The following new issues, discovered by oss-fuzz are fixed: 
