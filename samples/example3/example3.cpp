@@ -1,11 +1,11 @@
 /*
 
-    _____  __ _____________ _______  ______ ___________
-   /     \|  |  \____ \__  \\_  __ \/  ___// __ \_  __ \
+     _____  __ _____________ _______  ______ ___________
+    /     \|  |  \____ \__  \\_  __ \/  ___// __ \_  __ \
    |  Y Y  \  |  /  |_> > __ \|  | \/\___ \\  ___/|  | \/
    |__|_|  /____/|   __(____  /__|  /____  >\___  >__|
-       \/      |__|       \/           \/     \/
-   Copyright (C) 2004 - 2021 Ingo Berg
+         \/      |__|       \/           \/     \/
+   Copyright (C) 2004 - 2022 Ingo Berg
 
    Redistribution and use in source and binary forms, with or without modification, are permitted
    provided that the following conditions are met:
