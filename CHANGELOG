@@ -13,11 +13,12 @@
 History:
 --------
 
-Rev 2.3.4: 22.10.2022
+Rev 2.3.4: 06.11.2022
 ---------------------
   Build System Changes (CMake):
    * cmake is using OpenMP target and setting _UNICODE preprocessor definition
-	
+  Compiler Warnings:	
+   * fix for issue #117 (sprintf deprecation warning)
 	
 Rev 2.3.3: 22.01.2022
 ---------------------
