@@ -27,6 +27,10 @@ Build System:
 ------------
 - cmake is using OpenMP target and setting _UNICODE preprocessor definition
 
+Fixed Compiler Warnings:
+-----------
+- fix for #117 (sprintf deprecated)
+
 Change Notes for Revision 2.3.3  
 ===========================
 To read the full documentation please go to: http://beltoforion.de/en/muparser.
