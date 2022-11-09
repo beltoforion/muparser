@@ -29,7 +29,7 @@ Build System:
 
 Fixed Compiler Warnings:
 -----------
-- fix for #117 (sprintf deprecated)
+- fix for https://github.com/beltoforion/muparser/issues/117 (sprintf deprecated)
 
 Change Notes for Revision 2.3.3  
 ===========================
@@ -48,9 +48,9 @@ The following new issues, discovered by oss-fuzz are fixed:
 Bugfixes:
 -----------
 * Fixed a couple of issues for building the C-Interface (muParserDLL.cpp/.h) with wide character support.
-* fix for #93 (https://github.com/beltoforion/muparser/issues/93)
-* fix for #94 (https://github.com/beltoforion/muparser/issues/94)
-* fix for #110 (https://github.com/beltoforion/muparser/issues/110); new expression size limit is 20000
+* fix for https://github.com/beltoforion/muparser/issues/93
+* fix for https://github.com/beltoforion/muparser/issues/94
+* fix for https://github.com/beltoforion/muparser/issues/110; new expression size limit is 20000
 
 Fixed Compiler Warnings:
 -----------
