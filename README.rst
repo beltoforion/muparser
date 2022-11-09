@@ -21,7 +21,7 @@ muparser - fast math parser library
 Change Notes for Revision 2.3.4  
 ===========================
 
-Maintainance Release with updates of the cmake build system. 
+Maintainance Release with updates of the cmake build system.
 
 Build System:  
 ------------
