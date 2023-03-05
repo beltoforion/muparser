@@ -32,14 +32,14 @@ jobs:
         cmake -DENABLE_SAMPLES=ON -DENABLE_OPENMP=ON -DENABLE_WIDE_CHAR=OFF -DBUILD_SHARED_LIBS=ON ..
         cmake --build .
 
-    - name: Test Examples
+    - name: Run Unit Test
       shell: bash
       working-directory: ${{ env.CMAKE_BUILD_DIR }}
       run: |
         if [[ ${{ matrix.os }} == windows* ]]; then
-          EXAMPLE="$CMAKE_BUILD_TYPE/example.exe"
+          EXAMPLE="$CMAKE_BUILD_TYPE/example1.exe"
         else
-          EXAMPLE="./example"
+          EXAMPLE="./example1"
         fi
         $EXAMPLE &> example.log << EOF
         quit
