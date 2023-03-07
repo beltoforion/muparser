@@ -4,7 +4,7 @@
    |  Y Y  \  |  /  |_> > __ \|  | \/\___ \\  ___/|  | \/
    |__|_|  /____/|   __(____  /__|  /____  >\___  >__|
          \/      |__|       \/           \/     \/
-    Copyright (C) 2004 - 2022 Ingo Berg
+    Copyright (C) 2004 - 2023 Ingo Berg
 
 =======================================================================
     https://beltoforion.de/en/muparser
@@ -12,6 +12,11 @@
 
 History:
 --------
+
+Rev 2.3.5: 07.03.2023
+---------------------
+  Changes:
+   * Bitwise "and" and "or" used the same precedence. (Now bitwise and priority is higher, like in C++)
 
 Rev 2.3.4: 06.11.2022
 ---------------------

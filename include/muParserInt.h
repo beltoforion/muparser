@@ -69,8 +69,8 @@ namespace mu
 		static value_type  Pow(value_type v1, value_type v2);
 		static value_type  Shr(value_type v1, value_type v2);
 		static value_type  Shl(value_type v1, value_type v2);
-		static value_type  LogAnd(value_type v1, value_type v2);
-		static value_type  LogOr(value_type v1, value_type v2);
+		static value_type  BitAnd(value_type v1, value_type v2);
+		static value_type  BitOr(value_type v1, value_type v2);
 		static value_type  And(value_type v1, value_type v2);
 		static value_type  Or(value_type v1, value_type v2);
 		static value_type  Xor(value_type v1, value_type v2);

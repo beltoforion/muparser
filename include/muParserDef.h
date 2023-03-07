@@ -207,18 +207,18 @@ namespace mu
 	/** \brief Parser operator precedence values. */
 	enum EOprtPrecedence
 	{
-		// binary operators
-		prLOR = 1,
-		prLAND = 2,
-		prLOGIC = 3,	///< logic operators
-		prCMP = 4,		///< comparsion operators
-		prADD_SUB = 5,	///< addition
-		prMUL_DIV = 6,	///< multiplication/division
-		prPOW = 7,		///< power operator priority (highest)
+		prLOR = 1,		///< logic or
+		prLAND = 2,		///< logic and
+		prBOR = 3,      ///< bitwise or
+		prBAND = 4,     ///< bitwise and
+		prCMP = 5,		///< comparsion operators
+		prADD_SUB = 6,	///< addition
+		prMUL_DIV = 7,	///< multiplication/division
+		prPOW = 8,		///< power operator priority (highest)
 
 		// infix operators
-		prINFIX = 6,	///< Signs have a higher priority than ADD_SUB, but lower than power operator
-		prPOSTFIX = 6	///< Postfix operator priority (currently unused)
+		prINFIX = 7,	///< Signs have a higher priority than ADD_SUB, but lower than power operator
+		prPOSTFIX = 7	///< Postfix operator priority (currently unused)
 	};
 
 
@@ -506,8 +506,8 @@ namespace mu
 
 	static const int MaxLenExpression = 20000;
 	static const int MaxLenIdentifier = 100;
-	static const string_type ParserVersion = string_type(_T("2.3.4 (Release)"));
-	static const string_type ParserVersionDate = string_type(_T("20221019"));
+	static const string_type ParserVersion = string_type(_T("2.3.4 (Develop)"));
+	static const string_type ParserVersionDate = string_type(_T("20230307"));
 } // end of namespace
 
 #if defined(_MSC_VER)

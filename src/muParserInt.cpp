@@ -51,8 +51,8 @@ namespace mu
 	value_type ParserInt::Mod(value_type v1, value_type v2) { return Round(v1) % Round(v2); }
 	value_type ParserInt::Shr(value_type v1, value_type v2) { return Round(v1) >> Round(v2); }
 	value_type ParserInt::Shl(value_type v1, value_type v2) { return Round(v1) << Round(v2); }
-	value_type ParserInt::LogAnd(value_type v1, value_type v2) { return Round(v1) & Round(v2); }
-	value_type ParserInt::LogOr(value_type v1, value_type v2) { return Round(v1) | Round(v2); }
+	value_type ParserInt::BitAnd(value_type v1, value_type v2) { return Round(v1) & Round(v2); }
+	value_type ParserInt::BitOr(value_type v1, value_type v2) { return Round(v1) | Round(v2); }
 	value_type ParserInt::And(value_type v1, value_type v2) { return Round(v1) && Round(v2); }
 	value_type ParserInt::Or(value_type v1, value_type v2) { return Round(v1) || Round(v2); }
 	value_type ParserInt::Less(value_type v1, value_type v2) { return Round(v1) < Round(v2); }
@@ -252,10 +252,11 @@ namespace mu
 		DefineInfixOprt(_T("-"), UnaryMinus);
 		DefineInfixOprt(_T("!"), Not);
 
-		DefineOprt(_T("&"), LogAnd, prLOGIC);
-		DefineOprt(_T("|"), LogOr, prLOGIC);
-		DefineOprt(_T("&&"), And, prLOGIC);
-		DefineOprt(_T("||"), Or, prLOGIC);
+		DefineOprt(_T("&"), BitAnd, prBAND);
+		DefineOprt(_T("|"), BitOr, prBOR);
+
+		DefineOprt(_T("&&"), And, prLAND);
+		DefineOprt(_T("||"), Or, prLOR);
 
 		DefineOprt(_T("<"), Less, prCMP);
 		DefineOprt(_T(">"), Greater, prCMP);
