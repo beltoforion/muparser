@@ -450,93 +450,93 @@ namespace mu
 
 			// constant names
 			PARSER_THROWCHECK(Const, false, _T("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"), 1)
-				PARSER_THROWCHECK(Const, false, _T("0a"), 1)
-				PARSER_THROWCHECK(Const, false, _T("9a"), 1)
-				PARSER_THROWCHECK(Const, false, _T("+a"), 1)
-				PARSER_THROWCHECK(Const, false, _T("-a"), 1)
-				PARSER_THROWCHECK(Const, false, _T("a-"), 1)
-				PARSER_THROWCHECK(Const, false, _T("a*"), 1)
-				PARSER_THROWCHECK(Const, false, _T("a?"), 1)
-				PARSER_THROWCHECK(Const, true, _T("a"), 1)
-				PARSER_THROWCHECK(Const, true, _T("a_min"), 1)
-				PARSER_THROWCHECK(Const, true, _T("a_min0"), 1)
-				PARSER_THROWCHECK(Const, true, _T("a_min9"), 1)
+			PARSER_THROWCHECK(Const, false, _T("0a"), 1)
+			PARSER_THROWCHECK(Const, false, _T("9a"), 1)
+			PARSER_THROWCHECK(Const, false, _T("+a"), 1)
+			PARSER_THROWCHECK(Const, false, _T("-a"), 1)
+			PARSER_THROWCHECK(Const, false, _T("a-"), 1)
+			PARSER_THROWCHECK(Const, false, _T("a*"), 1)
+			PARSER_THROWCHECK(Const, false, _T("a?"), 1)
+			PARSER_THROWCHECK(Const, true, _T("a"), 1)
+			PARSER_THROWCHECK(Const, true, _T("a_min"), 1)
+			PARSER_THROWCHECK(Const, true, _T("a_min0"), 1)
+			PARSER_THROWCHECK(Const, true, _T("a_min9"), 1)
 
 				// variable names
 				value_type a;
 			p.ClearConst();
 			PARSER_THROWCHECK(Var, false, _T("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"), &a);
 			PARSER_THROWCHECK(Var, false, _T("123abc"), &a)
-				PARSER_THROWCHECK(Var, false, _T("9a"), &a)
-				PARSER_THROWCHECK(Var, false, _T("0a"), &a)
-				PARSER_THROWCHECK(Var, false, _T("+a"), &a)
-				PARSER_THROWCHECK(Var, false, _T("-a"), &a)
-				PARSER_THROWCHECK(Var, false, _T("?a"), &a)
-				PARSER_THROWCHECK(Var, false, _T("!a"), &a)
-				PARSER_THROWCHECK(Var, false, _T("a+"), &a)
-				PARSER_THROWCHECK(Var, false, _T("a-"), &a)
-				PARSER_THROWCHECK(Var, false, _T("a*"), &a)
-				PARSER_THROWCHECK(Var, false, _T("a?"), &a)
-				PARSER_THROWCHECK(Var, true, _T("a"), &a)
-				PARSER_THROWCHECK(Var, true, _T("a_min"), &a)
-				PARSER_THROWCHECK(Var, true, _T("a_min0"), &a)
-				PARSER_THROWCHECK(Var, true, _T("a_min9"), &a)
-				PARSER_THROWCHECK(Var, false, _T("a_min9"), 0)
+			PARSER_THROWCHECK(Var, false, _T("9a"), &a)
+			PARSER_THROWCHECK(Var, false, _T("0a"), &a)
+			PARSER_THROWCHECK(Var, false, _T("+a"), &a)
+			PARSER_THROWCHECK(Var, false, _T("-a"), &a)
+			PARSER_THROWCHECK(Var, false, _T("?a"), &a)
+			PARSER_THROWCHECK(Var, false, _T("!a"), &a)
+			PARSER_THROWCHECK(Var, false, _T("a+"), &a)
+			PARSER_THROWCHECK(Var, false, _T("a-"), &a)
+			PARSER_THROWCHECK(Var, false, _T("a*"), &a)
+			PARSER_THROWCHECK(Var, false, _T("a?"), &a)
+			PARSER_THROWCHECK(Var, true, _T("a"), &a)
+			PARSER_THROWCHECK(Var, true, _T("a_min"), &a)
+			PARSER_THROWCHECK(Var, true, _T("a_min0"), &a)
+			PARSER_THROWCHECK(Var, true, _T("a_min9"), &a)
+			PARSER_THROWCHECK(Var, false, _T("a_min9"), 0)
 
-				// Postfix operators
-				// fail
-				PARSER_THROWCHECK(PostfixOprt, false, _T("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"), f1of1);
+			// Postfix operators
+			// fail
+			PARSER_THROWCHECK(PostfixOprt, false, _T("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"), f1of1);
 			PARSER_THROWCHECK(PostfixOprt, false, _T("(k"), f1of1)
-				PARSER_THROWCHECK(PostfixOprt, false, _T("9+"), f1of1)
-				PARSER_THROWCHECK(PostfixOprt, false, _T("+"), 0)
-				// pass
-				PARSER_THROWCHECK(PostfixOprt, true, _T("-a"), f1of1)
-				PARSER_THROWCHECK(PostfixOprt, true, _T("?a"), f1of1)
-				PARSER_THROWCHECK(PostfixOprt, true, _T("_"), f1of1)
-				PARSER_THROWCHECK(PostfixOprt, true, _T("#"), f1of1)
-				PARSER_THROWCHECK(PostfixOprt, true, _T("&&"), f1of1)
-				PARSER_THROWCHECK(PostfixOprt, true, _T("||"), f1of1)
-				PARSER_THROWCHECK(PostfixOprt, true, _T("&"), f1of1)
-				PARSER_THROWCHECK(PostfixOprt, true, _T("|"), f1of1)
-				PARSER_THROWCHECK(PostfixOprt, true, _T("++"), f1of1)
-				PARSER_THROWCHECK(PostfixOprt, true, _T("--"), f1of1)
-				PARSER_THROWCHECK(PostfixOprt, true, _T("?>"), f1of1)
-				PARSER_THROWCHECK(PostfixOprt, true, _T("?<"), f1of1)
-				PARSER_THROWCHECK(PostfixOprt, true, _T("**"), f1of1)
-				PARSER_THROWCHECK(PostfixOprt, true, _T("xor"), f1of1)
-				PARSER_THROWCHECK(PostfixOprt, true, _T("and"), f1of1)
-				PARSER_THROWCHECK(PostfixOprt, true, _T("or"), f1of1)
-				PARSER_THROWCHECK(PostfixOprt, true, _T("not"), f1of1)
-				PARSER_THROWCHECK(PostfixOprt, true, _T("!"), f1of1)
+			PARSER_THROWCHECK(PostfixOprt, false, _T("9+"), f1of1)
+			PARSER_THROWCHECK(PostfixOprt, false, _T("+"), 0)
+			// pass
+			PARSER_THROWCHECK(PostfixOprt, true, _T("-a"), f1of1)
+			PARSER_THROWCHECK(PostfixOprt, true, _T("?a"), f1of1)
+			PARSER_THROWCHECK(PostfixOprt, true, _T("_"), f1of1)
+			PARSER_THROWCHECK(PostfixOprt, true, _T("#"), f1of1)
+			PARSER_THROWCHECK(PostfixOprt, true, _T("&&"), f1of1)
+			PARSER_THROWCHECK(PostfixOprt, true, _T("||"), f1of1)
+			PARSER_THROWCHECK(PostfixOprt, true, _T("&"), f1of1)
+			PARSER_THROWCHECK(PostfixOprt, true, _T("|"), f1of1)
+			PARSER_THROWCHECK(PostfixOprt, true, _T("++"), f1of1)
+			PARSER_THROWCHECK(PostfixOprt, true, _T("--"), f1of1)
+			PARSER_THROWCHECK(PostfixOprt, true, _T("?>"), f1of1)
+			PARSER_THROWCHECK(PostfixOprt, true, _T("?<"), f1of1)
+			PARSER_THROWCHECK(PostfixOprt, true, _T("**"), f1of1)
+			PARSER_THROWCHECK(PostfixOprt, true, _T("xor"), f1of1)
+			PARSER_THROWCHECK(PostfixOprt, true, _T("and"), f1of1)
+			PARSER_THROWCHECK(PostfixOprt, true, _T("or"), f1of1)
+			PARSER_THROWCHECK(PostfixOprt, true, _T("not"), f1of1)
+			PARSER_THROWCHECK(PostfixOprt, true, _T("!"), f1of1)
 
-				// Binary operator
-				// The following must fail with builtin operators activated
-				// p.EnableBuiltInOp(true); -> this is the default
-				p.ClearPostfixOprt();
+			// Binary operator
+			// The following must fail with builtin operators activated
+			// p.EnableBuiltInOp(true); -> this is the default
+			p.ClearPostfixOprt();
 			PARSER_THROWCHECK(Oprt, false, _T("aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"), f1of2);
 			PARSER_THROWCHECK(Oprt, false, _T("+"), f1of2)
-				PARSER_THROWCHECK(Oprt, false, _T("-"), f1of2)
-				PARSER_THROWCHECK(Oprt, false, _T("*"), f1of2)
-				PARSER_THROWCHECK(Oprt, false, _T("/"), f1of2)
-				PARSER_THROWCHECK(Oprt, false, _T("^"), f1of2)
-				PARSER_THROWCHECK(Oprt, false, _T("&&"), f1of2)
-				PARSER_THROWCHECK(Oprt, false, _T("||"), f1of2)
+			PARSER_THROWCHECK(Oprt, false, _T("-"), f1of2)
+			PARSER_THROWCHECK(Oprt, false, _T("*"), f1of2)
+			PARSER_THROWCHECK(Oprt, false, _T("/"), f1of2)
+			PARSER_THROWCHECK(Oprt, false, _T("^"), f1of2)
+			PARSER_THROWCHECK(Oprt, false, _T("&&"), f1of2)
+			PARSER_THROWCHECK(Oprt, false, _T("||"), f1of2)
 
-				// without activated built in operators it should work
-				p.EnableBuiltInOprt(false);
+			// without activated built in operators it should work
+			p.EnableBuiltInOprt(false);
 			PARSER_THROWCHECK(Oprt, true, _T("+"), f1of2)
-				PARSER_THROWCHECK(Oprt, true, _T("-"), f1of2)
-				PARSER_THROWCHECK(Oprt, true, _T("*"), f1of2)
-				PARSER_THROWCHECK(Oprt, true, _T("/"), f1of2)
-				PARSER_THROWCHECK(Oprt, true, _T("^"), f1of2)
-				PARSER_THROWCHECK(Oprt, true, _T("&&"), f1of2)
-				PARSER_THROWCHECK(Oprt, true, _T("||"), f1of2)
+			PARSER_THROWCHECK(Oprt, true, _T("-"), f1of2)
+			PARSER_THROWCHECK(Oprt, true, _T("*"), f1of2)
+			PARSER_THROWCHECK(Oprt, true, _T("/"), f1of2)
+			PARSER_THROWCHECK(Oprt, true, _T("^"), f1of2)
+			PARSER_THROWCHECK(Oprt, true, _T("&&"), f1of2)
+			PARSER_THROWCHECK(Oprt, true, _T("||"), f1of2)
 #undef PARSER_THROWCHECK
 
-				if (iStat == 0)
-					mu::console() << _T("passed") << endl;
-				else
-					mu::console() << _T("\n  failed with ") << iStat << _T(" errors") << endl;
+			if (iStat == 0)
+				mu::console() << _T("passed") << endl;
+			else
+				mu::console() << _T("\n  failed with ") << iStat << _T(" errors") << endl;
 
 			return iStat;
 		}
