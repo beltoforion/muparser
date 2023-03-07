@@ -5,7 +5,7 @@
    |  Y Y  \  |  /  |_> > __ \|  | \/\___ \\  ___/|  | \/
    |__|_|  /____/|   __(____  /__|  /____  >\___  >__|
 		 \/      |__|       \/           \/     \/
-   Copyright (C) 2022 Ingo Berg
+   Copyright (C) 2023 Ingo Berg
 
 	Redistribution and use in source and binary forms, with or without modification, are permitted
 	provided that the following conditions are met:
@@ -314,12 +314,17 @@ namespace mu
 			iStat += EqnTest(_T("1 && 0"), 0, true);
 			iStat += EqnTest(_T("(a<b) && (b>a)"), 1, true);
 			iStat += EqnTest(_T("(a<b) && (a>b)"), 0, true);
-			//iStat += EqnTest(_T("12 and 255"), 12, true); 
-			//iStat += EqnTest(_T("12 and 0"), 0, true); 
 			iStat += EqnTest(_T("12 & 255"), 12, true);
 			iStat += EqnTest(_T("12 & 0"), 0, true);
 			iStat += EqnTest(_T("12&255"), 12, true);
 			iStat += EqnTest(_T("12&0"), 0, true);
+			// test precedence of logic operators (should be like c++)
+			iStat += EqnTest(_T("0 && 0 || 1"), 1, true);
+			iStat += EqnTest(_T("0 && 1 || 0"), 0, true);
+			iStat += EqnTest(_T("1 && 0 || 0"), 0, true);
+			iStat += EqnTest(_T("1 && 1 || 0"), 1, true);
+			iStat += EqnTest(_T("1 && 0 + 1"), 1, true);
+			iStat += EqnTest(_T("1 && 1 - 1"), 0, true);
 
 			// Assignment operator
 			iStat += EqnTest(_T("a = b"), 2, true);
