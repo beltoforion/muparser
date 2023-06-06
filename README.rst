@@ -15,7 +15,7 @@ muparser - fast math parser library
 
 .. image:: http://beltoforion.de/en/muparser/images/title.webp 
 
-Change Notes for Revision 2.3.5  
+Change Notes for Revision 2.3.5
 ===========================
 
 Fixed Compiler Warnings:
