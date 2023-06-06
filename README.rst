@@ -15,6 +15,13 @@ muparser - fast math parser library
 
 .. image:: http://beltoforion.de/en/muparser/images/title.webp 
 
+Change Notes for Revision 2.3.5  
+===========================
+
+Fixed Compiler Warnings:
+-----------
+- Fix problem with IntelLLVM fast math
+
 Change Notes for Revision 2.3.4  
 ===========================
 
