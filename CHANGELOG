@@ -13,8 +13,11 @@
 History:
 --------
 
-Rev 2.3.5: 07.03.2023
+Rev 2.3.5: 11.08.2023
 ---------------------
+  Bugfixes:
+   * Fix for #125 (bug in muParserDLL.cpp / mupDefineInfixOprt)
+
   Changes:
    * Bitwise "and" and "or" used the same precedence. (Now bitwise and priority is higher, like in C++)
 

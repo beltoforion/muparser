@@ -5,7 +5,7 @@
    |  Y Y  \  |  /  |_> > __ \|  | \/\___ \\  ___/|  | \/
    |__|_|  /____/|   __(____  /__|  /____  >\___  >__|
 		 \/      |__|       \/           \/     \/
-   Copyright (C) 2004 - 2022 Ingo Berg
+   Copyright (C) 2004 - 2023 Ingo Berg
 
 	Redistribution and use in source and binary forms, with or without modification, are permitted
 	provided that the following conditions are met:
@@ -254,10 +254,13 @@ extern "C"
 		muBool_t a_bOptimize);
 
 
-	API_EXPORT(void) mupDefineInfixOprt(muParserHandle_t a_hParser,
-		const muChar_t* a_szName,
-		muFun1_t a_pOprt,
-		muBool_t a_bOptimize);
+	// signature changed to fix #125 (https://github.com/beltoforion/muparser/issues/125)
+	API_EXPORT(void) mupDefineInfixOprt(
+		muParserHandle_t a_hParser, 
+		const muChar_t* a_szName, 
+		muFun1_t a_pOprt, 
+		int a_iPrec, 
+		muBool_t a_bAllowOpt);
 
 	// Define character sets for identifiers
 	API_EXPORT(void) mupDefineNameChars(muParserHandle_t a_hParser, const muChar_t* a_szCharset);

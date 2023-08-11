@@ -895,12 +895,12 @@ API_EXPORT(void) mupDefinePostfixOprt(muParserHandle_t a_hParser, const muChar_t
 	MU_CATCH
 }
 
-
-API_EXPORT(void) mupDefineInfixOprt(muParserHandle_t a_hParser, const muChar_t* a_szName, muFun1_t a_pOprt,	muBool_t a_bAllowOpt)
+// Signature changed to fix #125 (https://github.com/beltoforion/muparser/issues/125)
+API_EXPORT(void) mupDefineInfixOprt(muParserHandle_t a_hParser, const muChar_t* a_szName, muFun1_t a_pOprt, int a_iPrec, muBool_t a_bAllowOpt)
 {
 	MU_TRY
 		muParser_t* const p(AsParser(a_hParser));
-		p->DefineInfixOprt(a_szName, a_pOprt, a_bAllowOpt != 0);
+		p->DefineInfixOprt(a_szName, a_pOprt, a_iPrec, a_bAllowOpt != 0);
 	MU_CATCH
 }
 

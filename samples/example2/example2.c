@@ -5,7 +5,7 @@
    |  Y Y  \  |  /  |_> > __ \|  | \/\___ \\  ___/|  | \/
    |__|_|  /____/|   __(____  /__|  /____  >\___  >__|
 		 \/      |__|       \/           \/     \/
-   Copyright (C) 2004 - 2021 Ingo Berg
+   Copyright (C) 2004 - 2023 Ingo Berg
 
 	Redistribution and use in source and binary forms, with or without modification, are permitted
 	provided that the following conditions are met:
@@ -30,6 +30,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
+#include <stdbool.h>
 #include <wchar.h>
 #include <inttypes.h>
 
@@ -406,7 +407,7 @@ static void Calc(void)
 	mupDefinePostfixOprt(hParser, _T("m"), Milli, 0);
 
 	// Define infix operator [optional]
-	mupDefineInfixOprt(hParser, _T("!"), Not, 0);
+	mupDefineInfixOprt(hParser, _T("!"), Not, 0, true);
 
 	// Define functions [optional]
 	//  mupDefineStrFun(hParser, "query", SampleQuery, 0); // Add an unoptimizeable function 
