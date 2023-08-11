@@ -253,7 +253,6 @@ extern "C"
 		muFun1_t a_pOprt,
 		muBool_t a_bOptimize);
 
-
 	// signature changed to fix #125 (https://github.com/beltoforion/muparser/issues/125)
 	API_EXPORT(void) mupDefineInfixOprt(
 		muParserHandle_t a_hParser, 
