@@ -51,7 +51,7 @@ namespace mu
 	class ParserBase;
 
 	/** \brief Token reader for the ParserBase class. */
-	class ParserTokenReader final
+	class API_EXPORT_CXX ParserTokenReader final
 	{
 	private:
 
