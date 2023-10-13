@@ -261,19 +261,27 @@ namespace mu
 		m_pTokenReader->ReInit();
 	}
 
-	//---------------------------------------------------------------------------
+
 	void ParserBase::OnDetectVar(string_type* /*pExpr*/, int& /*nStart*/, int& /*nEnd*/)
 	{}
 
-	//---------------------------------------------------------------------------
-	/** \brief Returns the bytecode of the current expression.
+
+	/** \brief Returns a copy of the bytecode of the current expression.
 	*/
 	const ParserByteCode& ParserBase::GetByteCode() const
 	{
 		return m_vRPN;
 	}
 
-	//---------------------------------------------------------------------------
+
+	/** \brief Restore a previously saved bytecode. */
+	void ParserBase::SetByteCode(const ParserByteCode& a_ByteCode)
+	{
+		m_vRPN.Assign(a_ByteCode);
+		m_pParseFormula = &ParserBase::ParseCmdCode;
+	}
+
+
 	/** \brief Returns the version of muparser.
 		\param eInfo A flag indicating whether the full version info should be
 					 returned or not.

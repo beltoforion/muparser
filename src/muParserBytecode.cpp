@@ -545,7 +545,7 @@ namespace mu
 
 
 	/** \brief Dump bytecode (for debugging only!). */
-	void ParserByteCode::AsciiDump()
+	void ParserByteCode::AsciiDump() const
 	{
 		if (!m_vRPN.size())
 		{

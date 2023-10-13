@@ -142,7 +142,7 @@ namespace mu
 				return &m_vRPN[0];
 		}
 
-		void AsciiDump();
+		void AsciiDump() const;
 	};
 
 } // namespace mu

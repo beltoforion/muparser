@@ -188,6 +188,8 @@ namespace mu
 		const char_type* ValidInfixOprtChars() const;
 
 		void SetArgSep(char_type cArgSep);
+		void SetByteCode(const ParserByteCode& a_ByteCode);
+
 		char_type GetArgSep() const;
 
 	protected:
