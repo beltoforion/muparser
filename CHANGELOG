@@ -13,13 +13,15 @@
 History:
 --------
 
-Rev 2.3.5: 11.08.2023
+Rev 2.3.5: 13.10.2023
 ---------------------
   Bugfixes:
    * Fix for #125 (bug in muParserDLL.cpp / mupDefineInfixOprt)
-
+   
   Changes:
    * Bitwise "and" and "or" used the same precedence. (Now bitwise and priority is higher, like in C++)
+   * Fix for #131 (added a SetByteCode function to allow restoring previously extracted bytecode)
+
 
 Rev 2.3.4: 06.11.2022
 ---------------------
@@ -27,7 +29,8 @@ Rev 2.3.4: 06.11.2022
    * cmake is using OpenMP target and setting _UNICODE preprocessor definition
   Compiler Warnings:	
    * fix for issue #117 (sprintf deprecation warning)
-	
+
+
 Rev 2.3.3: 22.01.2022
 ---------------------
   Build System Changes (CMake):
@@ -55,6 +58,7 @@ Rev 2.3.3: 22.01.2022
    
   Bugfixes:
    * fixed a couple of issues for building the C-Interface (muParserDLL.cpp/.h) with wide character support.
+
 
 Rev 2.3.2: 17.06.2020
 ---------------------
@@ -85,15 +89,18 @@ Rev 2.3.2: 17.06.2020
   Bugfixes:
    * Fixed an issue where the bulk mode could hang on GCC/CLANG builds due to OpenMP chunksize dropping below 1.
 
+
 Rev 2.3.0 - 2.3.1:
 ------------------
 Short lived releases or prereleases that were replaced by 2.3.2 almost instantly due to API breaking changes. Version 2.3.2 is the successor to version 2.2.6
+
 
 Rev 2.2.6: 04.10.2018
 ---------------------
   Changes:
    * Build system is now based on cmake
    * several compiler warnings fixed
+
 
 Rev 2.2.5: 27.04.2015
 ---------------------
@@ -105,6 +112,7 @@ Rev 2.2.5: 27.04.2015
    * muChar_t in muParserDLL.h was not set properly when UNICODE was used
    * muparser.dll did not build on UNICODE systems
    
+
 Rev 2.2.4: 02.10.2014
 ---------------------
   Changes:
@@ -121,6 +129,7 @@ Rev 2.2.4: 02.10.2014
    * OpenMP support enabled in the VS2013 project files and precompiled windows DLL's
    * Bulkmode did not evaluate properly if "=" and "," operator was used in the expression
 	
+
 Rev 2.2.3: 22.12.2012
 ---------------------
 
@@ -147,12 +156,14 @@ Rev 2.2.2: 18.02.2012
    * Optimizer did'nt work properly for division:
      (see https://sourceforge.net/projects/muparser/forums/forum/462843/topic/5037825)
 
+
 Rev 2.2.1: 22.01.2012
 ---------------------
   Bugfixes:
    * Optimizer bug in 64 bit systems fixed
      (see https://sourceforge.net/projects/muparser/forums/forum/462843/topic/4977977/index/page/1)
 	 
+
 Rev 2.2.0: 22.01.2012
 ---------------------
   Improvements:
@@ -200,6 +211,7 @@ Rev 2.1.0: 19.11.2011
      be read as a separate non-hex number leaving the rest of the expression
      unparseable.
 
+
 Rev 2.0.0: 04.09.2011
 ---------------------
 This release introduces a new version numbering scheme in order to make
@@ -245,6 +257,7 @@ now based on the SONAME property as used by GNU/Linux.
    * Postfix operators sharing the first few characters were causing bogus parsing exception.
      (Reference: https://sourceforge.net/tracker/?func=detail&aid=3358571&group_id=137191&atid=737979)
 
+
 Rev 1.34: 04.09.2010
 --------------------
   Changes:
@@ -274,7 +287,6 @@ Rev 1.34: 04.09.2010
 
 Rev 1.32: 29.01.2010 
 --------------------
-
   Changes:
    * "example3" renamed to "example2"
    * Project/Makefiles files are now provided for:
@@ -299,10 +311,8 @@ Rev 1.32: 29.01.2010
    * Fixed some warnings for gcc
 
 
-
 Rev 1.31cp: 15.01.2010  (Maintenance release for CodeProject)
 ----------------------
-
   Changes:
    * Archive structure changed
    * C# wrapper added
@@ -311,7 +321,6 @@ Rev 1.31cp: 15.01.2010  (Maintenance release for CodeProject)
 
 Rev 1.30: 09.06.2008
 --------------------
-
   Changes:
    * Epsilon of the numerical differentiation algorithm changed to allow greater accuracy.
 
@@ -324,14 +333,12 @@ Rev 1.30: 09.06.2008
 
 Rev 1.29: Januar 2008
 ---------------------
-
   Unrelease Version available only via SVN.
 
 
 Rev 1.28: 02. July, 2007
 ---------------------------
- 
-  Library changes:
+  Changes:
   * Interface for the dynamic library changed and extended to create an interface 
     using pure C functions only. 
   * mupInit() removed
@@ -346,7 +353,6 @@ Rev 1.28: 02. July, 2007
 
 Rev 1.27:
 ---------------------------
-
   Build system:
    * Modified build\ directory layout introducing some subfolders 
      for the various IDE supported
@@ -374,14 +380,12 @@ Rev 1.27:
 
 Rev 1.26: (unofficial release)
 ------------------------------
-
   New Features:
    * Unary operator precedence can now be changed by the user.
 
 
 Rev 1.25: 5. February, 2006
 ---------------------------
-
   Build system: (special thanks to Francesco Montorsi for implementing it!)
     * created a bakefile-based build system which adds support for the following win32 compilers:
       -> MS visual C++ (6 and .NET)
