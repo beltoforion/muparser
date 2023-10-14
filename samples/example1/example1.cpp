@@ -475,7 +475,7 @@ static void Calc()
 	parser.SetVarFactory(AddVariable, &parser);
 
 	// You can extract the bytecode of a parsed functions and save it for later use.
-	parser.SetExpr(_T("sin(a)"));
+	parser.SetExpr(_T("sin(a)+strfun2(sVar1, 1 , 2)"));
 	parser.Eval();
 	ParserByteCode bytecode1(parser.GetByteCode());
 

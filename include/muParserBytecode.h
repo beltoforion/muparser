@@ -94,8 +94,17 @@ namespace mu
 		/** \brief Token vector for storing the RPN. */
 		typedef std::vector<SToken> rpn_type;
 
+		/** \brief Type for a vector of strings. */
+		typedef std::vector<string_type> stringbuf_type;
+
 		/** \brief Position in the Calculation array. */
 		unsigned m_iStackPos;
+
+		/** \brief String variable storage. */
+		stringbuf_type m_stringBuffer;
+
+		/** \brief The expression associated with this bytecode. */
+		string_type m_expr;
 
 		/** \brief Maximum size needed for the stack. */
 		std::size_t m_iMaxStackSize;
@@ -140,6 +149,17 @@ namespace mu
 				throw ParserError(ecINTERNAL_ERROR);
 			else
 				return &m_vRPN[0];
+		}
+
+		void StoreEnvironment(string_type a_expr, stringbuf_type const& a_strBuf)
+		{
+			m_stringBuffer = a_strBuf;
+			m_expr = a_expr;
+		}
+
+		std::tuple<string_type, stringbuf_type> RestoreEnvironment() const
+		{
+			return std::make_tuple(m_expr, m_stringBuffer);
 		}
 
 		void AsciiDump() const;

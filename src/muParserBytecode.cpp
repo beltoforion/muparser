@@ -49,7 +49,9 @@ namespace mu
 {
 	/** \brief Bytecode default constructor. */
 	ParserByteCode::ParserByteCode()
-		:m_iStackPos(0)
+		: m_iStackPos(0)
+ 		, m_stringBuffer()
+		, m_expr()
 		, m_iMaxStackSize(0)
 		, m_vRPN()
 		, m_bEnableOptimizer(true)
@@ -98,6 +100,9 @@ namespace mu
 		m_vRPN = a_ByteCode.m_vRPN;
 		m_iMaxStackSize = a_ByteCode.m_iMaxStackSize;
 		m_bEnableOptimizer = a_ByteCode.m_bEnableOptimizer;
+		
+		m_stringBuffer = a_ByteCode.m_stringBuffer;
+		m_expr = a_ByteCode.m_expr;
 	}
 
 
@@ -595,7 +600,7 @@ namespace mu
 			case cmFUNC_STR:
 				mu::console() << _T("CALL STRFUNC\t");
 				mu::console() << _T("[ARG:") << std::dec << m_vRPN[i].Fun.argc << _T("]");
-				mu::console() << _T("[IDX:") << std::dec << m_vRPN[i].Fun.idx << _T("]");
+				mu::console() << _T("[IDX:") << std::dec << m_vRPN[i].Fun.idx << _T("=\"") << m_stringBuffer[m_vRPN[i].Fun.idx] << ("\"]");
 				mu::console() << _T("[ADDR: 0x") << std::hex << reinterpret_cast<void*>(m_vRPN[i].Fun.cb._pRawFun) << _T("]");
 				mu::console() << _T("[USERDATA: 0x") << std::hex << reinterpret_cast<void*>(m_vRPN[i].Fun.cb._pUserData) << _T("]");
 				mu::console() << _T("\n");

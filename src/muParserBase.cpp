@@ -277,7 +277,13 @@ namespace mu
 	/** \brief Restore a previously saved bytecode. */
 	void ParserBase::SetByteCode(const ParserByteCode& a_ByteCode)
 	{
-		m_vRPN.Assign(a_ByteCode);
+		m_vRPN = a_ByteCode;
+
+		// restore expression environment
+		string_type expr;
+		std::tie(expr, m_vStringBuf) = a_ByteCode.RestoreEnvironment();
+		m_pTokenReader->SetFormula(expr);
+
 		m_pParseFormula = &ParserBase::ParseCmdCode;
 	}
 
@@ -1540,12 +1546,14 @@ namespace mu
 
 			if (m_vRPN.GetSize() == 2)
 			{
+				m_vRPN.StoreEnvironment(m_pTokenReader->GetExpr(), m_vStringBuf);
 				m_pParseFormula = &ParserBase::ParseCmdCodeShort;
 				m_vStackBuffer[1] = (this->*m_pParseFormula)();
 				return m_vStackBuffer[1];
 			}
 			else
 			{
+				m_vRPN.StoreEnvironment(m_pTokenReader->GetExpr(), m_vStringBuf);
 				m_pParseFormula = &ParserBase::ParseCmdCode;
 				return (this->*m_pParseFormula)();
 			}
