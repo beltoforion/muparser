@@ -39,6 +39,7 @@
 
 #include "muParserTest.h"
 #include "muParser.h"
+#include "muParserBytecode.h"
 
 using namespace std;
 using namespace mu;

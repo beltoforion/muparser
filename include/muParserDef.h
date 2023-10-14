@@ -276,7 +276,9 @@ namespace mu
 		ecINVALID_CHARACTERS_FOUND = 38,///< The expression or identifier contains invalid non printable characters
 
 		// internal errors
-		ecINTERNAL_ERROR = 39,    ///< Internal error of any kind.
+		ecINTERNAL_ERROR = 39,			///< Internal error of any kind.
+
+		ecBYTECODE_IMPORT_EXPORT_DISABLED = 40,	///< Bytecode cannot be exported.
 
 		// The last two are special entries 
 		ecCOUNT,                      ///< This is no error code, It just stores just the total number of error codes

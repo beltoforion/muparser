@@ -67,6 +67,15 @@ namespace mu
 		void SetFormula(const string_type& a_strFormula);
 		void SetArgSep(char_type cArgSep);
 
+		/** \brief Check whether a variable factory is installed. 
+		 
+			Variable factories automatically create new variables when a unknown variable is found in an expression.
+		*/
+		bool HasVarCreator() const
+		{
+			return m_pFactory != nullptr;
+		}
+
 		int GetPos() const;
 		const string_type& GetExpr() const;
 		varmap_type& GetUsedVar();
