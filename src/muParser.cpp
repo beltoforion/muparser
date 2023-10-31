@@ -54,6 +54,23 @@ namespace mu
 	*/
 	int Parser::IsVal(const char_type* a_szExpr, int* a_iPos, value_type* a_fVal)
 	{
+		// fix for #123; std::Stringstream is broken on Mac; use std::stod instead
+		try
+		{
+			std::size_t charsProcessed;
+			value_type fVal = static_cast<value_type>(std::stod(string_type(a_szExpr), &charsProcessed));
+			if (charsProcessed == 0)
+				return 0;
+
+			*a_iPos += (int)charsProcessed;
+			*a_fVal = fVal;
+			return 1;
+		}
+		catch (...)
+		{
+			return 0;
+		}
+/*
 		value_type fVal(0);
 
 		stringstream_type stream(a_szExpr);
@@ -68,6 +85,7 @@ namespace mu
 		*a_iPos += (int)iEnd;
 		*a_fVal = fVal;
 		return 1;
+*/				
 	}
 
 
