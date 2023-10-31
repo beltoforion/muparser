@@ -151,10 +151,10 @@ namespace mu
 				return &m_vRPN[0];
 		}
 
-		void StoreEnvironment(string_type a_expr, stringbuf_type const& a_strBuf)
+		void StoreEnvironment(string_type expr, stringbuf_type const& strBuf)
 		{
-			m_stringBuffer = a_strBuf;
-			m_expr = a_expr;
+			m_stringBuffer = strBuf;
+			m_expr = expr;
 		}
 
 		std::tuple<string_type, stringbuf_type> RestoreEnvironment() const

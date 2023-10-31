@@ -270,6 +270,11 @@ namespace mu
 	*/
 	const ParserByteCode& ParserBase::GetByteCode() const
 	{
+		// If a variable factory is defined the bytecode may contain references to implicitely 
+		// created variables. 
+//		if (m_pTokenReader->HasVarCreator())
+//			Error(ecBYTECODE_IMPORT_EXPORT_DISABLED);
+
 		return m_vRPN;
 	}
 
@@ -277,6 +282,11 @@ namespace mu
 	/** \brief Restore a previously saved bytecode. */
 	void ParserBase::SetByteCode(const ParserByteCode& a_ByteCode)
 	{
+		// If a variable factory is defined the bytecode may contain references to dynamically
+		// created variables. 
+//		if (m_pTokenReader->HasVarCreator())
+//			Error(ecBYTECODE_IMPORT_EXPORT_DISABLED);
+
 		m_vRPN = a_ByteCode;
 
 		// restore expression environment
