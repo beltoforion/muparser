@@ -26,6 +26,7 @@ Build System:
 ------------
 - fix for https://github.com/beltoforion/muparser/issues/127 (minimum required cmake version set to 3.15)
 - fix for https://github.com/beltoforion/muparser/issues/123 (Strange behavior of the postfix operator on macOS)
+- fix for https://github.com/beltoforion/muparser/issues/132 example1 fails to builds on Windows with mingw gcc
 
 Change Notes for Revision 2.3.4  
 ===========================
