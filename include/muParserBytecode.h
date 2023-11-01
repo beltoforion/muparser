@@ -84,7 +84,7 @@ namespace mu
 		values and function pointers. Those are necessary in order to calculate the result.
 		All those data items will be casted to the underlying datatype of the bytecode.
 	*/
-	class ParserByteCode final
+	class API_EXPORT_CXX ParserByteCode final
 	{
 	private:
 
