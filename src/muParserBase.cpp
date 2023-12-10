@@ -36,9 +36,12 @@
 #include <vector>
 #include <deque>
 #include <sstream>
-#include <locale>
 #include <cassert>
 #include <cctype>
+
+#if !defined(MUPARSER_NO_LOCALE)
+#include <locale>
+#endif
 
 #ifdef MUP_USE_OPENMP
 
@@ -59,7 +62,9 @@ using namespace std;
 
 namespace mu
 {
+#if !defined(MUPARSER_NO_LOCALE)
 	std::locale ParserBase::s_locale = std::locale(std::locale::classic(), new change_dec_sep<char_type>('.'));
+#endif
 
 	bool ParserBase::g_DbgDumpCmdCode = false;
 	bool ParserBase::g_DbgDumpStack = false;
@@ -193,6 +198,7 @@ namespace mu
 		m_sInfixOprtChars = a_Parser.m_sInfixOprtChars;
 	}
 
+#if !defined(MUPARSER_NO_LOCALE)
 	//---------------------------------------------------------------------------
 	/** \brief Set the decimal separator.
 		\param cDecSep Decimal separator as a character value.
@@ -232,6 +238,7 @@ namespace mu
 		s_locale = std::locale(std::locale("C"), new change_dec_sep<char_type>('.'));
 		SetArgSep(',');
 	}
+#endif
 
 	//---------------------------------------------------------------------------
 	/** \brief Initialize the token reader.
@@ -440,9 +447,11 @@ namespace mu
 	*/
 	void ParserBase::SetExpr(const string_type& a_sExpr)
 	{
+#if !defined(MUPARSER_NO_LOCALE)
 		// Check locale compatibility
 		if (m_pTokenReader->GetArgSep() == std::use_facet<numpunct<char_type> >(s_locale).decimal_point())
 			Error(ecLOCALE);
+#endif
 
 		// Check maximum allowed expression length. An arbitrary value small enough so i can debug expressions sent to me
 		if (a_sExpr.length() >= MaxLenExpression)

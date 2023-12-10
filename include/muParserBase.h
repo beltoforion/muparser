@@ -35,8 +35,11 @@
 #include <iostream>
 #include <map>
 #include <memory>
-#include <locale>
 #include <limits.h>
+
+#if !defined(MUPARSER_NO_LOCALE)
+#include <locale>
+#endif
 
 //--- Parser includes --------------------------------------------------------------------------
 #include "muParserDef.h"
@@ -119,9 +122,11 @@ namespace mu
 		void SetExpr(const string_type& a_sExpr);
 		void SetVarFactory(facfun_type a_pFactory, void* pUserData = nullptr);
 
+#if !defined(MUPARSER_NO_LOCALE)
 		void SetDecSep(char_type cDecSep);
 		void SetThousandsSep(char_type cThousandsSep = 0);
 		void ResetLocale();
+#endif
 
 		void EnableOptimizer(bool a_bIsOn = true);
 		void EnableBuiltInOprt(bool a_bIsOn = true);
@@ -205,7 +210,9 @@ namespace mu
 		virtual void OnDetectVar(string_type* pExpr, int& nStart, int& nEnd);
 
 		static const char_type* c_DefaultOprt[];
+#if !defined(MUPARSER_NO_LOCALE)
 		static std::locale s_locale;  ///< The locale used by the parser
+#endif
 		static bool g_DbgDumpCmdCode;
 		static bool g_DbgDumpStack;
 

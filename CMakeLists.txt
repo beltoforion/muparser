@@ -18,6 +18,7 @@ set(MUPARSER_VERSION ${MUPARSER_VERSION_MAJOR}.${MUPARSER_VERSION_MINOR}.${MUPAR
 
 # Build options
 option(ENABLE_SAMPLES "Build the samples" ON)
+option(ENABLE_LOCALE "Enable std::locale support" ON)
 option(ENABLE_OPENMP "Enable OpenMP for multithreading" ON)
 option(ENABLE_WIDE_CHAR "Enable wide character support" OFF)
 option(BUILD_SHARED_LIBS "Build shared/static libs" ON)
@@ -70,6 +71,12 @@ endif()
 
 if(ENABLE_WIDE_CHAR)
   target_compile_definitions(muparser PUBLIC _UNICODE)
+endif()
+
+if(ENABLE_LOCALE)
+else()
+  target_compile_definitions(muparser PUBLIC MUPARSER_NO_LOCALE)
+  add_definitions( -DMUPARSER_NO_LOCALE )
 endif()
 
 set_target_properties(muparser PROPERTIES

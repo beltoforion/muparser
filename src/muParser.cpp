@@ -75,7 +75,9 @@ namespace mu
 
 		stringstream_type stream(a_szExpr);
 		stream.seekg(0);        // todo:  check if this really is necessary
+#if !defined(MUPARSER_NO_LOCALE)
 		stream.imbue(Parser::s_locale);
+#endif
 		stream >> fVal;
 		stringstream_type::pos_type iEnd = stream.tellg(); // Position after reading
 

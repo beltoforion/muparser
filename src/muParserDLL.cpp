@@ -1093,6 +1093,7 @@ API_EXPORT(void) mupSetArgSep(muParserHandle_t a_hParser, const muChar_t cArgSep
 }
 
 
+#if !defined(MUPARSER_NO_LOCALE)
 API_EXPORT(void) mupResetLocale(muParserHandle_t a_hParser)
 {
 	MU_TRY
@@ -1118,6 +1119,7 @@ API_EXPORT(void) mupSetThousandsSep(muParserHandle_t a_hParser, const muChar_t c
 		p->SetThousandsSep(cThousandsSep);
 	MU_CATCH
 }
+#endif
 
 //---------------------------------------------------------------------------
 /** \brief Retrieve name and value of a single parser constant.
