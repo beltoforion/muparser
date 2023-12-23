@@ -54,7 +54,8 @@ namespace mu
 	*/
 	int Parser::IsVal(const char_type* a_szExpr, int* a_iPos, value_type* a_fVal)
 	{
-/*
+/*      // 2023-12-23 Issue #136:  This code breaks localization!
+
 		// fix for #123; std::Stringstream is broken on Mac; use std::stod instead
 		try
 		{
@@ -75,8 +76,8 @@ namespace mu
 
 		value_type fVal(0);
 
-		stringstream_type stream(a_szExpr);
-//		stream.seekg(0);        // todo:  check if this really is necessary
+//		stringstream_type stream(a_szExpr);
+		std::istringstream stream(a_szExpr);
 		stream.imbue(Parser::s_locale);
 		stream >> fVal;
 		stringstream_type::pos_type iEnd = stream.tellg(); // Position after reading
