@@ -54,6 +54,7 @@ namespace mu
 	*/
 	int Parser::IsVal(const char_type* a_szExpr, int* a_iPos, value_type* a_fVal)
 	{
+/*
 		// fix for #123; std::Stringstream is broken on Mac; use std::stod instead
 		try
 		{
@@ -70,11 +71,12 @@ namespace mu
 		{
 			return 0;
 		}
-/*
+*/
+
 		value_type fVal(0);
 
 		stringstream_type stream(a_szExpr);
-		stream.seekg(0);        // todo:  check if this really is necessary
+//		stream.seekg(0);        // todo:  check if this really is necessary
 		stream.imbue(Parser::s_locale);
 		stream >> fVal;
 		stringstream_type::pos_type iEnd = stream.tellg(); // Position after reading
@@ -85,7 +87,6 @@ namespace mu
 		*a_iPos += (int)iEnd;
 		*a_fVal = fVal;
 		return 1;
-*/				
 	}
 
 

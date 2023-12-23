@@ -438,6 +438,9 @@ void CalcBulk()
 static void Calc()
 {
 	mu::Parser  parser;
+	parser.SetDecSep(',');
+	parser.SetArgSep(';');
+	parser.SetThousandsSep('.');
 
 	// Add some variables
 	value_type  vVarVal[] = { 1, 2 }; // Values of the parser variables
@@ -476,13 +479,13 @@ static void Calc()
 	parser.SetVarFactory(AddVariable, &parser);
 
 	// You can extract the bytecode of a parsed functions and save it for later use.
-	parser.SetExpr(_T("sin(a)+strfun2(sVar1, 1 , 2)"));
-	parser.Eval();
-	ParserByteCode bytecode1(parser.GetByteCode());
+//	parser.SetExpr(_T("sin(a)+strfun2(sVar1, 1 , 2)"));
+//	parser.Eval();
+//	ParserByteCode bytecode1(parser.GetByteCode());
 
-	parser.SetExpr(_T("10*cos(a)"));
-	parser.Eval();
-	ParserByteCode bytecode2(parser.GetByteCode());
+//	parser.SetExpr(_T("10*cos(a)"));
+//	parser.Eval();
+//	ParserByteCode bytecode2(parser.GetByteCode());
 
 	for (;;)
 	{
@@ -503,13 +506,13 @@ static void Calc()
 
 			if (sLine == _T("restore1"))
 			{
-				parser.SetByteCode(bytecode1);
-				bytecode1.AsciiDump();
+//				parser.SetByteCode(bytecode1);
+//				bytecode1.AsciiDump();
 			}
 			else if (sLine == _T("restore2"))
 			{
-				parser.SetByteCode(bytecode2);
-				bytecode2.AsciiDump();
+//				parser.SetByteCode(bytecode2);
+//				bytecode2.AsciiDump();
 			}
 			else
 			{

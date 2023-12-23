@@ -259,7 +259,8 @@ namespace mu
 			int TestBulkMode();
 			int TestOssFuzzTestCases();
 			int TestOptimizer();
-
+			int TestLocalization();
+			
 			void Abort() const;
 
 		public:
@@ -275,6 +276,7 @@ namespace mu
 			// Test Double Parser
 			int EqnTest(const string_type& a_str, double a_fRes, bool a_fPass);
 			int EqnTestWithVarChange(const string_type& a_str, double a_fRes1, double a_fVar1,	double a_fRes2,	double a_fVar2);
+			int EqnTestLocalized(const string_type& a_str, double a_fRes, bool a_fPass);
 			int ThrowTest(const string_type& a_str, int a_iErrc, bool a_bFail = true);
 
 			// Test Int Parser

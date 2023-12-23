@@ -63,6 +63,7 @@ namespace mu
 			AddTest(&ParserTester::TestStrArg);
 			AddTest(&ParserTester::TestBulkMode);
 			AddTest(&ParserTester::TestOptimizer);
+			AddTest(&ParserTester::TestLocalization);
 
 			ParserTester::c_iCount = 0;
 		}
@@ -1234,14 +1235,27 @@ namespace mu
 			return iStat;
 		}
 
+		int ParserTester::TestLocalization()
+		{
+			int  iStat = 0;
+			mu::console() << _T("testing localization...");
 
-		//---------------------------------------------------------------------------
+			iStat += EqnTestLocalized(_T("1,2"), 1.2, true);
+
+			if (iStat == 0)
+				mu::console() << _T("passed") << endl;
+			else
+				mu::console() << _T("\n  failed with ") << iStat << _T(" errors") << endl;
+
+			return iStat;
+		}
+
+
 		void ParserTester::AddTest(testfun_type a_pFun)
 		{
 			m_vTestFun.push_back(a_pFun);
 		}
 
-		//---------------------------------------------------------------------------
 		int ParserTester::Run()
 		{
 			int iStat = 0;
@@ -1336,7 +1350,7 @@ namespace mu
 		}
 
 		//---------------------------------------------------------------------------
-		/** \brief Evaluate a tet expression.
+		/** \brief Evaluate a test expression.
 
 			\return 1 in case of a failure, 0 otherwise.
 		*/
@@ -1370,6 +1384,53 @@ namespace mu
 
 				if (fabs(a_fRes2 - fVal[1]) > 0.0000000001)
 					throw std::runtime_error("incorrect result (second pass)");
+			}
+			catch (Parser::exception_type& e)
+			{
+				mu::console() << _T("\n  fail: ") << a_str.c_str() << _T(" (") << e.GetMsg() << _T(")");
+				return 1;
+			}
+			catch (std::exception& e)
+			{
+				mu::console() << _T("\n  fail: ") << a_str.c_str() << _T(" (") << e.what() << _T(")");
+				return 1;  // always return a failure since this exception is not expected
+			}
+			catch (...)
+			{
+				mu::console() << _T("\n  fail: ") << a_str.c_str() << _T(" (unexpected exception)");
+				return 1;  // exceptions other than ParserException are not allowed
+			}
+
+			return 0;
+		}
+
+		//---------------------------------------------------------------------------
+		/** \brief Evaluate a test expression.
+
+			\return 1 in case of a failure, 0 otherwise.
+		*/
+		int ParserTester::EqnTestLocalized(const string_type& a_str, double a_fRes, bool a_fPass)
+		{
+			ParserTester::c_iCount++;
+
+			try
+			{
+				Parser  p;
+				value_type var[2] = { 1, 2 };
+
+				// variable
+				p.SetDecSep(',');
+				p.SetArgSep(';');
+				p.SetThousandsSep('.');
+
+				p.DefineVar(_T("a"), &var[0]);
+				p.DefineVar(_T("b"), &var[1]);
+				p.SetExpr(a_str);
+
+				auto result = p.Eval();
+
+				if (fabs(result - a_fRes) > 0.0000000001)
+					throw std::runtime_error("incorrect result (first pass)");
 			}
 			catch (Parser::exception_type& e)
 			{
