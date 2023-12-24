@@ -1,6 +1,7 @@
 {
     "files.associations": {
         "*.rmd": "markdown",
-        "stdexcept": "cpp"
+        "stdexcept": "cpp",
+        "sstream": "cpp"
     }
 }
