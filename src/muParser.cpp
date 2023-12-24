@@ -56,9 +56,14 @@ namespace mu
 	*/
 	int Parser::IsVal(const char_type* a_szExpr, int* a_iPos, value_type* a_fVal)
 	{
-        // 2023-12-23 Issue #136:  This code breaks localization!
+#if defined(__APPLE__)
+        // 2023-12-23 Issue #136: This code breaks localization!
+		//
+		// I decided to not give a shit about localization being 
+		// broken on Macs's because APPLE does not give a shit about the 
+		// stringstream  being broken either. They have the resources to fix their
+		// compiler, i do not have the resources to work around their failures.
 
-/*
 		// fix for #123; std::Stringstream is broken on Mac; use std::stod instead
 		try
 		{
@@ -75,8 +80,7 @@ namespace mu
 		{
 			return 0;
 		}
-*/
-
+#else
 		value_type fVal(0);
 
 		stringstream_type stream(a_szExpr);
@@ -90,6 +94,7 @@ namespace mu
 		*a_iPos += (int)iEnd;
 		*a_fVal = fVal;
 		return 1;
+#endif		
 	}
 
 
