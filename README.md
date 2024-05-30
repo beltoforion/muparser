@@ -1,19 +1,12 @@
-.. image:: https://ci.appveyor.com/api/projects/status/u4882uj8btuspj9x?svg=true
-    :target: https://ci.appveyor.com/project/beltoforion/muparser
-
-.. image:: https://img.shields.io/github/issues/beltoforion/muparser.svg?maxAge=360
-    :target: https://github.com/beltoforion/muparser/issues
- 
-.. image:: https://img.shields.io/github/release/beltoforion/muparser.svg?maxAge=360
-    :target: https://github.com/beltoforion/muparser/blob/master/CHANGELOG
- 
-.. image:: https://repology.org/badge/tiny-repos/muparser.svg
-    :target: https://repology.org/project/muparser/versions
+[![GitHub issues](https://img.shields.io/github/issues/beltoforion/muparser.svg?maxAge=360)](https://github.com/beltoforion/muparser/issues)
+[![Version](https://img.shields.io/github/release/beltoforion/muparser.svg?maxAge=360)](https://github.com/beltoforion/muparser/blob/master/CHANGELOG)
+[![Packaging status](https://repology.org/badge/tiny-repos/muparser.svg)](https://repology.org/project/muparser/versions)
+[![Packaging status](https://ci.appveyor.com/api/projects/status/u4882uj8btuspj9x?svg=true)](https://ci.appveyor.com/project/beltoforion/muparser)
 
 muparser - fast math parser library
 ===================================
 
-.. image:: http://beltoforion.de/en/muparser/images/title.webp 
+![title](https://github.com/beltoforion/muparser/assets/2202567/fbeb2347-9884-4dd7-a3c9-112b605d7390)
 
 Change Notes for Revision 2.3.5
 ===========================
