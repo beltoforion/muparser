@@ -256,9 +256,9 @@ static void ListVar(const mu::ParserBase& parser)
 	if (!variables.size())
 		return;
 
-	cout << "\nParser variables:\n";
-	cout << "-----------------\n";
-	cout << "Number: " << (int)variables.size() << "\n";
+	mu::console() << _T("\nParser variables:\n");
+	mu::console() << _T("-----------------\n");
+	mu::console() << _T("Number: " << (int)variables.size() << "\n");
 	varmap_type::const_iterator item = variables.begin();
 	for (; item != variables.end(); ++item)
 		mu::console() << _T("Name: ") << item->first << _T("   Address: [0x") << item->second << _T("]\n");
@@ -289,7 +289,7 @@ static void ListExprVar(const mu::ParserBase& parser)
 	string_type sExpr = parser.GetExpr();
 	if (sExpr.length() == 0)
 	{
-		cout << _T("Expression string is empty\n");
+		mu::console() << _T("Expression string is empty\n");
 		return;
 	}
 
