@@ -58,7 +58,7 @@ namespace mu
 	{
 #if defined(__APPLE__) && defined(NEVERTRUE)
         // 2023-12-23 Issue #136: This code breaks localization!
-		//
+		// 
 		// I decided to not give a shit about localization being 
 		// broken on Macs's because APPLE does not give a shit about the 
 		// stringstream  being broken either. They have the resources to fix their

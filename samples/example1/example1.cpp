@@ -189,7 +189,7 @@ static void Splash()
 	mu::console() << _T(R"( |__|_|  /____/|   __(____  /___|  /___  >\___  >|__|    )") << _T("\n");
 	mu::console() << _T(R"(       \/      |__|       \/           \/     \/        )") << _T("\n");
 	mu::console() << _T("  Version ") << Parser().GetVersion(pviFULL) << _T("\n");
-	mu::console() << _T("  (C) 2022 Ingo Berg\n");
+	mu::console() << _T("  (C) 2024 Ingo Berg\n");
 	mu::console() << _T("\n");
 	mu::console() << _T("-----------------------------------------------------------\n");
 
