@@ -11,15 +11,20 @@ muparser - fast math parser library
 Change Notes for Revision 2.3.5
 ===========================
 
+New Features:
+-----------
+- added a rnd() function
+  
 Fixed Compiler Warnings:
 -----------
 - Fix problem with IntelLLVM fast math
 
 Build System:  
 ------------
-- fix for https://github.com/beltoforion/muparser/issues/127 (minimum required cmake version set to 3.15)
-- fix for https://github.com/beltoforion/muparser/issues/123 (Strange behavior of the postfix operator on macOS)
+- fix for https://github.com/beltoforion/muparser/issues/127 minimum required cmake version set to 3.15
+- fix for https://github.com/beltoforion/muparser/issues/123 Strange behavior of the postfix operator on macOS
 - fix for https://github.com/beltoforion/muparser/issues/132 example1 fails to builds on Windows with mingw gcc
+- fix for https://github.com/beltoforion/muparser/issues/147 Vuild failed with MSVC/C++20
 
 Change Notes for Revision 2.3.4  
 ===========================
