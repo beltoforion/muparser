@@ -5,7 +5,7 @@
    |  Y Y  \  |  /  |_> > __ \|  | \/\___ \\  ___/|  | \/
    |__|_|  /____/|   __(____  /__|  /____  >\___  >__|
 		 \/      |__|       \/           \/     \/
-   Copyright (C) 2022 Ingo Berg
+   Copyright (C) 2024 Ingo Berg
 
 	Redistribution and use in source and binary forms, with or without modification, are permitted
 	provided that the following conditions are met:
@@ -51,7 +51,6 @@ void CalcBulk();
 // Operator callback functions
 static value_type Mega(value_type a_fVal) { return a_fVal * 1e6; }
 static value_type Milli(value_type a_fVal) { return a_fVal / (value_type)1e3; }
-static value_type Rnd(value_type v) { return v * std::rand() / (value_type)(RAND_MAX + 1.0); }
 static value_type Not(value_type v) { return v == 0; }
 static value_type Add(value_type v1, value_type v2) { return v1 + v2; }
 static value_type Mul(value_type v1, value_type v2) { return v1 * v2; }
@@ -438,9 +437,11 @@ void CalcBulk()
 static void Calc()
 {
 	mu::Parser  parser;
-	parser.SetDecSep(',');
-	parser.SetArgSep(';');
-	parser.SetThousandsSep('.');
+
+	// This is how you activate a german locale:
+	//parser.SetDecSep(',');
+	//parser.SetArgSep(';');
+	//parser.SetThousandsSep('.');
 
 	// Add some variables
 	value_type  vVarVal[] = { 1, 2 }; // Values of the parser variables
@@ -459,7 +460,6 @@ static void Calc()
 	parser.DefineFun(_T("strfun0"), StrFun0);
 	parser.DefineFun(_T("strfun2"), StrFun2);
 	parser.DefineFun(_T("ping"), Ping);
-	parser.DefineFun(_T("rnd"), Rnd, false);     // Add an unoptimizeable function
 	parser.DefineFun(_T("throw"), ThrowAnException);
 
 	parser.DefineOprt(_T("add"), Add, 0);

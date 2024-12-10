@@ -30,6 +30,7 @@
 #define MU_PARSER_TEMPLATE_MAGIC_H
 
 #include <algorithm>
+#include <random>
 #include <cmath>
 #include "muParserError.h"
 
@@ -136,6 +137,14 @@ namespace mu
 		static T Rint(T v) { return floor(v + (T)0.5); }
 		static T Sign(T v) { return (T)((v < 0) ? -1 : (v > 0) ? 1 : 0); }
 		static T Pow(T v1, T v2) { return std::pow(v1, v2); }
+		static T Rnd()
+		{
+			static std::random_device rd;  
+			static std::mt19937 gen(rd()); 
+			static std::uniform_real_distribution<T> dis(0.0, 1.0); // Range [0, 1)
+
+			return dis(gen);
+		}
 
 		static T UnaryMinus(T v) { return -v; }
 		static T UnaryPlus(T v) { return v; }

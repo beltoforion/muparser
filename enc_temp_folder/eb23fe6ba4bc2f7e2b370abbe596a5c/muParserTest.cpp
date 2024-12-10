@@ -1247,7 +1247,7 @@ namespace mu
 			else
 				mu::console() << _T("\n  failed with ") << iStat << _T(" errors") << endl;
 
-			// Reset the locale to the "C" locale.
+			// Reset the locale
 			Parser().ResetLocale();
 
 			return iStat;

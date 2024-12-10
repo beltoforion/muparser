@@ -175,6 +175,8 @@ namespace mu
 			DefineFun(_T("avg"), MathImpl<value_type>::Avg);
 			DefineFun(_T("min"), MathImpl<value_type>::Min);
 			DefineFun(_T("max"), MathImpl<value_type>::Max);
+			// Random number
+			DefineFun(_T("rnd"), MathImpl<value_type>::Rnd, false);
 		}
 	}
 
