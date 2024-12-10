@@ -1,6 +1,6 @@
 # CMake based on work from @xantares
 cmake_minimum_required (VERSION 3.15.0)
-set(CMAKE_CXX_STANDARD 11)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # By default, build in Release mode. Must appear before project() command
@@ -28,6 +28,7 @@ endif()
 
 # Credit: https://stackoverflow.com/questions/2368811/how-to-set-warning-level-in-cmake/3818084
 if(MSVC)
+    add_compile_definitions(NOMINMAX)
     # Force to always compile with W4
     if(CMAKE_CXX_FLAGS MATCHES "/W[0-4]")
       string(REGEX REPLACE "/W[0-4]" "/W4" CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS}")
