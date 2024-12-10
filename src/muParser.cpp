@@ -56,7 +56,7 @@ namespace mu
 	*/
 	int Parser::IsVal(const char_type* a_szExpr, int* a_iPos, value_type* a_fVal)
 	{
-#if defined(__APPLE__)
+#if defined(__APPLE__) && defined(NEVERTRUE)
         // 2023-12-23 Issue #136: This code breaks localization!
 		//
 		// I decided to not give a shit about localization being 
