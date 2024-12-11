@@ -56,7 +56,8 @@ namespace mu
 	*/
 	int Parser::IsVal(const char_type* a_szExpr, int* a_iPos, value_type* a_fVal)
 	{
-		// There is an issue with libc++ where it creates an error if a double value is followed by a character.
+		// There is an issue with libc++ where it creates an error if a double value is followed by a character which
+		// is the case when using postfix operators.
 		//
 		// http://cplusplus.github.io/LWG/lwg-defects.html#2381
 		//
@@ -64,7 +65,8 @@ namespace mu
 		// It seems that Macs are using libc++. This is causing #123. The fix below will fix #123
 		// but is will break localization support and cause #136.
 
-#if defined(__APPLE__) 
+		// I'm disabling this fix. For systems using libc++ you must put a space between floating point numbers and postfix operators.
+#if defined(__APPLE__) && defined(NEVERTRUE)
 		try
 		{
 			std::size_t charsProcessed;
