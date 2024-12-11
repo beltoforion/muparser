@@ -1,6 +1,6 @@
 # CMake based on work from @xantares
 cmake_minimum_required (VERSION 3.15.0)
-set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 # By default, build in Release mode. Must appear before project() command

@@ -56,15 +56,15 @@ namespace mu
 	*/
 	int Parser::IsVal(const char_type* a_szExpr, int* a_iPos, value_type* a_fVal)
 	{
-#if defined(__APPLE__) && defined(NEVERTRUE)
-        // 2023-12-23 Issue #136: This code breaks localization!
-		// 
-		// I decided to not give a shit about localization being 
-		// broken on Macs's because APPLE does not give a shit about the 
-		// stringstream  being broken either. They have the resources to fix their
-		// compiler, i do not have the resources to work around their failures.
+		// There is an issue with libc++ where it creates an error if a double value is followed by a character.
+		//
+		// http://cplusplus.github.io/LWG/lwg-defects.html#2381
+		//
+		// This happens only with libc++, not with libstdc++ (Gnu C++ standard library)
+		// It seems that Macs are using libc++. This is causing #123. The fix below will fix #123
+		// but is will break localization support and cause #136.
 
-		// fix for #123; std::Stringstream is broken on Mac; use std::stod instead
+#if defined(__APPLE__) 
 		try
 		{
 			std::size_t charsProcessed;
