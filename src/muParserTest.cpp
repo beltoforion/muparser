@@ -907,7 +907,10 @@ namespace mu
 			iStat += EqnTest(_T("-f1of1(-1000){m}"), 1, true);
 			iStat += EqnTest(_T("f4of4(0,0,0,1000){m}"), 1, true);
 			iStat += EqnTest(_T("2+(a*1000){m}"), 3, true);
-			iStat += EqnTest(_T("1n"), 1e-9, true);
+			
+			// I have added a space between the number and the operator so that 
+			// systems using libc++ can pass the test (see #123)
+			iStat += EqnTest(_T("1 n"), 1e-9, true);
 
 			// can postfix operators "m" und "meg" be told apart properly?
 			iStat += EqnTest(_T("2*3000meg+2"), 2 * 3e9 + 2, true);
