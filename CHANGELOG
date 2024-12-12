@@ -13,12 +13,16 @@
 History:
 --------
 
-Rev 2.3.5: 13.10.2023
+Rev 2.3.5: 13.12.2024
 ---------------------
   Bugfixes:
    * Fix for #125 (bug in muParserDLL.cpp / mupDefineInfixOprt)
-   
+   * Fix for #127 minimum required cmake version set to 3.15
+   * Fix for #132 example1 fails to builds on Windows with mingw gcc
+   * Fix for #147 Build failed with MSVC/C++20
+
   Changes:
+   * Added rnd() function
    * Bitwise "and" and "or" used the same precedence. (Now bitwise and priority is higher, like in C++)
    * Fix for #131 (added a SetByteCode function to allow restoring previously extracted bytecode)
 
@@ -28,7 +32,7 @@ Rev 2.3.4: 06.11.2022
   Build System Changes (CMake):
    * cmake is using OpenMP target and setting _UNICODE preprocessor definition
   Compiler Warnings:	
-   * fix for issue #117 (sprintf deprecation warning)
+   * Fix for issue #117 (sprintf deprecation warning)
 
 
 Rev 2.3.3: 22.01.2022
