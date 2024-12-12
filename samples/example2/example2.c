@@ -5,7 +5,7 @@
    |  Y Y  \  |  /  |_> > __ \|  | \/\___ \\  ___/|  | \/
    |__|_|  /____/|   __(____  /__|  /____  >\___  >__|
 		 \/      |__|       \/           \/     \/
-   Copyright (C) 2004 - 2023 Ingo Berg
+   Copyright (C) 2004 - 2024 Ingo Berg
 
 	Redistribution and use in source and binary forms, with or without modification, are permitted
 	provided that the following conditions are met:
@@ -141,7 +141,7 @@ static void Intro(muParserHandle_t hParser)
 	myprintf(_T(" |__|_|  /____/|   __(____  /___|  /___  >\\___  >|__|    \n"));
 	myprintf(_T("       \\/      |__|       \\/           \\/     \\/         \n"));
 	myprintf(_T("  Version %s (DLL)\n"), mupGetVersion(hParser));
-	myprintf(_T("  (C) 2004 - 2020 Ingo Berg\n"));
+	myprintf(_T("  (C) 2004 - 2024 Ingo Berg\n"));
 	myprintf(_T("\n"));
 	myprintf(_T("-----------------------------------------------------------\n"));
 
