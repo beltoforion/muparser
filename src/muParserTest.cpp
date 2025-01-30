@@ -1243,7 +1243,7 @@ namespace mu
 			int  iStat = 0;
 			mu::console() << _T("testing localization...");
 
-			iStat += EqnTestLocalized(_T("1,2"), 1.2, true);
+			iStat += EqnTestLocalized(_T("1,2"), 1.2);
 
 			if (iStat == 0)
 				mu::console() << _T("passed") << endl;
@@ -1415,7 +1415,7 @@ namespace mu
 
 			\return 1 in case of a failure, 0 otherwise.
 		*/
-		int ParserTester::EqnTestLocalized(const string_type& a_str, double a_fRes, bool a_fPass)
+		int ParserTester::EqnTestLocalized(const string_type& a_str, double a_fRes)
 		{
 			ParserTester::c_iCount++;
 
