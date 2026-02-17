@@ -263,7 +263,7 @@ namespace mu
 							(m_vRPN[sz - 2].Val.ptr == m_vRPN[sz - 1].Val.ptr));
 
 						m_vRPN[sz - 2].Cmd = cmVARMUL;
-						m_vRPN[sz - 2].Val.ptr = (value_type*)((long long)(m_vRPN[sz - 2].Val.ptr) | (long long)(m_vRPN[sz - 1].Val.ptr));    // variable
+						m_vRPN[sz - 2].Val.ptr = m_vRPN[sz - 2].Val.ptr ? m_vRPN[sz - 2].Val.ptr : m_vRPN[sz - 1].Val.ptr;    // variable
 						m_vRPN[sz - 2].Val.data2 += ((a_Oprt == cmSUB) ? -1 : 1) * m_vRPN[sz - 1].Val.data2;  // offset
 						m_vRPN[sz - 2].Val.data += ((a_Oprt == cmSUB) ? -1 : 1) * m_vRPN[sz - 1].Val.data;   // multiplicand
 						m_vRPN.pop_back();
@@ -276,7 +276,7 @@ namespace mu
 						(m_vRPN[sz - 1].Cmd == cmVAL && m_vRPN[sz - 2].Cmd == cmVAR))
 					{
 						m_vRPN[sz - 2].Cmd = cmVARMUL;
-						m_vRPN[sz - 2].Val.ptr = (value_type*)((long long)(m_vRPN[sz - 2].Val.ptr) | (long long)(m_vRPN[sz - 1].Val.ptr));
+						m_vRPN[sz - 2].Val.ptr = m_vRPN[sz - 2].Val.ptr ? m_vRPN[sz - 2].Val.ptr : m_vRPN[sz - 1].Val.ptr;
 						m_vRPN[sz - 2].Val.data = m_vRPN[sz - 2].Val.data2 + m_vRPN[sz - 1].Val.data2;
 						m_vRPN[sz - 2].Val.data2 = 0;
 						m_vRPN.pop_back();
@@ -288,7 +288,7 @@ namespace mu
 					{
 						// Optimization: 2*(3*b+1) or (3*b+1)*2 -> 6*b+2
 						m_vRPN[sz - 2].Cmd = cmVARMUL;
-						m_vRPN[sz - 2].Val.ptr = (value_type*)((long long)(m_vRPN[sz - 2].Val.ptr) | (long long)(m_vRPN[sz - 1].Val.ptr));
+						m_vRPN[sz - 2].Val.ptr = m_vRPN[sz - 2].Val.ptr ? m_vRPN[sz - 2].Val.ptr : m_vRPN[sz - 1].Val.ptr;
 						if (m_vRPN[sz - 1].Cmd == cmVAL)
 						{
 							m_vRPN[sz - 2].Val.data *= m_vRPN[sz - 1].Val.data2;
