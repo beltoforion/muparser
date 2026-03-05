@@ -561,6 +561,19 @@ namespace mu
 	}
 
 
+    /** \brief Checks if a function with the given name is registered.
+
+     This method determines whether a function with the specified name exists
+     in the current parser's function registry.
+
+     \param a_strName The name of the function to check for.
+     \return True if the function exists, false otherwise.
+     */
+    bool ParserBase::HasFun(const string_type &a_strName) const
+    {
+	    return m_FunDef.find(a_strName) != m_FunDef.end();
+    }
+
 	//---------------------------------------------------------------------------
 	/** \brief Define a binary operator.
 		\param [in] a_sName The identifier of the operator.
