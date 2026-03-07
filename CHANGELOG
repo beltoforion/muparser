@@ -4,7 +4,7 @@
    |  Y Y  \  |  /  |_> > __ \|  | \/\___ \\  ___/|  | \/
    |__|_|  /____/|   __(____  /__|  /____  >\___  >__|
          \/      |__|       \/           \/     \/
-    Copyright (C) 2004 - 2023 Ingo Berg
+    Copyright (C) 2004 - 2026 Ingo Berg
 
 =======================================================================
     https://beltoforion.de/en/muparser
@@ -12,6 +12,17 @@
 
 History:
 --------
+
+Rev 2.3.6: 07.03.2026
+---------------------
+  Refacturing:
+   * Fix for #160 Refacturing for better source code compatibility with Fil-C:
+     needlessly "clever" code replaced with a more maintainable version.
+
+  Changes:
+   * Fix for #161 (https://github.com/beltoforion/muparser/pull/161):
+     HasFun() function added to query the existance of a function under a given name.
+
 
 Rev 2.3.5: 13.12.2024
 ---------------------
@@ -31,6 +42,7 @@ Rev 2.3.4: 06.11.2022
 ---------------------
   Build System Changes (CMake):
    * cmake is using OpenMP target and setting _UNICODE preprocessor definition
+  
   Compiler Warnings:	
    * Fix for issue #117 (sprintf deprecation warning)
 

@@ -3,5 +3,6 @@
         "*.rmd": "markdown",
         "stdexcept": "cpp",
         "sstream": "cpp"
-    }
+    },
+    "r.lsp.promptToInstall": false
 }

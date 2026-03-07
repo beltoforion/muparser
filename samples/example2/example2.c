@@ -141,7 +141,7 @@ static void Intro(muParserHandle_t hParser)
 	myprintf(_T(" |__|_|  /____/|   __(____  /___|  /___  >\\___  >|__|    \n"));
 	myprintf(_T("       \\/      |__|       \\/           \\/     \\/         \n"));
 	myprintf(_T("  Version %s (DLL)\n"), mupGetVersion(hParser));
-	myprintf(_T("  (C) 2004 - 2024 Ingo Berg\n"));
+	myprintf(_T("  (C) 2026 Ingo Berg\n"));
 	myprintf(_T("\n"));
 	myprintf(_T("-----------------------------------------------------------\n"));
 
