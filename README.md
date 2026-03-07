@@ -8,7 +8,7 @@ muparser - fast math parser library
 
 ![title](https://github.com/beltoforion/muparser/assets/2202567/fbeb2347-9884-4dd7-a3c9-112b605d7390)
 
-Change Notes for Revision 2.3.6
+Change Notes for Revision 2.3.6 (2026-03-07)
 ===========================
   
   Changes:
@@ -82,5 +82,6 @@ Changes:
 * Adding missing overrides
 * Added a new option "-DENABLE_WIDE_CHAR" to CMake for building muparser with wide character support
 * export muparser targets, such that client projects can import it using find_package() (https://github.com/beltoforion/muparser/pull/81#event-3528671228)
+
 
 
