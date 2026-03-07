@@ -561,6 +561,12 @@ namespace mu
 	}
 
 
+    /** \brief Check whether a function with the given name is registered. */
+    bool ParserBase::HasFun(const string_type &a_strName) const
+    {
+	    return m_FunDef.find(a_strName) != m_FunDef.end();
+    }
+
 	//---------------------------------------------------------------------------
 	/** \brief Define a binary operator.
 		\param [in] a_sName The identifier of the operator.
