@@ -8,6 +8,18 @@ muparser - fast math parser library
 
 ![title](https://github.com/beltoforion/muparser/assets/2202567/fbeb2347-9884-4dd7-a3c9-112b605d7390)
 
+Change Notes for Revision 2.3.6
+===========================
+  
+  Changes:
+  -----------
+  - Issue https://github.com/beltoforion/muparser/issues/161: Add HasFun function added to query the existance of a function under a given name.
+  - Issue https://github.com/beltoforion/muparser/issues/93: Add cotangent function
+
+  Fixed Compiler Warnings and Errors:
+  -----------
+  - Issue https://github.com/beltoforion/muparser/issues/160: Refacturing for better source code compatibility with Fil-C; needlessly "clever" code replaced with a more maintainable version.
+    
 Change Notes for Revision 2.3.5
 ===========================
 
@@ -70,4 +82,5 @@ Changes:
 * Adding missing overrides
 * Added a new option "-DENABLE_WIDE_CHAR" to CMake for building muparser with wide character support
 * export muparser targets, such that client projects can import it using find_package() (https://github.com/beltoforion/muparser/pull/81#event-3528671228)
+
 
