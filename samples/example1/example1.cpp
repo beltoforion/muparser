@@ -411,7 +411,13 @@ void CalcBulk()
 		mu::Parser  parser;
 		parser.DefineVar(_T("x"), x);
 		parser.DefineVar(_T("y"), y);
-		parser.DefineFun(_T("fun1"), BulkFun1);
+
+	    // Register the bulk function only if it has not been defined yet.
+	    if(!parser.HasFun(_T("fun1")))
+		{
+		    parser.DefineFun(_T("fun1"), BulkFun1);
+		}
+
 		parser.SetExpr(_T("fun1(0)+x+y"));
 		parser.Eval(result, nBulkSize);
 
