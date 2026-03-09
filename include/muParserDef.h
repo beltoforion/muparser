@@ -168,8 +168,7 @@ namespace mu
 
 		// operators and functions
 		cmFUNC = 26,		///< Code for a generic function item
-		cmFUNC_STR,			///< Code for a function with a string parameter
-		cmFUNC_STR_VARARG,	///< Code for a function with a string parameter and a variable number of numeric arguments
+		cmFUNC_STR,			///< Code for a function with a string parameter; negative argc signals vararg (multstrfun_type)
 		cmFUNC_BULK,		///< Special callbacks for Bulk mode with an additional parameter for the bulk index
 		cmSTRING,			///< Code for a string token
 		cmOPRT_BIN,			///< user defined binary operator

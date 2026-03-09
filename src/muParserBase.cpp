@@ -897,7 +897,7 @@ namespace mu
 		if (funTok.GetCode() != cmOPRT_BIN && iArgCount < iArgRequired)
 			Error(ecTOO_FEW_PARAMS, m_pTokenReader->GetPos() - 1, funTok.GetAsString());
 
-		if (funTok.GetCode() == cmFUNC_STR && iArgCount > iArgRequired)
+		if (funTok.GetCode() == cmFUNC_STR && funTok.GetArgCount() >= 0 && iArgCount > iArgRequired)
 			Error(ecTOO_MANY_PARAMS, m_pTokenReader->GetPos() - 1, funTok.GetAsString());
 
 		// Collect the numeric function arguments from the value stack and store them
@@ -927,17 +927,10 @@ namespace mu
 			if (stArg.back().GetType() == tpSTR && funTok.GetType() != tpSTR)
 				Error(ecVAL_EXPECTED, m_pTokenReader->GetPos(), funTok.GetAsString());
 
-			ApplyStrFunc(funTok, stArg);
-			break;
-
-		case  cmFUNC_STR_VARARG:
-			if (a_stVal.empty())
-				Error(ecINTERNAL_ERROR, m_pTokenReader->GetPos(), funTok.GetAsString());
-
-			stArg.push_back(a_stVal.top());
-			a_stVal.pop();
-
-			ApplyMultStrFunc(funTok, stArg);
+			if (funTok.GetArgCount() == -1)
+				ApplyMultStrFunc(funTok, stArg);
+			else
+				ApplyStrFunc(funTok, stArg);
 			break;
 
 		case  cmFUNC_BULK:
@@ -1282,16 +1275,25 @@ namespace mu
 				}
 			}
 
-			// Next is treatment of string functions
+			// Next is treatment of string functions (fixed-arg and vararg).
+			// Negative argc signals vararg (multstrfun_type), same convention as cmFUNC vararg.
 			case  cmFUNC_STR:
 			{
-				sidx -= pTok->Fun.argc - 1;
-
 				// The index of the string argument in the string table
 				int iIdxStack = pTok->Fun.idx;
 				if (iIdxStack < 0 || iIdxStack >= (int)m_vStringBuf.size())
 					Error(ecINTERNAL_ERROR, m_pTokenReader->GetPos());
 
+				if (pTok->Fun.argc < 0)
+				{
+					// vararg: argc stored as -N where N is the numeric argument count
+					int nArgs = -pTok->Fun.argc;
+					sidx -= nArgs - 1;
+					stack[sidx] = pTok->Fun.cb.call_multstrfun(m_vStringBuf[iIdxStack].c_str(), &stack[sidx], nArgs);
+					continue;
+				}
+
+				sidx -= pTok->Fun.argc - 1;
 				switch (pTok->Fun.argc)  // switch according to argument count
 				{
 				case 0: stack[sidx] = pTok->Fun.cb.call_strfun<1>(m_vStringBuf[iIdxStack].c_str()); continue;
@@ -1302,21 +1304,6 @@ namespace mu
 				case 5: stack[sidx] = pTok->Fun.cb.call_strfun<6>(m_vStringBuf[iIdxStack].c_str(), stack[sidx], stack[sidx + 1], stack[sidx + 2], stack[sidx + 3], stack[sidx + 4]); continue;
 				}
 
-				continue;
-			}
-
-			// Next is treatment of string+vararg functions
-			case  cmFUNC_STR_VARARG:
-			{
-				// argc stores the non-negative count of numeric arguments
-				sidx -= pTok->Fun.argc - 1;
-
-				// The index of the string argument in the string table
-				int iIdxStack = pTok->Fun.idx;
-				if (iIdxStack < 0 || iIdxStack >= (int)m_vStringBuf.size())
-					Error(ecINTERNAL_ERROR, m_pTokenReader->GetPos());
-
-				stack[sidx] = pTok->Fun.cb.call_multstrfun(m_vStringBuf[iIdxStack].c_str(), &stack[sidx], pTok->Fun.argc);
 				continue;
 			}
 
@@ -1460,7 +1447,7 @@ namespace mu
 						(stOpt.top().GetCode() != cmFUNC &&
 							stOpt.top().GetCode() != cmFUNC_BULK &&
 							stOpt.top().GetCode() != cmFUNC_STR &&
-							stOpt.top().GetCode() != cmFUNC_STR_VARARG)))
+							stOpt.top().GetCode() != cmFUNC_STR)))
 						Error(ecUNEXPECTED_ARG, m_pTokenReader->GetPos());
 
 					// The opening bracket was popped from the stack now check if there
@@ -1553,7 +1540,6 @@ namespace mu
 			case cmFUNC:
 			case cmFUNC_BULK:
 			case cmFUNC_STR:
-			case cmFUNC_STR_VARARG:
 				stOpt.push(opt);
 				break;
 

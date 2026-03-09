@@ -497,8 +497,8 @@ namespace mu
 		m_iStackPos = m_iStackPos - a_iArgc + 1;
 
 		SToken tok;
-		tok.Cmd = cmFUNC_STR_VARARG;
-		tok.Fun.argc = a_iArgc;
+		tok.Cmd = cmFUNC_STR;
+		tok.Fun.argc = -a_iArgc;  // negative argc signals vararg (same convention as cmFUNC vararg)
 		tok.Fun.idx = a_iIdx;
 		tok.Fun.cb = a_pFun;
 		m_vRPN.push_back(tok);
@@ -620,19 +620,13 @@ namespace mu
 				break;
 
 			case cmFUNC_STR:
-				mu::console() << _T("CALL STRFUNC\t");
-				mu::console() << _T("[ARG:") << std::dec << m_vRPN[i].Fun.argc << _T("]");
+				if (m_vRPN[i].Fun.argc < 0)
+					mu::console() << _T("CALL MULTSTRFUNC\t") << _T("[ARG:") << std::dec << -m_vRPN[i].Fun.argc << _T("]");
+				else
+					mu::console() << _T("CALL STRFUNC\t") << _T("[ARG:") << std::dec << m_vRPN[i].Fun.argc << _T("]");
 				mu::console() << _T("[IDX:") << std::dec << m_vRPN[i].Fun.idx << _T("=\"") << m_stringBuffer[m_vRPN[i].Fun.idx] << ("\"]");
 				mu::console() << _T("[ADDR: 0x") << std::hex << reinterpret_cast<void*>(m_vRPN[i].Fun.cb._pRawFun) << _T("]");
 				mu::console() << _T("[USERDATA: 0x") << std::hex << reinterpret_cast<void*>(m_vRPN[i].Fun.cb._pUserData) << _T("]");
-				mu::console() << _T("\n");
-				break;
-
-			case cmFUNC_STR_VARARG:
-				mu::console() << _T("CALL MULTSTRFUNC\t");
-				mu::console() << _T("[ARG:") << std::dec << m_vRPN[i].Fun.argc << _T("]");
-				mu::console() << _T("[IDX:") << std::dec << m_vRPN[i].Fun.idx << _T("=\"") << m_stringBuffer[m_vRPN[i].Fun.idx] << ("\"\"]");
-				mu::console() << _T("[ADDR: 0x") << std::hex << reinterpret_cast<void*>(m_vRPN[i].Fun.cb._pRawFun) << _T("]");
 				mu::console() << _T("\n");
 				break;
 

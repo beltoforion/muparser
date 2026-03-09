@@ -594,7 +594,7 @@ namespace mu
 		, m_iArgc(CALLBACK_INTERNAL_VAR_ARGS)
 		, m_iPri(-1)
 		, m_eOprtAsct(oaNONE)
-		, m_iCode(cmFUNC_STR_VARARG)
+		, m_iCode(cmFUNC_STR)
 		, m_iType(tpSTR)
 		, m_bAllowOpti(a_bAllowOpti)
 	{}
