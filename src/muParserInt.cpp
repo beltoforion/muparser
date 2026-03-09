@@ -47,10 +47,35 @@ namespace mu
 	value_type ParserInt::Add(value_type v1, value_type v2) { return Round(v1) + Round(v2); }
 	value_type ParserInt::Sub(value_type v1, value_type v2) { return Round(v1) - Round(v2); }
 	value_type ParserInt::Mul(value_type v1, value_type v2) { return Round(v1) * Round(v2); }
-	value_type ParserInt::Div(value_type v1, value_type v2) { return Round(v1) / Round(v2); }
-	value_type ParserInt::Mod(value_type v1, value_type v2) { return Round(v1) % Round(v2); }
-	value_type ParserInt::Shr(value_type v1, value_type v2) { return Round(v1) >> Round(v2); }
-	value_type ParserInt::Shl(value_type v1, value_type v2) { return Round(v1) << Round(v2); }
+	value_type ParserInt::Div(value_type v1, value_type v2)
+	{
+		if (Round(v2) == 0)
+			throw ParserError(ecDIV_BY_ZERO);
+		return Round(v1) / Round(v2);
+	}
+
+	value_type ParserInt::Mod(value_type v1, value_type v2)
+	{
+		if (Round(v2) == 0)
+			throw ParserError(ecDIV_BY_ZERO);
+		return Round(v1) % Round(v2);
+	}
+
+	value_type ParserInt::Shr(value_type v1, value_type v2)
+	{
+		int shift = Round(v2);
+		if (shift < 0 || shift >= (int)(sizeof(int) * 8))
+			throw ParserError(ecDOMAIN_ERROR);
+		return Round(v1) >> shift;
+	}
+
+	value_type ParserInt::Shl(value_type v1, value_type v2)
+	{
+		int shift = Round(v2);
+		if (shift < 0 || shift >= (int)(sizeof(int) * 8))
+			throw ParserError(ecDOMAIN_ERROR);
+		return Round(v1) << shift;
+	}
 	value_type ParserInt::BitAnd(value_type v1, value_type v2) { return Round(v1) & Round(v2); }
 	value_type ParserInt::BitOr(value_type v1, value_type v2) { return Round(v1) | Round(v2); }
 	value_type ParserInt::And(value_type v1, value_type v2) { return Round(v1) && Round(v2); }

@@ -939,10 +939,10 @@ namespace mu
 		string_type strBuf(&m_strFormula[(std::size_t)m_iPos + 1]);
 		std::size_t iEnd(0), iSkip(0);
 
-		// parser over escaped '\"' end replace them with '"'
-		for (iEnd = (int)strBuf.find(_T('\"')); iEnd != 0 && iEnd != string_type::npos; iEnd = (int)strBuf.find(_T('\"'), iEnd))
+		// parse over escaped '\"' and replace them with '"'
+		for (iEnd = strBuf.find(_T('\"')); iEnd != string_type::npos; iEnd = strBuf.find(_T('\"'), iEnd))
 		{
-			if (strBuf[iEnd - 1] != '\\') break;
+			if (iEnd == 0 || strBuf[iEnd - 1] != '\\') break;
 			strBuf.replace(iEnd - 1, 2, _T("\""));
 			iSkip++;
 		}
