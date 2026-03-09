@@ -136,6 +136,12 @@ namespace mu
 				return 123;
 			}
 
+			static value_type StrLen(const char_type* val)
+			{
+				return std::strlen(val);
+			}
+
+
 			static value_type StrFun1(const char_type* v1)
 			{
 				int val(0);

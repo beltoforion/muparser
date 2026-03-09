@@ -235,6 +235,11 @@ namespace mu
 			iStat += EqnTest(_T("strfun5(\"99\",1,2,3,4)"), 109, true);
 			iStat += EqnTest(_T("strfun6(\"99\",1,2,3,4,5)"), 114, true);
 
+			// multiple strings in the same expression
+			iStat += EqnTest(_T("strlen(\"1\")+strlen(\"11\")"), 3, true);
+			iStat += EqnTest(_T("strlen(\"1\")+strlen(\"22\")++strlen(\"333\")"), 6, true);
+			iStat += EqnTest(_T("1+++strlen(\"333\")"), 4, true);
+
 			// string constants
 			iStat += EqnTest(_T("atof(str1)+atof(str2)"), 3.33, true);
 
@@ -551,11 +556,15 @@ namespace mu
 			int iStat = 0;
 			mu::console() << _T("testing syntax engine...");
 
-			iStat += ThrowTest(_T("1,"), ecUNEXPECTED_EOF);  // incomplete hex definition
-			iStat += ThrowTest(_T("a,"), ecUNEXPECTED_EOF);  // incomplete hex definition
-			iStat += ThrowTest(_T("sin(8),"), ecUNEXPECTED_EOF);  // incomplete hex definition
-			iStat += ThrowTest(_T("(sin(8)),"), ecUNEXPECTED_EOF);  // incomplete hex definition
-			iStat += ThrowTest(_T("a{m},"), ecUNEXPECTED_EOF);  // incomplete hex definition
+			iStat += ThrowTest(_T("1,"), ecUNEXPECTED_EOF);               // incomplete hex definition
+			iStat += ThrowTest(_T("a,"), ecUNEXPECTED_EOF);               // incomplete hex definition
+			iStat += ThrowTest(_T("sin(8),"), ecUNEXPECTED_EOF);          // incomplete hex definition
+			iStat += ThrowTest(_T("1++sin(2)"), ecUNEXPECTED_OPERATOR);   // issue 164: double sign in front of a function should be forbidden
+			iStat += ThrowTest(_T("1-+sin(2)"), ecUNEXPECTED_OPERATOR);   // issue 164: double sign in front of a function should be forbidden
+			iStat += ThrowTest(_T("1+++sin(2)"), ecUNEXPECTED_OPERATOR);  // too many signs
+			iStat += ThrowTest(_T("1+-+sin(2)"), ecUNEXPECTED_OPERATOR);  // too many signs
+			iStat += ThrowTest(_T("(sin(8)),"), ecUNEXPECTED_EOF);        // incomplete hex definition
+			iStat += ThrowTest(_T("a{m},"), ecUNEXPECTED_EOF);            // incomplete hex definition
 
 			iStat += EqnTest(_T("(1+ 2*a)"), 3, true);   // Spaces within formula
 			iStat += EqnTest(_T("sqrt((4))"), 2, true);  // Multiple brackets
@@ -568,7 +577,7 @@ namespace mu
 			iStat += EqnTest(_T("2++4"), 0, false);      // unexpected operator
 			iStat += EqnTest(_T("2+-4"), 0, false);      // unexpected operator
 			iStat += EqnTest(_T("(2+)"), 0, false);      // unexpected closing bracket
-			iStat += EqnTest(_T("--2"), 0, false);       // double sign
+			iStat += EqnTest(_T("--2"), 0, false);       // double sign in front of a value
 			iStat += EqnTest(_T("ksdfj"), 0, false);     // unknown token
 			iStat += EqnTest(_T("()"), 0, false);        // empty bracket without a function
 			iStat += EqnTest(_T("5+()"), 0, false);      // empty bracket without a function
@@ -1569,6 +1578,7 @@ namespace mu
 				p1->DefineFun(_T("sum"), Sum);
 				p1->DefineFun(_T("valueof"), ValueOf);
 				p1->DefineFun(_T("atof"), StrToFloat);
+				p1->DefineFun(_T("strlen"), StrLen);
 				p1->DefineFun(_T("strfun1"), StrFun1);
 				p1->DefineFun(_T("strfun2"), StrFun2);
 				p1->DefineFun(_T("strfun3"), StrFun3);
