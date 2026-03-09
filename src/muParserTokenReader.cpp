@@ -5,7 +5,7 @@
    |  Y Y  \  |  /  |_> > __ \|  | \/\___ \\  ___/|  | \/
    |__|_|  /____/|   __(____  /__|  /____  >\___  >__|
 		 \/      |__|       \/           \/     \/
-   Copyright (C) 2004 - 2022 Ingo Berg
+   Copyright (C) 2026 Ingo Berg
 
 	Redistribution and use in source and binary forms, with or without modification, are permitted
 	provided that the following conditions are met:
@@ -940,9 +940,11 @@ namespace mu
 		std::size_t iEnd(0), iSkip(0);
 
 		// parser over escaped '\"' end replace them with '"'
-		for (iEnd = (int)strBuf.find(_T('\"')); iEnd != 0 && iEnd != string_type::npos; iEnd = (int)strBuf.find(_T('\"'), iEnd))
+		for (iEnd = strBuf.find(_T('\"')); iEnd != string_type::npos; iEnd = strBuf.find(_T('\"'), iEnd))
 		{
-			if (strBuf[iEnd - 1] != '\\') break;
+			if (iEnd==0 || strBuf[iEnd - 1] != '\\') 
+				break;
+
 			strBuf.replace(iEnd - 1, 2, _T("\""));
 			iSkip++;
 		}

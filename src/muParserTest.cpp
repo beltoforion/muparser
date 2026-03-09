@@ -5,7 +5,7 @@
    |  Y Y  \  |  /  |_> > __ \|  | \/\___ \\  ___/|  | \/
    |__|_|  /____/|   __(____  /__|  /____  >\___  >__|
 		 \/      |__|       \/           \/     \/
-   Copyright (C) 2023 Ingo Berg
+   Copyright (C) 2026 Ingo Berg
 
 	Redistribution and use in source and binary forms, with or without modification, are permitted
 	provided that the following conditions are met:
@@ -414,6 +414,9 @@ namespace mu
 			iStat += EqnTestInt(_T("c * b < a"), 0, true);
 			iStat += EqnTestInt(_T("c * b == 6 * a"), 1, true);
 			iStat += EqnTestInt(_T("2^2^3"), 256, true);
+
+			iStat += ThrowTestInt(_T("8 >> 100"), ecDOMAIN_ERROR);
+			iStat += ThrowTestInt(_T("8 << -1"), ecDOMAIN_ERROR);
 
 
 			if (iStat == 0)
@@ -1356,11 +1359,49 @@ namespace mu
 		}
 
 		//---------------------------------------------------------------------------
+		int ParserTester::ThrowTestInt(const string_type& a_str, int a_iErrc, bool a_expectedToFail)
+		{
+			ParserTester::c_iCount++;
+
+			try
+			{
+				ParserInt p;
+				p.SetExpr(a_str);
+				p.Eval();
+			}
+			catch (ParserError& e)
+			{
+				// output the formula in case of an failed test
+				if (a_expectedToFail == false || (a_expectedToFail == true && a_iErrc != e.GetCode()))
+				{
+					mu::console() << _T("\n  ")
+						<< _T("Expression: ") << a_str
+						<< _T("  Code:") << e.GetCode() << _T("(") << e.GetMsg() << _T(")")
+						<< _T("  Expected:") << a_iErrc;
+				}
+
+				return (a_iErrc == e.GetCode()) ? 0 : 1;
+			}
+
+			// if a_expectedToFail == false no exception is expected
+			bool bRet((a_expectedToFail == false) ? 0 : 1);
+			if (bRet == 1)
+			{
+				mu::console() << _T("\n  ")
+					<< _T("Expression: ") << a_str
+					<< _T("  did evaluate; Expected error:") << a_iErrc;
+			}
+
+			return bRet;
+		}
+
+		//---------------------------------------------------------------------------
 		/** \brief Evaluate a test expression.
 
 			\return 1 in case of a failure, 0 otherwise.
 		*/
-		int ParserTester::EqnTestWithVarChange(const string_type& a_str,
+		int ParserTester::EqnTestWithVarChange(
+			const string_type& a_str,
 			double a_fVar1,
 			double a_fRes1,
 			double a_fVar2,

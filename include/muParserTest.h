@@ -5,7 +5,7 @@
    |  Y Y  \  |  /  |_> > __ \|  | \/\___ \\  ___/|  | \/
    |__|_|  /____/|   __(____  /__|  /____  >\___  >__|
 		 \/      |__|       \/           \/     \/
-   Copyright (C) 2004 - 2022 Ingo Berg
+   Copyright (C) 2026 Ingo Berg
 
 	Redistribution and use in source and binary forms, with or without modification, are permitted
 	provided that the following conditions are met:
@@ -281,6 +281,7 @@ namespace mu
 
 			// Test Int Parser
 			int EqnTestInt(const string_type& a_str, double a_fRes, bool a_fPass);
+			int ThrowTestInt(const string_type& a_str, int a_iErrc, bool a_bFail = true);
 
 			// Test Bulkmode
 			int EqnTestBulk(const string_type& a_str, double a_fRes[4], bool a_fPass);
@@ -295,4 +296,3 @@ namespace mu
 #endif
 
 #endif
-

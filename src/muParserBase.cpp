@@ -1100,6 +1100,9 @@ namespace mu
 
 		// String function without a numerical argument
 		case cmFUNC_STR:
+			if (m_vStringBuf.empty())
+				throw ParserError(ecINTERNAL_ERROR);
+
 			return tok->Fun.cb.call_strfun<1>(m_vStringBuf[0].c_str());
 
 		default:
