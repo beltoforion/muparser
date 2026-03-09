@@ -95,6 +95,59 @@ static value_type StrFun2(const char_type* v1, value_type v2, value_type v3)
 }
 
 
+/** \brief C#-style printf: replaces {0}, {1}, ... with the nth numeric argument.
+
+	Example parser expression:
+	  printf("The area is {0} and the perimeter is {1}", a*b, 2*(a+b))
+
+	Prints the formatted string to the console and returns the number of
+	substitutions made.
+*/
+static value_type Printf(const char_type* a_szFmt, const value_type* a_afArg, int a_iArgc)
+{
+	string_type fmt(a_szFmt);
+	string_type result;
+	result.reserve(fmt.size());
+	int nSubstitutions = 0;
+
+	for (size_t i = 0; i < fmt.size(); )
+	{
+		if (fmt[i] == _T('{'))
+		{
+			size_t close = fmt.find(_T('}'), i + 1);
+			if (close != string_type::npos)
+			{
+				string_type idxStr = fmt.substr(i + 1, close - i - 1);
+
+				bool isNum = !idxStr.empty();
+				for (auto ch : idxStr)
+					if (ch < _T('0') || ch > _T('9')) { isNum = false; break; }
+
+				if (isNum)
+				{
+					int idx = 0;
+					stringstream_type(idxStr) >> idx;
+
+					if (idx >= 0 && idx < a_iArgc)
+					{
+						stringstream_type ss;
+						ss << a_afArg[idx];
+						result += ss.str();
+						++nSubstitutions;
+						i = close + 1;
+						continue;
+					}
+				}
+			}
+		}
+		result += fmt[i++];
+	}
+
+	mu::console() << result << _T("\n");
+	return (value_type)nSubstitutions;
+}
+
+
 static value_type Debug(mu::value_type v1, mu::value_type v2)
 {
 	ParserBase::EnableDebugDump(v1 != 0, v2 != 0);
@@ -465,6 +518,7 @@ static void Calc()
 	parser.DefineInfixOprt(_T("!"), Not);
 	parser.DefineFun(_T("strfun0"), StrFun0);
 	parser.DefineFun(_T("strfun2"), StrFun2);
+	parser.DefineFun(_T("printf"), Printf);
 	parser.DefineFun(_T("ping"), Ping);
 	parser.DefineFun(_T("throw"), ThrowAnException);
 

@@ -241,6 +241,9 @@ namespace mu
 			// user data
 			iStat += EqnTest(_T("strfunud3_10(\"99\",1,2)"), 112, true);
 
+			// string + variable number of numeric arguments (multstrfun_type)
+			iStat += EqnTest(_T("multstrfun(\"hello\",1,2,3)"), 6, true);
+
 			if (iStat == 0)
 				mu::console() << _T("passed") << endl;
 			else
@@ -1328,6 +1331,7 @@ namespace mu
 				p.DefineFun(_T("strfun4"), StrFun4);
 				p.DefineFun(_T("strfun5"), StrFun5);
 				p.DefineFun(_T("strfun6"), StrFun6);
+				p.DefineFun(_T("multstrfun"), MultStrFun);
 				p.SetExpr(a_str);
 				//				p.EnableDebugDump(1, 0);
 				p.Eval();
@@ -1575,6 +1579,7 @@ namespace mu
 				p1->DefineFun(_T("strfun4"), StrFun4);
 				p1->DefineFun(_T("strfun5"), StrFun5);
 				p1->DefineFun(_T("strfun6"), StrFun6);
+				p1->DefineFun(_T("multstrfun"), MultStrFun);
 				p1->DefineFun(_T("lastArg"), LastArg);
 				p1->DefineFun(_T("firstArg"), FirstArg);
 				p1->DefineFun(_T("order"), FirstArg);

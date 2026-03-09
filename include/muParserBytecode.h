@@ -131,6 +131,7 @@ namespace mu
 		void AddFun(generic_callable_type a_pFun, int a_iArgc, bool isOptimizable);
 		void AddBulkFun(generic_callable_type a_pFun, int a_iArgc);
 		void AddStrFun(generic_callable_type a_pFun, int a_iArgc, int a_iIdx);
+		void AddMultStrFun(generic_callable_type a_pFun, int a_iArgc, int a_iIdx);
 
 		void EnableOptimizer(bool bStat);
 

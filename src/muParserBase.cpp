@@ -821,6 +821,43 @@ namespace mu
 	}
 
 	//---------------------------------------------------------------------------
+	/** \brief Execute a function that takes a string constant and a variable number of numeric arguments.
+		\param a_FunTok Function token.
+		\param a_vArg Argument tokens; numeric args first, string last.
+		\throw exception_type If the last token is not a string.
+	*/
+	ParserBase::token_type ParserBase::ApplyMultStrFunc(
+		const token_type& a_FunTok,
+		const std::vector<token_type>& a_vArg) const
+	{
+		if (a_vArg.back().GetCode() != cmSTRING)
+			Error(ecSTRING_EXPECTED, m_pTokenReader->GetPos(), a_FunTok.GetAsString());
+
+		token_type valTok;
+		generic_callable_type pFunc = a_FunTok.GetFuncAddr();
+		MUP_ASSERT(pFunc);
+
+		try
+		{
+			// Validate all numeric arguments
+			for (int i = 0; i < (int)a_vArg.size() - 1; ++i)
+				a_vArg[i].GetVal();
+			a_vArg.back().GetAsString();
+			valTok.SetVal(1);
+		}
+		catch (ParserError&)
+		{
+			Error(ecVAL_EXPECTED, m_pTokenReader->GetPos(), a_FunTok.GetAsString());
+		}
+
+		// multstrfun functions won't be optimized
+		m_vRPN.AddMultStrFun(pFunc, (int)a_vArg.size() - 1, a_vArg.back().GetIdx());
+
+		// Push dummy value representing the function result to the stack
+		return valTok;
+	}
+
+	//---------------------------------------------------------------------------
 	/** \brief Apply a function token.
 		\param iArgCount Number of Arguments actually gathered used only for multiarg functions.
 		\post The result is pushed to the value stack
@@ -860,7 +897,7 @@ namespace mu
 		if (funTok.GetCode() != cmOPRT_BIN && iArgCount < iArgRequired)
 			Error(ecTOO_FEW_PARAMS, m_pTokenReader->GetPos() - 1, funTok.GetAsString());
 
-		if (funTok.GetCode() == cmFUNC_STR && iArgCount > iArgRequired)
+		if (funTok.GetCode() == cmFUNC_STR && funTok.GetArgCount() >= 0 && iArgCount > iArgRequired)
 			Error(ecTOO_MANY_PARAMS, m_pTokenReader->GetPos() - 1, funTok.GetAsString());
 
 		// Collect the numeric function arguments from the value stack and store them
@@ -890,7 +927,10 @@ namespace mu
 			if (stArg.back().GetType() == tpSTR && funTok.GetType() != tpSTR)
 				Error(ecVAL_EXPECTED, m_pTokenReader->GetPos(), funTok.GetAsString());
 
-			ApplyStrFunc(funTok, stArg);
+			if (funTok.GetArgCount() == -1)
+				ApplyMultStrFunc(funTok, stArg);
+			else
+				ApplyStrFunc(funTok, stArg);
 			break;
 
 		case  cmFUNC_BULK:
@@ -1235,16 +1275,25 @@ namespace mu
 				}
 			}
 
-			// Next is treatment of string functions
+			// Next is treatment of string functions (fixed-arg and vararg).
+			// Negative argc signals vararg (multstrfun_type), same convention as cmFUNC vararg.
 			case  cmFUNC_STR:
 			{
-				sidx -= pTok->Fun.argc - 1;
-
 				// The index of the string argument in the string table
 				int iIdxStack = pTok->Fun.idx;
 				if (iIdxStack < 0 || iIdxStack >= (int)m_vStringBuf.size())
 					Error(ecINTERNAL_ERROR, m_pTokenReader->GetPos());
 
+				if (pTok->Fun.argc < 0)
+				{
+					// vararg: argc stored as -N where N is the numeric argument count
+					int nArgs = -pTok->Fun.argc;
+					sidx -= nArgs - 1;
+					stack[sidx] = pTok->Fun.cb.call_multstrfun(m_vStringBuf[iIdxStack].c_str(), &stack[sidx], nArgs);
+					continue;
+				}
+
+				sidx -= pTok->Fun.argc - 1;
 				switch (pTok->Fun.argc)  // switch according to argument count
 				{
 				case 0: stack[sidx] = pTok->Fun.cb.call_strfun<1>(m_vStringBuf[iIdxStack].c_str()); continue;
@@ -1397,6 +1446,7 @@ namespace mu
 					if (iArgCount > 1 && (stOpt.size() == 0 ||
 						(stOpt.top().GetCode() != cmFUNC &&
 							stOpt.top().GetCode() != cmFUNC_BULK &&
+							stOpt.top().GetCode() != cmFUNC_STR &&
 							stOpt.top().GetCode() != cmFUNC_STR)))
 						Error(ecUNEXPECTED_ARG, m_pTokenReader->GetPos());
 

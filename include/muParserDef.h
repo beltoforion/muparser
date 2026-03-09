@@ -168,8 +168,8 @@ namespace mu
 
 		// operators and functions
 		cmFUNC = 26,		///< Code for a generic function item
-		cmFUNC_STR,			///< Code for a function with a string parameter
-		cmFUNC_BULK,		///< Special callbacks for Bulk mode with an additional parameter for the bulk index 
+		cmFUNC_STR,			///< Code for a function with a string parameter; negative argc signals vararg (multstrfun_type)
+		cmFUNC_BULK,		///< Special callbacks for Bulk mode with an additional parameter for the bulk index
 		cmSTRING,			///< Code for a string token
 		cmOPRT_BIN,			///< user defined binary operator
 		cmOPRT_POSTFIX,		///< code for postfix operators
@@ -463,6 +463,9 @@ namespace mu
 
 	/** \brief Callback type with user data (not null) used for functions and a variable argument list. */
 	typedef value_type(*multfun_userdata_type)(void*, const value_type*, int);
+
+	/** \brief Callback type used for functions with a string constant and a variable number of numeric arguments. */
+	typedef value_type(*multstrfun_type)(const char_type*, const value_type*, int);
 
 	/** \brief Callback type used for functions taking a string as an argument. */
 	typedef value_type(*strfun_type1)(const char_type*);

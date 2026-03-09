@@ -111,6 +111,12 @@ namespace mu
 			}
 		}
 
+		value_type call_multstrfun(const char_type* a_sArg, const value_type* a_afArg, int a_iArgc) const
+		{
+			auto multstrfun_typed_ptr = reinterpret_cast<multstrfun_type>(_pRawFun);
+			return (*multstrfun_typed_ptr)(a_sArg, a_afArg, a_iArgc);
+		}
+
 		template <std::size_t NbParams, typename... Args>
 		value_type call_strfun(Args&&... args) const
 		{
