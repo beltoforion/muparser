@@ -485,6 +485,28 @@ namespace mu
 	}
 
 
+	/** \brief Add a string+vararg function entry to the parser bytecode.
+		\throw nothrow
+
+		Stores a function taking a string constant and a variable number of numeric
+		arguments. The argument count (a_iArgc) is the number of numeric arguments
+		only; the string is stored separately in the string buffer at index a_iIdx.
+	*/
+	void ParserByteCode::AddMultStrFun(generic_callable_type a_pFun, int a_iArgc, int a_iIdx)
+	{
+		m_iStackPos = m_iStackPos - a_iArgc + 1;
+
+		SToken tok;
+		tok.Cmd = cmFUNC_STR_VARARG;
+		tok.Fun.argc = a_iArgc;
+		tok.Fun.idx = a_iIdx;
+		tok.Fun.cb = a_pFun;
+		m_vRPN.push_back(tok);
+
+		m_iMaxStackSize = std::max(m_iMaxStackSize, (size_t)m_iStackPos);
+	}
+
+
 	/** \brief Add end marker to bytecode.
 
 		\throw nothrow
@@ -603,6 +625,14 @@ namespace mu
 				mu::console() << _T("[IDX:") << std::dec << m_vRPN[i].Fun.idx << _T("=\"") << m_stringBuffer[m_vRPN[i].Fun.idx] << ("\"]");
 				mu::console() << _T("[ADDR: 0x") << std::hex << reinterpret_cast<void*>(m_vRPN[i].Fun.cb._pRawFun) << _T("]");
 				mu::console() << _T("[USERDATA: 0x") << std::hex << reinterpret_cast<void*>(m_vRPN[i].Fun.cb._pUserData) << _T("]");
+				mu::console() << _T("\n");
+				break;
+
+			case cmFUNC_STR_VARARG:
+				mu::console() << _T("CALL MULTSTRFUNC\t");
+				mu::console() << _T("[ARG:") << std::dec << m_vRPN[i].Fun.argc << _T("]");
+				mu::console() << _T("[IDX:") << std::dec << m_vRPN[i].Fun.idx << _T("=\"") << m_stringBuffer[m_vRPN[i].Fun.idx] << ("\"\"]");
+				mu::console() << _T("[ADDR: 0x") << std::hex << reinterpret_cast<void*>(m_vRPN[i].Fun.cb._pRawFun) << _T("]");
 				mu::console() << _T("\n");
 				break;
 

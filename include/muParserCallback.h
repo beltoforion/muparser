@@ -79,6 +79,7 @@ namespace mu
 		ParserCallback(bulkfun_type10 a_pFun, bool a_bAllowOpti);
 
 		ParserCallback(multfun_type a_pFun, bool a_bAllowOpti);
+		ParserCallback(multstrfun_type a_pFun, bool a_bAllowOpti);
 
 		ParserCallback(strfun_type1 a_pFun, bool a_bAllowOpti);
 		ParserCallback(strfun_type2 a_pFun, bool a_bAllowOpti);

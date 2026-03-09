@@ -821,6 +821,43 @@ namespace mu
 	}
 
 	//---------------------------------------------------------------------------
+	/** \brief Execute a function that takes a string constant and a variable number of numeric arguments.
+		\param a_FunTok Function token.
+		\param a_vArg Argument tokens; numeric args first, string last.
+		\throw exception_type If the last token is not a string.
+	*/
+	ParserBase::token_type ParserBase::ApplyMultStrFunc(
+		const token_type& a_FunTok,
+		const std::vector<token_type>& a_vArg) const
+	{
+		if (a_vArg.back().GetCode() != cmSTRING)
+			Error(ecSTRING_EXPECTED, m_pTokenReader->GetPos(), a_FunTok.GetAsString());
+
+		token_type valTok;
+		generic_callable_type pFunc = a_FunTok.GetFuncAddr();
+		MUP_ASSERT(pFunc);
+
+		try
+		{
+			// Validate all numeric arguments
+			for (int i = 0; i < (int)a_vArg.size() - 1; ++i)
+				a_vArg[i].GetVal();
+			a_vArg.back().GetAsString();
+			valTok.SetVal(1);
+		}
+		catch (ParserError&)
+		{
+			Error(ecVAL_EXPECTED, m_pTokenReader->GetPos(), a_FunTok.GetAsString());
+		}
+
+		// multstrfun functions won't be optimized
+		m_vRPN.AddMultStrFun(pFunc, (int)a_vArg.size() - 1, a_vArg.back().GetIdx());
+
+		// Push dummy value representing the function result to the stack
+		return valTok;
+	}
+
+	//---------------------------------------------------------------------------
 	/** \brief Apply a function token.
 		\param iArgCount Number of Arguments actually gathered used only for multiarg functions.
 		\post The result is pushed to the value stack
@@ -891,6 +928,16 @@ namespace mu
 				Error(ecVAL_EXPECTED, m_pTokenReader->GetPos(), funTok.GetAsString());
 
 			ApplyStrFunc(funTok, stArg);
+			break;
+
+		case  cmFUNC_STR_VARARG:
+			if (a_stVal.empty())
+				Error(ecINTERNAL_ERROR, m_pTokenReader->GetPos(), funTok.GetAsString());
+
+			stArg.push_back(a_stVal.top());
+			a_stVal.pop();
+
+			ApplyMultStrFunc(funTok, stArg);
 			break;
 
 		case  cmFUNC_BULK:
@@ -1258,6 +1305,21 @@ namespace mu
 				continue;
 			}
 
+			// Next is treatment of string+vararg functions
+			case  cmFUNC_STR_VARARG:
+			{
+				// argc stores the non-negative count of numeric arguments
+				sidx -= pTok->Fun.argc - 1;
+
+				// The index of the string argument in the string table
+				int iIdxStack = pTok->Fun.idx;
+				if (iIdxStack < 0 || iIdxStack >= (int)m_vStringBuf.size())
+					Error(ecINTERNAL_ERROR, m_pTokenReader->GetPos());
+
+				stack[sidx] = pTok->Fun.cb.call_multstrfun(m_vStringBuf[iIdxStack].c_str(), &stack[sidx], pTok->Fun.argc);
+				continue;
+			}
+
 			case  cmFUNC_BULK:
 			{
 				int iArgCount = pTok->Fun.argc;
@@ -1397,7 +1459,8 @@ namespace mu
 					if (iArgCount > 1 && (stOpt.size() == 0 ||
 						(stOpt.top().GetCode() != cmFUNC &&
 							stOpt.top().GetCode() != cmFUNC_BULK &&
-							stOpt.top().GetCode() != cmFUNC_STR)))
+							stOpt.top().GetCode() != cmFUNC_STR &&
+							stOpt.top().GetCode() != cmFUNC_STR_VARARG)))
 						Error(ecUNEXPECTED_ARG, m_pTokenReader->GetPos());
 
 					// The opening bracket was popped from the stack now check if there
@@ -1490,6 +1553,7 @@ namespace mu
 			case cmFUNC:
 			case cmFUNC_BULK:
 			case cmFUNC_STR:
+			case cmFUNC_STR_VARARG:
 				stOpt.push(opt);
 				break;
 

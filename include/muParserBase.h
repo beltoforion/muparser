@@ -274,6 +274,7 @@ namespace mu
 		void ApplyFunc(std::stack<token_type>& a_stOpt, std::stack<token_type>& a_stVal, int iArgCount) const;
 
 		token_type ApplyStrFunc(const token_type& a_FunTok, const std::vector<token_type>& a_vArg) const;
+		token_type ApplyMultStrFunc(const token_type& a_FunTok, const std::vector<token_type>& a_vArg) const;
 
 		int GetOprtPrecedence(const token_type& a_Tok) const;
 		EOprtAssociativity GetOprtAssociativity(const token_type& a_Tok) const;

@@ -589,6 +589,17 @@ namespace mu
 	{}
 
 
+	ParserCallback::ParserCallback(multstrfun_type a_pFun, bool a_bAllowOpti)
+		:m_pFun((void*)a_pFun)
+		, m_iArgc(CALLBACK_INTERNAL_VAR_ARGS)
+		, m_iPri(-1)
+		, m_eOprtAsct(oaNONE)
+		, m_iCode(cmFUNC_STR_VARARG)
+		, m_iType(tpSTR)
+		, m_bAllowOpti(a_bAllowOpti)
+	{}
+
+
 	ParserCallback::ParserCallback(strfun_type1 a_pFun, bool a_bAllowOpti)
 		:m_pFun((void*)a_pFun)
 		, m_iArgc(0)
