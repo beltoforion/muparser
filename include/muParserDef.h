@@ -5,7 +5,7 @@
    |  Y Y  \  |  /  |_> > __ \|  | \/\___ \\  ___/|  | \/
    |__|_|  /____/|   __(____  /__|  /____  >\___  >__|
 		 \/      |__|       \/           \/     \/
-   Copyright (C) 2004 - 2022 Ingo Berg
+   Copyright (C) 2026 Ingo Berg
 
 	Redistribution and use in source and binary forms, with or without modification, are permitted
 	provided that the following conditions are met:
@@ -509,7 +509,7 @@ namespace mu
 	static const int MaxLenExpression = 20000;
 	static const int MaxLenIdentifier = 100;
 	static const string_type ParserVersion = string_type(_T("2.3.6 (Development)"));
-	static const string_type ParserVersionDate = string_type(_T("20260307"));
+	static const string_type ParserVersionDate = string_type(_T("20260309"));
 } // end of namespace
 
 #if defined(_MSC_VER)
