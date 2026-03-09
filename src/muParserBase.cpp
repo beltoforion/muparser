@@ -860,8 +860,8 @@ namespace mu
 		if (funTok.GetCode() != cmOPRT_BIN && iArgCount < iArgRequired)
 			Error(ecTOO_FEW_PARAMS, m_pTokenReader->GetPos() - 1, funTok.GetAsString());
 
-		if (funTok.GetCode() == cmFUNC_STR && iArgCount > iArgRequired)
-			Error(ecTOO_MANY_PARAMS, m_pTokenReader->GetPos() - 1, funTok.GetAsString());
+		//if (funTok.GetCode() == cmFUNC_STR && iArgCount > iArgRequired)
+		//	Error(ecTOO_MANY_PARAMS, m_pTokenReader->GetPos() - 1, funTok.GetAsString());
 
 		// Collect the numeric function arguments from the value stack and store them
 		// in a vector

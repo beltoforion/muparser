@@ -5,7 +5,7 @@
    |  Y Y  \  |  /  |_> > __ \|  | \/\___ \\  ___/|  | \/
    |__|_|  /____/|   __(____  /__|  /____  >\___  >__|
 		 \/      |__|       \/           \/     \/
-   Copyright (C) 2022 Ingo Berg
+   Copyright (C) 2026 Ingo Berg
 
 	Redistribution and use in source and binary forms, with or without modification, are permitted
 	provided that the following conditions are met:
@@ -650,6 +650,17 @@ namespace mu
 		, m_eOprtAsct(oaNONE)
 		, m_iCode(cmFUNC_STR)
 		, m_iType(tpSTR)
+		, m_bAllowOpti(a_bAllowOpti)
+	{}
+
+
+	ParserCallback::ParserCallback(multstrfun_type a_pFun, bool a_bAllowOpti)
+		:m_pFun((void*)a_pFun)
+		, m_iArgc(CALLBACK_INTERNAL_VAR_ARGS)
+		, m_iPri(-1)
+		, m_eOprtAsct(oaNONE)
+		, m_iCode(cmFUNC_STR)
+		, m_iType(tpDBL)
 		, m_bAllowOpti(a_bAllowOpti)
 	{}
 

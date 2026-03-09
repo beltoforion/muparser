@@ -57,6 +57,17 @@ static value_type Mul(value_type v1, value_type v2) { return v1 * v2; }
 static value_type Arg2Of2(value_type /* v1 */, value_type v2) { return v2; }
 static value_type Arg1Of2(value_type v1, value_type /* v2 */) { return v1; }
 
+static value_type Printf(const char_type* szMsg, const value_type* args, int nargs)
+{
+	mu::console() << "Format: " << szMsg << std::endl;
+	mu::console() << "Number of arguments: " << nargs << std::endl;
+	for (int i=0; i < nargs; ++i)
+	{
+		mu::console() << "arg " << i << " = " << args[i] << std::endl;
+	}
+
+	return 0.0;
+}
 
 static value_type ThrowAnException(value_type)
 {
@@ -477,6 +488,8 @@ static void Calc()
 	parser.DefineFun(_T("help"), Help);
 	parser.DefineFun(_T("arg2of2"), Arg2Of2);
 	parser.DefineFun(_T("arg1of2"), Arg1Of2, false);
+
+	parser.DefineFun(_T("printf"), Printf, false);
 
 	parser.DefinePostfixOprt(_T("{ft}"), Milli);
 	parser.DefinePostfixOprt(_T("ft"), Milli);

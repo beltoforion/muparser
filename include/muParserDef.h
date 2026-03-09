@@ -482,6 +482,9 @@ namespace mu
 	/** \brief Callback type used for functions taking a string and five values as arguments. */
 	typedef value_type(*strfun_type6)(const char_type*, value_type, value_type, value_type, value_type, value_type);
 
+	/** \brief Callback type used for string functions with unlimited number of arguments. */
+	typedef value_type(*multstrfun_type)(const char_type*, const value_type*, int);
+
 	/** \brief Callback type with user data (not null) used for functions taking a string as an argument. */
 	typedef value_type(*strfun_userdata_type1)(void*, const char_type*);
 
