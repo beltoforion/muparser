@@ -52,6 +52,10 @@
 
 namespace mu
 {
+	namespace Test {
+		class ParserTester;
+	}
+
 	/** \file
 		\brief This file contains the class definition of the muparser engine.
 	*/
@@ -68,6 +72,7 @@ namespace mu
 	class API_EXPORT_CXX ParserBase
 	{
 		friend class ParserTokenReader;
+		friend class mu::Test::ParserTester;
 
 	private:
 

@@ -64,6 +64,7 @@ namespace mu
 			AddTest(&ParserTester::TestBulkMode);
 			AddTest(&ParserTester::TestOptimizer);
 			AddTest(&ParserTester::TestLocalization);
+			AddTest(&ParserTester::TestIssue165);
 
 			ParserTester::c_iCount = 0;
 		}
@@ -1707,6 +1708,40 @@ namespace mu
 			catch (...)
 			{
 				mu::console() << _T("\n  fail: ") << a_str.c_str() << _T(" (unexpected exception)");
+				return 1;  // exceptions other than ParserException are not allowed
+			}
+
+			return iRet;
+		}
+
+		//---------------------------------------------------------------------------
+		/** \brief Evaluate a tet expression.
+
+			\return 1 in case of a failure, 0 otherwise.
+		*/
+		int ParserTester::TestIssue165()
+		{
+			ParserTester::c_iCount++;
+			int iRet(0);
+
+			mu::console() << _T("testing github issue 165...");
+
+			try
+			{
+				Parser  p;
+				p.DefineFun(_T("strlen"), StrLen);
+				p.SetExpr("strlen(\"1\")+strlen(\"22\")+strlen(\"333\")");
+				double val = p.Eval();
+				std::size_t sz = p.m_vStringBuf.size();
+
+				if (sz!=3)
+				{
+					mu::console() << _T("  fail: internal string buffer size is ") << sz << _T(" (3 expected).");
+				}
+			}
+			catch (...)
+			{
+				mu::console() << _T("  fail: unexpected exception");
 				return 1;  // exceptions other than ParserException are not allowed
 			}
 

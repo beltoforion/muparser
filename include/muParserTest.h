@@ -5,7 +5,7 @@
    |  Y Y  \  |  /  |_> > __ \|  | \/\___ \\  ___/|  | \/
    |__|_|  /____/|   __(____  /__|  /____  >\___  >__|
 		 \/      |__|       \/           \/     \/
-   Copyright (C) 2026 Ingo Berg
+   Copyright (C) 2004 - 2026 Ingo Berg
 
 	Redistribution and use in source and binary forms, with or without modification, are permitted
 	provided that the following conditions are met:
@@ -266,6 +266,7 @@ namespace mu
 			int TestOssFuzzTestCases();
 			int TestOptimizer();
 			int TestLocalization();
+			int TestIssue165();
 			
 			void Abort() const;
 
@@ -281,6 +282,7 @@ namespace mu
 
 			// Test Double Parser
 			int EqnTest(const string_type& a_str, double a_fRes, bool a_fPass);
+			int EqnTestStrFun(const string_type& a_str, double a_fRes, bool a_fPass);
 			int EqnTestWithVarChange(const string_type& a_str, double a_fRes1, double a_fVar1,	double a_fRes2,	double a_fVar2);
 			int EqnTestLocalized(const string_type& a_str, double a_fRes);
 			int ThrowTest(const string_type& a_str, int a_iErrc, bool a_bFail = true);
