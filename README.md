@@ -1,7 +1,6 @@
 [![GitHub issues](https://img.shields.io/github/issues/beltoforion/muparser.svg?maxAge=360)](https://github.com/beltoforion/muparser/issues)
 [![Version](https://img.shields.io/github/release/beltoforion/muparser.svg?maxAge=360)](https://github.com/beltoforion/muparser/blob/master/CHANGELOG)
 [![Packaging status](https://repology.org/badge/tiny-repos/muparser.svg)](https://repology.org/project/muparser/versions)
-[![Appveyor](https://ci.appveyor.com/api/projects/status/u4882uj8btuspj9x?svg=true)](https://ci.appveyor.com/project/beltoforion/muparser)
 
 muparser - fast math parser library
 ===================================
@@ -82,6 +81,7 @@ Changes:
 * Adding missing overrides
 * Added a new option "-DENABLE_WIDE_CHAR" to CMake for building muparser with wide character support
 * export muparser targets, such that client projects can import it using find_package() (https://github.com/beltoforion/muparser/pull/81#event-3528671228)
+
 
 
 
