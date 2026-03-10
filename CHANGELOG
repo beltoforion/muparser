@@ -22,7 +22,8 @@ Rev 2.3.6: 07.03.2026
   Changes:
    * Fix for #161 (https://github.com/beltoforion/muparser/pull/161):
      HasFun() function added to query the existance of a function under a given name.
-
+   * Fix for #164 (https://github.com/beltoforion/muparser/pull/164):
+     Unary plus operator is no longer allowed in front of functions.
 
 Rev 2.3.5: 13.12.2024
 ---------------------

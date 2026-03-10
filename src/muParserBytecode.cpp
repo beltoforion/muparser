@@ -384,7 +384,7 @@ namespace mu
 		// only optimize functions with fixed number of more than a single arguments
 		if (isFunctionOptimizable && m_bEnableOptimizer && a_iArgc > 0)
 		{
-			// <ibg 2020-06-10/> Unary Plus is a no-op
+			// <ibg 2020-06-10/> Unary Plus is a no-op, optimize it away
 			if (a_pFun == generic_callable_type{(erased_fun_type)&MathImpl<value_type>::UnaryPlus, nullptr})
 				return;
 

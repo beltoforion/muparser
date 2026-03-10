@@ -33,6 +33,7 @@
 #include <string>
 
 #include "muParserTokenReader.h"
+#include "muParserTemplateMagic.h"
 #include "muParserBase.h"
 
 #if defined(_MSC_VER)
@@ -590,22 +591,11 @@ namespace mu
 			if (m_iSynFlags & noINFIXOP)
 				Error(ecUNEXPECTED_OPERATOR, m_iPos, a_Tok.GetAsString());
 
-			m_iSynFlags = noPOSTOP | noINFIXOP | noOPT | noBC | noSTR | noASSIGN | noARG_SEP;
+			m_iSynFlags |= noPOSTOP | noINFIXOP | noOPT | noBC | noSTR | noASSIGN | noARG_SEP;
 			return true;
 		}
 
 		return false;
-
-		/*
-			a_Tok.Set(item->second, sTok);
-			m_iPos = (int)iEnd;
-
-			if (m_iSynFlags & noINFIXOP)
-			  Error(ecUNEXPECTED_OPERATOR, m_iPos, a_Tok.GetAsString());
-
-			m_iSynFlags = noPOSTOP | noINFIXOP | noOPT | noBC | noSTR | noASSIGN;
-			return true;
-		*/
 	}
 
 
@@ -630,6 +620,12 @@ namespace mu
 		const char_type* szFormula = m_strFormula.c_str();
 		if (szFormula[iEnd] != '(')
 			return false;
+
+		// fix for #164: https://github.com/beltoforion/muparser/issues/164
+		if (m_lastTok.GetFuncAddr() == generic_callable_type{ (erased_fun_type)&MathImpl<value_type>::UnaryPlus, nullptr })
+		{
+			Error(ecUNARY_PLUS_IN_FRONT_OF_FUNCTION, m_iPos - (int)a_Tok.GetAsString().length(), a_Tok.GetAsString());
+		}
 
 		a_Tok.Set(item->second, strTok);
 

@@ -5,7 +5,7 @@
    |  Y Y  \  |  /  |_> > __ \|  | \/\___ \\  ___/|  | \/
    |__|_|  /____/|   __(____  /__|  /____  >\___  >__|
 		 \/      |__|       \/           \/     \/
-   Copyright (C) 2004 - 2022 Ingo Berg
+   Copyright (C) 2026 Ingo Berg
 
 	Redistribution and use in source and binary forms, with or without modification, are permitted
 	provided that the following conditions are met:
@@ -96,6 +96,7 @@ namespace mu
 		m_vErrMsg[ecEXPRESSION_TOO_LONG] = _T("Expression too long.");
 		m_vErrMsg[ecINVALID_CHARACTERS_FOUND] = _T("Invalid non printable characters found in expression/identifer!");
 		m_vErrMsg[ecBYTECODE_IMPORT_EXPORT_DISABLED] = _T("Bytecode cannot be imported or exported when parser is using a variable factory!");
+		m_vErrMsg[ecUNARY_PLUS_IN_FRONT_OF_FUNCTION] = _T("Unary plus operator is not allowed in front of functions!");
 
 		for (int i = 0; i < ecCOUNT; ++i)
 		{

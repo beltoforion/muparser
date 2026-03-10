@@ -238,7 +238,6 @@ namespace mu
 			// multiple strings in the same expression
 			iStat += EqnTest(_T("strlen(\"1\")+strlen(\"11\")"), 3, true);
 			iStat += EqnTest(_T("strlen(\"1\")+strlen(\"22\")++strlen(\"333\")"), 6, true);
-			iStat += EqnTest(_T("1+++strlen(\"333\")"), 4, true);
 
 			// string constants
 			iStat += EqnTest(_T("atof(str1)+atof(str2)"), 3.33, true);
@@ -559,8 +558,9 @@ namespace mu
 			iStat += ThrowTest(_T("1,"), ecUNEXPECTED_EOF);               // incomplete hex definition
 			iStat += ThrowTest(_T("a,"), ecUNEXPECTED_EOF);               // incomplete hex definition
 			iStat += ThrowTest(_T("sin(8),"), ecUNEXPECTED_EOF);          // incomplete hex definition
-			iStat += ThrowTest(_T("1++sin(2)"), ecUNEXPECTED_OPERATOR);   // issue 164: double sign in front of a function should be forbidden
-			iStat += ThrowTest(_T("1-+sin(2)"), ecUNEXPECTED_OPERATOR);   // issue 164: double sign in front of a function should be forbidden
+			iStat += ThrowTest(_T("1++sin(2)"), ecUNARY_PLUS_IN_FRONT_OF_FUNCTION);          // issue 164: double sign in front of a function should be forbidden
+			iStat += ThrowTest(_T("1-+sin(2)"), ecUNARY_PLUS_IN_FRONT_OF_FUNCTION);          // issue 164: double sign in front of a function should be forbidden
+			iStat += ThrowTest(_T("1++strlen(\"333\")"), ecUNARY_PLUS_IN_FRONT_OF_FUNCTION); // issue 164: double sign in front of a function should be forbidden
 			iStat += ThrowTest(_T("1+++sin(2)"), ecUNEXPECTED_OPERATOR);  // too many signs
 			iStat += ThrowTest(_T("1+-+sin(2)"), ecUNEXPECTED_OPERATOR);  // too many signs
 			iStat += ThrowTest(_T("(sin(8)),"), ecUNEXPECTED_EOF);        // incomplete hex definition
@@ -1337,6 +1337,7 @@ namespace mu
 				p.DefineFun(_T("strfun4"), StrFun4);
 				p.DefineFun(_T("strfun5"), StrFun5);
 				p.DefineFun(_T("strfun6"), StrFun6);
+				p.DefineFun(_T("strlen"), StrLen);
 				p.SetExpr(a_str);
 				//				p.EnableDebugDump(1, 0);
 				p.Eval();
