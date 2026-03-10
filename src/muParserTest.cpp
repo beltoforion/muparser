@@ -1736,8 +1736,10 @@ namespace mu
 
 				if (sz!=3)
 				{
-					mu::console() << _T("  fail: internal string buffer size is ") << sz << _T(" (3 expected).");
+					mu::console() << _T("\n  fail: internal string buffer size is ") << sz << _T(" (3 expected).");
 				}
+				else
+					mu::console() << _T("passed") << endl;
 			}
 			catch (...)
 			{
