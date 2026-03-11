@@ -24,3 +24,4 @@ DartConfiguration.tcl
 cmake_install.cmake
 CTestTestfile.cmake
 gitlog.log
+/enc_temp_folder

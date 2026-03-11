@@ -5,7 +5,7 @@
    |  Y Y  \  |  /  |_> > __ \|  | \/\___ \\  ___/|  | \/
    |__|_|  /____/|   __(____  /__|  /____  >\___  >__|
 		 \/      |__|       \/           \/     \/
-   Copyright (C) 2026 Ingo Berg
+   Copyright (C) 2004 - 2026 Ingo Berg
 
 	Redistribution and use in source and binary forms, with or without modification, are permitted
 	provided that the following conditions are met:
@@ -1743,7 +1743,7 @@ namespace mu
 			}
 			catch (...)
 			{
-				mu::console() << _T("  fail: unexpected exception");
+				mu::console() << _T("\n  fail: unexpected exception");
 				return 1;  // exceptions other than ParserException are not allowed
 			}
 

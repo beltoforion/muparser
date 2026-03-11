@@ -1320,9 +1320,7 @@ namespace mu
 				if (stOpt.empty())
 					Error(ecSTR_RESULT, m_pTokenReader->GetPos(), opt.GetAsString());
 
-				opt.SetIdx((int)m_vStringBuf.size());      // Assign buffer index to token 
 				stVal.push(opt);
-				m_vStringBuf.push_back(opt.GetAsString()); // Store string in internal buffer
 				break;
 
 			case cmVAR:

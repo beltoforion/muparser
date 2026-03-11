@@ -860,8 +860,10 @@ namespace mu
 		m_iPos = iEnd;
 		if (!m_pParser->m_vStringVarBuf.size())
 			Error(ecINTERNAL_ERROR);
-
-		a_Tok.SetString(m_pParser->m_vStringVarBuf[item->second], m_pParser->m_vStringVarBuf.size());
+		
+		auto strVal = m_pParser->m_vStringVarBuf[item->second];
+		m_pParser->m_vStringBuf.push_back(strVal);
+		a_Tok.SetString(strVal, m_pParser->m_vStringBuf.size()-1);
 
 		m_iSynFlags = noANY ^ (noBC | noOPT | noEND | noARG_SEP);
 		return true;
@@ -871,7 +873,7 @@ namespace mu
 
 	/** \brief Check wheter a token at a given position is an undefined variable.
 
-		\param a_Tok [out] If a variable tom_pParser->m_vStringBufken has been found it will be placed here.
+		\param a_Tok [out] If a variable token has been found it will be placed here.
 		  \return true if a variable token has been found.
 		\throw nothrow
 	*/
@@ -954,7 +956,7 @@ namespace mu
 			Error(ecUNEXPECTED_STR, m_iPos, strTok);
 
 		m_pParser->m_vStringBuf.push_back(strTok); // Store string in internal buffer
-		a_Tok.SetString(strTok, m_pParser->m_vStringBuf.size());
+		a_Tok.SetString(strTok, m_pParser->m_vStringBuf.size()-1);
 
 		m_iPos += (int)strTok.length() + 2 + (int)iSkip;  // +2 for quotes; +iSkip for escape characters 
 		m_iSynFlags = noANY ^ (noARG_SEP | noBC | noOPT | noEND);
