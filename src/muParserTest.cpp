@@ -1731,7 +1731,8 @@ namespace mu
 				Parser  p;
 				p.DefineFun(_T("strlen"), StrLen);
 				p.SetExpr("strlen(\"1\")+strlen(\"22\")+strlen(\"333\")");
-				double val = p.Eval();
+				p.Eval();
+
 				std::size_t sz = p.m_vStringBuf.size();
 
 				if (sz!=3)

@@ -138,8 +138,7 @@ namespace mu
 
 			static value_type StrLen(const char_type* val)
 			{
-				string_type str(val);
-				return (value_type)str.length();
+				return std::char_traits<char_type>::length(val);
 			}
 
 
