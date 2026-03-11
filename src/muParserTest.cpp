@@ -1730,7 +1730,7 @@ namespace mu
 			{
 				Parser  p;
 				p.DefineFun(_T("strlen"), StrLen);
-				p.SetExpr("strlen(\"1\")+strlen(\"22\")+strlen(\"333\")");
+				p.SetExpr(_T("strlen(\"1\")+strlen(\"22\")+strlen(\"333\")"));
 				p.Eval();
 
 				std::size_t sz = p.m_vStringBuf.size();
