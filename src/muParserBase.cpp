@@ -1122,6 +1122,7 @@ namespace mu
 		// Note: The check for nOffset==0 and nThreadID here is not necessary but 
 		//       brings a minor performance gain when not in bulk mode.
 		value_type *stack = ((nOffset == 0) && (nThreadID == 0)) ? &m_vStackBuffer[0] : &m_vStackBuffer[nThreadID * (m_vStackBuffer.size() / s_MaxNumOpenMPThreads)];
+		const int iStackMaxSize = (int)(m_vStackBuffer.size() / s_MaxNumOpenMPThreads);
 		value_type buf;
 		int sidx(0);
 		for (const SToken* pTok = m_vRPN.GetBase(); pTok->Cmd != cmEND; ++pTok)
@@ -1162,7 +1163,8 @@ namespace mu
 			case  cmIF:
 				if (stack[sidx--] == 0)
 				{
-					MUP_ASSERT(sidx >= 0);
+					if (sidx < 0)
+						Error(ecINTERNAL_ERROR, -1);
 					pTok += pTok->Oprt.offset;
 				}
 				continue;
@@ -1175,22 +1177,23 @@ namespace mu
 				continue;
 
 				// value and variable tokens
-			case  cmVAR:    stack[++sidx] = *(pTok->Val.ptr + nOffset);  continue;
-			case  cmVAL:    stack[++sidx] = pTok->Val.data2;  continue;
+			case  cmVAR:    if (sidx >= iStackMaxSize - 1) Error(ecINTERNAL_ERROR, -1); stack[++sidx] = *(pTok->Val.ptr + nOffset);  continue;
+			case  cmVAL:    if (sidx >= iStackMaxSize - 1) Error(ecINTERNAL_ERROR, -1); stack[++sidx] = pTok->Val.data2;  continue;
 
-			case  cmVARPOW2: buf = *(pTok->Val.ptr + nOffset);
+			case  cmVARPOW2: if (sidx >= iStackMaxSize - 1) Error(ecINTERNAL_ERROR, -1); buf = *(pTok->Val.ptr + nOffset);
 				stack[++sidx] = buf * buf;
 				continue;
 
-			case  cmVARPOW3: buf = *(pTok->Val.ptr + nOffset);
+			case  cmVARPOW3: if (sidx >= iStackMaxSize - 1) Error(ecINTERNAL_ERROR, -1); buf = *(pTok->Val.ptr + nOffset);
 				stack[++sidx] = buf * buf * buf;
 				continue;
 
-			case  cmVARPOW4: buf = *(pTok->Val.ptr + nOffset);
+			case  cmVARPOW4: if (sidx >= iStackMaxSize - 1) Error(ecINTERNAL_ERROR, -1); buf = *(pTok->Val.ptr + nOffset);
 				stack[++sidx] = buf * buf * buf * buf;
 				continue;
 
-			case  cmVARMUL:  
+			case  cmVARMUL:
+				if (sidx >= iStackMaxSize - 1) Error(ecINTERNAL_ERROR, -1);
 				stack[++sidx] = *(pTok->Val.ptr + nOffset) * pTok->Val.data + pTok->Val.data2;
 				continue;
 
@@ -1202,7 +1205,7 @@ namespace mu
 				// switch according to argument count
 				switch (iArgCount)
 				{
-				case 0: sidx += 1; stack[sidx] = pTok->Fun.cb.call_fun<0 >(); continue;
+				case 0: if (sidx >= iStackMaxSize - 1) Error(ecINTERNAL_ERROR, -1); sidx += 1; stack[sidx] = pTok->Fun.cb.call_fun<0 >(); continue;
 				case 1:            stack[sidx] = pTok->Fun.cb.call_fun<1 >(stack[sidx]);   continue;
 				case 2: sidx -= 1; stack[sidx] = pTok->Fun.cb.call_fun<2 >(stack[sidx], stack[sidx + 1]); continue;
 				case 3: sidx -= 2; stack[sidx] = pTok->Fun.cb.call_fun<3 >(stack[sidx], stack[sidx + 1], stack[sidx + 2]); continue;
@@ -1265,7 +1268,7 @@ namespace mu
 				// switch according to argument count
 				switch (iArgCount)
 				{
-				case 0: sidx += 1; stack[sidx] = pTok->Fun.cb.call_bulkfun<0 >(nOffset, nThreadID); continue;
+				case 0: if (sidx >= iStackMaxSize - 1) Error(ecINTERNAL_ERROR, -1); sidx += 1; stack[sidx] = pTok->Fun.cb.call_bulkfun<0 >(nOffset, nThreadID); continue;
 				case 1:            stack[sidx] = pTok->Fun.cb.call_bulkfun<1 >(nOffset, nThreadID, stack[sidx]); continue;
 				case 2: sidx -= 1; stack[sidx] = pTok->Fun.cb.call_bulkfun<2 >(nOffset, nThreadID, stack[sidx], stack[sidx + 1]); continue;
 				case 3: sidx -= 2; stack[sidx] = pTok->Fun.cb.call_bulkfun<3 >(nOffset, nThreadID, stack[sidx], stack[sidx + 1], stack[sidx + 2]); continue;
@@ -1416,6 +1419,8 @@ namespace mu
 			//
 			case cmIF:
 				ifElseCounter++;
+				if (ifElseCounter > MaxNestingDepth)
+					Error(ecUNEXPECTED_CONDITIONAL, m_pTokenReader->GetPos());
 				stArgCount.push(1);
 				// Falls through.
 				// intentional (no break!)

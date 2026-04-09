@@ -29,6 +29,7 @@
 #include "muParserBytecode.h"
 
 #include <algorithm>
+#include <limits>
 #include <string>
 #include <stack>
 #include <vector>
@@ -529,6 +530,8 @@ namespace mu
 
 	std::size_t ParserByteCode::GetMaxStackSize() const
 	{
+		if (m_iMaxStackSize == std::numeric_limits<std::size_t>::max())
+			throw ParserError(ecINTERNAL_ERROR);
 		return m_iMaxStackSize + 1;
 	}
 

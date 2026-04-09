@@ -509,6 +509,7 @@ namespace mu
 
 	static const int MaxLenExpression = 20000;
 	static const int MaxLenIdentifier = 100;
+	static const int MaxNestingDepth = 1000;  ///< Maximum nesting depth for brackets and if/else
 	static const string_type ParserVersion = string_type(_T("2.3.6 (Development)"));
 	static const string_type ParserVersionDate = string_type(_T("20260311"));
 } // end of namespace

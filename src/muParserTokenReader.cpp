@@ -271,7 +271,7 @@ namespace mu
 		// Ignore all non printable characters when reading the expression
 		while (szExpr[m_iPos] > 0 && szExpr[m_iPos] <= 0x20)
 		{
-			// 14-31 are control characters. I donÄt want to have to deal with such strings at all!
+			// 14-31 are control characters. I donï¿½t want to have to deal with such strings at all!
 			// (see https://en.cppreference.com/w/cpp/string/byte/isprint)
 			if (szExpr[m_iPos] >= 14 && szExpr[m_iPos] <= 31)
 				Error(ecINVALID_CHARACTERS_FOUND, m_iPos);
@@ -472,6 +472,8 @@ namespace mu
 					else
 						m_iSynFlags = noBC | noOPT | noEND | noARG_SEP | noPOSTOP | noASSIGN | noIF | noELSE;
 
+					if ((int)m_bracketStack.size() >= MaxNestingDepth)
+						Error(ecUNEXPECTED_PARENS, m_iPos, pOprtDef[i]);
 					m_bracketStack.push(cmBO);
 					break;
 
@@ -858,9 +860,9 @@ namespace mu
 			Error(ecUNEXPECTED_VAR, m_iPos, strTok);
 
 		m_iPos = iEnd;
-		if (!m_pParser->m_vStringVarBuf.size())
+		if (item->second >= m_pParser->m_vStringVarBuf.size())
 			Error(ecINTERNAL_ERROR);
-		
+
 		auto strVal = m_pParser->m_vStringVarBuf[item->second];
 		m_pParser->m_vStringBuf.push_back(strVal);
 		a_Tok.SetString(strVal, m_pParser->m_vStringBuf.size()-1);
