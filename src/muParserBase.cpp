@@ -1161,13 +1161,14 @@ namespace mu
 				//--sidx; Stack[sidx] = *pTok->Oprt.ptr = Stack[sidx+1]; continue;
 
 			case  cmIF:
-				if (stack[sidx--] == 0)
-				{
-					if (sidx < 0)
-						Error(ecINTERNAL_ERROR, -1);
+			{
+				bool cond = (stack[sidx--] == 0);
+				if (sidx < 0)
+					Error(ecINTERNAL_ERROR, -1);
+				if (cond)
 					pTok += pTok->Oprt.offset;
-				}
 				continue;
+			}
 
 			case  cmELSE:
 				pTok += pTok->Oprt.offset;
