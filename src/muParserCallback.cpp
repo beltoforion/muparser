@@ -765,15 +765,18 @@ namespace mu
 		if (this == &ref)
 			return;
 
-		if (m_iArgc & CALLBACK_INTERNAL_WITH_USER_DATA) {
+		void* newFun = nullptr;
+		if (ref.m_iArgc & CALLBACK_INTERNAL_WITH_USER_DATA)
+			newFun = new CbWithUserData(*reinterpret_cast<CbWithUserData*>(ref.m_pFun));
+
+		if (m_iArgc & CALLBACK_INTERNAL_WITH_USER_DATA)
 			delete reinterpret_cast<CbWithUserData*>(m_pFun);
-			m_pFun = nullptr;
-		}
 
 		if (ref.m_iArgc & CALLBACK_INTERNAL_WITH_USER_DATA)
-			m_pFun = new CbWithUserData(*reinterpret_cast<CbWithUserData*>(ref.m_pFun));
+			m_pFun = newFun;
 		else
 			m_pFun = ref.m_pFun;
+
 		m_iArgc = ref.m_iArgc;
 		m_bAllowOpti = ref.m_bAllowOpti;
 		m_iCode = ref.m_iCode;
