@@ -1076,21 +1076,31 @@ namespace mu
 		case cmVAL:		
 			return tok->Val.data2;
 
-		case cmVAR:		
+		case cmVAR:
+			if (!tok->Val.ptr)
+				throw ParserError(ecINVALID_VAR_PTR);
 			return *tok->Val.ptr;
 
-		case cmVARMUL:	
+		case cmVARMUL:
+			if (!tok->Val.ptr)
+				throw ParserError(ecINVALID_VAR_PTR);
 			return *tok->Val.ptr * tok->Val.data + tok->Val.data2;
 
-		case cmVARPOW2: 
+		case cmVARPOW2:
+			if (!tok->Val.ptr)
+				throw ParserError(ecINVALID_VAR_PTR);
 			buf = *(tok->Val.ptr);
 			return buf * buf;
 
-		case  cmVARPOW3: 				
+		case  cmVARPOW3:
+			if (!tok->Val.ptr)
+				throw ParserError(ecINVALID_VAR_PTR);
 			buf = *(tok->Val.ptr);
 			return buf * buf * buf;
 
-		case  cmVARPOW4: 				
+		case  cmVARPOW4:
+			if (!tok->Val.ptr)
+				throw ParserError(ecINVALID_VAR_PTR);
 			buf = *(tok->Val.ptr);
 			return buf * buf * buf * buf;
 

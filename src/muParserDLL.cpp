@@ -81,7 +81,6 @@
 
 typedef mu::ParserBase::exception_type muError_t;
 typedef mu::ParserBase muParser_t;
-int g_nBulkSize;
 
 
 class ParserTag
@@ -114,7 +113,7 @@ private:
 	int m_nParserType;
 };
 
-static muChar_t s_tmpOutBuf[2048];
+static thread_local muChar_t s_tmpOutBuf[2048];
 
 template <typename T>
 constexpr std::size_t count_of(const T& array) 
@@ -195,10 +194,8 @@ API_EXPORT(muParserHandle_t) mupCreate(int nBaseType)
 /** \brief Release the parser instance related with a parser handle. */
 API_EXPORT(void) mupRelease(muParserHandle_t a_hParser)
 {
-	MU_TRY
-		ParserTag* p = static_cast<ParserTag*>(a_hParser);
-		delete p;
-	MU_CATCH
+	ParserTag* p = static_cast<ParserTag*>(a_hParser);
+	delete p;
 }
 
 
@@ -907,22 +904,28 @@ API_EXPORT(void) mupDefineInfixOprt(muParserHandle_t a_hParser, const muChar_t* 
 // Define character sets for identifiers
 API_EXPORT(void) mupDefineNameChars(muParserHandle_t a_hParser, const muChar_t* a_szCharset)
 {
-	muParser_t* const p(AsParser(a_hParser));
-	p->DefineNameChars(a_szCharset);
+	MU_TRY
+		muParser_t* const p(AsParser(a_hParser));
+		p->DefineNameChars(a_szCharset);
+	MU_CATCH
 }
 
 
 API_EXPORT(void) mupDefineOprtChars(muParserHandle_t a_hParser,	const muChar_t* a_szCharset)
 {
-	muParser_t* const p(AsParser(a_hParser));
-	p->DefineOprtChars(a_szCharset);
+	MU_TRY
+		muParser_t* const p(AsParser(a_hParser));
+		p->DefineOprtChars(a_szCharset);
+	MU_CATCH
 }
 
 
 API_EXPORT(void) mupDefineInfixOprtChars(muParserHandle_t a_hParser, const muChar_t* a_szCharset)
 {
-	muParser_t* const p(AsParser(a_hParser));
-	p->DefineInfixOprtChars(a_szCharset);
+	MU_TRY
+		muParser_t* const p(AsParser(a_hParser));
+		p->DefineInfixOprtChars(a_szCharset);
+	MU_CATCH
 }
 
 
@@ -962,7 +965,7 @@ API_EXPORT(void) mupGetVar(muParserHandle_t a_hParser, unsigned a_iVar, const mu
 {
 	// A static buffer is needed for the name since i can't return the
 	// pointer from the map.
-	static muChar_t  szName[1024];
+	static thread_local muChar_t  szName[1024];
 
 	MU_TRY
 		muParser_t* const p(AsParser(a_hParser));
@@ -1035,7 +1038,7 @@ API_EXPORT(void) mupGetExprVar(muParserHandle_t a_hParser, unsigned a_iVar, cons
 {
 	// A static buffer is needed for the name since i can't return the
 	// pointer from the map.
-	static muChar_t  szName[1024];
+	static thread_local muChar_t  szName[1024];
 
 	MU_TRY
 		muParser_t* const p(AsParser(a_hParser));
@@ -1130,7 +1133,7 @@ API_EXPORT(void) mupGetConst(muParserHandle_t a_hParser, unsigned a_iVar, const 
 {
 	// A static buffer is needed for the name since i can't return the
 	// pointer from the map.
-	static muChar_t szName[1024];
+	static thread_local muChar_t szName[1024];
 
 	MU_TRY
 		muParser_t* const p(AsParser(a_hParser));
