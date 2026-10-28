@@ -44,9 +44,27 @@ namespace mu
 	value_type ParserInt::Abs(value_type v) { return (value_type)Round(fabs((double)v)); }
 	value_type ParserInt::Sign(value_type v) { return (Round(v) < 0) ? -1 : (Round(v) > 0) ? 1 : 0; }
 	value_type ParserInt::Ite(value_type v1, value_type v2,	value_type v3) { return (Round(v1) == 1) ? Round(v2) : Round(v3); }
-	value_type ParserInt::Add(value_type v1, value_type v2) { return Round(v1) + Round(v2); }
-	value_type ParserInt::Sub(value_type v1, value_type v2) { return Round(v1) - Round(v2); }
-	value_type ParserInt::Mul(value_type v1, value_type v2) { return Round(v1) * Round(v2); }
+	value_type ParserInt::Add(value_type v1, value_type v2)
+	{
+		const long long r = static_cast<long long>(Round(v1)) + Round(v2);
+		if (r > INT_MAX || r < INT_MIN)
+			throw ParserError(ecDOMAIN_ERROR);
+		return static_cast<value_type>(r);
+	}
+	value_type ParserInt::Sub(value_type v1, value_type v2)
+	{
+		const long long r = static_cast<long long>(Round(v1)) - Round(v2);
+		if (r > INT_MAX || r < INT_MIN)
+			throw ParserError(ecDOMAIN_ERROR);
+		return static_cast<value_type>(r);
+	}
+	value_type ParserInt::Mul(value_type v1, value_type v2)
+	{
+		const long long r = static_cast<long long>(Round(v1)) * Round(v2);
+		if (r > INT_MAX || r < INT_MIN)
+			throw ParserError(ecDOMAIN_ERROR);
+		return static_cast<value_type>(r);
+	}
 	
 	value_type ParserInt::Div(value_type v1, value_type v2) 
 	{
@@ -112,7 +130,10 @@ namespace mu
 
 	value_type ParserInt::UnaryMinus(value_type v)
 	{
-		return -Round(v);
+		const int r = Round(v);
+		if (r == INT_MIN)
+			throw ParserError(ecDOMAIN_ERROR);
+		return -r;
 	}
 
 
