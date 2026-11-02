@@ -160,8 +160,8 @@ namespace mu
 
 		switch (a_Oprt)
 		{
-		case cmLAND: x = (int)x && (int)y; m_vRPN.pop_back(); break;
-		case cmLOR:  x = (int)x || (int)y; m_vRPN.pop_back(); break;
+		case cmLAND: x = (x != 0) && (y != 0); m_vRPN.pop_back(); break;
+		case cmLOR:  x = (x != 0) || (y != 0); m_vRPN.pop_back(); break;
 		case cmLT:   x = x < y;  m_vRPN.pop_back();  break;
 		case cmGT:   x = x > y;  m_vRPN.pop_back();  break;
 		case cmLE:   x = x <= y; m_vRPN.pop_back();  break;
