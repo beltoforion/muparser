@@ -346,6 +346,12 @@ namespace mu
 			iStat += EqnTest(_T("2^2^3"), 256, true);
 			iStat += EqnTest(_T("1/2/3"), 1.0 / 6.0, true);
 
+			// constant division by zero must still give inf or nan with the optimizer on
+			iStat += EqnTest(_T("(1/0)>1"), 1, true);
+			iStat += EqnTest(_T("(-1/0)<-1"), 1, true);
+			iStat += EqnTest(_T("(0/0)==(0/0)"), 0, true);
+			iStat += EqnTest(_T("min(4/0,2)"), 2, true);
+
 			// reference: http://www.wolframalpha.com/input/?i=3%2B4*2%2F%281-5%29^2^3
 			iStat += EqnTest(_T("3+4*2/(1-5)^2^3"), 3.0001220703125, true);
 
