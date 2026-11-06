@@ -114,7 +114,7 @@ namespace mu
 
 		bool m_bEnableOptimizer;
 
-		void ConstantFolding(ECmdCode a_Oprt);
+		bool ConstantFolding(ECmdCode a_Oprt);
 
 	public:
 

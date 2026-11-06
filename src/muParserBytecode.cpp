@@ -152,7 +152,7 @@ namespace mu
 	}
 
 
-	void ParserByteCode::ConstantFolding(ECmdCode a_Oprt)
+	bool ParserByteCode::ConstantFolding(ECmdCode a_Oprt)
 	{
 		std::size_t sz = m_vRPN.size();
 		value_type& x = m_vRPN[sz - 2].Val.data2;
@@ -172,8 +172,9 @@ namespace mu
 		case cmSUB:  x = x - y;  m_vRPN.pop_back();  break;
 		case cmMUL:  x = x * y;  m_vRPN.pop_back();  break;
 		case cmDIV:
+			// Leave a division by zero to the evaluation, so it gives inf or nan.
 			if (y == 0)
-				break;
+				return false;
 			x = x / y;
 			m_vRPN.pop_back();
 			break;
@@ -185,6 +186,8 @@ namespace mu
 		default:
 			break;
 		} // switch opcode
+
+		return true;
 	}
 
 
@@ -212,8 +215,7 @@ namespace mu
 			// two constant values.
 			if (sz >= 2 && m_vRPN[sz - 2].Cmd == cmVAL && m_vRPN[sz - 1].Cmd == cmVAL)
 			{
-				ConstantFolding(a_Oprt);
-				bOptimized = true;
+				bOptimized = ConstantFolding(a_Oprt);
 			}
 			else
 			{
