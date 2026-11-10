@@ -364,6 +364,9 @@ namespace mu
 			iStat += EqnTestInt(_T("123 && 456"), 1, true);
 			iStat += EqnTestInt(_T("1 << 3"), 8, true);
 			iStat += EqnTestInt(_T("8 >> 3"), 1, true);
+			iStat += EqnTestInt(_T("#11"), 3, true);   // #176: binary literal starting with 1
+			iStat += EqnTestInt(_T("#101 + 1"), 6, true);
+			iStat += EqnTestInt(_T("#1111111111111111111111111111111"), 2147483647, true); // 31 bits, largest binary literal
 			iStat += EqnTestInt(_T("9 / 4"), 2, true);
 			iStat += EqnTestInt(_T("9 % 4"), 1, true);
 			iStat += EqnTestInt(_T("if(5%2,1,0)"), 1, true);

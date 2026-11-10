@@ -248,7 +248,7 @@ namespace mu
 			i(0);
 
 		for (i = 0; (a_szExpr[i + 1] == '0' || a_szExpr[i + 1] == '1') && i < iBits; ++i)
-			iVal |= (int)(a_szExpr[i + 1] == '1') << ((iBits - 1) - i);
+			iVal |= (unsigned)(a_szExpr[i + 1] == '1') << ((iBits - 1) - i);
 
 		if (i == 0)
 			return 0;
