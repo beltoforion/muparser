@@ -33,6 +33,28 @@ Rev 2.3.6: 07.03.2026
      with m_StrVarDef. Previously, repeated calls to ClearConst()
      followed by DefineStrConst() caused stale entries to accumulate
      in the string value buffer.
+   * Fix for #165: String constants used as function arguments were pushed
+     twice into the internal string buffer.
+   * Fix for #170 (https://github.com/beltoforion/muparser/pull/170):
+     Several memory safety, undefined behaviour and thread safety fixes, among them
+     a use-after-free in mupRelease, exceptions crossing the C API boundary in
+     mupDefineNameChars/mupDefineOprtChars/mupDefineInfixOprtChars, data races on
+     static buffers of the C API, IsVal failing for all-digit strings and IsHexVal
+     accepting "0x" without digits.
+   * Fix for #171 (https://github.com/beltoforion/muparser/pull/172):
+     ParserInt: Round() now throws ecDOMAIN_ERROR if the value does not fit into an
+     int. Add, Sub, Mul and the unary minus throw ecDOMAIN_ERROR on overflow instead
+     of causing a signed integer overflow.
+   * Fix for #173 (https://github.com/beltoforion/muparser/pull/174):
+     Constant folding of "&&" and "||" compares the operands with zero instead of
+     casting them to int. Results for fractional and out-of-range values now match
+     the evaluation without optimizer.
+   * Fix for #175 (https://github.com/beltoforion/muparser/pull/175):
+     A division by a constant zero was dropped from the bytecode when the optimizer
+     was active (i.e. "asin(3/0)" returned 3). It is now evaluated at run time.
+   * Fix for #176 (https://github.com/beltoforion/muparser/pull/178):
+     ParserInt::IsBinVal performed the bit shift for binary literals in a signed
+     type, triggering sanitizer reports for literals starting with 1.
 
 
 Rev 2.3.5: 13.12.2024

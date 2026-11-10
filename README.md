@@ -19,6 +19,15 @@ Change Notes for Revision 2.3.6 (2026-04-10)
   -----------
   - Issue https://github.com/beltoforion/muparser/issues/167: Add additional checks to eliminate possibility of access violations due to malformed expressions. I dont have test cases and do not know whether this issue was exploitable at all but fixing them made sense.
   - Issue https://github.com/beltoforion/muparser/issues/168: ClearConst() now also clears the internal string variable buffer (m_vStringVarBuf) to keep it in sync with the name-to-index map (m_StrVarDef). Previously stale entries accumulated across repeated ClearConst() calls.
+  - Issue https://github.com/beltoforion/muparser/pull/170: Several memory safety, undefined behaviour and thread safety fixes, among them a use-after-free in mupRelease, exceptions crossing the C API boundary and data races on static buffers of the C API.
+  - Issue https://github.com/beltoforion/muparser/issues/171: ParserInt now throws ecDOMAIN_ERROR instead of causing a signed integer overflow in Add, Sub, Mul, the unary minus and when rounding values that do not fit into an int.
+  - Issue https://github.com/beltoforion/muparser/issues/176: ParserInt::IsBinVal performed the bit shift for binary literals in a signed type, triggering sanitizer reports for literals starting with 1.
+
+  Bug Fixes:
+  -----------
+  - Issue https://github.com/beltoforion/muparser/issues/165: String constants used as function arguments were pushed twice into the internal string buffer.
+  - Issue https://github.com/beltoforion/muparser/issues/173: Constant folding of "&&" and "||" compares the operands with zero instead of casting them to int. Results for fractional and out-of-range values now match the evaluation without optimizer.
+  - Issue https://github.com/beltoforion/muparser/pull/175: A division by a constant zero was dropped from the bytecode when the optimizer was active (i.e. "asin(3/0)" returned 3). It is now evaluated at run time.
 
   Fixed Compiler Warnings and Errors:
   -----------
