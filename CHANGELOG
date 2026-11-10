@@ -24,6 +24,10 @@ Rev 2.3.6: 07.03.2026
      HasFun() function added to query the existance of a function under a given name.
    * Fix for #164 (https://github.com/beltoforion/muparser/pull/164):
      Unary plus operator is no longer allowed in front of functions.
+   * Fix for #153, #158 (https://github.com/beltoforion/muparser/pull/177):
+     New callback type multstrfun_type for functions taking a string constant
+     followed by a variable number of numeric arguments (at least one), i.e.
+     printf("x={0}, y={1}", a, b).
 
   Fixes:
    * Fix for #167 (https://github.com/beltoforion/muparser/pull/167):

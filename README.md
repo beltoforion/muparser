@@ -14,6 +14,7 @@ Change Notes for Revision 2.3.6 (2026-04-10)
   -----------
   - Issue https://github.com/beltoforion/muparser/issues/161: Add HasFun function added to query the existance of a function under a given name.
   - Issue https://github.com/beltoforion/muparser/issues/93: Add cotangent function
+  - Issue https://github.com/beltoforion/muparser/issues/158: Add callback type multstrfun_type for functions taking a string constant followed by a variable number of numeric arguments (at least one), i.e. printf("x={0}, y={1}", a, b).
 
   Security Fixes:
   -----------
