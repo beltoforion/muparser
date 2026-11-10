@@ -249,6 +249,11 @@ namespace mu
 
 			// string + variable number of numeric arguments (multstrfun_type)
 			iStat += EqnTest(_T("multstrfun(\"hello\",1,2,3)"), 6, true);
+			iStat += EqnTest(_T("multstrfun(\"hello\",1)"), 1, true);
+			iStat += EqnTest(_T("multstrfun(\"hello\",a,b)+1"), 4, true);
+			iStat += EqnTest(_T("multstrfun(\"hello\",sum(1,2),3)"), 6, true);
+			iStat += EqnTest(_T("sum(multstrfun(\"a\",1,2),multstrfun(\"b\",3))"), 6, true);
+			iStat += EqnTest(_T("multstrfun(\"a\",multstrfun(\"b\",1,2),3)"), 6, true);
 
 			if (iStat == 0)
 				mu::console() << _T("passed") << endl;
@@ -1231,6 +1236,10 @@ namespace mu
 			iStat += ThrowTest(_T("strfun2(1,1)"), ecSTRING_EXPECTED);
 			iStat += ThrowTest(_T("strfun2(a,1)"), ecSTRING_EXPECTED);
 			iStat += ThrowTest(_T("strfun2(1,1,1)"), ecTOO_MANY_PARAMS);
+			iStat += ThrowTest(_T("multstrfun(\"hello\")"), ecTOO_FEW_PARAMS);
+			iStat += ThrowTest(_T("multstrfun(1,2)"), ecSTRING_EXPECTED);
+			iStat += ThrowTest(_T("multstrfun(1,\"hello\")"), ecSTRING_EXPECTED);
+			iStat += ThrowTest(_T("multstrfun(\"a\",\"b\")"), ecVAL_EXPECTED);
 			iStat += ThrowTest(_T("strfun2(a,1,1)"), ecTOO_MANY_PARAMS);
 			iStat += ThrowTest(_T("strfun3(1,2,3)"), ecSTRING_EXPECTED);
 			iStat += ThrowTest(_T("strfun3(1, \"100\",3)"), ecSTRING_EXPECTED);

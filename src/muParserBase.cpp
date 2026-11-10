@@ -928,7 +928,15 @@ namespace mu
 				Error(ecVAL_EXPECTED, m_pTokenReader->GetPos(), funTok.GetAsString());
 
 			if (funTok.GetArgCount() == -1)
+			{
+				// Like multfun_type (e.g. sum()), a vararg string function needs at least one
+				// numeric argument. Zero would be encoded as argc == -0 == 0 in the bytecode and
+				// be mistaken for a fixed-arg string function.
+				if (iArgNumerical == 0)
+					Error(ecTOO_FEW_PARAMS, m_pTokenReader->GetPos(), funTok.GetAsString());
+
 				ApplyMultStrFunc(funTok, stArg);
+			}
 			else
 				ApplyStrFunc(funTok, stArg);
 			break;
