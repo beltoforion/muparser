@@ -247,6 +247,14 @@ namespace mu
 			// user data
 			iStat += EqnTest(_T("strfunud3_10(\"99\",1,2)"), 112, true);
 
+			// string + variable number of numeric arguments (multstrfun_type)
+			iStat += EqnTest(_T("multstrfun(\"hello\",1,2,3)"), 6, true);
+			iStat += EqnTest(_T("multstrfun(\"hello\",1)"), 1, true);
+			iStat += EqnTest(_T("multstrfun(\"hello\",a,b)+1"), 4, true);
+			iStat += EqnTest(_T("multstrfun(\"hello\",sum(1,2),3)"), 6, true);
+			iStat += EqnTest(_T("sum(multstrfun(\"a\",1,2),multstrfun(\"b\",3))"), 6, true);
+			iStat += EqnTest(_T("multstrfun(\"a\",multstrfun(\"b\",1,2),3)"), 6, true);
+
 			if (iStat == 0)
 				mu::console() << _T("passed") << endl;
 			else
@@ -1231,6 +1239,10 @@ namespace mu
 			iStat += ThrowTest(_T("strfun2(1,1)"), ecSTRING_EXPECTED);
 			iStat += ThrowTest(_T("strfun2(a,1)"), ecSTRING_EXPECTED);
 			iStat += ThrowTest(_T("strfun2(1,1,1)"), ecTOO_MANY_PARAMS);
+			iStat += ThrowTest(_T("multstrfun(\"hello\")"), ecTOO_FEW_PARAMS);
+			iStat += ThrowTest(_T("multstrfun(1,2)"), ecSTRING_EXPECTED);
+			iStat += ThrowTest(_T("multstrfun(1,\"hello\")"), ecSTRING_EXPECTED);
+			iStat += ThrowTest(_T("multstrfun(\"a\",\"b\")"), ecVAL_EXPECTED);
 			iStat += ThrowTest(_T("strfun2(a,1,1)"), ecTOO_MANY_PARAMS);
 			iStat += ThrowTest(_T("strfun3(1,2,3)"), ecSTRING_EXPECTED);
 			iStat += ThrowTest(_T("strfun3(1, \"100\",3)"), ecSTRING_EXPECTED);
@@ -1349,6 +1361,7 @@ namespace mu
 				p.DefineFun(_T("strfun5"), StrFun5);
 				p.DefineFun(_T("strfun6"), StrFun6);
 				p.DefineFun(_T("strlen"), StrLen);
+				p.DefineFun(_T("multstrfun"), MultStrFun);
 				p.SetExpr(a_str);
 				//				p.EnableDebugDump(1, 0);
 				p.Eval();
@@ -1597,6 +1610,7 @@ namespace mu
 				p1->DefineFun(_T("strfun4"), StrFun4);
 				p1->DefineFun(_T("strfun5"), StrFun5);
 				p1->DefineFun(_T("strfun6"), StrFun6);
+				p1->DefineFun(_T("multstrfun"), MultStrFun);
 				p1->DefineFun(_T("lastArg"), LastArg);
 				p1->DefineFun(_T("firstArg"), FirstArg);
 				p1->DefineFun(_T("order"), FirstArg);
