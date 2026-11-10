@@ -516,7 +516,7 @@ namespace mu
 	static const int MaxNestingDepth = 1000;
 
 	static const string_type ParserVersion = string_type(_T("2.3.6 (Development)"));
-	static const string_type ParserVersionDate = string_type(_T("20260410"));
+	static const string_type ParserVersionDate = string_type(_T("20261110"));
 } // end of namespace
 
 #if defined(_MSC_VER)

@@ -7,7 +7,7 @@ muparser - fast math parser library
 
 ![title](https://github.com/beltoforion/muparser/assets/2202567/fbeb2347-9884-4dd7-a3c9-112b605d7390)
 
-Change Notes for Revision 2.3.6 (2026-04-10)
+Change Notes for Revision 2.3.6 (2026-11-10)
 ===========================
   
   Changes:

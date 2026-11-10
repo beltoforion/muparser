@@ -13,7 +13,7 @@
 History:
 --------
 
-Rev 2.3.6: 07.03.2026
+Rev 2.3.6: 10.11.2026
 ---------------------
   Refacturing:
    * Fix for #160 Refacturing for better source code compatibility with Fil-C:
