@@ -23,6 +23,7 @@ Change Notes for Revision 2.3.6 (2026-11-10)
   - Issue https://github.com/beltoforion/muparser/pull/170: Several memory safety, undefined behaviour and thread safety fixes, among them a use-after-free in mupRelease, exceptions crossing the C API boundary and data races on static buffers of the C API.
   - Issue https://github.com/beltoforion/muparser/issues/171: ParserInt now throws ecDOMAIN_ERROR instead of causing a signed integer overflow in Add, Sub, Mul, the unary minus and when rounding values that do not fit into an int.
   - Issue https://github.com/beltoforion/muparser/issues/176: ParserInt::IsBinVal performed the bit shift for binary literals in a signed type, triggering sanitizer reports for literals starting with 1.
+  - Issue https://github.com/beltoforion/muparser/issues/182: The C API (muParserDLL) no longer crashes when called with a null parser handle or with null string / pointer arguments. Calls with a null handle are ignored and return default values, null arguments are reported through the regular error mechanism (mupError).
 
   Bug Fixes:
   -----------

@@ -62,6 +62,15 @@ Rev 2.3.6: 10.11.2026
    * Fix for #180 (https://github.com/beltoforion/muparser/issues/180):
      Parser::Diff now restores the differentiation variable if the evaluation
      throws. Previously the variable was left at one of the stencil points.
+   * Fix for #182 (https://github.com/beltoforion/muparser/issues/182):
+     The C API (muParserDLL) no longer crashes when called with a null parser
+     handle or with null string / pointer arguments. Calls with a null handle are
+     ignored and return default values (0, "", or -1 for mupGetErrorCode and
+     mupGetErrorPos). Null strings, buffers and out parameters are reported through
+     the regular error mechanism (mupError) with ecGENERIC; this includes
+     mupEvalMulti, which reported ecINTERNAL_ERROR before. mupAddValIdent rejects a
+     null callback with ecINVALID_FUN_PTR. The header muParserDLL.h is unchanged.
+     Added a test for the C API (t_CApiTest).
 
 
 Rev 2.3.5: 13.12.2024
