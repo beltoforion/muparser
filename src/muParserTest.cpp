@@ -66,6 +66,7 @@ namespace mu
 			AddTest(&ParserTester::TestLocalization);
 			AddTest(&ParserTester::TestIssue165);
 		AddTest(&ParserTester::TestIssue168);
+			AddTest(&ParserTester::TestIssue180);
 
 			ParserTester::c_iCount = 0;
 		}
@@ -1813,6 +1814,75 @@ namespace mu
 				{
 					mu::console() << _T("\n  fail: m_vStringVarBuf.size() == ") << sz
 					              << _T(" (expected 2 — ClearConst does not clear the buffer)");
+					iRet++;
+				}
+
+				if (iRet == 0)
+					mu::console() << _T("passed") << endl;
+				else
+					mu::console() << _T("\n  failed with ") << iRet << _T(" errors") << endl;
+			}
+			catch (...)
+			{
+				mu::console() << _T("\n  fail: unexpected exception");
+				return 1;
+			}
+
+			return iRet;
+		}
+
+		//---------------------------------------------------------------------------
+		// Regression test: Parser::Diff must restore the differentiation variable
+		// even if the evaluation throws.
+		static value_type ThrowingCallback(value_type)
+		{
+			throw ParserError(_T("ThrowingCallback"));
+		}
+
+		int ParserTester::TestIssue180()
+		{
+			ParserTester::c_iCount++;
+			int iRet(0);
+
+			mu::console() << _T("testing github issue 180...");
+
+			try
+			{
+				value_type x = 5;
+
+				Parser p;
+				p.DefineVar(_T("x"), &x);
+				p.DefineFun(_T("thrower"), ThrowingCallback);
+				p.SetExpr(_T("thrower(x)"));
+
+				bool bThrown = false;
+				try
+				{
+					p.Diff(&x, 1);
+				}
+				catch (ParserError&)
+				{
+					bThrown = true;
+				}
+
+				if (!bThrown)
+				{
+					mu::console() << _T("\n  fail: Diff did not propagate the exception");
+					iRet++;
+				}
+
+				if (x != 5)
+				{
+					mu::console() << _T("\n  fail: x == ") << x << _T(" after failed Diff (expected 5)");
+					iRet++;
+				}
+
+				// Successful differentiation must restore the variable as well
+				p.SetExpr(_T("x*x"));
+				value_type fRes = p.Diff(&x, 3);
+				if (x != 5 || std::fabs(fRes - 6) > 1e-6)
+				{
+					mu::console() << _T("\n  fail: Diff(x*x, 3) == ") << fRes << _T(", x == ") << x << _T(" (expected 6 and 5)");
 					iRet++;
 				}
 

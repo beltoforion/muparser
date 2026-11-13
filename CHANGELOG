@@ -59,6 +59,9 @@ Rev 2.3.6: 10.11.2026
    * Fix for #176 (https://github.com/beltoforion/muparser/pull/178):
      ParserInt::IsBinVal performed the bit shift for binary literals in a signed
      type, triggering sanitizer reports for literals starting with 1.
+   * Fix for #180 (https://github.com/beltoforion/muparser/issues/180):
+     Parser::Diff now restores the differentiation variable if the evaluation
+     throws. Previously the variable was left at one of the stencil points.
 
 
 Rev 2.3.5: 13.12.2024

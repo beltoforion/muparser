@@ -239,13 +239,24 @@ namespace mu
 		\param [in] a_fEpsilon Epsilon used for the numerical differentiation.
 
 		Numerical differentiation uses a 5 point operator yielding a 4th order
-		formula. The default value for epsilon is 0.00074 which is
-		numeric_limits<double>::epsilon() ^ (1/5).
+		formula. If no epsilon is given, 1e-7 * a_fPos is used (1e-10 if
+		a_fPos is zero).
+
+		The differentiation variable is restored to its original value even
+		if the evaluation throws.
 	*/
 	value_type Parser::Diff(value_type* a_Var, value_type  a_fPos, value_type  a_fEpsilon) const
 	{
+		// Restore the variable on every exit path, including exceptions
+		// thrown by Eval() (https://github.com/beltoforion/muparser/issues/180)
+		struct RestoreGuard
+		{
+			value_type* m_pVar;
+			value_type m_fVal;
+			~RestoreGuard() { *m_pVar = m_fVal; }
+		} guard{ a_Var, *a_Var };
+
 		value_type fRes(0);
-		value_type fBuf(*a_Var);
 		value_type f[4] = { 0,0,0,0 };
 		value_type fEpsilon(a_fEpsilon);
 
@@ -258,7 +269,6 @@ namespace mu
 		*a_Var = a_fPos + 1 * fEpsilon;  f[1] = Eval();
 		*a_Var = a_fPos - 1 * fEpsilon;  f[2] = Eval();
 		*a_Var = a_fPos - 2 * fEpsilon;  f[3] = Eval();
-		*a_Var = fBuf; // restore variable
 
 		fRes = (-f[0] + 8 * f[1] - 8 * f[2] + f[3]) / (12 * fEpsilon);
 		return fRes;

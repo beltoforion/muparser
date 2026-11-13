@@ -29,6 +29,7 @@ Change Notes for Revision 2.3.6 (2026-11-10)
   - Issue https://github.com/beltoforion/muparser/issues/165: String constants used as function arguments were pushed twice into the internal string buffer.
   - Issue https://github.com/beltoforion/muparser/issues/173: Constant folding of "&&" and "||" compares the operands with zero instead of casting them to int. Results for fractional and out-of-range values now match the evaluation without optimizer.
   - Issue https://github.com/beltoforion/muparser/pull/175: A division by a constant zero was dropped from the bytecode when the optimizer was active (i.e. "asin(3/0)" returned 3). It is now evaluated at run time.
+  - Issue https://github.com/beltoforion/muparser/issues/180: Parser::Diff now restores the differentiation variable if the evaluation throws. Previously the variable was left at one of the stencil points.
 
   Fixed Compiler Warnings and Errors:
   -----------

@@ -280,6 +280,7 @@ namespace mu
 			int TestLocalization();
 			int TestIssue165();
 			int TestIssue168();
+			int TestIssue180();
 
 			void Abort() const;
 
