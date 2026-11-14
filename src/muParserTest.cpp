@@ -442,6 +442,31 @@ namespace mu
 			iStat += ThrowTestInt(_T("8 >> 100"), ecDOMAIN_ERROR);
 			iStat += ThrowTestInt(_T("8 << -1"), ecDOMAIN_ERROR);
 
+			// A user defined operator name longer than the rest of the expression must not be
+			// compared against memory behind the end of the expression string. The length is
+			// varied so that the string buffer has no spare capacity for some of the iterations.
+			ParserTester::c_iCount++;
+			try
+			{
+				value_type fVal = 1;
+				for (int i = 0; i < 100; ++i)
+				{
+					Parser p;
+					p.DefineVar(_T("a"), &fVal);
+					p.DefineOprt(_T("longoprt"), add, 0);
+					p.SetExpr(string_type(i, ' ') + _T("a"));
+					if (p.Eval() != 1)
+					{
+						mu::console() << _T("\n  fail: user defined operator near the end of the expression");
+						iStat++;
+					}
+				}
+			}
+			catch (...)
+			{
+				mu::console() << _T("\n  fail: unexpected exception");
+				iStat++;
+			}
 
 			if (iStat == 0)
 				mu::console() << _T("passed") << endl;
