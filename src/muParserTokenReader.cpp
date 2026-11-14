@@ -647,7 +647,6 @@ namespace mu
 	*/
 	bool ParserTokenReader::IsOprt(token_type& a_Tok)
 	{
-		const char_type* const szExpr = m_strFormula.c_str();
 		string_type strTok;
 
 		auto iEnd = ExtractOperatorToken(strTok, (std::size_t)m_iPos);
@@ -672,7 +671,7 @@ namespace mu
 		for (; it != m_pOprtDef->rend(); ++it)
 		{
 			const string_type& sID = it->first;
-			if (sID == string_type(szExpr + m_iPos, szExpr + m_iPos + sID.length()))
+			if (m_strFormula.compare((std::size_t)m_iPos, sID.length(), sID) == 0)
 			{
 				a_Tok.Set(it->second, strTok);
 
