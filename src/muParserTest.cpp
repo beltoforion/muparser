@@ -421,6 +421,14 @@ namespace mu
 			iStat += EqnTestInt(_T("0xff*10"), 2550, true);
 			iStat += EqnTestInt(_T("10+0xff+1"), 266, true);
 			iStat += EqnTestInt(_T("1+0xff+10"), 266, true);
+			iStat += EqnTestInt(_T("0xff-1"), 254, true);
+
+			// "0x" without hex digits must not swallow a following sign or operand
+			iStat += ThrowTestInt(_T("5*0x+2"), ecUNASSIGNABLE_TOKEN);
+			iStat += ThrowTestInt(_T("0x-1"), ecUNASSIGNABLE_TOKEN);
+			iStat += ThrowTestInt(_T("0x+ff"), ecUNASSIGNABLE_TOKEN);
+			iStat += ThrowTestInt(_T("10-0x-2"), ecUNASSIGNABLE_TOKEN);
+			iStat += ThrowTestInt(_T("0x ff"), ecUNASSIGNABLE_TOKEN);
 
 			// incorrect: '^' is yor here, not power
 			//    iStat += EqnTestInt("-(1+2)^2", -9, true);

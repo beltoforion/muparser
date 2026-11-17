@@ -221,18 +221,28 @@ namespace mu
 		if (a_szExpr[1] == 0 || (a_szExpr[0] != '0' || a_szExpr[1] != 'x'))
 			return 0;
 
+		// Limit the lexeme to the hex digits. Reading the open ended tail of the
+		// expression would let the stream skip whitespace and accept a sign, which
+		// swallows an operator following a "0x" without digits.
+		string_type buf(a_szExpr + 2);
+		std::size_t pos = buf.find_first_not_of(_T("0123456789abcdefABCDEF"));
+
+		if (pos == std::string::npos)
+			pos = buf.length();
+
+		if (pos == 0)
+			return 0;
+
 		unsigned iVal(0);
 
 		// New code based on streams for UNICODE compliance:
-		stringstream_type::pos_type nPos(0);
-		stringstream_type ss(a_szExpr + 2);
+		stringstream_type ss(buf.substr(0, pos));
 		ss >> std::hex >> iVal;
-		nPos = ss.tellg();
 
-		if (nPos == (stringstream_type::pos_type)0)
+		if (ss.fail())
 			return 0;
 
-		*a_iPos += (int)(2 + nPos);
+		*a_iPos += (int)(2 + pos);
 		*a_fVal = (value_type)iVal;
 		return 1;
 	}
