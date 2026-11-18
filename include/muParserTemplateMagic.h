@@ -141,9 +141,9 @@ namespace mu
 		static T Pow(T v1, T v2) { return std::pow(v1, v2); }
 		static T Rnd()
 		{
-			static std::random_device rd;  
-			static std::mt19937 gen(rd()); 
-			static std::uniform_real_distribution<T> dis(0.0, 1.0); // Range [0, 1)
+			// One generator per thread, rnd() may run in several threads at once (e.g. bulk mode with OpenMP)
+			static thread_local std::mt19937 gen(std::random_device{}());
+			static thread_local std::uniform_real_distribution<T> dis(0.0, 1.0); // Range [0, 1)
 
 			return dis(gen);
 		}

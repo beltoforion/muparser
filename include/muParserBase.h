@@ -221,6 +221,7 @@ namespace mu
 
 		static const char_type* c_DefaultOprt[];
 		static std::locale s_locale;  ///< The locale used by the parser
+		static std::locale GetLocale();
 		static bool g_DbgDumpCmdCode;
 		static bool g_DbgDumpStack;
 
