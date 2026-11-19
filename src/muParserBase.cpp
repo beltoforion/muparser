@@ -309,12 +309,26 @@ namespace mu
 //		if (m_pTokenReader->HasVarCreator())
 //			Error(ecBYTECODE_IMPORT_EXPORT_DISABLED);
 
-		m_vRPN = a_ByteCode;
-
 		// restore expression environment
 		string_type expr;
-		std::tie(expr, m_vStringBuf) = a_ByteCode.RestoreEnvironment();
+		stringbuf_type vStringBuf;
+		int nNumResults(0);
+		std::tie(expr, vStringBuf, nNumResults) = a_ByteCode.RestoreEnvironment();
+
+		// The results are read from the stack, so their number must fit into the stack
+		// size of the bytecode. This fails for bytecode that was not stored after a
+		// successful parse.
+		if (nNumResults < 1 || (std::size_t)nNumResults >= a_ByteCode.GetMaxStackSize())
+			Error(ecINTERNAL_ERROR);
+
+		m_vRPN = a_ByteCode;
+		m_vStringBuf = vStringBuf;
 		m_pTokenReader->SetFormula(expr);
+
+		// The stack buffer and the number of results are still those of the expression
+		// this parser evaluated last, take them from the restored bytecode.
+		m_vStackBuffer.resize(m_vRPN.GetMaxStackSize() * s_MaxNumOpenMPThreads);
+		m_nFinalResultIdx = nNumResults;
 
 		m_pParseFormula = &ParserBase::ParseCmdCode;
 	}
@@ -1644,14 +1658,14 @@ namespace mu
 
 			if (m_vRPN.GetSize() == 2)
 			{
-				m_vRPN.StoreEnvironment(m_pTokenReader->GetExpr(), m_vStringBuf);
+				m_vRPN.StoreEnvironment(m_pTokenReader->GetExpr(), m_vStringBuf, m_nFinalResultIdx);
 				m_pParseFormula = &ParserBase::ParseCmdCodeShort;
 				m_vStackBuffer[1] = (this->*m_pParseFormula)();
 				return m_vStackBuffer[1];
 			}
 			else
 			{
-				m_vRPN.StoreEnvironment(m_pTokenReader->GetExpr(), m_vStringBuf);
+				m_vRPN.StoreEnvironment(m_pTokenReader->GetExpr(), m_vStringBuf, m_nFinalResultIdx);
 				m_pParseFormula = &ParserBase::ParseCmdCode;
 				return (this->*m_pParseFormula)();
 			}

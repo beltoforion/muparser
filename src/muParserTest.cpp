@@ -166,6 +166,76 @@ namespace mu
 				iStat += 1;  // this is not supposed to happen
 			}
 
+			// SetByteCode must take the stack size and the number of results from the
+			// restored bytecode, not from the expression the parser evaluated before.
+			try
+			{
+				Parser p1;
+				p1.DefineVar(_T("a"), &afVal[0]);
+				p1.DefineVar(_T("b"), &afVal[1]);
+				p1.SetExpr(_T("a, b, a+b"));
+				p1.Eval();
+				ParserByteCode bcMulti(p1.GetByteCode());
+
+				p1.SetExpr(_T("a"));
+				p1.Eval();
+				ParserByteCode bcSingle(p1.GetByteCode());
+
+				// restore into a parser that has not evaluated anything yet
+				try
+				{
+					Parser p2;
+					p2.SetByteCode(bcMulti);
+
+					int nNum = 0;
+					value_type* v = p2.Eval(nNum);
+					if (nNum != 3 || v[0] != 1 || v[1] != 2 || v[2] != 3 || p2.Eval() != 3)
+						iStat += 1;
+				}
+				catch (...)
+				{
+					iStat += 1;
+				}
+
+				// restore after a failed parse left a large number of results behind
+				try
+				{
+					Parser p2;
+					p2.SetExpr(_T("1"));
+					p2.Eval();
+
+					string_type sManyStr = _T("(\"\")");
+					for (int i = 0; i < 64; ++i)
+						sManyStr += _T(",(\"\")");
+
+					try
+					{
+						p2.SetExpr(sManyStr);
+						p2.Eval();
+						iStat += 1;  // not supposed to reach this
+					}
+					catch (ParserError&)
+					{
+						// failure is expected...
+					}
+
+					p2.SetByteCode(bcSingle);
+
+					int nNum = 0;
+					value_type* v = p2.Eval(nNum);
+					if (nNum != 1 || v[0] != 1 || p2.Eval() != 1)
+						iStat += 1;
+				}
+				catch (...)
+				{
+					iStat += 1;
+				}
+			}
+			catch (...)
+			{
+				iStat += 1;  // this is not supposed to happen
+			}
+
 			if (iStat == 0)
 				mu::console() << _T("passed") << endl;
 			else
