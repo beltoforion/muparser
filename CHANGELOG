@@ -91,6 +91,9 @@ Rev 2.3.6: 10.11.2026
      SetThousandsSep, ResetLocale while other threads parse) and on the random
      number generator used by rnd(). The locale is now guarded by a mutex, rnd()
      uses one generator per thread.
+   * Fix for #181 (https://github.com/beltoforion/muparser/issues/181):
+     The ecUNARY_PLUS_IN_FRONT_OF_FUNCTION error reported an empty token. It now
+     reports the function name.
 
 
 Rev 2.3.5: 13.12.2024

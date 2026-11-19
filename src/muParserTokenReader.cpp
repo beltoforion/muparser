@@ -627,7 +627,7 @@ namespace mu
 		// fix for #164: https://github.com/beltoforion/muparser/issues/164
 		if (m_lastTok.GetFuncAddr() == generic_callable_type{ (erased_fun_type)&MathImpl<value_type>::UnaryPlus, nullptr })
 		{
-			Error(ecUNARY_PLUS_IN_FRONT_OF_FUNCTION, m_iPos - (int)a_Tok.GetAsString().length(), a_Tok.GetAsString());
+			Error(ecUNARY_PLUS_IN_FRONT_OF_FUNCTION, m_iPos, strTok);
 		}
 
 		a_Tok.Set(item->second, strTok);

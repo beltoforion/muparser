@@ -281,6 +281,7 @@ namespace mu
 			int TestIssue165();
 			int TestIssue168();
 			int TestIssue180();
+			int TestIssue181();
 
 			void Abort() const;
 

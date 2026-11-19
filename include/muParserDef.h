@@ -279,7 +279,7 @@ namespace mu
 		ecINTERNAL_ERROR = 39,			        ///< Internal error of any kind.
 		ecBYTECODE_IMPORT_EXPORT_DISABLED = 40,	///< Bytecode cannot be exported.
 
-		ecUNARY_PLUS_IN_FRONT_OF_FUNCTION = 41,	///< Unexpected binary operator found
+		ecUNARY_PLUS_IN_FRONT_OF_FUNCTION = 41,	///< Unary plus operator in front of a function
 		ecNESTING_LIMIT = 42,					///< Throw an exception if the expressions is exceeding the nesting limit
 
 		// The last two are special entries 

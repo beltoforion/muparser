@@ -35,6 +35,7 @@ Change Notes for Revision 2.3.6 (2026-11-10)
   - Issue https://github.com/beltoforion/muparser/pull/175: A division by a constant zero was dropped from the bytecode when the optimizer was active (i.e. "asin(3/0)" returned 3). It is now evaluated at run time.
   - Issue https://github.com/beltoforion/muparser/issues/180: Parser::Diff now restores the differentiation variable if the evaluation throws. Previously the variable was left at one of the stencil points.
   - Issue https://github.com/beltoforion/muparser/issues/179: ParserInt read past a "0x" without hex digits and swallowed a following sign (i.e. "5*0x+2" evaluated to 10). Such literals are now rejected with an unexpected token error.
+  - Issue https://github.com/beltoforion/muparser/issues/181: The ecUNARY_PLUS_IN_FRONT_OF_FUNCTION error reported an empty token instead of the function name.
 
   Fixed Compiler Warnings and Errors:
   -----------
