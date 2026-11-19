@@ -71,6 +71,29 @@ Rev 2.3.6: 10.11.2026
      mupEvalMulti, which reported ecINTERNAL_ERROR before. mupAddValIdent rejects a
      null callback with ecINVALID_FUN_PTR. The header muParserDLL.h is unchanged.
      Added a test for the C API (t_CApiTest).
+   * Fix for #179 (https://github.com/beltoforion/muparser/pull/185):
+     ParserInt::IsHexVal read past a "0x" without hex digits and swallowed a
+     following sign, i.e. "5*0x+2" evaluated to 10 and "0x-1" to 4294967295.
+     "0x" without digits and "0x ff" are now rejected with an unexpected token
+     error.
+   * Fix for #183 (https://github.com/beltoforion/muparser/pull/183):
+     Heap over-read in ParserTokenReader::IsOprt when a user defined binary
+     operator of four or more characters was checked near the end of the
+     expression.
+   * Fix for #184 (https://github.com/beltoforion/muparser/pull/184):
+     Eval(int&) (and mupEvalMulti) ran the incomplete bytecode left behind by a
+     failed parse when called a second time on the same expression, reading past
+     the end of the internal value stack. It now parses again and reports the same
+     error. Eval(int&) directly after GetUsedVar() no longer evaluates undefined
+     variables as 0 but reports them like Eval() does.
+   * Fix for #186 (https://github.com/beltoforion/muparser/pull/186):
+     Data races on the locale shared by all parser instances (SetDecSep,
+     SetThousandsSep, ResetLocale while other threads parse) and on the random
+     number generator used by rnd(). The locale is now guarded by a mutex, rnd()
+     uses one generator per thread.
+   * Fix for #181 (https://github.com/beltoforion/muparser/issues/181):
+     The ecUNARY_PLUS_IN_FRONT_OF_FUNCTION error reported an empty token. It now
+     reports the function name.
 
 
 Rev 2.3.5: 13.12.2024

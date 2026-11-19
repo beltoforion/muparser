@@ -67,6 +67,7 @@ namespace mu
 			AddTest(&ParserTester::TestIssue165);
 		AddTest(&ParserTester::TestIssue168);
 			AddTest(&ParserTester::TestIssue180);
+			AddTest(&ParserTester::TestIssue181);
 
 			ParserTester::c_iCount = 0;
 		}
@@ -1967,6 +1968,70 @@ namespace mu
 				mu::console() << _T("\n  fail: unexpected exception");
 				return 1;
 			}
+
+			return iRet;
+		}
+
+		//---------------------------------------------------------------------------
+		/** \brief Test for #181: ecUNARY_PLUS_IN_FRONT_OF_FUNCTION must report the
+			function name as token and the position where the function name starts.
+		*/
+		int ParserTester::TestIssue181()
+		{
+			ParserTester::c_iCount++;
+			int iRet(0);
+
+			mu::console() << _T("testing github issue 181...");
+
+			struct
+			{
+				const char_type* expr;
+				const char_type* token;
+				int pos;
+			} const tests[] =
+			{
+				{ _T("+sin(1)"),      _T("sin"), 1 },
+				{ _T("3++sin(1)"),    _T("sin"), 3 },
+				{ _T("1-+cos(x)"),    _T("cos"), 3 },
+				{ _T("1 + + cos(x)"), _T("cos"), 6 },
+			};
+
+			value_type x = 1;
+			Parser p;
+			p.DefineVar(_T("x"), &x);
+
+			for (const auto& t : tests)
+			{
+				try
+				{
+					p.SetExpr(t.expr);
+					p.Eval();
+
+					mu::console() << _T("\n  fail: \"") << t.expr << _T("\" did not throw");
+					iRet++;
+				}
+				catch (ParserError& e)
+				{
+					if (e.GetCode() != ecUNARY_PLUS_IN_FRONT_OF_FUNCTION || e.GetToken() != t.token || e.GetPos() != t.pos)
+					{
+						mu::console() << _T("\n  fail: \"") << t.expr << _T("\": code=") << e.GetCode()
+							<< _T(" token=\"") << e.GetToken() << _T("\" pos=") << e.GetPos()
+							<< _T(" (expected code=") << (int)ecUNARY_PLUS_IN_FRONT_OF_FUNCTION
+							<< _T(" token=\"") << t.token << _T("\" pos=") << t.pos << _T(")");
+						iRet++;
+					}
+				}
+				catch (...)
+				{
+					mu::console() << _T("\n  fail: \"") << t.expr << _T("\": unexpected exception type");
+					iRet++;
+				}
+			}
+
+			if (iRet == 0)
+				mu::console() << _T("passed") << endl;
+			else
+				mu::console() << _T("\n  failed with ") << iRet << _T(" errors") << endl;
 
 			return iRet;
 		}
