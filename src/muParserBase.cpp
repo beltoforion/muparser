@@ -39,6 +39,7 @@
 #include <locale>
 #include <cassert>
 #include <cctype>
+#include <mutex>
 
 #ifdef MUP_USE_OPENMP
 
@@ -60,6 +61,10 @@ using namespace std;
 namespace mu
 {
 	std::locale ParserBase::s_locale = std::locale(std::locale::classic(), new change_dec_sep<char_type>('.'));
+
+	// s_locale is shared by all parser instances. Assigning it in one thread while
+	// another thread copies it can free the locale that is being copied.
+	static std::mutex s_localeMutex;
 
 	bool ParserBase::g_DbgDumpCmdCode = false;
 	bool ParserBase::g_DbgDumpStack = false;
@@ -203,6 +208,7 @@ namespace mu
 	*/
 	void ParserBase::SetDecSep(char_type cDecSep)
 	{
+		std::lock_guard<std::mutex> lock(s_localeMutex);
 		char_type cThousandsSep = std::use_facet< change_dec_sep<char_type> >(s_locale).thousands_sep();
 		s_locale = std::locale(std::locale("C"), new change_dec_sep<char_type>(cDecSep, cThousandsSep));
 	}
@@ -217,6 +223,7 @@ namespace mu
 	*/
 	void ParserBase::SetThousandsSep(char_type cThousandsSep)
 	{
+		std::lock_guard<std::mutex> lock(s_localeMutex);
 		char_type cDecSep = std::use_facet< change_dec_sep<char_type> >(s_locale).decimal_point();
 		s_locale = std::locale(std::locale("C"), new change_dec_sep<char_type>(cDecSep, cThousandsSep));
 	}
@@ -229,8 +236,23 @@ namespace mu
 	*/
 	void ParserBase::ResetLocale()
 	{
-		s_locale = std::locale(std::locale("C"), new change_dec_sep<char_type>('.'));
+		{
+			std::lock_guard<std::mutex> lock(s_localeMutex);
+			s_locale = std::locale(std::locale("C"), new change_dec_sep<char_type>('.'));
+		}
 		SetArgSep(',');
+	}
+
+	//---------------------------------------------------------------------------
+	/** \brief Return a copy of the locale shared by all parser instances.
+
+		Use this instead of reading s_locale directly, another thread may replace
+		it at any time by calling SetDecSep, SetThousandsSep or ResetLocale.
+	*/
+	std::locale ParserBase::GetLocale()
+	{
+		std::lock_guard<std::mutex> lock(s_localeMutex);
+		return s_locale;
 	}
 
 	//---------------------------------------------------------------------------
@@ -441,7 +463,7 @@ namespace mu
 	void ParserBase::SetExpr(const string_type& a_sExpr)
 	{
 		// Check locale compatibility
-		if (m_pTokenReader->GetArgSep() == std::use_facet<numpunct<char_type> >(s_locale).decimal_point())
+		if (m_pTokenReader->GetArgSep() == std::use_facet<numpunct<char_type> >(GetLocale()).decimal_point())
 			Error(ecLOCALE);
 
 		// Check maximum allowed expression length. An arbitrary value small enough so i can debug expressions sent to me

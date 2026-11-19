@@ -86,7 +86,7 @@ namespace mu
 		value_type fVal(0);
 
 		stringstream_type stream(a_szExpr);
-		stream.imbue(Parser::s_locale);
+		stream.imbue(Parser::GetLocale());
 		stream >> fVal;
 		stringstream_type::pos_type iEnd = stream.tellg(); // Position after reading
 
