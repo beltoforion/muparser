@@ -1943,7 +1943,9 @@ namespace mu
 	*/
 	value_type* ParserBase::Eval(int& nStackSize) const
 	{
-		if (m_vRPN.GetSize() > 0)
+		// A failed parse can leave incomplete bytecode in m_vRPN. Only reuse
+		// the bytecode once ParseString() has completed successfully.
+		if (m_pParseFormula != &ParserBase::ParseString)
 		{
 			ParseCmdCode();
 		}

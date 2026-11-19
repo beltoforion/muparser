@@ -127,6 +127,44 @@ namespace mu
 				// failure is expected...
 			}
 
+			// Eval(int&) must not run the incomplete bytecode of an expression that
+			// failed to parse. Calling it again has to report the same error.
+			try
+			{
+				string_type sManyStr = _T("(\"\")");
+				for (int i = 0; i < 64; ++i)
+					sManyStr += _T(",(\"\")");
+
+				const string_type sExpr[] = { sManyStr, _T("0 ? 1"), _T("1+2+)") };
+				const EErrorCodes eCode[] = { ecSTR_RESULT, ecMISSING_ELSE_CLAUSE, ecUNEXPECTED_PARENS };
+
+				for (int i = 0; i < 3; ++i)
+				{
+					p.SetExpr(_T("a+b"));
+					p.Eval();
+					p.SetExpr(sExpr[i]);
+
+					for (int j = 0; j < 2; ++j)
+					{
+						try
+						{
+							int nNum = 0;
+							p.Eval(nNum);
+							iStat += 1;  // not supposed to reach this
+						}
+						catch (ParserError& e)
+						{
+							if (e.GetCode() != eCode[i])
+								iStat += 1;
+						}
+					}
+				}
+			}
+			catch (...)
+			{
+				iStat += 1;  // this is not supposed to happen
+			}
+
 			if (iStat == 0)
 				mu::console() << _T("passed") << endl;
 			else
