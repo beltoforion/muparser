@@ -109,6 +109,9 @@ namespace mu
 		/** \brief Maximum size needed for the stack. */
 		std::size_t m_iMaxStackSize;
 
+		/** \brief Number of results of the expression associated with this bytecode. */
+		int m_iNumResults;
+
 		/** \brief The actual rpn storage. */
 		rpn_type  m_vRPN;
 
@@ -152,15 +155,16 @@ namespace mu
 				return &m_vRPN[0];
 		}
 
-		void StoreEnvironment(string_type expr, stringbuf_type const& strBuf)
+		void StoreEnvironment(string_type expr, stringbuf_type const& strBuf, int nNumResults)
 		{
 			m_stringBuffer = strBuf;
 			m_expr = expr;
+			m_iNumResults = nNumResults;
 		}
 
-		std::tuple<string_type, stringbuf_type> RestoreEnvironment() const
+		std::tuple<string_type, stringbuf_type, int> RestoreEnvironment() const
 		{
-			return std::make_tuple(m_expr, m_stringBuffer);
+			return std::make_tuple(m_expr, m_stringBuffer, m_iNumResults);
 		}
 
 		void AsciiDump() const;

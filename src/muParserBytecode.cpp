@@ -53,6 +53,7 @@ namespace mu
  		, m_stringBuffer()
 		, m_expr()
 		, m_iMaxStackSize(0)
+		, m_iNumResults(0)
 		, m_vRPN()
 		, m_bEnableOptimizer(true)
 	{
@@ -99,6 +100,7 @@ namespace mu
 		m_iStackPos = a_ByteCode.m_iStackPos;
 		m_vRPN = a_ByteCode.m_vRPN;
 		m_iMaxStackSize = a_ByteCode.m_iMaxStackSize;
+		m_iNumResults = a_ByteCode.m_iNumResults;
 		m_bEnableOptimizer = a_ByteCode.m_bEnableOptimizer;
 		
 		m_stringBuffer = a_ByteCode.m_stringBuffer;
